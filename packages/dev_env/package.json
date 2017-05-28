@@ -1,10 +1,11 @@
 {
   "name": "@defualt/dev_env",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "bin": {
     "devenv": "./bin/devenv.js"
   },
   "dependencies": {
+    "@defualt/dev_env": "^0.0.1",
     "babel-cli": "^6.24.1",
     "babel-core": "^6.24.1",
     "babel-loader": "^7.0.0",
@@ -14,7 +15,6 @@
     "babel-register": "^6.24.1",
     "chai": "^3.5.0",
     "css-loader": "^0.28.1",
-    "@defualt/dev_env": "^0.0.0",
     "directory-named-webpack-plugin": "^2.1.0",
     "eslint": "^3.19.0",
     "eslint-config-airbnb": "^15.0.1",
