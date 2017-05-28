@@ -1,0 +1,20 @@
+<% 
+	var username = htmlWebpackPlugin.options.username;
+	var libraryName = htmlWebpackPlugin.options.libraryName;
+%>
+<!DOCTYPE html>
+<html>
+	<head>
+	<meta charset="UTF-8">
+		<title><%= htmlWebpackPlugin.options.title %></title>
+	</head>
+	<body>
+		asdf asdf
+		<% include ./header.ejs %>
+		<% include ./demo.ejs %>
+		<div class="readme markdownCompiled">
+			<%- require('../../README.md') %>
+		</div>
+		<% include ./footer.ejs %>
+	</body>
+</html>

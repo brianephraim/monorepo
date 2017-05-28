@@ -1,0 +1,14 @@
+{
+    "linters": {
+        "eslint": {
+            "excludes": [
+            	"**/import-examples/**",
+                "**/src/tonicExample.js",
+                "**/src/demo/easings.js",
+                "**/src/library/raf.js",
+                "**/node_modules/**",
+                "**/vendor/**"
+            ]
+        }
+    }
+}

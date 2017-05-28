@@ -1,0 +1,53 @@
+@import "./cssJsSharedConstants.json";
+
+body{
+	div {
+		// border: map-get($a,b)+px solid orange;
+	}
+}
+
+
+.ball{
+	width: $ballDiameter+px;
+	height: $ballDiameter+px;
+	background: blue;
+	border-radius: ($ballDiameter/2)+px;
+	position: absolute;
+	z-index:2;
+	top:0;
+	left:0;
+	&--ghost {
+		background: lightBlue;
+		z-index:1;
+	}
+}
+
+.demo{
+	border: 2px solid black;
+	width: $demoWidth+px;
+	position:relative;
+
+	label {
+		padding-left:20px;
+		margin-bottom: 1em;
+	}
+	label, button{
+		height: 2em;
+	}
+	input {
+		height: 1em;
+	}
+	input, label, button{
+		display: inline-block;
+		height: 40px;
+		vertical-align: top;
+		font-size: 16px;
+		line-height: 2em;
+	}
+}
+.stage{
+	border-bottom: 2px solid black;
+	height: $demoHeight+px;
+	width: $demoWidth+px;
+	position:relative;
+}

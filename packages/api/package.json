@@ -1,0 +1,8 @@
+{
+  "private": true,
+  "dependencies": {
+    "node-uuid": "^1.4.7",
+    "stimulate": "^0.0.16"
+  },
+  "version": "0.0.2"
+}

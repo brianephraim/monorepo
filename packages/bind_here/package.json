@@ -1,0 +1,16 @@
+{
+  "private": "true",
+
+  "name": "@defualt/bind_here",
+  "version": "0.0.4",
+  "devDependencies": {
+    "@defualt/dev_env": "^0.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/defualt/bind_here.git"
+  }
+}

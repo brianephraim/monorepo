@@ -1,0 +1,36 @@
+{
+  "private": true,
+  "name": "redux-todos-example",
+  "version": "0.0.0",
+  "description": "Redux ToDos example",
+  "scripts": {
+    "y": "./packages/dev_env/bin/devenv.js --isLerna=true",
+    "start": "babel-node devServer.js",
+    "lint": "eslint src",
+    "test": "./node_modules/mocha/bin/mocha src/**/*.spec.js --reporter spec"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "babel-polyfill": "^6.3.14",
+    "lodash": "^4.11.2",
+    "normalizr": "^2.1.0",
+    "prop-types": "^15.5.8",
+    "re-reselect": "^0.4.0",
+    "react": "^15.0.2",
+    "react-dom": "^15.0.2",
+    "react-redux": "^4.4.5",
+    "react-router": "^3.0.0",
+    "redux": "^3.5.2",
+    "redux-logger": "^2.6.1",
+    "redux-thunk": "^2.1.0",
+    "reselect": "^3.0.0",
+    "styled-components": "^1.4.6"
+  },
+  "devDependencies": {
+    "child-process-promise": "^2.2.1",
+    "pretty-error": "^2.1.0"
+  }
+}

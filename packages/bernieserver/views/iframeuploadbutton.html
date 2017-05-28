@@ -1,0 +1,57 @@
+<% 
+    var lastData = typeof lastData === 'undefined' ? null : lastData;
+    
+    var buttonText = typeof buttonText === 'undefined' ? 'Upload photo' : buttonText;
+
+    
+    
+
+%>
+<!doctype html>
+<html class="no-js" lang="" style="overflow:hidden;">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <title>Bernie Selfie</title>
+    <meta name="description" content="Support Bernie Sanders 2016 with your selfie photo">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/css/cropper.css">
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/sass-generated.css">
+</head>
+<body class="iframeUploadButton">
+<div class="button">
+    <form class="uploadFileForm" action="/uploadsimple?contentType=text_html&buttonText=<%- encodeURIComponent(buttonText) %>" method="post" enctype="multipart/form-data">
+        <input type="file" class="uploadFileInput fileInput" name="uploadFile" id="iframeUploadButton" style="width:0;height:0;visibility:hidden;">
+        <label for="iframeUploadButton"><%- buttonText %></label>
+        <!-- <button type="submit">submit</button> -->
+    </form>
+</div>
+<!-- <div class="buttonGroup_button button storageUploadizer">
+    <form>
+        <input id="uploadizerId_1" class="fileInput" type="file" name="someInputUploadName">
+        <label for="uploadizerId_1">Storage</label>
+    </form>
+</div> -->
+
+
+<script src="/js/jquery.min.js" type="text/javascript"></script>
+<script>
+    
+    var lastData = <%- JSON.stringify(lastData) %>;
+
+    $(function(){
+        $('.uploadFileInput').on('change',function(e){
+            $('body').addClass('spinnerShowing');
+            setTimeout(function(){
+                $('.uploadFileForm').submit()
+            },500)
+        });
+    });
+</script>
+<div class="lastData" style="width:0;height:0;visibility:hidden;">
+    <%- JSON.stringify(lastData) %>
+</div>
+</body>
+</html>

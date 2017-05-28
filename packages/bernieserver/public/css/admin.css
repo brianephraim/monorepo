@@ -1,0 +1,51 @@
+.clearfix:after {
+     visibility: hidden;
+     display: block;
+     font-size: 0;
+     content: " ";
+     clear: both;
+     height: 0;
+     }
+.clearfix { display: inline-block; }
+/* start commented backslash hack \*/
+* html .clearfix { height: 1%; }
+body,html{
+	margin:0;
+	padding:0;
+}
+.clearfix { display: block; }
+
+.leftCol{
+	float:left;
+}
+
+
+.complexImage{
+	border-bottom:2px solid #666;
+	padding:20px;
+}
+.customUrl{
+	width:200px;
+	display:block;
+}
+.customUrlImg{
+	display:block;
+	width:100%;
+}
+.json{
+	overflow:hidden;
+}
+
+.pathname{
+	display:block;
+}
+
+.good0{
+	background:rgba(10,114,164,.2);
+}
+.good1{
+	background:rgba(10,114,164,.6);
+}
+.good2{
+	background:rgba(10,114,164,1);
+}

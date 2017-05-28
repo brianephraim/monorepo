@@ -1,0 +1,6 @@
+http://localhost.bernieselfie.com:5000/selfie/v1438785455/bernie/c3x4kqghfyrmupp5sc3u
+http://localhost.bernieselfie.com:5000/f/czxemq2xamfuihotvvn4/118_57_393_393_1200_630/v59jfqewm7yirbhiv91b
+http://localhost.bernieselfie.com:5000/wg/gyupqbvpx4gvoxdvygu0/27_86_576_576_640_960/
+http://localhost.bernieselfie.com:5000/h/aawxbl4fw8k8nwemhim8/392_182_185_185_960_720/qk1kfvc2n47kdzyi14hs
+http://localhost.bernieselfie.com:5000/h3/a5jwps8kvwwfokq6c5q7/-25_252_1208_1208_1080_1920/
+http://localhost.bernieselfie.com:5000/h4/lm77kik0ntuadleuljur/210_189_176_176_640_480/

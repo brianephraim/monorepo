@@ -1,0 +1,428 @@
+<!doctype html>
+<html class="no-js" lang="">
+<head>
+    <% 
+        var urlInfo = !!urlInfo ? urlInfo : {};
+        var userTemplates = !!userTemplates ? userTemplates : {};
+        
+
+        var mainImage = urlInfo.customUrl;
+        var mainUrl = "http://www.bernieselfie.com/" 
+
+        if(typeof req !== 'undefined'){
+            mainUrl = 'http://www.bernieselfie.com'+req.url;
+            mainImage = urlInfo.customUrl;
+        }
+
+        var mainUrlEncode = encodeURIComponent(mainUrl);
+        var fb_app_id = 1633460223596071;
+
+        var offline = typeof offline !== undefined ? offline : false;
+        
+
+    %>
+
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <title>Bernie Selfie</title>
+    <meta name="description" content="Support Bernie Sanders 2016 with your selfie photo">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Place favicon.ico in the root directory -->
+    <% if(!offline){ %>
+        <link href='https://fonts.googleapis.com/css?family=Fjalla+One|Cantarell' rel='stylesheet' type='text/css'>
+    <% } %>
+    <link rel="stylesheet" href="/css/cropper.css">
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/sass-generated.css">
+
+    <!-- FB -->
+    <meta property="og:title" content="My selfie for Bernie" />
+    <meta property="og:site_name" content="BernieSelfie"/>
+    <meta property="og:url" content="<%= mainUrl %>" />
+    <meta property="og:description" content="BernieSelfie.com uses your selfie to support Bernie Sanders for President.  Save the generated image and share to Facebook, Twitter, and Instagram." />
+    <meta property="fb:app_id" content="<%= fb_app_id %>" />
+    <meta property="og:type" content="profile" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content="<%= mainImage %>" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="1200" />
+
+    <!-- TWITTER -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@bernieselfie">
+    <meta name="twitter:creator" content="@bernieselfie">
+    <meta name="twitter:title" content="My selfie for Bernie">
+    <meta name="twitter:description" content="Use bernieselfie.com to use your selfie to support Bernie Sanders for President.  Save the generated image and share to Facebook, Twitter, and Instagram.">
+    <meta name="twitter:image" content="<%= mainImage %>">
+
+    
+
+
+    <script>
+        ;window.urlInfo = <%- urlInfo ? JSON.stringify(urlInfo, null, '\t') : '' %>;
+        ;window.mainUrl = <%- mainUrl ? JSON.stringify(mainUrl, null, '\t') : '' %>;
+        ;window.userTemplates = <%- userTemplates ? JSON.stringify(userTemplates, null, '\t') : '' %>;
+    </script>
+    
+    <!-- DEV MODE VS PROD MODE -->
+    <% if (typeof req !== 'undefined' && req.subdomains === 'localhost') { %>
+        <!-- IN DEV MODE, DISABLE GOOGLE ANALYTICS -->
+        <script>window['ga-disable-UA-64815100-1-Y'] = true;</script>
+    <% } else { %>
+        
+    <% } %>
+    
+
+
+</head>
+<body>
+    <script type="text/javascript">
+        var vanilla = (function() {
+            var Vanilla = function(){
+
+            };
+            Vanilla.prototype.hasClass = function(elem, className) {
+                return new RegExp(' ' + className + ' ').test(' ' + elem.className + ' ');
+            }
+            Vanilla.prototype.addClass = function(elem, className) {
+                if (!this.hasClass(elem, className)) {
+                    elem.className += ' ' + className;
+                }
+            }
+
+            Vanilla.prototype.removeClass = function(elem, className) {
+                var newClass = ' ' + elem.className.replace(/[\t\r\n]/g, ' ') + ' ';
+                if (this.hasClass(elem, className)) {
+                    while (newClass.indexOf(' ' + className + ' ') >= 0) {
+                        newClass = newClass.replace(' ' + className + ' ', ' ');
+                    }
+                    elem.className = newClass.replace(/^\s+|\s+$/g, '');
+                }
+            }
+            Vanilla.prototype.selectBody = function() {
+                return document.querySelector('body');
+            };
+            return new Vanilla();
+        })();
+        vanilla.addClass(vanilla.selectBody(),'loadingAssets');
+
+
+        window.appMode = window.location.host.indexOf('localhost') === -1 ? 'prod' : 'dev';
+        window.offline = <%- offline %>;
+        window.iframebutton = <%- iframebutton %>;
+    </script>
+    <img class="spinnerBonusImage literalBernieSelfie"src="/images/literal-fade.png">
+    <div class="bodyInner">
+        <div class="homeLayout">
+            <div class="app">
+                <div class="topBanner"><a class="topBanner_link" href="http://www.berniesanders.com/">Contribute to Bernie at BernieSanders.com&nbsp;>></a></div>
+                <div class="app_header header">
+
+                    <div class="app_header_leftPillar leftPillar">
+                        <div class="app_header_leftPillar_branding branding">
+                            <div class="app_header_leftPillar_branding_title branding_title">
+                                BernieSelfie.com
+                            </div>
+                            <div class="app_header_leftPillar_branding_subtitle branding_subtitle">
+                                Support Bernie with your picture
+                            </div>
+                        </div>
+                        <div class="app_header_leftPillar_socialRow socialRow">
+                            <% if(!offline){ %>
+                            
+                                <div class="app_header_leftPillar_socialRow_socialWidget socialWidget">
+                                    <a class="twitter-share-button"
+                                      href="https://twitter.com/intent/tweet?url=<%= encodeURIComponent(mainUrl) %>&via=bernieselfie&hashtags=BernieSanders%2Cfeelthebern%2Cbernieselfie&related=BernieSanders"
+                                      >
+                                    Tweet</a>
+                                </div>
+                                <div
+                                  class="fb-like app_header_leftPillar_socialRow_socialWidget socialWidget"
+                                  data-share="true"
+                                  data-width="450"
+                                  data-layout="button_count" 
+                                  data-show-faces="true">
+                                </div>
+
+                                <div class="app_header_leftPillar_socialRow_socialWidget socialWidget">
+                                    <a href="//www.pinterest.com/pin/create/button/?url=<%= urlInfo.customUrlQueryString %>&description=<%= urlInfo.serialize('Use BernieSelfie.com support Bernie Sanders to your friends and followers') %>" data-pin-do="buttonPin" data-pin-config="beside" data-pin-color="red"><img src="//assets.pinterest.com/images/pidgets/pinit_fg_en_rect_red_20.png" /></a>
+                                </div>
+                            <% }else{ %>
+                            
+                                <img class="app_header_leftPillar_socialRow_socialWidget socialWidget" src="/images/mock-fb-like.png">
+                                <img class="app_header_leftPillar_socialRow_socialWidget socialWidget" src="/images/mock-tweet.png">
+                                <img class="app_header_leftPillar_socialRow_socialWidget socialWidget" src="/images/mock-pintrest.png">
+                            <% } %>               
+                        </div>
+                    </div>
+                    <div class="app_header_rightPillar rightPillar">
+                        
+                        <div class="app_header_rightPillar_fbLikePageWrap">
+                            <% if(!offline){ %>  
+                                <div class="fb-page" data-href="https://www.facebook.com/pages/BernieSelfiecom/924351914278246" data-width="250" data-small-header="true" data-adapt-container-width="false" data-hide-cover="false" data-show-facepile="false" data-show-posts="false"><div class="fb-xfbml-parse-ignore"><blockquote cite="https://www.facebook.com/pages/BernieSelfiecom/924351914278246"><a href="https://www.facebook.com/pages/BernieSelfiecom/924351914278246">BernieSelfie.com</a></blockquote></div></div>
+                            <% }else{ %>
+                                <img class="app_header_rightPillar_fbLikePageWrap_socialWidget socialWidget" src="/images/mock-fb-page.png">
+                            <% } %>   
+                        </div>   
+                        <div class="app_header_rightPillar_socialRow socialRow">
+                            <% if(!offline){ %>                            
+                                <div class="app_header_rightPillar_socialRow_socialWidget socialWidget">
+                                    <a style="font-size:9px;" class="twitter-follow-button" href="https://twitter.com/bernieselfie">Follow @bernieselfie</a>
+                                </div>
+                                <div class="app_header_rightPillar_socialRow_socialWidget socialWidget">
+                                    <a data-pin-do="buttonFollow" href="http://www.pinterest.com/bernieselfie/">bernieselfie.com</a>
+                                </div>
+                            <% }else{ %>
+                                <img class="app_header_rightPillar_socialRow_socialWidget socialWidget" src="/images/mock-fb-like.png">
+                                <img class="app_header_rightPillar_socialRow_socialWidget socialWidget" src="/images/mock-tweet.png">
+                                <img class="app_header_rightPillar_socialRow_socialWidget socialWidget" src="/images/mock-pintrest.png">
+                            <% } %>     
+                        </div>
+                    </div>
+                </div>
+                <div class="app_body">
+                    <div class="app_body_leftPillar">
+                        <div class="app_body_leftPillar_selfieFrame js_mainSelfieFrame">
+                            <div class="app_body_leftPillar_selfieFrame_instructions "><span class="selfieFrame_instructions_text">Right click to save</span></div>
+                            <img class="app_body_leftPillar_selfieFrame_selfie" src="<%= mainImage %>">
+                            <!-- <img class="app_body_leftPillar_selfieFrame_selfie" src="/images/mock-selfie.png"> -->
+                        </div>
+                    </div>
+                    <div class="app_body_rightPillar">
+                        <div class="app_body_rightPillar_section section_share">
+                            <div class="app_body_rightPillar_section_subsection">
+                                
+                                <div class="buttonGroup">
+                                    <div class="section_header shareCloneModalButon">
+                                        <div class="section_header_microText">
+                                            <span>share</span>
+                                        </div>
+                                        <div class="section_header_icon">
+                                            <i class="material-icons">share</i>
+                                        </div>
+                                        <div class="section_header_text">
+                                            <span>Share this via:</span>
+                                        </div>
+                                    </div>
+                                    <div class="buttonGroup_buttons">
+                                        <div class="buttonGroup_button button shareFbPhotoButton"><span>Facebook photo</span></div>
+                                        <div class="buttonGroup_button button shareFbWallButton"><span>Facebook post</span></div>
+                                        <div class="buttonGroup_button button">
+                                            <a class="twitterBigButton mainButton"
+                                  href="https://twitter.com/intent/tweet?url=<%= encodeURIComponent(mainUrl) %>&via=bernieselfie&hashtags=BernieSanders%2Cfeelthebern%2Cbernieselfie&related=BernieSanders"
+                                  >Tweet</a>
+                                        </div>
+                                        <div class="buttonGroup_button button comingSoon"><span>Twitter profile photo</span></div>
+                                        <div class="buttonGroup_button button comingSoon"><span>Email</span></div>
+                                        <div class="buttonGroup_button button comingSoon"><span>Download</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="app_body_rightPillar_section section_photo featured">
+                            <div class="app_body_rightPillar_section_subsection">
+                                
+                                <div class="buttonGroup">
+                                    <div class="section_header photoCloneModalButon">
+                                        <div class="section_header_microText">
+                                            <span>import</span>
+                                        </div>
+                                        <div class="section_header_icon">
+                                            <i class="material-icons">photo_camera</i>
+                                        </div>
+                                        <div class="section_header_text">
+                                            <span>Photo from:</span>
+                                        </div>
+                                    </div>
+                                    <div class="buttonGroup_buttons">
+                                        
+                                        <div class="buttonGroup_button button importFbPhotoButton"><span>Facebook</span></div>
+                                        <!-- <iframe class="uploadButtonIframe" src="/iframeuploadbutton?buttonText=Camera+iframe" frameborder="0" allowfullscreen></iframe> -->
+                                        <div class="buttonGroup_button button cameraUploadizer"><span>Camera</span></div>
+                                        <div class="buttonGroup_button button urlUploadizer"><span>URL</span></div>
+                                        <div class="buttonGroup_button button storageUploadizer"><span>Storage</span></div>
+                                        <!-- <div class="buttonGroup_button button webcamUploadizer"><span>Webcam</span></div> -->
+                                        <div class="buttonGroup_button button comingSoon"><span>xInstagram</span></div>
+                                        <div class="buttonGroup_button button comingSoon"><span>xTwitter</span></div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            
+                        </div>
+                        <div class="app_body_rightPillar_section section_design">
+                            <div class="app_body_rightPillar_section_subsection editMicroSubsection microSubsection">
+                                <div class="buttonGroup">
+                                    <div class="section_header editSizeAndPositionButton">
+                                        <div class="section_header_microText">
+                                            <span>edit</span>
+                                        </div>
+                                        <div class="section_header_icon">
+                                            <i class="material-icons">brush</i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="app_body_rightPillar_section_subsection editSubsection">
+                                <div class="buttonGroup">
+                                    <div class="section_header editSizeAndPositionButton">
+                                        <div class="section_header_icon">
+                                            <i class="material-icons">transform</i>
+                                        </div>
+                                        <div class="section_header_text">
+                                            <span>Edit:</span>
+                                        </div>
+                                    </div>
+                                    <div class="buttonGroup_buttons">
+                                        <div class="buttonGroup_button button editSizeAndPositionButton"><span>Size and position</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="app_body_rightPillar_section_subsection homepageDesignOptions designSubsection">
+                                <div class="buttonGroup">
+                                    <div class="section_header moreimageOptionsHome">
+                                        <div class="section_header_microText">
+                                            <span>edit</span>
+                                        </div>
+                                        <div class="section_header_icon">
+                                            <i class="material-icons">brush</i>
+                                        </div>
+                                        <div class="section_header_text">
+                                            <span>Change design:</span>
+                                        </div>
+                                    </div>
+                                    <div class="buttonGroup_buttons">
+                                        <%- mymodule.generateTemplateImgListHtml(/*userTemplates*/[],offline); %>
+                                        <div class="buttonGroup_button button moreimageOptionsHome"><span>more options</span></div>
+                                        <div class="buttonGroup_button button templateModalButton"><span>upload a template</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        
+                        
+                    </div>
+                </div>
+                <div class="app_footer">
+
+                </div>
+            </div>
+            <div class="disclaimer">
+                <p>
+                    contact: admin@bernieselfie.com <br/>
+                    <a href="/terms">Terms&nbsp;and&nbsp;Conditions</a> -- <a href="/privacy">Privacy&nbsp;Policy</a><br/>
+                    bernieselfie.com is not affiliated with any political party, candidate, or interest group.
+                </p>
+            </div>
+        </div>
+        <div class="modal designModal" style="display:none;">
+            <h2>Get your photo from:</h2>
+            <div class="buttonGroup">
+                <div class="buttonGroup_buttons">
+                    
+                    <div class="buttonGroup_button button importFbPhotoButton"><span>Facebook</span></div>
+
+                    <div class="buttonGroup_button button cameraUploadizer"><span>Camera</span></div>
+                    <div class="buttonGroup_button button urlUploadizer"><span>URL</span></div>
+                    <div class="buttonGroup_button button storageUploadizer"><span>Storage</span></div>
+                    <div class="buttonGroup_button button webcamUploadizer"><span>Webcam</span></div>
+                    <div class="buttonGroup_button button comingSoon"><span>xInstagram</span></div>
+                    <div class="buttonGroup_button button comingSoon"><span>xTwitter</span></div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        window.laterScripts = [];
+    </script>
+
+    <!-- JS LIBRARIES -->
+    <!-- start Mixpanel -->
+    <script type="text/javascript">
+        if(appMode === 'prod'){
+            (function(e,b){if(!b.__SV){var a,f,i,g;window.mixpanel=b;b._i=[];b.init=function(a,e,d){function f(b,h){var a=h.split(".");2==a.length&&(b=b[a[0]],h=a[1]);b[h]=function(){b.push([h].concat(Array.prototype.slice.call(arguments,0)))}}var c=b;"undefined"!==typeof d?c=b[d]=[]:d="mixpanel";c.people=c.people||[];c.toString=function(b){var a="mixpanel";"mixpanel"!==d&&(a+="."+d);b||(a+=" (stub)");return a};c.people.toString=function(){return c.toString(1)+".people (stub)"};i="disable time_event track track_pageview track_links track_forms register register_once alias unregister identify name_tag set_config people.set people.set_once people.increment people.append people.union people.track_charge people.clear_charges people.delete_user".split(" ");
+            for(g=0;g<i.length;g++)f(c,i[g]);b._i.push([a,e,d])};b.__SV=1.2;a=e.createElement("script");a.type="text/javascript";a.async=!0;a.src="undefined"!==typeof MIXPANEL_CUSTOM_LIB_URL?MIXPANEL_CUSTOM_LIB_URL:"file:"===e.location.protocol&&"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js".match(/^\/\//)?"https://cdn.mxpnl.com/libs/mixpanel-2-latest.min.js":"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js";f=e.getElementsByTagName("script")[0];f.parentNode.insertBefore(a,f)}})(document,window.mixpanel||[]);
+            mixpanel.init("3884da280e0712cd00343646cf8ac8f0");
+
+            mixpanel.register({
+                "experimentGroup":"redesign"
+            });
+            var sides = ['heads','tails'];
+            mixpanel.track('mixpanel test',{
+                side:sides[Math.floor(Math.random()*sides.length)]
+            });
+            mixpanel.track('pageload');
+        } else {
+            window.mixpanel = {track:function(){}}
+        }
+    </script>
+    <!-- end Mixpanel -->
+
+    <script src="/js/jquery.min.js" type="text/javascript"></script>
+    <!--<script src="/js/masonry.pkgd.min.js"></script>-->
+    <script src="/js/cropper.js"></script>
+    <!-- <script src="/js/webcam.js"></script> -->
+
+
+    <!-- JS MY SCRIPTS -->
+    <script src="/js/mymodule.js"></script>
+    <script src="/js/bs.js"></script>
+    <script src="/js/redesign.js"></script>
+    <script src="/js/business.js"></script>
+
+    <!-- MAKE TWITTER BUTTON -->
+    <% if(!offline){ %>
+        <script>
+            window.laterScripts.push(function(){
+                window.twttr = (function(d, s, id) {
+                  var js, fjs = d.getElementsByTagName(s)[0],
+                    t = window.twttr || {};
+                      if (d.getElementById(id)) return t;
+                      js = d.createElement(s);
+                      js.id = id;
+                      js.src = "https://platform.twitter.com/widgets.js";
+                      fjs.parentNode.insertBefore(js, fjs);
+                     
+                      t._e = [];
+                      t.ready = function(f) {
+                        t._e.push(f);
+                      };
+                     
+                      return t;
+                    }(document, "script", "twitter-wjs"));
+            })
+        </script>
+
+        <!-- MAKE PINTREST BUTTON -->
+        <script>
+            window.laterScripts.push(function(){
+                $.getScript( "//assets.pinterest.com/js/pinit.js", function( data, textStatus, jqxhr ) {
+                  // console.log( data ); // Data returned
+                  // console.log( textStatus ); // Success
+                  // console.log( jqxhr.status ); // 200
+                  // console.log( "Load was performed." );
+                });
+            });
+        </script>
+        <!-- <script type="text/javascript" async defer src="//assets.pinterest.com/js/pinit.js"></script> -->
+
+        <!-- GOOGLE ANALYTICS -->
+        <script>
+            if(appMode === 'prod'){
+                  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+                  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+                  ga('create', 'UA-64815100-1', 'auto');
+                  ga('send', 'pageview');
+            }
+        </script>
+    <% } %>
+</body>
+</html>
