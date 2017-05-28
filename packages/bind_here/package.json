@@ -1,6 +1,4 @@
 {
-  "private": "true",
-
   "name": "@defualt/bind_here",
   "version": "0.0.4",
   "devDependencies": {
