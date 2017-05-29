@@ -66,14 +66,13 @@ export default (argv) => {
 
   const entryFiles = {
     MainApp: globby.sync([`${dirRoot}/packages/MainApp/MainApp.js`]),
-    library: globby.sync([`${dirRoot}/src/library/index.js`]),
     [outputFiles.library]: globby.sync([`${dirRoot}/src/library/index.js`]),
     ...(
       outputFiles.libraryMin ? {
         [outputFiles.libraryMin]: globby.sync([`${dirRoot}/src/library/index.js`]),
       } : {}
     ),
-    demo: globby.sync([
+    [outputFiles.demo]: globby.sync([
       `${dirRoot}/**/*/*.demo.js`,
       `${dirRoot}/**/*/demo.js`,
       `!${dirRoot}/packages/**/*`,
@@ -85,6 +84,8 @@ export default (argv) => {
     }
     return accum;
   }, {});
+
+  console.log(entry);
 
 
   // entry[outputFiles.library] = entryFiles.library;

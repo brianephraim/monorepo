@@ -54,9 +54,11 @@ if (env === 'build'){
     }
   });
 } else {
+  console.log('config.output.publicPath',config.output.publicPath)
   app.use(webpackDevMiddleware(compiler, {
     // noInfo: true,
-    publicPath: config.output.publicPath,
+    publicPath: '/assets/',
+    // publicPath: config.output.publicPath,
     stats: {
       colors: true
     },
