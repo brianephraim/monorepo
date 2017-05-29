@@ -1,46 +1,31 @@
+// import glob from 'glob';
 import StringReplacePlugin from 'string-replace-webpack-plugin';
 import webpack from 'webpack';
 import jsonImporter from 'node-sass-json-importer';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import DirectoryNamedWebpackPlugin from 'directory-named-webpack-plugin';
-console.log('__dirname',__dirname,process.cwd());
-
-
-import glob from 'glob';
+import globby from 'globby';
 import fs from 'fs-extra';
 
 import path from 'path';
 // env comes from package.json's scipts item property mode arguments
+
+
 export default (argv) => {
-  
-  const isLerna = argv.isLerna;
-  console.log('isLerna', isLerna);
   const env = argv.env;
-  console.log('envenvenvenv',env)
 
 
   const dirRoot = process.cwd();
 
   const packageJson = fs.readJsonSync(`${dirRoot}/package.json`);
 
-  // const dirRoot = __dirname; // process.cwd();
-
-  console.log('dirRoot',dirRoot)
-  console.log('dirRoot',dirRoot)
-  console.log('dirRoot',dirRoot)
-  console.log('dirRoot',dirRoot)
-  console.log('dirRoot',dirRoot)
-  console.log('dirRoot',dirRoot)
-
   let username = null;
-  console.log('tttp', packageJson.name);
   if (packageJson.repository && packageJson.repository.url) {
     username = packageJson.repository.url.replace('://').split('/')[1];
   }
 
   const libraryName = packageJson.name;
-  console.log('libraryName',libraryName)
 
   const plugins = [];
   const pluginRegistry = {};
@@ -64,12 +49,11 @@ export default (argv) => {
   }
 
 
+  // console.log(globby.sync([
+  //   `**/*/package.json`,
+  //   `!node_modules/**/*/package.json`,
+  // ]));
 
-  let entry = {};
-  const entryFiles = {
-    library: `${dirRoot}/src/library/index.js`,
-    demo: `${dirRoot}/src/demo/demo.js`,
-  };
   const outputFiles = {};
   if (env === 'build') {
     outputFiles.library = `dist/${libraryName}`;
@@ -79,28 +63,42 @@ export default (argv) => {
     outputFiles.demo = 'src/demo/demo';
     outputFiles.library = `${libraryName}`;
   }
-  console.log(outputFiles)
-  // Why am I using an array below?
-  // because for dev:
-  //  Error: a dependency to an entry point is not allowed
-  // Workaround:
-  //  https://github.com/webpack/webpack/issues/300
-  console.log('outputFiles.library',outputFiles.library)
-  entry[outputFiles.library] = entryFiles.library;
-  if (outputFiles.libraryMin) {
-    entry[outputFiles.libraryMin] = entryFiles.library;
-  }
-  entry[outputFiles.demo] = entryFiles.demo;
 
-  if (isLerna) {
-    // /Users/brianephraim/Sites/todos-tacos/packages/MainApp/MainApp.js
-    entry = {
-      MainApp: './packages/MainApp/MainApp.js',
-    };
-  }
-  console.log('envenvenvenvenv', env);
-  console.log('outputFiles', outputFiles);
+  const entryFiles = {
+    MainApp: globby.sync([`${dirRoot}/packages/MainApp/MainApp.js`]),
+    library: globby.sync([`${dirRoot}/src/library/index.js`]),
+    [outputFiles.library]: globby.sync([`${dirRoot}/src/library/index.js`]),
+    ...(
+      outputFiles.libraryMin ? {
+        [outputFiles.libraryMin]: globby.sync([`${dirRoot}/src/library/index.js`]),
+      } : {}
+    ),
+    demo: globby.sync([
+      `${dirRoot}/**/*/*.demo.js`,
+      `${dirRoot}/**/*/demo.js`,
+      `!${dirRoot}/packages/**/*`,
+    ]),
+  };
+  const entry = Object.keys(entryFiles).reduce((accum, entryName) => {
+    if (entryFiles[entryName].length) {
+      accum[entryName] = entryFiles[entryName];
+    }
+    return accum;
+  }, {});
 
+
+  // entry[outputFiles.library] = entryFiles.library;
+  // if (outputFiles.libraryMin) {
+  //   entry[outputFiles.libraryMin] = entryFiles.library;
+  // }
+  // entry[outputFiles.demo] = entryFiles.demo;
+
+  // if (isLerna) {
+  //   // /Users/brianephraim/Sites/todos-tacos/packages/MainApp/MainApp.js
+  //   entry = {
+  //     MainApp: './packages/MainApp/MainApp.js',
+  //   };
+  // }
 
   function moveModify(source, modifyPath, modifyContent) {
     let sources = [];
@@ -113,7 +111,7 @@ export default (argv) => {
     sources.forEach((pattern) => {
       toCopy = [
         ...toCopy,
-        ...glob.sync(pattern),
+        ...globby.sync(pattern),
       ];
     });
     toCopy.forEach((filePath) => {
@@ -265,7 +263,7 @@ export default (argv) => {
         path.resolve('./src/library'),
         path.resolve(process.cwd(), 'packages'),
         // path.resolve('./packages'),
-        'node_modules'
+        'node_modules',
       ],
       extensions: ['.js'],
       plugins: [

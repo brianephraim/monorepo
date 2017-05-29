@@ -37,9 +37,9 @@ import path from 'path';
 import express from 'express';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpack from 'webpack';
+import url from 'url';
 // import config from './webpack.config.babel';
 // import url from 'url';
-
 
 const app = express();
 const port = 3000;
@@ -69,6 +69,7 @@ if (env === 'build'){
   // });
 
   app.get('/*', (req, res) => {
+    console.log(url.parse(req.url).pathname);
     res.sendFile(path.join(process.cwd(), 'index.html'));
   });
   // app.get(new RegExp('/^\/(.*)\.html$'), (req, res) => {
