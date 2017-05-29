@@ -57,7 +57,7 @@ if (env === 'build'){
   console.log('config.output.publicPath',config.output.publicPath)
   app.use(webpackDevMiddleware(compiler, {
     // noInfo: true,
-    publicPath: '/assets/',
+    publicPath: '/',
     // publicPath: config.output.publicPath,
     stats: {
       colors: true
