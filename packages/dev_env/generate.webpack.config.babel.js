@@ -11,6 +11,7 @@ import fs from 'fs-extra';
 import path from 'path';
 // env comes from package.json's scipts item property mode arguments
 
+const devHtmlPath = './index.html';
 
 export default (argv) => {
   const env = argv.env;
@@ -60,7 +61,7 @@ export default (argv) => {
     outputFiles.libraryMin = `dist/${libraryName}.min`;
     outputFiles.demo = 'demo/index';
   } else {
-    outputFiles.demo = 'src/demo/demo';
+    outputFiles.demo = 'src/demo';
     outputFiles.library = `${libraryName}`;
   }
 
@@ -76,6 +77,7 @@ export default (argv) => {
       `${dirRoot}/**/*/*.demo.js`,
       `${dirRoot}/**/*/demo.js`,
       `!${dirRoot}/packages/**/*`,
+      `${dirRoot}/packages/MainApp/MainApp.js`,
     ]),
   };
   const entry = Object.keys(entryFiles).reduce((accum, entryName) => {
@@ -158,7 +160,7 @@ export default (argv) => {
   } else {
     registerPlugin('demoDevIndex-HtmlWebpackPlugin', new HtmlWebpackPlugin({
       chunks: [outputFiles.demo],
-      filename: './demo/index.html',
+      filename: devHtmlPath,
     }));
   }
   registerPlugin('StringReplacePlugin', new StringReplacePlugin());
@@ -174,13 +176,14 @@ export default (argv) => {
 
   const config = {
     entry,
-    devtool: 'source-map',
+    devtool: env === 'build' ? 'source-map' : 'eval',
     output: {
       path: `${dirRoot}`,
       filename: '[name].js',
       library: libraryName,
       libraryTarget: 'umd',
       umdNamedDefine: true,
+      publicPath: '/',
       // publicPath: '/assets/',
     },
     module: {
@@ -188,8 +191,8 @@ export default (argv) => {
         {
           test: /\.(js)?$/,
           loader: 'babel-loader',
-          // exclude: /node_modules/,
-          // include: dirRoot,
+          exclude: /node_modules/,
+          // include: `${dirRoot}`,
           options: {
             presets: [
 
