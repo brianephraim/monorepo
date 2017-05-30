@@ -61,7 +61,7 @@ export default (argv) => {
     outputFiles.libraryMin = `dist/${libraryName}.min`;
     outputFiles.demo = 'demo/index';
   } else {
-    outputFiles.demo = 'src/demo';
+    outputFiles.demo = 'boot';
     outputFiles.library = `${libraryName}`;
   }
 
