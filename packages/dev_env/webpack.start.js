@@ -14,7 +14,9 @@ const env = argv.env;
 const app = express();
 const port = 3000;
 const config = generateWebpackConfig(argv);
-const compiler = webpack(config);
+const compiler = webpack(config,() => {
+  console.log('asdfasdfasdfasdfz')
+});
 if (env === 'build') {
   compiler.run((err/* , stats*/) => {
     if (err) {
@@ -35,12 +37,19 @@ if (env === 'build') {
     next();
   });
 
-  app.use(webpackDevMiddleware(compiler, {
+  const webpackDevMiddlewareInstance = webpackDevMiddleware(compiler, {
     publicPath: config.output.publicPath,
     stats: {
       colors: true,
     },
-  }));
+    // lazy: false,
+    // watchOptions: {
+    //   aggregateTimeout: 300,
+    //   poll: true,
+    // },
+  });
+
+  app.use(webpackDevMiddlewareInstance);
 
   app.use('/images', express.static('packages/images'));
   app.use('/fonts', express.static('packages/fonts'));

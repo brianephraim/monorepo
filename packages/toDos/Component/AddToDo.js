@@ -7,7 +7,7 @@ import SingleInputForm from 'SingleInputForm';
 const AddToDo = ({ dispatch }) => {
   return (
     <SingleInputForm
-      buttonText="Add ToDo ..."
+      buttonText="Add ToDo ....."
       onSubmit={(value) => { return dispatch(addToDo(value)); }}
     />
   );

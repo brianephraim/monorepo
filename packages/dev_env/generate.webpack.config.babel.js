@@ -7,15 +7,14 @@ import HtmlWebpackPlugin from 'html-webpack-plugin';
 import DirectoryNamedWebpackPlugin from 'directory-named-webpack-plugin';
 import globby from 'globby';
 import fs from 'fs-extra';
-
 import path from 'path';
-// env comes from package.json's scipts item property mode arguments
+import WebpackOnBuildPlugin from 'on-build-webpack';
+import testSetup from './testSetup';
 
 const devHtmlPath = './index.html';
 
 export default (argv) => {
   const env = argv.env;
-
 
   const dirRoot = process.cwd();
 
@@ -49,12 +48,6 @@ export default (argv) => {
     };
   }
 
-
-  // console.log(globby.sync([
-  //   `**/*/package.json`,
-  //   `!node_modules/**/*/package.json`,
-  // ]));
-
   const outputFiles = {};
   if (env === 'build') {
     outputFiles.library = `dist/${libraryName}`;
@@ -86,9 +79,6 @@ export default (argv) => {
     }
     return accum;
   }, {});
-
-  console.log(entry);
-
 
   // entry[outputFiles.library] = entryFiles.library;
   // if (outputFiles.libraryMin) {
@@ -162,6 +152,12 @@ export default (argv) => {
       chunks: [outputFiles.demo],
       filename: devHtmlPath,
     }));
+
+    registerPlugin('WebpackOnBuildPlugin-testing', new WebpackOnBuildPlugin((stats) => {
+      testSetup();
+    }));
+
+    
   }
   registerPlugin('StringReplacePlugin', new StringReplacePlugin());
 
