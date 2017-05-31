@@ -1,11 +1,55 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>ToDos</title>
-  </head>
-  <body>
-    <div id="root">
-    </div>
-    <script src="/assets/MainApp.js"></script>
-  </body>
-</html>
+<head><link href="/demo/index.css" rel="stylesheet"></head>Html Webpack Plugin:
+<pre>
+  Error: Child compilation failed:
+  Entry module not found: Error: Can't resolve '/Users/brianephraim/Sites/monorepo/src/demo/index.ejs  ' in '/Users/brianephraim/Sites/monorepo':
+  Error: Can't resolve '/Users/brianephraim/Sites/monorepo/src/demo/index.ejs' in '/Users/brianephrai  m/Sites/monorepo'
+  
+  - compiler.js:76 
+    [monorepo]/[html-webpack-plugin]/lib/compiler.js:76:16
+  
+  - Compiler.js:296 Compiler.<anonymous>
+    [monorepo]/[webpack]/lib/Compiler.js:296:10
+  
+  - Compiler.js:499 
+    [monorepo]/[webpack]/lib/Compiler.js:499:13
+  
+  - Tapable.js:138 next
+    [monorepo]/[tapable]/lib/Tapable.js:138:11
+  
+  - CachePlugin.js:62 Compiler.<anonymous>
+    [monorepo]/[webpack]/lib/CachePlugin.js:62:5
+  
+  - Tapable.js:142 Compiler.applyPluginsAsyncSeries
+    [monorepo]/[tapable]/lib/Tapable.js:142:13
+  
+  - Compiler.js:496 
+    [monorepo]/[webpack]/lib/Compiler.js:496:10
+  
+  - Tapable.js:131 Compilation.applyPluginsAsyncSeries
+    [monorepo]/[tapable]/lib/Tapable.js:131:46
+  
+  - Compilation.js:649 self.applyPluginsAsync.err
+    [monorepo]/[webpack]/lib/Compilation.js:649:19
+  
+  - Tapable.js:131 Compilation.applyPluginsAsyncSeries
+    [monorepo]/[tapable]/lib/Tapable.js:131:46
+  
+  - Compilation.js:640 self.applyPluginsAsync.err
+    [monorepo]/[webpack]/lib/Compilation.js:640:11
+  
+  - Tapable.js:138 next
+    [monorepo]/[tapable]/lib/Tapable.js:138:11
+  
+  - UglifyJsPlugin.js:230 Compilation.compilation.plugin
+    [monorepo]/[webpack]/lib/optimize/UglifyJsPlugin.js:230:5
+  
+  - Tapable.js:142 Compilation.applyPluginsAsyncSeries
+    [monorepo]/[tapable]/lib/Tapable.js:142:13
+  
+  - Compilation.js:635 self.applyPluginsAsync.err
+    [monorepo]/[webpack]/lib/Compilation.js:635:10
+  
+  - Tapable.js:131 Compilation.applyPluginsAsyncSeries
+    [monorepo]/[tapable]/lib/Tapable.js:131:46
+  
+</pre><script type="text/javascript" src="/demo/index.js"></script>

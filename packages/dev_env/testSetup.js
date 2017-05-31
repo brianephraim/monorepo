@@ -2,17 +2,18 @@
 import child_process from 'child_process';
 
 export default () => {
-  console.log('LETS TEST STUFF');
   const command = 'sh';
 
   const configJSONString = JSON.stringify({
     testMatch: ['**/?(*.)(test).js?(x)'],
   });
-  console.log('configJSONString',configJSONString)
   const args = [
     '-c',
     // `${__dirname}/node_modules/.bin/jest`,
-    `${__dirname}/node_modules/.bin/jest --config='${configJSONString}'`,
+    // `${__dirname}/node_modules/.bin/jest --config='${configJSONString}'`,
+
+    // Why `CI=true `? ----- https://github.com/facebook/jest/issues/2959
+    `CI=true ${__dirname}/node_modules/.bin/jest --watch --config=${__dirname}/jest.config.js`,
   ];
 
   const proc = child_process.spawn(command, args, { stdio: 'inherit' });

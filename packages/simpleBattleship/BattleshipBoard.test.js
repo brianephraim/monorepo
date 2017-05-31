@@ -1,6 +1,3 @@
-const { describe, beforeEach, it } = require('mocha');
-const { expect } = require('chai');
-
 const BattleshipBoard = require('./BattleshipBoard');
 
 const {
@@ -75,18 +72,18 @@ describe('BattleshipBoard', () => {
         board = new BattleshipBoard(boardSize.width, boardSize.height);
       });
       it('has an `occupiedCells` property that is initially an empty object', () => {
-        expect(board.occupiedCells).to.deep.equal({});
+        expect(board.occupiedCells).toEqual({});
       });
       describe('`placeShips` method is called', () => {
         function testPlacementSuccess(shipSetsName) {
           it(`succeeds for ships that are ${shipSetsName}`, () => {
             const shipSet = shipSets[shipSetsName];
-            expect(board.placeShips(shipSet)).to.deep.equal(placementSuccessResponse);
+            expect(board.placeShips(shipSet)).toEqual(placementSuccessResponse);
           });
         }
         function testPlacementFail(shipSetsName, errorMsg) {
           it(`fails for ships that are ${shipSetsName}`, () => {
-            expect(board.placeShips(shipSets[shipSetsName]).message).to.equal(errorMsg);
+            expect(board.placeShips(shipSets[shipSetsName]).message).toBe(errorMsg);
           });
         }
 
@@ -125,27 +122,27 @@ describe('BattleshipBoard', () => {
           otherwise responds with 'hit'`,
           () => {
             // mixed around coord attacks amongst ships proving attack order doesn't matter
-            expect(board.occupiedCells).not.to.be.empty;
-            expect(board.attack([1, 0]).message).to.equal(hitMsg);
-            expect(board.attack([1, 2]).message).to.equal(hitMsg);
-            expect(board.attack([0, 2]).message).to.equal(hitMsg);
-            expect(board.attack([2, 2]).message).to.equal(hitMsg);
-            expect(board.attack([1, 1]).message).to.equal(sunkMsg);
-            expect(board.occupiedCells).not.to.be.empty;
-            expect(board.attack([2, 1]).message).to.equal(hitMsg);
-            expect(board.attack([2, 0]).message).to.equal(sunkMsg);
-            expect(board.occupiedCells).not.to.be.empty;
-            expect(board.attack([0, 1]).message).to.equal(hitMsg);
-            expect(board.attack([0, 0]).message).to.equal(sunkMsg);
-            expect(board.occupiedCells).to.be.empty;
+            expect(board.occupiedCells).not.toEqual({});
+            expect(board.attack([1, 0]).message).toBe(hitMsg);
+            expect(board.attack([1, 2]).message).toBe(hitMsg);
+            expect(board.attack([0, 2]).message).toBe(hitMsg);
+            expect(board.attack([2, 2]).message).toBe(hitMsg);
+            expect(board.attack([1, 1]).message).toBe(sunkMsg);
+            expect(board.occupiedCells).not.toEqual({});
+            expect(board.attack([2, 1]).message).toBe(hitMsg);
+            expect(board.attack([2, 0]).message).toBe(sunkMsg);
+            expect(board.occupiedCells).not.toEqual({});
+            expect(board.attack([0, 1]).message).toBe(hitMsg);
+            expect(board.attack([0, 0]).message).toBe(sunkMsg);
+            expect(board.occupiedCells).toEqual({});
           }
         );
         it('responds with "miss" in other circumstances', () => {
-          expect(board.attack([-1, 0]).message).to.equal(missMsg);
-          expect(board.attack([0, -1]).message).to.equal(missMsg);
-          expect(board.attack([100, 0]).message).to.equal(missMsg);
-          expect(board.attack(['a', 0]).message).to.equal(missMsg);
-          expect(board.attack([3, 0]).message).to.equal(missMsg);
+          expect(board.attack([-1, 0]).message).toBe(missMsg);
+          expect(board.attack([0, -1]).message).toBe(missMsg);
+          expect(board.attack([100, 0]).message).toBe(missMsg);
+          expect(board.attack(['a', 0]).message).toBe(missMsg);
+          expect(board.attack([3, 0]).message).toBe(missMsg);
         });
       });
     });

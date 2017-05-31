@@ -8,12 +8,11 @@ import DirectoryNamedWebpackPlugin from 'directory-named-webpack-plugin';
 import globby from 'globby';
 import fs from 'fs-extra';
 import path from 'path';
-import WebpackOnBuildPlugin from 'on-build-webpack';
-import testSetup from './testSetup';
 
 const devHtmlPath = './index.html';
 
 export default (argv) => {
+  console.log('argv',argv)
   const env = argv.env;
 
   const dirRoot = process.cwd();
@@ -152,12 +151,6 @@ export default (argv) => {
       chunks: [outputFiles.demo],
       filename: devHtmlPath,
     }));
-
-    registerPlugin('WebpackOnBuildPlugin-testing', new WebpackOnBuildPlugin((stats) => {
-      testSetup();
-    }));
-
-    
   }
   registerPlugin('StringReplacePlugin', new StringReplacePlugin());
 
