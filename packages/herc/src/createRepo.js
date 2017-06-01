@@ -4,11 +4,7 @@ const fs = require('fs-extra');
 
 const exec = require('child-process-promise').exec;
 
-
-// const a = fs.readJsonSync('./asdfasdf.json');
-// console.log('AAAAA',a)
-
-
+const generatePackageDotJsonContent = require('./generatePackageDotJsonContent');
 
 function createRepo(repoName, token) {
   return exec(`curl -H "Authorization: token ${token}" https://api.github.com/user/repos -d '{"name":"${repoName}"}'`)
@@ -21,26 +17,19 @@ function createRepo(repoName, token) {
       return Promise.reject(new Error(stdout));
     }
     const packageDotJsonPath = `./packages/${repoName}/package.json`;
-    const packageDotJsonContents = fs.readJsonSync(packageDotJsonPath);
-    const devEnvVersion = fs.readJsonSync('./packages/dev_env/package.json').version;
-    Object.assign(packageDotJsonContents, {
-      repository: {
-        type: 'git',
-        url: response.clone_url,
-      },
-      version: packageDotJsonContents.version || '0.0.1',
-      publishConfig: {
-        access: 'public',
-      },
-      devDependencies: Object.assign(
-        (repoName !== 'dev_env' ? { '@defualt/dev_env': `^${devEnvVersion}` } : {}),
-        packageDotJsonContents.devDependencies
-      ),
+
+    const packageDotJsonContents = generatePackageDotJsonContent({
+      toExtend: fs.readJsonSync(packageDotJsonPath),
+      repoName,
+      url: response.clone_url,
     });
+
+    console.log('packageDotJsonContents',packageDotJsonContents);
+
     fs.writeJsonSync(packageDotJsonPath, packageDotJsonContents, { spaces: 2 });
     return {
       packageFolderName: repoName,
-      repoUrl: response.clone_url,
+      url: response.clone_url,
     };
   });
 }

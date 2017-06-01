@@ -39,6 +39,7 @@ function updateRemoteRepos(reposNeedingCommits) {
         return response;
       })
       .then((createRepoResponse) => {
+        // console.log(reposNeedingCommits)
         const repoUrl = reposNeedingCommits[j].repoUrl || createRepoResponse.repoUrl;
         const tempRepo = `./tempRepos/${packageFolderName}`;
         const gitRepo = `git -C ${tempRepo}`;
@@ -71,21 +72,27 @@ function updateRemoteRepos(reposNeedingCommits) {
           # CHECK IF THE RECENTLY CLONED REPO IS A BRAND NEW OR
           # CHECK IF THERE ARE CHANGES TO THE RECENTLY CLONED REPO VIA THE COPY FROM THE MONOREPO
           # https://stackoverflow.com/a/35165216
-          if [[ $(${gitRepo} status) =~ "Initial commit" || $(${gitRepo} ls-files -m | head -c1 | wc -c) -ne 0 ]]; then 
+          #if [[ $(${gitRepo} status) =~ "Initial commit" || $(${gitRepo} ls-files -m | head -c1 | wc -c) -ne 0 ]]; then 
             # IF SO COMMIT CHANGES AND PUSH
             ${gitRepo} add -A .;
             ${gitRepo} commit -m "${argv.m}";
             ${gitRepo} push -u origin eject-test;
-          fi
+          #fi
 
           # ALL DONE WITH RECENTLY CLONED REPO, DELETE IT
-          rm -rf ${tempRepo};
+          # rm -rf ${tempRepo};
         `);
       })
       /*
       */
-      .then(() => {
+      .then(({stdout}) => {
+        console.log('<<>>')
+        console.log(stdout)
         console.info(`Done processing ${packageFolderName}.`);
+        console.log('------------')
+        console.log('------------')
+        console.log('------------')
+        console.log('------------')
         return recurse();
       });
     }
