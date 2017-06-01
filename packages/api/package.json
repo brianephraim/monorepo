@@ -2,7 +2,7 @@
   "private": true,
   "dependencies": {
     "node-uuid": "^1.4.7",
-    "stimulate": "^0.0.18"
+    "stimulate": "^0.0.19"
   },
-  "version": "0.0.4"
+  "version": "0.0.5"
 }

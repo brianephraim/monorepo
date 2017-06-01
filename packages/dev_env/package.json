@@ -1,11 +1,15 @@
 {
   "name": "@defualt/dev_env",
-  "version": "0.0.2",
+  "version": "0.0.3",
+  "scripts": {
+    "prepublishOnly": "./node_modules/.bin/babel ./ --out-dir ./compiled --ignore compiled,node_modules",
+    "postpublish": "rm -rf ./compiled"
+  },
   "bin": {
     "devenv": "./bin/devenv.js"
   },
   "dependencies": {
-    "@defualt/dev_env": "^0.0.2",
+    "@defualt/dev_env": "^0.0.3",
     "babel-cli": "^6.24.1",
     "babel-core": "^6.24.1",
     "babel-loader": "^7.0.0",
