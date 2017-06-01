@@ -79,7 +79,7 @@ function updateRemoteRepos(reposNeedingCommits) {
           #fi
 
           # ALL DONE WITH RECENTLY CLONED REPO, DELETE IT
-          # rm -rf ${tempRepo};
+          rm -rf ${tempRepo};
 
         `);
       })

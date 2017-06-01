@@ -108,6 +108,9 @@ function boilerplateFolder(details) {
 
   const testFileContent = `// import ${details.repoName} from ./${details.repoName};\n// const ${details.repoName} = require('./${details.repoName}');\n`;
   fs.writeFileSync(`${details.folderPath}${details.repoName}.test.js`, testFileContent);
+
+  const readmeFileContent = `experimental - use with caution  \nrepoName: ${details.repoName}  \nnpm name: ${details.nameWithScope}  \n`;
+  fs.writeFileSync(`README.md`, readmeFileContent);
 }
 
 
