@@ -39,7 +39,6 @@ function updateRemoteRepos(reposNeedingCommits) {
         return response;
       })
       .then((createRepoResponse) => {
-        // console.log(reposNeedingCommits)
         const repoUrl = reposNeedingCommits[j].repoUrl || createRepoResponse.repoUrl;
         const tempRepo = `./tempRepos/${packageFolderName}`;
         const gitRepo = `git -C ${tempRepo}`;
@@ -52,7 +51,7 @@ function updateRemoteRepos(reposNeedingCommits) {
 
           # PRESERVE THE .git FOLDER FROM OUR RECENTLY CLONED REPO FOLDER
           ls ./tempRepos;
-
+          ls -a ${tempRepo}
           mv ${tempRepo}/.git ./tempRepos;
 
           # REMOVE ALL THE FILES FROM THAT REPO FOLDER (.git FOLDER IS SAFE)
@@ -81,18 +80,13 @@ function updateRemoteRepos(reposNeedingCommits) {
 
           # ALL DONE WITH RECENTLY CLONED REPO, DELETE IT
           # rm -rf ${tempRepo};
+
         `);
       })
       /*
       */
-      .then(({stdout}) => {
-        console.log('<<>>')
-        console.log(stdout)
+      .then(() => {
         console.info(`Done processing ${packageFolderName}.`);
-        console.log('------------')
-        console.log('------------')
-        console.log('------------')
-        console.log('------------')
         return recurse();
       });
     }
