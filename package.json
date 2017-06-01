@@ -5,7 +5,7 @@
   "description": "Redux ToDos example",
   "scripts": {
     "dev": "./packages/dev_env/bin/devenv.js",
-    "herc": "./packages/herc/herc.js",
+    "herc": "node ./packages/herc/herc.js",
     "start": "babel-node devServer.js",
     "lint": "eslint src",
     "test": "./node_modules/mocha/bin/mocha src/**/*.spec.js --reporter spec"
@@ -31,7 +31,6 @@
     "styled-components": "^1.4.6"
   },
   "devDependencies": {
-    "child-process-promise": "^2.2.1",
     "pretty-error": "^2.1.0"
   }
 }
