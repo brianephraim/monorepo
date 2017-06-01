@@ -1,11 +1,11 @@
 {
   "name": "@defualt/dev_env",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "bin": {
     "devenv": "./bin/devenv.js"
   },
   "dependencies": {
-    "@defualt/dev_env": "^0.0.1",
+    "@defualt/dev_env": "^0.0.2",
     "babel-cli": "^6.24.1",
     "babel-core": "^6.24.1",
     "babel-loader": "^7.0.0",
@@ -32,8 +32,8 @@
     "identity-obj-proxy": "^3.0.0",
     "jest": "^20.0.4",
     "json-loader": "^0.5.4",
-    "markdown-loader": "^2.0.0",
     "lerna": "^2.0.0-rc.4",
+    "markdown-loader": "^2.0.0",
     "mocha": "^3.4.1",
     "node-sass": "^4.5.3",
     "node-sass-json-importer": "^3.0.2",
