@@ -25,7 +25,7 @@ function survey() {
       type: 'input',
       name: 'npmScope',
       message: (answersSoFar) => {
-        return `NPM local scope? (prefix into @defualt/${answersSoFar.repoName} on npm) (default "yes")`;
+        return `NPM local scope? (prefix into @${process.env.NPM_SCOPE}/${answersSoFar.repoName} on npm) (default "yes")`;
       },
       default: () => {
         return 'yes';
@@ -49,8 +49,8 @@ function validate(answers) {
   };
   const useScope = answers.npmScope[0].toLowerCase() === 'y';
   const isPrivate = answers.private[0].toLowerCase() === 'y';
-  const nameWithScope = useScope ? `@defualt/${repoName}` : repoName;
-  const semiEncodedNameWithScope = useScope ? `@defualt${encodeURIComponent('/')}${repoName}` : repoName;
+  const nameWithScope = useScope ? `@${process.env.NPM_SCOPE}/${repoName}` : repoName;
+  const semiEncodedNameWithScope = useScope ? `@${process.env.NPM_SCOPE}${encodeURIComponent('/')}${repoName}` : repoName;
   const folderPath = `${process.cwd()}/packages/${repoName}/`;
   const validations = [];
   validations.push(Promise.resolve(fs.existsSync(folderPath)).then((folderExists) => {
@@ -63,7 +63,7 @@ function validate(answers) {
   }));
   if (!isPrivate) {
     validations.push(
-      exec(`curl https://registry.npmjs.org/${semiEncodedNameWithScope}/`).then(({ error, stdout }) => {
+      exec(`curl https://registry.npmjs.org/${semiEncodedNameWithScope}/`).then(({ stdout }) => {
         const npmAvailable = !JSON.parse(stdout).name;
         console.info(npmAvailable ? makeMsg('Good', 'NPM', nameWithScope) : makeMsg('Bad', 'NPM', nameWithScope));
         if (!npmAvailable) {
@@ -71,13 +71,13 @@ function validate(answers) {
         }
         return npmAvailable;
       }),
-      exec(`curl -s -o /dev/null -w "%{http_code}" https://github.com/defualt/${repoName}/`).then(({error, stdout}) => {
+      exec(`curl -s -o /dev/null -w "%{http_code}" https://github.com/${process.env.NPM_SCOPE}/${repoName}/`).then(({ stdout }) => {
         const repoAvailable = stdout !== '200';
-        console.info(repoAvailable ? makeMsg('Good', 'Github', repoName) : makeMsg('Bad', 'Github', repoName));  
+        console.info(repoAvailable ? makeMsg('Good', 'Github', repoName) : makeMsg('Bad', 'Github', repoName));
         if (!repoAvailable) {
           return Promise.reject(new Error(`Github project already exists: ${repoName}`));
         }
-        return repoAvailable;  
+        return repoAvailable;
       })
     );
   }
@@ -89,7 +89,7 @@ function validate(answers) {
       nameWithScope,
       repoName,
       folderPath,
-    }
+    };
   });
 }
 
@@ -110,7 +110,7 @@ function boilerplateFolder(details) {
   fs.writeFileSync(`${details.folderPath}${details.repoName}.test.js`, testFileContent);
 
   const readmeFileContent = `experimental - use with caution  \nrepoName: ${details.repoName}  \nnpm name: ${details.nameWithScope}  \n`;
-  fs.writeFileSync(`README.md`, readmeFileContent);
+  fs.writeFileSync(`${details.folderPath}README.md`, readmeFileContent);
 }
 
 
