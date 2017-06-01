@@ -1,17 +1,14 @@
 {
   "name": "@defualt/dev_env",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "scripts": {
-    "prepublish": "./node_modules/.bin/babel ./ --out-dir ./compiled --ignore compiled,node_modules",
-    "prepublishOnly": "./node_modules/.bin/babel ./ --out-dir ./compiled --ignore compiled,node_modules",
-    "postinstall": "./node_modules/.bin/babel ./ --out-dir ./compiled --ignore compiled,node_modules",
-    "postpublish": "rm -rf ./compiled"
+    "postinstall": "./node_modules/.bin/babel ./ --out-dir ./compiled --ignore compiled,node_modules"
   },
   "bin": {
     "devenv": "./bin/devenv.js"
   },
   "dependencies": {
-    "@defualt/dev_env": "^0.0.5",
+    "@defualt/dev_env": "^0.0.6",
     "babel-cli": "^6.24.1",
     "babel-core": "^6.24.1",
     "babel-loader": "^7.0.0",
