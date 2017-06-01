@@ -1,8 +1,8 @@
 {
   "name": "@defualt/bind_here",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "devDependencies": {
-    "@defualt/dev_env": "^0.0.4"
+    "@defualt/dev_env": "^0.0.5"
   },
   "publishConfig": {
     "access": "public"

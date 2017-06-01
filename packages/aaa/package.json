@@ -1,11 +1,11 @@
 {
   "name": "@defualt/aaa",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "scripts": {
     "start": "devenv"
   },
   "devDependencies": {
-    "@defualt/dev_env": "^0.0.4"
+    "@defualt/dev_env": "^0.0.5"
   },
   "repository": {
     "type": "git",
