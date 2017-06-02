@@ -4,10 +4,10 @@ import { render } from 'react-dom';
 import Routing from './Routing';
 import configureStore from './configureStore';
 
-import 'sum/sum.mod';
+// import 'sum/sum.mod';
 
-import aaa3 from 'aaa3';
-console.log('aaa3',aaa3);
+import aaa5 from 'aaa5';
+console.log('aaa5',aaa5);
 
 let rootEl;
 function getRootEl() {
