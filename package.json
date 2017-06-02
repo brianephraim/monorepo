@@ -7,6 +7,7 @@
     "dev": "./packages/dev_env/bin/devenv.js",
     "herc": "node ./packages/herc/herc.js",
     "new": "npm run herc -- -i",
+    "scatter": "npm run herc -- -m 'scattered from monorepo'",
     "start": "babel-node devServer.js",
     "lint": "eslint src",
     "test": "./node_modules/mocha/bin/mocha src/**/*.spec.js --reporter spec"

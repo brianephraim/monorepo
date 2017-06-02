@@ -7,7 +7,8 @@ import configureStore from './configureStore';
 import 'sum/sum.mod';
 
 import 'aaa1';
-import 'aaa2';
+import aaa2 from 'aaa2';
+console.log('aaa2',aaa2);
 
 let rootEl;
 function getRootEl() {
