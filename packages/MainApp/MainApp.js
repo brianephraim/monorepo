@@ -6,6 +6,9 @@ import configureStore from './configureStore';
 
 import 'sum/sum.mod';
 
+import 'aaa1';
+import 'aaa2';
+
 let rootEl;
 function getRootEl() {
   if (rootEl) {

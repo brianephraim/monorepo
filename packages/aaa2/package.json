@@ -1,0 +1,11 @@
+{
+  "name": "@defualt/aaa2",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "devenv"
+  },
+  "devDependencies": {
+    "@defualt/dev_env": "^0.0.6"
+  }
+}
