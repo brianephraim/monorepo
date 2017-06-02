@@ -1,6 +1,6 @@
 {
   "name": "@defualt/bind_here",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "devDependencies": {
     "@defualt/dev_env": "^0.0.6"
   },
