@@ -6,8 +6,8 @@ import configureStore from './configureStore';
 
 // import 'sum/sum.mod';
 
-import aaa5 from 'aaa5';
-console.log('aaa5',aaa5);
+import bbb from 'bbb';
+console.log('bb',bbb);
 
 let rootEl;
 function getRootEl() {

@@ -1,6 +1,6 @@
 {
-  "name": "@defualt/aaa6",
-  "version": "0.0.2",
+  "name": "@defualt/bbb",
+  "version": "0.0.1",
   "publishConfig": {
     "access": "public"
   },
@@ -9,9 +9,5 @@
   },
   "devDependencies": {
     "@defualt/dev_env": "^0.0.6"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/defualt/aaa6.git"
   }
 }
