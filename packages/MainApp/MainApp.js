@@ -6,7 +6,6 @@ import configureStore from './configureStore';
 
 import 'sum/sum.mod';
 
-import 'aaa1';
 import aaa3 from 'aaa3';
 console.log('aaa3',aaa3);
 
