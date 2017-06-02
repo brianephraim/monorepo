@@ -48,6 +48,10 @@ $font2: 'Cantarell', sans-serif;
 }
 //========
 
+body, html {
+	margin: 0;
+}
+
 html{
 	font-size:16px;
 	color: $blue;

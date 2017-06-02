@@ -14,15 +14,15 @@ const fakeDatabase = JSON.parse(storage.getItem('fakeDatabase')) || {
   todos: [
     {
       id: v4(),
-      text: 'hey',
+      text: 'do dishes',
       completed: true,
     }, {
       id: v4(),
-      text: 'ho',
+      text: 'take out trash',
       completed: true,
     }, {
       id: v4(),
-      text: 'let’s go',
+      text: 'buy food',
       completed: false,
     },
   ],

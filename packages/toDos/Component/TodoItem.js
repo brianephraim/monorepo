@@ -6,9 +6,21 @@ import DragAndTossable from 'DragAndTossable';
 import styled from 'styled-components';
 
 const Ball = styled(DragAndTossable)`
-  width: 100px;
-  height: 100px;
-  background: red;
+  width: 80px;
+  height: 80px;
+  background: #aaa;
+  border-radius: 50%;
+  border: 5px solid #222;
+`;
+
+const Wrapper = styled.div`
+  background: #bbb;
+  display: inline-block;
+  margin: 10px;
+  padding: 10px;
+  color: #000;
+  width: 150px;
+  height: 150px;
 `;
 
 
@@ -22,7 +34,7 @@ class ToDoItem extends Component {
   render() {
     const { onClick, completed, text, assignedUser } = this.props;
     return (
-      <div className="a">
+      <Wrapper>
         <div className="b">
           <Ball
             maybeResetAtEnd={(data) => {
@@ -47,19 +59,18 @@ class ToDoItem extends Component {
                 });
               }
             }}
-          >
-            <div> ||||||| </div>
-          </Ball>
+          />
           <div
             onClick={onClick}
             style={{
               textDecoration: completed ? 'line-through' : 'none',
             }}
           >
-            {text} - {assignedUser && assignedUser.name} {this.state.extreme ? '!' : ''}
+            <div>Task: {text}</div>
+            <div>Assigned: {assignedUser && assignedUser.name} {this.state.extreme ? '!' : ''}</div>
           </div>
         </div>
-      </div>
+      </Wrapper>
     );
   }
 }

@@ -13,7 +13,7 @@ class DragAndTossable extends Component {
       const stimulation = this.props.toss({
         startCoords: this.props.delta,
         velocity: this.props.velocity,
-        gravity: 0.01,
+        gravity: 0.3,
       });
 
       stimulation.onFrame(() => {

@@ -6,6 +6,7 @@ import { fakePost as post } from 'api';
 import { normalize, Schema, arrayOf } from 'normalizr';
 import { combineReducers } from 'redux';
 import createCachedSelector from 're-reselect';
+import styled from 'styled-components';
 
 // =================
 
@@ -92,16 +93,21 @@ const getToDoAssignments = createCachedSelector(
 //   }
 //   return mapStateToProps
 // }
-
+const UserStyled = styled.div`
+  background: #bbb;
+  margin: 10px;
+  padding: 10px;
+  color: #000;
+`;
 class User extends Component {
   render () {
     const { user, onClick, toDoAssignments } = this.props;
     return (
-      <div
+      <UserStyled
         onClick={() => { return onClick(user.id); }}
       >
         {user.name} - {JSON.stringify(toDoAssignments)}
-      </div>
+      </UserStyled>
     );
   }
 }

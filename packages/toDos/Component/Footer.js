@@ -1,9 +1,18 @@
 import React from 'react';
+import styled from 'styled-components';
 import FilterLink from './FilterLink';
+
+
+const Wrapper = styled.div`
+  background: #fff;
+  margin: 10px;
+  padding: 10px;
+  color: #000;
+`;
 
 const Footer = () => {
   return (
-    <p>
+    <Wrapper>
       Show:
       {" "}
       <FilterLink filter="all">
@@ -17,7 +26,7 @@ const Footer = () => {
       <FilterLink filter="completed">
         Completed
       </FilterLink>
-    </p>
+    </Wrapper>
   );
 };
 
