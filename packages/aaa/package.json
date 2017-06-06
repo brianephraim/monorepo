@@ -1,6 +1,6 @@
 {
   "name": "@defualt/aaa",
-  "version": "0.0.12",
+  "version": "0.0.14",
   "scripts": {
     "start": "devenv",
     "prepublishOnly": "echo 'insert text here' > ./prepublishplz.txt",
