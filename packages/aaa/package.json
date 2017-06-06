@@ -1,9 +1,9 @@
 {
   "name": "@defualt/aaa",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "scripts": {
     "start": "devenv",
-    "prepublishOnly": "echo 'insert text here' > ./prepublishplz.txt",
+    "prepublish": "echo 'insert text here' > ./prepublishplz.txt",
     "publish": "echo 'insert text here' > ./postpublishplz.txt"
   },
   "devDependencies": {
