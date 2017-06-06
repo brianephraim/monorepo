@@ -7,7 +7,7 @@ const args = [
   '-c',
   `${__dirname}/node_modules/.bin/babel-node ${__dirname}/webpack.start.js${argumentsPassThrough}`
 ];
-
+//
 // kexec doesn't work in windows, so fallback to child_process.spawn
 // this logic copied from babel-cli/lib/babel-node.js
 try {

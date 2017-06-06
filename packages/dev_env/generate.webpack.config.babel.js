@@ -75,6 +75,8 @@ export default (argv) => {
       } : {}
     ),
     [outputFiles.demo]: globby.sync([
+      `${dirRoot}/*.demo.js`,
+      `${dirRoot}/demo.js`,
       `${dirRoot}/**/*/*.demo.js`,
       `${dirRoot}/**/*/demo.js`,
       `!${dirRoot}/packages/**/*`,
