@@ -1,16 +1,16 @@
 {
   "name": "@defualt/dev_env",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "scripts": {
-    "postinstall": "./node_modules/.bin/babel ./ --out-dir ./compiled --ignore compiled,node_modules",
+    "xyzpostinstall": "./node_modules/.bin/babel ./ --out-dir ./compiled --ignore compiled,node_modules",
     "prepublish": "./node_modules/.bin/babel-node ./babel.start.js --env=node --dirroot=$(pwd)",
-    "publish": "rm -rf ./dist"
+    "publish": "echo 'insert text here' > ./postpublishplz.txt && rm -rf ./dist"
   },
   "bin": {
     "devenv": "./bin/devenv.js"
   },
   "dependencies": {
-    "@defualt/dev_env": "^0.0.8",
+    "@defualt/dev_env": "^0.0.9",
     "babel-cli": "^6.24.1",
     "babel-core": "^6.24.1",
     "babel-loader": "^7.0.0",

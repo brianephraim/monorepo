@@ -1,6 +1,6 @@
 {
   "name": "@defualt/bbb",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "publishConfig": {
     "access": "public"
   },
@@ -8,7 +8,7 @@
     "start": "devenv"
   },
   "devDependencies": {
-    "@defualt/dev_env": "^0.0.8"
+    "@defualt/dev_env": "^0.0.9"
   },
   "repository": {
     "type": "git",
