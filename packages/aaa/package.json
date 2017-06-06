@@ -1,13 +1,13 @@
 {
   "name": "@defualt/aaa",
-  "version": "0.0.15",
+  "version": "0.0.16",
   "scripts": {
     "start": "devenv",
     "prepublish": "echo 'insert text here' > ./prepublishplz.txt",
     "publish": "echo 'insert text here' > ./postpublishplz.txt"
   },
   "devDependencies": {
-    "@defualt/dev_env": "^0.0.6"
+    "@defualt/dev_env": "^0.0.7"
   },
   "repository": {
     "type": "git",
