@@ -1,2 +1,2 @@
 #!/usr/bin/env node
-require("../babel.start");
+require("../dist/dev_env");
