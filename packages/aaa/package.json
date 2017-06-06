@@ -1,9 +1,9 @@
 {
   "name": "@defualt/aaa",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "scripts": {
     "start": "devenv",
-    "prepublish": "echo 'asdfasdfasdfasdfasdfasdfasdfasdf' && touch ./prepublishlplz"
+    "prepublishOnly": "echo 'asdfasdfasdfasdfasdfasdfasdfasdf' && touch ./prepublishlplz"
   },
   "devDependencies": {
     "@defualt/dev_env": "^0.0.6"
