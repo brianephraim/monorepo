@@ -14,16 +14,16 @@ const env = argv.env;
 const doWebpack = true;
 const doTest = env !== 'build';
 
-if (doTest) {
-  testSetup();
-}
+console.log('envenvenvenvenv',env)
+
+
 
 if (doWebpack) {
   const app = express();
   const port = 3000;
   const config = generateWebpackConfig(argv);
   const compiler = webpack(config);
-  if (env === 'build') {
+  if (env === 'build' || env === 'node') {
     compiler.run((err/* , stats*/) => {
       if (err) {
         console.warn(err);
@@ -32,6 +32,9 @@ if (doWebpack) {
       }
     });
   } else {
+    if (doTest) {
+      testSetup();
+    }
     app.use((req, res, next) => {
       const urlSplit = url.parse(req.url).pathname.split('/');
       const lastPart = urlSplit[urlSplit.length - 1];

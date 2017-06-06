@@ -5,17 +5,18 @@ import jsonImporter from 'node-sass-json-importer';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import DirectoryNamedWebpackPlugin from 'directory-named-webpack-plugin';
+import nodeExternals from 'webpack-node-externals';
 import globby from 'globby';
 import fs from 'fs-extra';
 import path from 'path';
-
+console.log('__filename',__filename)
 const devHtmlPath = './index.html';
 
 export default (argv) => {
   console.log('argv',argv)
   const env = argv.env;
 
-  const dirRoot = process.cwd();
+  const dirRoot = argv.dirroot || process.cwd();
 
   const packageJson = fs.readJsonSync(`${dirRoot}/package.json`);
 
@@ -25,6 +26,7 @@ export default (argv) => {
   }
 
   const libraryName = packageJson.name;
+  const libraryNameReduced = libraryName.split('/')[1] || libraryName.split('/')[0];
 
   const plugins = [];
   const pluginRegistry = {};
@@ -48,18 +50,25 @@ export default (argv) => {
   }
 
   const outputFiles = {};
-  if (env === 'build') {
-    outputFiles.library = `dist/${libraryName}`;
-    outputFiles.libraryMin = `dist/${libraryName}.min`;
+  if (env === 'node') {
+    console.log('NOOOOOOODE');
+    outputFiles.library = `dist/${libraryNameReduced}`;
+  } else if (env === 'build') {
+    outputFiles.library = `dist/${libraryNameReduced}`;
+    outputFiles.libraryMin = `dist/${libraryNameReduced}.min`;
     outputFiles.demo = 'demo/index';
   } else {
+    console.log('not NOOOOOOODE');
     outputFiles.demo = 'boot';
-    outputFiles.library = `${libraryName}`;
+    outputFiles.library = `${libraryNameReduced}`;
   }
-
+  console.log('outputFiles.library',outputFiles.library)
   const entryFiles = {
     MainApp: globby.sync([`${dirRoot}/packages/MainApp/MainApp.js`]),
-    [outputFiles.library]: globby.sync([`${dirRoot}/src/library/index.js`]),
+    [outputFiles.library]: globby.sync([
+      `${dirRoot}/${libraryNameReduced}.js`,
+      `${dirRoot}/src/library/index.js`
+    ]),
     ...(
       outputFiles.libraryMin ? {
         [outputFiles.libraryMin]: globby.sync([`${dirRoot}/src/library/index.js`]),
@@ -119,12 +128,12 @@ export default (argv) => {
     });
   }
 
-  if (env === 'build') {
+  if (env === 'build' || env === 'node') {
     moveModify(['src/import-examples/**/!(webpack.config).*', 'src/tonicExample.js'], (filePath) => {
       return filePath.replace('src/', './');
     },
     (content) => {
-      return content.replace(/LIBRARYNAME/g, libraryName);
+        return content.replace(/LIBRARYNAME/g, libraryName);
     });
 
     registerPlugin('UglifyJsPlugin', new webpack.optimize.UglifyJsPlugin({
@@ -165,7 +174,7 @@ export default (argv) => {
 
   const config = {
     entry,
-    devtool: env === 'build' ? 'source-map' : 'eval',
+    devtool: env === 'build' || env === 'node' ? 'source-map' : 'eval',
     output: {
       path: `${dirRoot}`,
       filename: '[name].js',
@@ -205,14 +214,14 @@ export default (argv) => {
         },
         {
           test: /\.css$/,
-          ...conditionalExtractTextLoaderCss(env === 'build', {
+          ...conditionalExtractTextLoaderCss(env === 'build' || env === 'node', {
             fallback: 'style-loader',
             use: ['css-loader'],
           }),
         },
         {
           test: /\.scss$/,
-          ...conditionalExtractTextLoaderCss(env === 'build', {
+          ...conditionalExtractTextLoaderCss(env === 'build' ||  env === 'node', {
             fallback: 'style-loader',
             use: [
               'css-loader?sourceMap',
@@ -240,6 +249,7 @@ export default (argv) => {
         },
         {
           test: /\.js|\.html|\.ejs$/,
+          exclude: [__filename],
           loader: StringReplacePlugin.replace({
             replacements: [{
               pattern: /LIBRARYNAME/g,
@@ -264,6 +274,12 @@ export default (argv) => {
       ],
     },
     plugins,
+    ...(
+      env === 'node' ? {
+        target: 'node',
+        externals: [nodeExternals({modulesFromFile: true})],
+      } : {}
+    ),
   };
 
   fs.writeFileSync('./_webpack-config-preview.json', JSON.stringify(config, null, 2));
