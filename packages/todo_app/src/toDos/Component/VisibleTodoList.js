@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
-import * as actions from 'toDos/state/actions';
-import * as getters from 'toDos/state/getters';
+import * as actions from '../state/actions';
+import * as getters from '../state/getters';
 import ToDoList from './ToDoList';
 import FetchError from './FetchError';
 

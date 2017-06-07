@@ -4,11 +4,6 @@ import { render } from 'react-dom';
 import Routing from './Routing';
 import configureStore from './configureStore';
 
-// import 'sum/sum.mod';
-
-// import bbb from 'bbb';
-// console.log('bb',bbb);
-
 let rootEl;
 function getRootEl() {
   if (rootEl) {

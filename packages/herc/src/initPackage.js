@@ -6,11 +6,11 @@ const generatePackageDotJsonContent = require('./generatePackageDotJsonContent')
 
 function makeJsFile (repoName, folderPath, flavor, extra = () => { return ''; }) {
   const filename = `${repoName}${flavor ? '.' + flavor : ''}.js`;
-  const fileContent = `/* eslint-disable no-console */
+  const fileContent = flavor ? `/* eslint-disable no-console */
 import ${repoName} from './${repoName}';
 console.log('logging from ${filename}', ${repoName});
 ${extra({ repoName, flavor, filename})}
-`;
+` : `console.log('logging from ${filename}');`;
 
   fs.writeFileSync(`${folderPath}${filename}`, fileContent);
 }

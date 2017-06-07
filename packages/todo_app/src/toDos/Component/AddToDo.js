@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { addToDo } from 'toDos/state/actions';
+import { addToDo } from '../state/actions';
 import SingleInputForm from 'SingleInputForm';
 
 const AddToDo = ({ dispatch }) => {
+  console.log('G');
   return (
     <SingleInputForm
       buttonText="Add ToDo ....."
