@@ -1,6 +1,6 @@
 {
   "name": "@defualt/dev_env",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "scripts": {
     "xyzpostinstall": "./node_modules/.bin/babel ./ --out-dir ./compiled --ignore compiled,node_modules",
     "prepublish": "./node_modules/.bin/babel-node ./babel.start.js --env=node --dirroot=$(pwd)",
@@ -10,7 +10,7 @@
     "devenv": "./bin/devenv.js"
   },
   "dependencies": {
-    "@defualt/dev_env": "^0.0.12",
+    "@defualt/dev_env": "^0.0.13",
     "babel-cli": "^6.24.1",
     "babel-core": "^6.24.1",
     "babel-loader": "^7.0.0",
@@ -47,6 +47,7 @@
     "style-loader": "^0.17.0",
     "webpack": "^2.5.1",
     "webpack-dev-middleware": "^1.10.2",
+    "webpack-node-externals": "^1.6.0",
     "yargs": "^8.0.1"
   },
   "publishConfig": {
@@ -55,8 +56,5 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/defualt/dev_env.git"
-  },
-  "devDependencies": {
-    "webpack-node-externals": "^1.6.0"
   }
 }
