@@ -1,14 +1,5 @@
 /* eslint-disable */
 
-console.log('jest config');
-console.log('jest config');
-console.log('jest config');
-console.log('jest config');
-console.log('jest config');
-console.log('jest config');
-console.log('jest config');
-console.log('jest config');
-console.log(process.cwd());
 var reg = /(.*)\/([^/]+$)/igm; //get hashtags
 var string = './two';
 

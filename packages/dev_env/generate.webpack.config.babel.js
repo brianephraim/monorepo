@@ -1,4 +1,30 @@
-// import glob from 'glob';
+/*
+  This files return a function that when called generates a webpack config json.
+  `argv` is passed into this function.
+
+  when `argv.env === falsey`
+    This compiles for a dev server via webpack-dev-middleware.  No files are created to disk,
+    only created in memory.
+
+  when `argv.env === 'build'`
+    This compiles files to disk in a /dist folder and a /demo folder.
+
+  when `argv.env === 'node'`
+    Similar to 'build', but with special consideration for node environments.
+    Code from node_modules will not be bundled.
+
+  when `argv.dirroot === some path`
+    This is used when dev_env itself is compiled.  
+    This very file is compiled according the config set by this file.
+    This is needed to make dev_env portable via npm.
+    babel-node needs to compile this dev_env to work,
+    but this does not play well when dev_env is in a node_modules folder.
+    So we need to compile dev_env before publishing to npm.
+    Directory paths need to be tweaked to accomplish this,
+    and that's what `argv.dirroot` helps with.
+
+*/
+
 import StringReplacePlugin from 'string-replace-webpack-plugin';
 import webpack from 'webpack';
 import jsonImporter from 'node-sass-json-importer';
@@ -9,11 +35,9 @@ import nodeExternals from 'webpack-node-externals';
 import globby from 'globby';
 import fs from 'fs-extra';
 import path from 'path';
-console.log('__filename',__filename)
 const devHtmlPath = './index.html';
 
 export default (argv) => {
-  console.log('argv',argv)
   const env = argv.env;
 
   const dirRoot = argv.dirroot || process.cwd();
@@ -51,18 +75,15 @@ export default (argv) => {
 
   const outputFiles = {};
   if (env === 'node') {
-    console.log('NOOOOOOODE');
     outputFiles.library = `dist/${libraryNameReduced}`;
   } else if (env === 'build') {
     outputFiles.library = `dist/${libraryNameReduced}`;
     outputFiles.libraryMin = `dist/${libraryNameReduced}.min`;
     outputFiles.demo = 'demo/index';
   } else {
-    console.log('not NOOOOOOODE');
     outputFiles.demo = 'boot';
     outputFiles.library = `${libraryNameReduced}`;
   }
-  console.log('outputFiles.library',outputFiles.library)
   const entryFiles = {
     MainApp: globby.sync([`${dirRoot}/packages/MainApp/MainApp.js`]),
     [outputFiles.library]: globby.sync([

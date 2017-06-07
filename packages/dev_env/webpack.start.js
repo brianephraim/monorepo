@@ -14,8 +14,9 @@ const env = argv.env;
 const doWebpack = true;
 const doTest = env !== 'build';
 
-console.log('envenvenvenvenv',env)
-
+if (!doWebpack && doTest) {
+  testSetup();
+}
 
 
 if (doWebpack) {

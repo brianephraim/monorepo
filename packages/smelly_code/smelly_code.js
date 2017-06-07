@@ -1,3 +1,6 @@
+// remembering a smelly code pattern I had to contend with in the past
+
+
 angular.module('someModule').factory('someService', someService);
 
 someService.$inject = ['someDep1','someDep2','someDep3'];
