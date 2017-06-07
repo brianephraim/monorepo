@@ -1,6 +1,7 @@
 {
   "name": "api",
   "private": true,
+  "privateFromGithub": true,
   "dependencies": {
     "node-uuid": "^1.4.7",
     "stimulate": "^0.0.29"

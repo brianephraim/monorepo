@@ -1,5 +1,6 @@
 {
   "private": true,
+  "privateFromGithub": true,
   "name": "ddeebboouunnccee",
   "version": "0.0.2"
 }
