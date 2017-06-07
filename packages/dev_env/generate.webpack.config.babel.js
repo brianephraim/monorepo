@@ -279,6 +279,10 @@ export default (argv) => {
     ...(
       env === 'node' ? {
         target: 'node',
+        node: {
+          __dirname: false,
+          __filename: false,
+        },
         externals: [nodeExternals({modulesFromFile: true})],
       } : {}
     ),

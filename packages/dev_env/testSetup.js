@@ -13,7 +13,7 @@ export default () => {
     // `${__dirname}/node_modules/.bin/jest --config='${configJSONString}'`,
 
     // Why `CI=true `? ----- https://github.com/facebook/jest/issues/2959
-    `CI=true ${__dirname}/node_modules/.bin/jest --watch --config=${__dirname}/jest.config.js`,
+    `CI=true ${process.cwd()}/node_modules/.bin/jest --watch --config=${process.cwd()}/jest.config.js`,
   ];
 
   const proc = child_process.spawn(command, args, { stdio: 'inherit' });

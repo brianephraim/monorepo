@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "description": "Redux ToDos example",
   "scripts": {
-    "dev": "./packages/dev_env/babel.start.js",
+    "dev": "node ./packages/dev_env/babel.start.js",
     "herc": "node ./packages/herc/herc.js",
     "new": "npm run herc -- -i",
     "scatter": "npm run herc -- -m 'scattered from monorepo'",
