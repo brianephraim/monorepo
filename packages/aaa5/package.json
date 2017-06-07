@@ -1,6 +1,6 @@
 {
   "name": "@defualt/aaa5",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "publishConfig": {
     "access": "public"
   },
@@ -8,7 +8,7 @@
     "start": "devenv"
   },
   "devDependencies": {
-    "@defualt/dev_env": "^0.0.11"
+    "@defualt/dev_env": "^0.0.12"
   },
   "repository": {
     "type": "git",
