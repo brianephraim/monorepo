@@ -25,6 +25,7 @@
 
 */
 
+import StatsPlugin from 'stats-webpack-plugin';
 import StringReplacePlugin from 'string-replace-webpack-plugin';
 import webpack from 'webpack';
 import jsonImporter from 'node-sass-json-importer';
@@ -183,6 +184,18 @@ export default (argv) => {
       chunks: [outputFiles.demo],
       filename: devHtmlPath,
     }));
+
+    console.log('STATS')
+    console.log('STATS')
+    console.log('STATS')
+    console.log('STATS')
+    console.log('STATS')
+    console.log('STATS')
+    console.log('STATS')
+    registerPlugin('statsPlugin', new StatsPlugin('stats.json', {
+      chunkModules: true,
+      exclude: [/node_modules[\\\/]react/]
+    }));
   }
   registerPlugin('StringReplacePlugin', new StringReplacePlugin());
 
@@ -296,6 +309,7 @@ export default (argv) => {
         new DirectoryNamedWebpackPlugin(true),
       ],
     },
+    // stats: 'verbose',
     plugins,
     ...(
       env === 'node' ? {

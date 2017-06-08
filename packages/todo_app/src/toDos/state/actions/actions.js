@@ -1,6 +1,6 @@
 import { normalize } from 'normalizr';
 import * as schema from './schema';
-import { fakePost as post } from 'api';
+import { fakePost as post } from '../../../api';
 import { getIsFetching } from '../getters';
 
 export const fetchToDos = (filter) => {

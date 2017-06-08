@@ -1,11 +1,12 @@
 /* eslint-disable no-console */
-
 import { argv } from 'yargs';
 import express from 'express';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpack from 'webpack';
 import url from 'url';
 import generateWebpackConfig from './generate.webpack.config.babel';
+import { inspect } from 'util';
+import parseStatsForDependencyProblems from './parseStatsForDependencyProblems';
 
 import testSetup from './testSetup';
 
@@ -29,12 +30,13 @@ if (doWebpack) {
       if (err) {
         console.warn(err);
       } else {
+        // fs.writeFileSync(process.cwd() + '/_webpack_stats.json',JSON.stringify(stats, null, 2));
         // console.log(stats);
       }
     });
   } else {
     if (doTest) {
-      testSetup();
+      // testSetup();
     }
     app.use((req, res, next) => {
       const urlSplit = url.parse(req.url).pathname.split('/');
@@ -48,12 +50,16 @@ if (doWebpack) {
     });
 
     console.info('🔷 Starting webpack ...');
-    app.use(webpackDevMiddleware(compiler, {
+   
+    const activeWebpackDevMiddleware = webpackDevMiddleware(compiler, {
       publicPath: config.output.publicPath,
       stats: {
         colors: true,
       },
-    }));
+    });
+    activeWebpackDevMiddleware.waitUntilValid(parseStatsForDependencyProblems);
+    
+    app.use(activeWebpackDevMiddleware);
 
     app.use('/images', express.static('packages/images'));
     app.use('/fonts', express.static('packages/fonts'));

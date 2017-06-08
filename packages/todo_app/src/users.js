@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
-import { fakePost as post } from 'api';
+import { fakePost as post } from './api';
 import { normalize, Schema, arrayOf } from 'normalizr';
 import { combineReducers } from 'redux';
 import createCachedSelector from 're-reselect';
