@@ -57,7 +57,9 @@ if (doWebpack) {
         colors: true,
       },
     });
-    activeWebpackDevMiddleware.waitUntilValid(parseStatsForDependencyProblems);
+    activeWebpackDevMiddleware.waitUntilValid((stats) => {
+      parseStatsForDependencyProblems(stats, process.cwd() + '/packages');
+    });
     
     app.use(activeWebpackDevMiddleware);
 
