@@ -1,7 +1,7 @@
 import './app.scss';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import ResponsiveHOC, { ResponsiveMaster, generateGiantSquareDetails } from 'responsive.js';
+import ResponsiveHOC, { ResponsiveMaster, generateGiantSquareDetails } from 'responsive';
 // import { withRouter } from 'react-router';
 // import { connect } from 'react-redux';
 // import styled from 'styled-components';

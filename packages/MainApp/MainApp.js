@@ -4,6 +4,8 @@ import { render } from 'react-dom';
 import Routing from './Routing';
 import configureStore from './configureStore';
 
+import '#./asdf';
+
 let rootEl;
 function getRootEl() {
   if (rootEl) {

@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import { Router, Route, browserHistory, Link } from 'react-router';
 import ToDoUserAssignmentScreen from 'todo_app';
 import Bernie from 'bernie';
-import Battleship from 'Battleship';
+import Battleship from 'battleship';
 
 
 

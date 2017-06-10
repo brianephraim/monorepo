@@ -31,7 +31,8 @@ import webpack from 'webpack';
 import jsonImporter from 'node-sass-json-importer';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
-import DirectoryNamedWebpackPlugin from 'directory-named-webpack-plugin';
+import DirectoryNamedWebpackPlugin from './directory-named-webpack-plugin';
+import {factory as componentResolverPluginFactory, factory2 as componentResolverPluginFactory2} from './component-webpack-resolver-plugin';
 import nodeExternals from 'webpack-node-externals';
 import globby from 'globby';
 import fs from 'fs-extra';
@@ -208,6 +209,30 @@ export default (argv) => {
     },
   }));
 
+
+
+  var MyConventionResolver = {
+    apply: function(resolver) {
+      resolver.plugin('module', function(request, callback) {
+        if (request.request[0] === '#') {
+          var req = request.request.substr(1);
+          var obj = Object.assign({}, request, {
+            // path: request.path,
+            request: req,
+            // query: request.query,
+            // directory: request.directory
+          });
+          console.log('eeeeee', obj);
+          this.doResolve('resolve', obj, 'blah blah', callback);
+        }
+        else {
+          callback();
+        }
+      });
+    }
+  };
+
+
   const config = {
     entry,
     devtool: env === 'build' || env === 'node' ? 'source-map' : 'eval',
@@ -306,7 +331,11 @@ export default (argv) => {
       ],
       extensions: ['.js'],
       plugins: [
-        new DirectoryNamedWebpackPlugin(true),
+
+        MyConventionResolver,
+        // componentResolverPluginFactory2(),
+        componentResolverPluginFactory(),
+        // new DirectoryNamedWebpackPlugin(true),
       ],
     },
     // stats: 'verbose',

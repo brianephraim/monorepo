@@ -7,7 +7,7 @@
 		exports["@defualt/dev_env"] = factory(require("fs-extra"), require("webpack"), require("child_process"), require("directory-named-webpack-plugin"), require("express"), require("extract-text-webpack-plugin"), require("globby"), require("html-webpack-plugin"), require("node-sass-json-importer"), require("path"), require("stats-webpack-plugin"), require("string-replace-webpack-plugin"), require("url"), require("util"), require("validate-npm-package-name"), require("webpack-dev-middleware"), require("webpack-node-externals"), require("yargs"));
 	else
 		root["@defualt/dev_env"] = factory(root["fs-extra"], root["webpack"], root["child_process"], root["directory-named-webpack-plugin"], root["express"], root["extract-text-webpack-plugin"], root["globby"], root["html-webpack-plugin"], root["node-sass-json-importer"], root["path"], root["stats-webpack-plugin"], root["string-replace-webpack-plugin"], root["url"], root["util"], root["validate-npm-package-name"], root["webpack-dev-middleware"], root["webpack-node-externals"], root["yargs"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_0__, __WEBPACK_EXTERNAL_MODULE_1__, __WEBPACK_EXTERNAL_MODULE_6__, __WEBPACK_EXTERNAL_MODULE_7__, __WEBPACK_EXTERNAL_MODULE_8__, __WEBPACK_EXTERNAL_MODULE_9__, __WEBPACK_EXTERNAL_MODULE_10__, __WEBPACK_EXTERNAL_MODULE_11__, __WEBPACK_EXTERNAL_MODULE_12__, __WEBPACK_EXTERNAL_MODULE_13__, __WEBPACK_EXTERNAL_MODULE_14__, __WEBPACK_EXTERNAL_MODULE_15__, __WEBPACK_EXTERNAL_MODULE_16__, __WEBPACK_EXTERNAL_MODULE_17__, __WEBPACK_EXTERNAL_MODULE_18__, __WEBPACK_EXTERNAL_MODULE_19__, __WEBPACK_EXTERNAL_MODULE_20__, __WEBPACK_EXTERNAL_MODULE_21__) {
+})(this, function(__WEBPACK_EXTERNAL_MODULE_0__, __WEBPACK_EXTERNAL_MODULE_1__, __WEBPACK_EXTERNAL_MODULE_7__, __WEBPACK_EXTERNAL_MODULE_8__, __WEBPACK_EXTERNAL_MODULE_9__, __WEBPACK_EXTERNAL_MODULE_10__, __WEBPACK_EXTERNAL_MODULE_11__, __WEBPACK_EXTERNAL_MODULE_12__, __WEBPACK_EXTERNAL_MODULE_13__, __WEBPACK_EXTERNAL_MODULE_14__, __WEBPACK_EXTERNAL_MODULE_15__, __WEBPACK_EXTERNAL_MODULE_16__, __WEBPACK_EXTERNAL_MODULE_17__, __WEBPACK_EXTERNAL_MODULE_18__, __WEBPACK_EXTERNAL_MODULE_19__, __WEBPACK_EXTERNAL_MODULE_20__, __WEBPACK_EXTERNAL_MODULE_21__, __WEBPACK_EXTERNAL_MODULE_22__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -73,7 +73,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 22);
+/******/ 	return __webpack_require__(__webpack_require__.s = 23);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -94,7 +94,7 @@ module.exports = require("webpack");
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__webpack_start_js__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__webpack_start_js__ = __webpack_require__(5);
 // This file is the entrypoint for webpack to compile the dev environemnt for publishing to npm.
 
 
@@ -103,7 +103,121 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_child_process__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_fs_extra__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_fs_extra___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_fs_extra__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_validate_npm_package_name__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_validate_npm_package_name___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_validate_npm_package_name__);
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+
+
+
+function ensureTrailingSlash(str) {
+  return str.replace(/\/?$/, '/');
+}
+
+function ensureReadJsonSync(packageDotJsonPath) {
+  var packageDotJsonContent = void 0;
+  try {
+    packageDotJsonContent = __WEBPACK_IMPORTED_MODULE_0_fs_extra___default.a.readJsonSync(packageDotJsonPath);
+  } catch (e) {
+    packageDotJsonContent = {};
+  }
+  return packageDotJsonContent;
+}
+
+function showProblemsInConsole(problems) {
+  if (Object.keys(problems).length) {
+    console.info('\x1b[1m', '\nProblems with dependencies', '\x1b[0m');
+  }
+  Object.keys(problems).forEach(function (moduleResource) {
+    console.info('\x1b[36m', '\nProblem in module with `import` statement:', '\x1b[0m');
+    console.info('\x1b[37m', ' ' + moduleResource, '\x1b[0m');
+    Object.keys(problems[moduleResource]).forEach(function (depName) {
+      var problemMsg = problems[moduleResource][depName].msg;
+      console.info('\x1b[33m', 'Dependency requested as:', '\x1b[0m');
+      console.info('\x1b[37m', ' ' + depName, '\x1b[0m');
+      console.info('\x1b[33m', 'Message: ' + problemMsg, '\x1b[0m');
+      var problemInfo = problems[moduleResource][depName].info;
+      if (problemInfo) {
+        console.info('\x1b[37m', '- ' + problemInfo.join('\n - '), '\x1b[0m');
+      }
+    });
+  });
+}
+
+function findDependenciesProblems(dependencies, packageDotJsonContent) {
+  var problems = {};
+
+  dependencies.forEach(function (dep) {
+    if (dep.module) {
+      var rawRequest = dep.module.rawRequest;
+      // not a relative dependency
+      if (rawRequest.indexOf('.') !== 0) {
+        var validationResult = __WEBPACK_IMPORTED_MODULE_1_validate_npm_package_name___default()(rawRequest);
+        if (validationResult.validForNewPackages) {
+          if (!packageDotJsonContent.dependencies[rawRequest] && !packageDotJsonContent.devDependencies[rawRequest]) {
+            problems[rawRequest] = { msg: 'MISSING FROM PACKAGE.JSON' };
+          }
+        } else {
+          console.log(validationResult);
+          problems[rawRequest] = {
+            msg: 'BAD FORMATTING',
+            info: [].concat(_toConsumableArray(validationResult.warnings || []), _toConsumableArray(validationResult.errors || []))
+          };
+        }
+      }
+    }
+  });
+
+  return Object.keys(problems).length ? problems : null;
+}
+
+function parseStatsForDependencyProblems(stats, packagesDir) {
+  var shouldShowProblemsInConsole = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
+
+  var packageDotJsonCache = {};
+  var problems = {};
+
+  stats.compilation.modules.forEach(function (module) {
+    packagesDir = ensureTrailingSlash(packagesDir);
+    // only concerned with module entries from /packages/ folder (not node_modules)
+    if (module.resource && module.resource.indexOf(packagesDir) !== -1) {
+
+      // get substring from first trailing slash after whatever packagesDir is
+      var packageFolderName = module.resource.split(packagesDir)[1].split('/')[0];
+
+      var packageDotJsonPath = '' + packagesDir + packageFolderName + '/package.json';
+
+      var packageDotJsonContent = packageDotJsonCache[packageDotJsonPath] || ensureReadJsonSync(packageDotJsonPath);
+      packageDotJsonCache[packageDotJsonPath] = packageDotJsonContent;
+
+      var packageSomehowPublic = !packageDotJsonContent.private || !packageDotJsonContent.privateFromGithub;
+      // only concerned if module's package.json is not empty, and if it is public on either NPM or Girhub
+      if (Object.keys(packageDotJsonContent).length && packageSomehowPublic) {
+        var depProblems = findDependenciesProblems(module.dependencies, packageDotJsonContent);
+        if (depProblems) {
+          problems[module.resource] = depProblems;
+        }
+      }
+    }
+  });
+
+  if (Object.keys(problems).length > 0 && shouldShowProblemsInConsole) {
+    showProblemsInConsole(problems);
+  }
+
+  return problems;
+}
+
+/* harmony default export */ __webpack_exports__["a"] = (parseStatsForDependencyProblems);
+
+/***/ }),
+/* 4 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_child_process__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_child_process___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_child_process__);
 /* eslint-disable camelcase */
 
@@ -135,28 +249,25 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_fs_extra__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_fs_extra___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_fs_extra__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_yargs__ = __webpack_require__(21);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_yargs___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_yargs__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_express__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_express___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_express__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_webpack_dev_middleware__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_webpack_dev_middleware___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_webpack_dev_middleware__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_webpack__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_webpack___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_webpack__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_url__ = __webpack_require__(16);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_url___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_url__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__generate_webpack_config_babel__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_util__ = __webpack_require__(17);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_util___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_util__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_validate_npm_package_name__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_validate_npm_package_name___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_validate_npm_package_name__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__testSetup__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_yargs__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_yargs___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_yargs__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_express__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_express___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_express__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_webpack_dev_middleware__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_webpack_dev_middleware___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_webpack_dev_middleware__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_webpack__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_webpack___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_webpack__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_url__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_url___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_url__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__generate_webpack_config_babel__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_util__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_util___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_util__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__parseStatsForDependencyProblems__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__testSetup__ = __webpack_require__(4);
 /* eslint-disable no-console */
 
 
@@ -169,21 +280,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
-
-var env = __WEBPACK_IMPORTED_MODULE_1_yargs__["argv"].env;
+var env = __WEBPACK_IMPORTED_MODULE_0_yargs__["argv"].env;
 
 var doWebpack = true;
 var doTest = env !== 'build';
 
 if (!doWebpack && doTest) {
-  __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_9__testSetup__["a" /* default */])();
+  __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_8__testSetup__["a" /* default */])();
 }
 
 if (doWebpack) {
-  var app = __WEBPACK_IMPORTED_MODULE_2_express___default()();
+  var app = __WEBPACK_IMPORTED_MODULE_1_express___default()();
   var port = 3000;
-  var config = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__generate_webpack_config_babel__["a" /* default */])(__WEBPACK_IMPORTED_MODULE_1_yargs__["argv"]);
-  var compiler = __WEBPACK_IMPORTED_MODULE_4_webpack___default()(config);
+  var config = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__generate_webpack_config_babel__["a" /* default */])(__WEBPACK_IMPORTED_MODULE_0_yargs__["argv"]);
+  var compiler = __WEBPACK_IMPORTED_MODULE_3_webpack___default()(config);
   if (env === 'build' || env === 'node') {
     compiler.run(function (err /* , stats*/) {
       if (err) {
@@ -198,7 +308,7 @@ if (doWebpack) {
       // testSetup();
     }
     app.use(function (req, res, next) {
-      var urlSplit = __WEBPACK_IMPORTED_MODULE_5_url___default.a.parse(req.url).pathname.split('/');
+      var urlSplit = __WEBPACK_IMPORTED_MODULE_4_url___default.a.parse(req.url).pathname.split('/');
       var lastPart = urlSplit[urlSplit.length - 1];
       var lastPartContainsDot = lastPart.indexOf('.') !== -1;
       var lastPartContainsDotHtml = lastPart.indexOf('.html') !== -1;
@@ -210,113 +320,20 @@ if (doWebpack) {
 
     console.info('🔷 Starting webpack ...');
 
-    var activeWebpackDevMiddleware = __WEBPACK_IMPORTED_MODULE_3_webpack_dev_middleware___default()(compiler, {
+    var activeWebpackDevMiddleware = __WEBPACK_IMPORTED_MODULE_2_webpack_dev_middleware___default()(compiler, {
       publicPath: config.output.publicPath,
       stats: {
         colors: true
       }
     });
     activeWebpackDevMiddleware.waitUntilValid(function (stats) {
-      var packageDotJsonCache = {};
-      var packageDepsCache = {};
-      // fs.writeFileSync(process.cwd()+'/stats.json', JSON.stringify(stats.compilation.modules, null, 2));
-      var toWrite = [];
-      var problems = {};
-      var registerProblem = function registerProblem(module, dep, problem) {
-        if (!problems[module]) {
-          problems[module] = {};
-        }
-        problems[module][dep] = problem;
-      };
-      stats.compilation.modules.forEach(function (module) {
-
-        // only concerned with module entries from /packages/ folder (not node_modules)
-        if (module.resource && module.resource.indexOf(process.cwd() + '/packages') !== -1) {
-          var resourceSplit = module.resource.split('/packages/');
-          var packageFolder = resourceSplit[1].split('/')[0];
-
-          var packageDotJsonPath = resourceSplit[0] + '/packages/' + packageFolder + '/package.json';
-
-          var packageDotJsonContent = void 0;
-          var packageDotJsonDeps = void 0;
-          if (packageDotJsonCache[packageDotJsonPath]) {
-            packageDotJsonContent = packageDotJsonCache[packageDotJsonPath];
-            packageDotJsonDeps = packageDepsCache[packageDotJsonPath];
-          } else {
-            try {
-              packageDotJsonContent = __WEBPACK_IMPORTED_MODULE_0_fs_extra___default.a.readJsonSync(packageDotJsonPath);
-            } catch (e) {
-              packageDotJsonContent = {};
-            }
-            packageDotJsonCache[packageDotJsonPath] = packageDotJsonContent;
-            packageDotJsonDeps = Object.assign({}, packageDotJsonContent.dependencies, packageDotJsonContent.devDependencies);
-            packageDepsCache[packageDotJsonPath] = packageDotJsonDeps;
-          }
-
-          // only concerned if module's package.json has a name, and if it is public on either NPM or Girhub
-          if (packageDotJsonContent.name && (!packageDotJsonContent.private || !packageDotJsonContent.privateFromGithub)) {
-            var slimModule = {
-              resource: module.resource,
-              context: module.context,
-              rawRequest: module.rawRequest,
-              dependencies: [],
-              depsSummary: {}
-            };
-
-            module.dependencies.forEach(function (dep) {
-              if (dep.module) {
-                var rawRequest = dep.module.rawRequest;
-                // not a relative dependency
-                if (rawRequest.indexOf('.') !== 0) {
-                  var validationResult = __WEBPACK_IMPORTED_MODULE_8_validate_npm_package_name___default()(rawRequest);
-                  var depToPush = {
-                    resource: dep.module.resource,
-                    context: dep.module.context,
-                    rawRequest: rawRequest,
-                    validationResult: validationResult
-                  };
-                  if (validationResult.validForNewPackages) {
-                    // console.log(module.resource.split('/packages/')[0])
-                    // depToPush.summary = "GOOD !!!!!!";
-                    slimModule.depsSummary[rawRequest] = packageDotJsonDeps[rawRequest] || 'MISSING FROM PACKAGE.JSON';
-                    if (!packageDotJsonDeps[rawRequest]) {
-                      registerProblem(module.resource, rawRequest, 'MISSING FROM PACKAGE.JSON');
-                    }
-                  } else {
-                    // depToPush.summary = "BAD #$**#$*";
-                    slimModule.depsSummary[rawRequest] = 'BAD FORMATTING';
-                    registerProblem(module.resource, rawRequest, 'BAD FORMATTING');
-                  }
-                  slimModule.dependencies.push(depToPush);
-                }
-              }
-              // slimModule.dependencies.push(Object.keys(dep.module));
-              // slimModule.dependencies.push(dep.resource);
-            });
-            toWrite.push(slimModule);
-          }
-        }
-      });
-
-      Object.keys(problems).forEach(function (moduleResource) {
-        console.log('--------------');
-        console.log('moduleResource', moduleResource);
-        Object.keys(problems[moduleResource]).forEach(function (depName) {
-          var problemMsg = problems[moduleResource][depName];
-          console.log('depName', depName);
-          console.log('problemMsg', problemMsg);
-        });
-      });
-
-      __WEBPACK_IMPORTED_MODULE_0_fs_extra___default.a.writeFileSync(process.cwd() + '/stats.json', JSON.stringify(toWrite, null, 2));
-
-      // fs.writeFileSync(process.cwd()+'/stats.json', inspect(stats.compilation.modules));
-      // fs.writeFileSync(process.cwd()+'/stats.json', inspect(stats.compilation.modules[1].dependencies));
+      __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_7__parseStatsForDependencyProblems__["a" /* default */])(stats, process.cwd() + '/packages');
     });
+
     app.use(activeWebpackDevMiddleware);
 
-    app.use('/images', __WEBPACK_IMPORTED_MODULE_2_express___default.a.static('packages/images'));
-    app.use('/fonts', __WEBPACK_IMPORTED_MODULE_2_express___default.a.static('packages/fonts'));
+    app.use('/images', __WEBPACK_IMPORTED_MODULE_1_express___default.a.static('packages/images'));
+    app.use('/fonts', __WEBPACK_IMPORTED_MODULE_1_express___default.a.static('packages/fonts'));
     // app.get(new RegExp('^[/](images|fonts)[/](.+)'), (req, res) => {
     //   res.sendFile(path.join(__dirname, `packages${url.parse(req.url).pathname}`));
     // });
@@ -341,31 +358,31 @@ if (doWebpack) {
 }
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_stats_webpack_plugin__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_stats_webpack_plugin__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_stats_webpack_plugin___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_stats_webpack_plugin__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_string_replace_webpack_plugin__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_string_replace_webpack_plugin__ = __webpack_require__(16);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_string_replace_webpack_plugin___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_string_replace_webpack_plugin__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_webpack__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_webpack___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_webpack__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_node_sass_json_importer__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_node_sass_json_importer__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_node_sass_json_importer___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_node_sass_json_importer__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_extract_text_webpack_plugin__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_extract_text_webpack_plugin__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_extract_text_webpack_plugin___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_extract_text_webpack_plugin__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_html_webpack_plugin__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_html_webpack_plugin__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_html_webpack_plugin___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_html_webpack_plugin__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_directory_named_webpack_plugin__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_directory_named_webpack_plugin__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_directory_named_webpack_plugin___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_directory_named_webpack_plugin__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_webpack_node_externals__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_webpack_node_externals__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_webpack_node_externals___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_webpack_node_externals__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_globby__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_globby__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_globby___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_globby__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_fs_extra__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_fs_extra___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9_fs_extra__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_path__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_path__ = __webpack_require__(14);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_path___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10_path__);
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
@@ -650,103 +667,103 @@ var devHtmlPath = './index.html';
 });
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports) {
 
 module.exports = require("child_process");
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports) {
 
 module.exports = require("directory-named-webpack-plugin");
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports) {
 
 module.exports = require("express");
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports) {
 
 module.exports = require("extract-text-webpack-plugin");
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports) {
 
 module.exports = require("globby");
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports) {
 
 module.exports = require("html-webpack-plugin");
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports) {
 
 module.exports = require("node-sass-json-importer");
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports) {
 
 module.exports = require("path");
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports) {
 
 module.exports = require("stats-webpack-plugin");
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports) {
 
 module.exports = require("string-replace-webpack-plugin");
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports) {
 
 module.exports = require("url");
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports) {
 
 module.exports = require("util");
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports) {
 
 module.exports = require("validate-npm-package-name");
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports) {
 
 module.exports = require("webpack-dev-middleware");
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports) {
 
 module.exports = require("webpack-node-externals");
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports) {
 
 module.exports = require("yargs");
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(2);

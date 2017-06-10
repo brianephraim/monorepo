@@ -1,0 +1,1 @@
+console.log('logging from aaa8.js');

@@ -1,3 +1,5 @@
+// import aaa8 from '@defualt/aaa8';
+// console.log('asdf');
 const {
   createNumberIncrementArray,
   placeSegmentsOnGridArray,
