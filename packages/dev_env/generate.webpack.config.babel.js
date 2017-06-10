@@ -214,8 +214,9 @@ export default (argv) => {
   var MyConventionResolver = {
     apply: function(resolver) {
       resolver.plugin('module', function(request, callback) {
-        if (request.request[0] === '#') {
-          var req = request.request.substr(1);
+        if (request.request.indexOf('@defualt/aaa8') === 0) {
+        // if (request.request[0] === '#') {
+          var req = request.request.replace('@defualt/aaa8', 'aaa8');
           var obj = Object.assign({}, request, {
             // path: request.path,
             request: req,

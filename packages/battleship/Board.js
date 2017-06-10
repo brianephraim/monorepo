@@ -1,5 +1,5 @@
-// import aaa8 from '@defualt/aaa8';
-// console.log('asdf');
+import aaa8 from '@defualt/aaa8';
+console.log('asdf',aaa8);
 const {
   createNumberIncrementArray,
   placeSegmentsOnGridArray,
@@ -90,4 +90,4 @@ class Board {
   }
 }
 
-module.exports = Board;
+export default Board;

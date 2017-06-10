@@ -4,7 +4,7 @@ import { render } from 'react-dom';
 import Routing from './Routing';
 import configureStore from './configureStore';
 
-import '#./asdf';
+// import '#./asdf';
 
 let rootEl;
 function getRootEl() {
