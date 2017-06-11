@@ -17,8 +17,12 @@ module.exports = {
     '\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$': `${__dirname}/__mocks__/fileMock.js`,
     '\\.(css|less)$': "identity-obj-proxy",
     // simulate behavior of directory-named-webpack-plugin in webpack config
+    '^\@[^/]+\/([a-zA-Z][^/]*)\/([^/]+$)': '$1/$2/$2.js',// matches '@defualt/one/two' into 'one/two/two.js'
+    '^\@[^/]+\/([a-zA-Z][^/]*$)': '$1/$1.js', // matches '@defualt/one' into 'one/one.js'
     '(.*)\/([^/]+$)': '$1/$2/$2.js', // matches './two' into './two/two.js' 
+
     '(^[a-zA-Z][^/]*$)': '$1/$1.js', // matches 'one' into 'one/one.js' 
+    
   },
   moduleFileExtensions: ["js", "jsx"],
   "modulePathIgnorePatterns": [
