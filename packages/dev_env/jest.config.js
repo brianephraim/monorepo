@@ -18,7 +18,7 @@ module.exports = {
     '\\.(css|less)$': "identity-obj-proxy",
     // simulate behavior of directory-named-webpack-plugin in webpack config
     '(.*)\/([^/]+$)': '$1/$2/$2.js', // matches './two' into './two/two.js' 
-    '.*([^/]+$)': '<rootDir>/packages/$1/$1.js', // matches 'one' into 'one/one.js' 
+    '(^[a-zA-Z][^/]*$)': '$1/$1.js', // matches 'one' into 'one/one.js' 
   },
   moduleFileExtensions: ["js", "jsx"],
   "modulePathIgnorePatterns": [

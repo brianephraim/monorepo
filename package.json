@@ -5,13 +5,14 @@
   "version": "0.0.0",
   "description": "Redux ToDos example",
   "scripts": {
+    "test": "node ./packages/dev_env/babel.start.js --env=test",
     "dev": "node ./packages/dev_env/babel.start.js",
     "herc": "node ./packages/herc/herc.js",
     "new": "npm run herc -- -i",
     "scatter": "npm run herc -- -m 'scattered from monorepo'",
     "start": "babel-node devServer.js",
     "lint": "eslint src",
-    "test": "./node_modules/mocha/bin/mocha src/**/*.spec.js --reporter spec"
+    "testx": "./node_modules/mocha/bin/mocha src/**/*.spec.js --reporter spec"
   },
   "publishConfig": {
     "access": "public"

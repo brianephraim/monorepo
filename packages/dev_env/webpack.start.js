@@ -13,14 +13,10 @@ import testSetup from './testSetup';
 const env = argv.env;
 
 const doWebpack = true;
-const doTest = env !== 'build';
 
-if (!doWebpack && doTest) {
+if(env === 'test') {
   testSetup();
-}
-
-
-if (doWebpack) {
+} else if (doWebpack) {
   const app = express();
   const port = 3000;
   const config = generateWebpackConfig(argv);
@@ -35,9 +31,6 @@ if (doWebpack) {
       }
     });
   } else {
-    if (doTest) {
-      // testSetup();
-    }
     app.use((req, res, next) => {
       const urlSplit = url.parse(req.url).pathname.split('/');
       const lastPart = urlSplit[urlSplit.length - 1];

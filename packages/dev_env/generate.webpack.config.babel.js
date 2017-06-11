@@ -32,6 +32,7 @@ import jsonImporter from 'node-sass-json-importer';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import DirectoryNamedWebpackPlugin from 'directory-named-webpack-plugin';
+import parseRequestResolvePlugin from './parseRequestResolvePlugin';
 import nodeExternals from 'webpack-node-externals';
 import globby from 'globby';
 import fs from 'fs-extra';
@@ -208,30 +209,6 @@ export default (argv) => {
     },
   }));
 
-
-  function parseDependencyRequest(parseRequest = () => {}) {
-    return {
-      apply: function(resolver) {
-        // I don't know why 'module' or 'resolve' are those values.
-        // Something to do with the the way they are used in this file:
-        // https://github.com/webpack/enhanced-resolve/blob/master/lib/ResolverFactory.js
-        // So they can be other values as seen in that file.
-        resolver.plugin(/*'modules'*/'resolve', function(request, callback) {
-          const newRequestStr = parseRequest(request.request);
-          if (newRequestStr && newRequestStr !== request.request) {
-            console.log('nnnn',newRequestStr);
-            var obj = Object.assign({}, request, {
-              request: newRequestStr,
-            });
-            this.doResolve('resolve', obj, 'blah blah', callback);
-          } else {
-            callback()
-          }
-        });
-      }
-    };
-  }
-
   const config = {
     entry,
     devtool: env === 'build' || env === 'node' ? 'source-map' : 'eval',
@@ -330,7 +307,7 @@ export default (argv) => {
       ],
       extensions: ['.js'],
       plugins: [
-        parseDependencyRequest((requestStr) => {
+        parseRequestResolvePlugin((requestStr) => {
           if (requestStr.indexOf('@') === 0 && requestStr.indexOf('/') !== -1) {
             console.log('requestStr',requestStr);
             console.log('transformed',requestStr.split('/')[1])
