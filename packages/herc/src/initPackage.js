@@ -1,18 +1,52 @@
 /* eslint-disable no-console */
+/* eslint-disable comma-dangle */
+
+const caseUtlity = require('case');
 const inquirer = require('inquirer');
 const exec = require('child-process-promise').exec;
 const fs = require('fs-extra');
 const generatePackageDotJsonContent = require('./generatePackageDotJsonContent');
 
-function makeJsFile (repoName, folderPath, flavor, extra = () => { return ''; }) {
-  const filename = `${repoName}${flavor ? '.' + flavor : ''}.js`;
-  const fileContent = flavor ? `/* eslint-disable no-console */
-import ${repoName} from './${repoName}';
-console.log('logging from ${filename}', ${repoName});
-${extra({ repoName, flavor, filename})}
-` : `console.log('logging from ${filename}');`;
-
-  fs.writeFileSync(`${folderPath}${filename}`, fileContent);
+function makeJsFile({ repoName, folderPath, flavor, nameWithScope, instructions = [] }) {
+  const dotFlavor = `.${flavor}`;
+  const filename = `${repoName}${flavor ? dotFlavor : ''}.js`;
+  const fileContent = instructions.reduce((lines, instruction) => {
+    const doers = {
+      noConsole: () => {
+        return '/* eslint-disable no-console */';
+      },
+      preferTemplate: () => {
+        return '/* eslint-disable prefer-template */';
+      },
+      noUndef: () => {
+        return '/* eslint-disable no-undef */';
+      },
+      import: () => {
+        return `import ${repoName} from './${repoName}';\n`;
+      },
+      export: () => {
+        return `export default '(exported value from ${filename})';`;
+      },
+      importLog: () => {
+        return `console.log('logging from ${filename}', ${repoName});`;
+      },
+      complexLog: () => {
+        return `console.log('logging data retrieved from "./${repoName}" as ${repoName} within  "${filename}" .  The value is "' + ${repoName} + '" .');`;
+      },
+      simpleLog: () => {
+        return `console.log('logging from ${filename}');`;
+      },
+      test: () => {
+        return `${''}test('adds 1 + 2 to equal 3', () => { expect(1 + 2).toBe(3); });`;
+      },
+      readme: () => {
+        return `experimental - use with caution  \nrepoName: ${repoName}  \nnpm name: ${nameWithScope}  \n`;
+      },
+    };
+    lines.push(doers[instruction]());
+    return lines;
+  }, []).join('\n');
+  fs.writeFileSync(`${folderPath}${filename}`, `${fileContent}\n`);
 }
 
 function survey() {
@@ -129,26 +163,28 @@ function boilerplateFolder(details) {
   });
   fs.writeJsonSync(`${details.folderPath}package.json`, packageDotJsonContent, { spaces: 2 });
 
-
-
-  makeJsFile(details.repoName, details.folderPath, null, ({repoName, flavor, filename}) => {
-    return `// repo name: ${repoName}
-// npm name: ${details.nameWithScope}
-
-console.log('hey there from ${repoName} -- ${details.nameWithScope}');
-export default '${repoName} -- ${details.nameWithScope}';`
+  makeJsFile({
+    repoName: details.repoName,
+    folderPath: details.folderPath,
+    flavor: null,
+    nameWithScope: details.nameWithScope,
+    instructions: ['noConsole', 'preferTemplate', 'simpleLog', 'export'],
   });
 
-
-  makeJsFile(details.repoName, details.folderPath, 'test', ({repoName, flavor, filename}) => {
-    return `test('adds 1 + 2 to equal 3', () => {
-  expect(1 + 2).toBe(3);
-});`
+  makeJsFile({
+    repoName: details.repoName,
+    folderPath: details.folderPath,
+    flavor: 'demo',
+    nameWithScope: details.nameWithScope,
+    instructions: ['noConsole', 'preferTemplate', 'import', 'importLog', 'complexLog'],
   });
 
-
-  makeJsFile(details.repoName, details.folderPath, 'demo', ({repoName, flavor, filename}) => {
-    return `console.log('logging data retrieved from "./${repoName}" as ${repoName} within  "${filename}" .  The value is "' + ${repoName} + '" .');`
+  makeJsFile({
+    repoName: details.repoName,
+    folderPath: details.folderPath,
+    flavor: 'test',
+    nameWithScope: details.nameWithScope,
+    instructions: ['noUndef', 'noConsole', 'preferTemplate', 'import', 'importLog', 'test'],
   });
 
   const readmeFileContent = `experimental - use with caution  \nrepoName: ${details.repoName}  \nnpm name: ${details.nameWithScope}  \n`;

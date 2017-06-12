@@ -43,7 +43,7 @@ if(env === 'test') {
     });
 
     console.info('🔷 Starting webpack ...');
-   
+
     const activeWebpackDevMiddleware = webpackDevMiddleware(compiler, {
       publicPath: config.output.publicPath,
       stats: {
@@ -51,9 +51,9 @@ if(env === 'test') {
       },
     });
     activeWebpackDevMiddleware.waitUntilValid((stats) => {
-      parseStatsForDependencyProblems(stats, process.cwd() + '/packages');
+      parseStatsForDependencyProblems(stats, `${process.cwd()}/packages`);
     });
-    
+
     app.use(activeWebpackDevMiddleware);
 
     app.use('/images', express.static('packages/images'));
