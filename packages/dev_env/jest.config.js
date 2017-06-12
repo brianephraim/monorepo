@@ -66,12 +66,12 @@ module.exports = {
     // '^\@[^/]+\/([a-zA-Z0-9][^/]*)\/([^/]+$)': '$1/$2.js',// matches '@defualt/one/two' into 'one/two.js'
     // '^\@[^/]+\/([a-zA-Z][^/]*)\/([^/]+$)': '$1/$2/$2',// matches '@defualt/one/two' into 'one/two/two.js'
     // '^\@[^/]+\/([a-zA-Z][^/]*$)': '$1/$1.js', // matches '@defualt/one' into 'one/one.js'
-    '(.*)\/([^/]+$)': '$1/$2/$2.js', // matches './two' into './two/two.js' 
+    // '(.*)\/([^/]+$)': '$1/$2/$2.js', // matches './two' into './two/two.js' 
 
-    '(^[a-zA-Z][^/]*$)': '$1/$1.js', // matches 'one' into 'one/one.js' 
+    // '(^[a-zA-Z][^/]*$)': '$1/$1.js', // matches 'one' into 'one/one.js' 
     
   },
-  resolver: `${__dirname}/resolver.js`,
+  resolver: `${__dirname}/jest-webpack-resolver.js`,
   // transform: {
   //   // "^.+\\.jsx?$": "babel-jest"
   //   "^.+\\.jsx?$": `${__dirname}/jestTransform.js`

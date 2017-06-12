@@ -1,24 +1,6 @@
-'use strict';
+const resolve = require('resolve');
 
-
-
-
-
-
-
-
-
-
-
-const resolve = require('resolve'); /**
-                                     * Copyright (c) 2014-present, Facebook, Inc. All rights reserved.
-                                     *
-                                     * This source code is licensed under the BSD-style license found in the
-                                     * LICENSE file in the root directory of this source tree. An additional grant
-                                     * of patent rights can be found in the PATENTS file in the same directory.
-                                     *
-                                     * 
-                                     */const browserResolve = require('browser-resolve');
+const browserResolve = require('browser-resolve');
 
 
 function defaultResolver(path, options) {
@@ -71,34 +53,7 @@ function defaultResolver(path, options) {
 
 
       toReturn = resv.sync(path, options);
-      if (path.indexOf('aaa8') !== -1){
-        console.log('YES',i,toReturn);
-      }
-      if (originalPath.indexOf('aaa8') !== -1){
-        console.log('toReturn',toReturn);
-      }
-      // if(i === 0){
-      //   if (moduleName.indexOf('@defualt/') !== -1) {
-      //     // console.log(moduleName, moduleName, options);
-      //     moduleName = moduleName.replace('@defualt/','');
-      //   }
-      // } else {
-      //   moduleName = moduleName + '/' + moduleName;
-      // }
-
-      // console.log('moduleName', i, moduleName);
-      // // console.log('PROCESS',arguments);
-      // // console.log(')))))))))(((((((((');
-      // // console.log(arguments);
-      // // console.log('src',src);
-      // // console.log('filename',filename);
-      // // console.log('config',config);
-      // // console.log('transformOptions',transformOptions);
-      // const toReturn = oldMethod.apply(this, [path, options);
-      // // console.log(toReturn);
-      // console.log('GOOD',toReturn);
     } catch (e) {
-      // console.log('eeeee',e);
       if (i++ < 10) {
         if (originalPath.indexOf('aaa8') !== -1){
           console.log('NOA AAA8',i)

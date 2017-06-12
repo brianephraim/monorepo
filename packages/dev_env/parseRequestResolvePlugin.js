@@ -20,4 +20,4 @@ function parseRequestResolvePlugin(parseRequest = () => {}) {
   };
 }
 
-export default parseRequestResolvePlugin;
+module.exports = parseRequestResolvePlugin;
