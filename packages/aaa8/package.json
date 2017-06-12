@@ -5,7 +5,9 @@
     "access": "public"
   },
   "scripts": {
-    "start": "devenv"
+    "start": "devenv",
+    "thing": "devenv --env=build --dirroot=$(pwd)",
+    "thing1": "devenv --env=node --dirroot=$(pwd)"
   },
   "devDependencies": {
     "@defualt/dev_env": "^0.0.13"
