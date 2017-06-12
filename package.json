@@ -10,6 +10,7 @@
     "herc": "node ./packages/herc/herc.js",
     "new": "npm run herc -- -i",
     "scatter": "npm run herc -- -m 'scattered from monorepo'",
+    "both": "./node_modules/stmux/bin/stmux.js -M -- [ \"npm run dev\" .. \"npm run test\" ]",
     "start": "babel-node devServer.js",
     "lint": "eslint src",
     "testx": "./node_modules/mocha/bin/mocha src/**/*.spec.js --reporter spec"
