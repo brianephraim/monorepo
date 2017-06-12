@@ -14,7 +14,7 @@
     Code from node_modules will not be bundled.
 
   when `argv.dirroot === some path`
-    This is used when dev_env itself is compiled.  
+    This is used when dev_env itself is compiled.
     This very file is compiled according the config set by this file.
     This is needed to make dev_env portable via npm.
     babel-node needs to compile this dev_env to work,
@@ -25,18 +25,16 @@
 
 */
 
-import StatsPlugin from 'stats-webpack-plugin';
 import StringReplacePlugin from 'string-replace-webpack-plugin';
 import webpack from 'webpack';
 import jsonImporter from 'node-sass-json-importer';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
-import DirectoryNamedWebpackPlugin from 'directory-named-webpack-plugin';
-import parseRequestResolvePlugin from './parseRequestResolvePlugin';
 import nodeExternals from 'webpack-node-externals';
 import globby from 'globby';
 import fs from 'fs-extra';
-import path from 'path';
+import webpackConfigResolve from './webpack-config-resolve';
+
 const devHtmlPath = './index.html';
 
 export default (argv) => {
@@ -90,7 +88,7 @@ export default (argv) => {
     MainApp: globby.sync([`${dirRoot}/packages/MainApp/MainApp.js`]),
     [outputFiles.library]: globby.sync([
       `${dirRoot}/${libraryNameReduced}.js`,
-      `${dirRoot}/src/library/index.js`
+      `${dirRoot}/src/library/index.js`,
     ]),
     ...(
       outputFiles.libraryMin ? {
@@ -112,19 +110,6 @@ export default (argv) => {
     }
     return accum;
   }, {});
-
-  // entry[outputFiles.library] = entryFiles.library;
-  // if (outputFiles.libraryMin) {
-  //   entry[outputFiles.libraryMin] = entryFiles.library;
-  // }
-  // entry[outputFiles.demo] = entryFiles.demo;
-
-  // if (isLerna) {
-  //   // /Users/brianephraim/Sites/todos-tacos/packages/MainApp/MainApp.js
-  //   entry = {
-  //     MainApp: './packages/MainApp/MainApp.js',
-  //   };
-  // }
 
   function moveModify(source, modifyPath, modifyContent) {
     let sources = [];
@@ -158,7 +143,7 @@ export default (argv) => {
       return filePath.replace('src/', './');
     },
     (content) => {
-        return content.replace(/LIBRARYNAME/g, libraryName);
+      return content.replace(/LIBRARYNAME/g, libraryName);
     });
 
     registerPlugin('UglifyJsPlugin', new webpack.optimize.UglifyJsPlugin({
@@ -184,18 +169,6 @@ export default (argv) => {
     registerPlugin('demoDevIndex-HtmlWebpackPlugin', new HtmlWebpackPlugin({
       chunks: [outputFiles.demo],
       filename: devHtmlPath,
-    }));
-
-    console.log('STATS')
-    console.log('STATS')
-    console.log('STATS')
-    console.log('STATS')
-    console.log('STATS')
-    console.log('STATS')
-    console.log('STATS')
-    registerPlugin('statsPlugin', new StatsPlugin('stats.json', {
-      chunkModules: true,
-      exclude: [/node_modules[\\\/]react/]
     }));
   }
   registerPlugin('StringReplacePlugin', new StringReplacePlugin());
@@ -228,26 +201,26 @@ export default (argv) => {
           loader: 'babel-loader',
           exclude: /node_modules/,
           // include: `${dirRoot}`,
-          options: {
-            presets: [
+          // options: {
+          //   presets: [
 
-              [
-                'es2015',
-                // needed for tree shaking
-                { modules: false },
-              ],
-              'react',
-              // 'react',
-            ],
-            plugins: [
-              'transform-es2015-spread',
-              'transform-object-rest-spread',
-            ],
-            // mocha needs .babelrc,
-            // and .babelrc cannot use the above config
-            // so ignore .babelrc here
-            babelrc: false,
-          },
+          //     [
+          //       'es2015',
+          //       // needed for tree shaking
+          //       { modules: false },
+          //     ],
+          //     'react',
+          //     // 'react',
+          //   ],
+          //   plugins: [
+          //     'transform-es2015-spread',
+          //     'transform-object-rest-spread',
+          //   ],
+          //   // mocha needs .babelrc,
+          //   // and .babelrc cannot use the above config
+          //   // so ignore .babelrc here
+          //   babelrc: false,
+          // },
         },
         {
           test: /\.css$/,
@@ -258,7 +231,7 @@ export default (argv) => {
         },
         {
           test: /\.scss$/,
-          ...conditionalExtractTextLoaderCss(env === 'build' ||  env === 'node', {
+          ...conditionalExtractTextLoaderCss(env === 'build' || env === 'node', {
             fallback: 'style-loader',
             use: [
               'css-loader?sourceMap',
@@ -298,26 +271,7 @@ export default (argv) => {
         },
       ],
     },
-    resolve: {
-      modules: [
-        path.resolve('./src/library'),
-        path.resolve(process.cwd(), 'packages'),
-        // path.resolve('./packages'),
-        'node_modules',
-      ],
-      extensions: ['.js'],
-      plugins: [
-        parseRequestResolvePlugin((requestStr) => {
-          if (requestStr.indexOf('@') === 0 && requestStr.indexOf('/') !== -1) {
-            console.log('requestStr',requestStr);
-            console.log('transformed',requestStr.split('/')[1])
-            return requestStr.split('/')[1];
-          }
-        }),
-        new DirectoryNamedWebpackPlugin(true),
-      ],
-    },
-    // stats: 'verbose',
+    resolve: webpackConfigResolve.resolve,
     plugins,
     ...(
       env === 'node' ? {
@@ -326,7 +280,7 @@ export default (argv) => {
           __dirname: false,
           __filename: false,
         },
-        externals: [nodeExternals({modulesFromFile: true})],
+        externals: [nodeExternals({ modulesFromFile: true })],
       } : {}
     ),
   };

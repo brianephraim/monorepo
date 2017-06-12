@@ -1,25 +1,19 @@
+/* eslint-disable global-require */
+/* eslint-disable comma-dangle */
 // https://github.com/mkg0/jest-webpack-resolver
-var ResolverFactory = require("enhanced-resolve").ResolverFactory;
-var path = require("path");
+const ResolverFactory = require('enhanced-resolve').ResolverFactory;
 
-var packagejson = require(path.join(process.cwd(), "package.json"));
-var config = (packagejson && packagejson["jestWebpackResolver"]) || {
-  webpackConfig: "./webpack.config.js"
-};
-// var webpack = require(path.join(process.cwd(), config["webpackConfig"]));
-// var webpack = require(path.join(__dirname, 'generate.webpack.config.babel'))();
-var webpack = require(path.join(__dirname, 'webpack-config-resolve.js'));
+const webpackConfigResolve = require('./webpack-config-resolve.js');
 
-module.exports = function(value, options) {
-  var resolver = ResolverFactory.createResolver(
+module.exports = (value, options) => {
+  const resolver = ResolverFactory.createResolver(
     Object.assign(
       {
-        fileSystem: require("fs"),
-        useSyncFileSystemCalls: true
+        fileSystem: require('fs'),
+        useSyncFileSystemCalls: true,
       },
-      webpack.resolve || {}
+      webpackConfigResolve.resolve
     )
   );
   return resolver.resolveSync({}, options.basedir, value);
 };
-

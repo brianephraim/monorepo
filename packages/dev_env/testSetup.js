@@ -4,15 +4,8 @@ import child_process from 'child_process';
 export default () => {
   const command = 'sh';
 
-  const configJSONString = JSON.stringify({
-    testMatch: ['**/?(*.)(test).js?(x)'],
-  });
-  // const(`CI=true ${process.cwd()}/node_modules/.bin/jest --watch --config=${/*process.cwd()*/__dirname}/jest.config.js`);
   const args = [
     '-c',
-    // `${__dirname}/node_modules/.bin/jest`,
-    // `${__dirname}/node_modules/.bin/jest --config='${configJSONString}'`,
-
     // Why `CI=true `? ----- https://github.com/facebook/jest/issues/2959
     `CI=true ${process.cwd()}/node_modules/.bin/jest --watch --config=${__dirname}/jest.config.js`,
   ];
