@@ -9,10 +9,6 @@
   when `argv.env === 'build'`
     This compiles files to disk in a /dist folder and a /demo folder.
 
-  when `argv.env === 'node'`
-    Similar to 'build', but with special consideration for node environments.
-    Code from node_modules will not be bundled.
-
   when `argv.dirroot === some path`
     This is used when dev_env itself is compiled.
     This very file is compiled according the config set by this file.
@@ -23,6 +19,14 @@
     Directory paths need to be tweaked to accomplish this,
     and that's what `argv.dirroot` helps with.
 
+
+  This function is also affected by package.json.
+
+  when package.json.bundleForNode === true
+    in conjunction with `argv.env === 'build'`, the bundle will
+    have special consideration for a node platform.
+    Only application files will be bundled.
+    node_modules and node built-in requires will not be bundled.
 */
 
 import StringReplacePlugin from 'string-replace-webpack-plugin';
@@ -43,6 +47,8 @@ export default (argv) => {
   const dirRoot = argv.dirroot || process.cwd();
 
   const packageJson = fs.readJsonSync(`${dirRoot}/package.json`);
+
+  const bundleForNode = packageJson.bundleForNode;
 
   let username = null;
   if (packageJson.repository && packageJson.repository.url) {
@@ -74,7 +80,7 @@ export default (argv) => {
   }
 
   const outputFiles = {};
-  if (env === 'node' || env === 'build') {
+  if (env === 'build') {
     outputFiles.library = `dist/${libraryNameReduced}`;
     outputFiles.libraryMin = `dist/${libraryNameReduced}.min`;
     outputFiles.demo = 'dist/demo/index';
@@ -136,7 +142,7 @@ export default (argv) => {
     });
   }
 
-  if (env === 'build' || env === 'node') {
+  if (env === 'build') {
     moveModify(['src/import-examples/**/!(webpack.config).*', 'src/tonicExample.js'], (filePath) => {
       return filePath.replace('src/', './');
     },
@@ -183,7 +189,7 @@ export default (argv) => {
 
   const config = {
     entry,
-    devtool: env === 'build' || env === 'node' ? 'source-map' : 'eval',
+    devtool: env === 'build' ? 'source-map' : 'eval',
     output: {
       path: `${dirRoot}`,
       filename: '[name].js',
@@ -223,14 +229,14 @@ export default (argv) => {
         },
         {
           test: /\.css$/,
-          ...conditionalExtractTextLoaderCss(env === 'build' || env === 'node', {
+          ...conditionalExtractTextLoaderCss(env === 'build', {
             fallback: 'style-loader',
             use: ['css-loader'],
           }),
         },
         {
           test: /\.scss$/,
-          ...conditionalExtractTextLoaderCss(env === 'build' || env === 'node', {
+          ...conditionalExtractTextLoaderCss(env === 'build', {
             fallback: 'style-loader',
             use: [
               'css-loader?sourceMap',
@@ -273,7 +279,7 @@ export default (argv) => {
     resolve: webpackConfigResolve.resolve,
     plugins,
     ...(
-      env === 'node' ? {
+      bundleForNode ? {
         target: 'node',
         node: {
           __dirname: false,

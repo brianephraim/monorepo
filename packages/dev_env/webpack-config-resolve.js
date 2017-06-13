@@ -7,6 +7,7 @@ module.exports = {
     modules: [
       path.resolve('./src/library'),
       path.resolve(process.cwd(), 'packages'),
+      path.resolve(process.cwd(), '../../packages'),
       'node_modules',
     ],
     extensions: ['.js'],

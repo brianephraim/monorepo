@@ -58,6 +58,7 @@
   "publishConfig": {
     "access": "public"
   },
+  "bundleForNode": true,
   "repository": {
     "type": "git",
     "url": "https://github.com/defualt/dev_env.git"

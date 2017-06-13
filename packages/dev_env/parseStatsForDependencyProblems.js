@@ -42,22 +42,55 @@ function findDependenciesProblems(dependencies, packageDotJsonContent) {
   dependencies.forEach((dep) => {
     if (dep.module) {
       const rawRequest = dep.module.rawRequest;
+      // if (rawRequest.indexOf('/Users/brianephraim/Sites/monorepo/packages') === 0) {
+      //   console.info('\x1b[33m', 'depWTF', rawRequest, '\x1b[0m');
+      //   console.log('depWTF', dep);
+      // } else {
+      //   console.info('\x1b[33m', 'depGGG', rawRequest, '\x1b[0m');
+      //   console.log('depGGG', dep);
+      // }
+
       // not a relative dependency
-      if (rawRequest.indexOf('.') !== 0) {
+      // not an absolut dependency
+      // we are only concerned with depenencies referenced like
+      // `import asdf from 'asdf';`
+      // or
+      // `import qwer from 'asdf/qwer';``
+      // or
+      // `import asdf from '@defualt/asdf';``
+      // These dependencies will be either in /node_modules/ or /packages/,
+      // the latter for only monorepo use.
+      if (rawRequest.indexOf('.') !== 0 && rawRequest.indexOf('/') !== 0) {
         const validationResult = validateNpmPackageName(rawRequest);
         if (validationResult.validForNewPackages) {
           if (
-            !packageDotJsonContent.dependencies[rawRequest] &&
-            !packageDotJsonContent.devDependencies[rawRequest]
+            !packageDotJsonContent ||
+            (
+              (
+                !packageDotJsonContent.dependencies ||
+                !packageDotJsonContent.dependencies[rawRequest]
+              ) &&
+              (
+                !packageDotJsonContent.devDependencies ||
+                !packageDotJsonContent.devDependencies[rawRequest]
+              )
+            )
           ) {
             problems[rawRequest] = { msg: 'MISSING FROM PACKAGE.JSON' };
           }
         } else {
-          console.log(validationResult);
-          problems[rawRequest] = {
-            msg: 'BAD FORMATTING',
-            info: [...validationResult.warnings || [], ...validationResult.errors || []],
-          };
+          const info = [
+            ...validationResult.warnings || [], ...validationResult.errors || [],
+          ].filter((msg) => {
+            return msg !== 'name can only contain URL-friendly characters';
+          });
+          // console.log(validationResult);
+          if (info.length) {
+            problems[rawRequest] = {
+              msg: 'BAD FORMATTING',
+              info: [...validationResult.warnings || [], ...validationResult.errors || []],
+            };
+          }
         }
       }
     }
@@ -66,21 +99,27 @@ function findDependenciesProblems(dependencies, packageDotJsonContent) {
   return Object.keys(problems).length ? problems : null;
 }
 
-function parseStatsForDependencyProblems(stats, packagesDir, shouldShowProblemsInConsole = true) {
+function parseStatsForDependencyProblems(stats, shouldShowProblemsInConsole = true) {
+  const isMonorepo = fs.existsSync(`${process.cwd()}/packages`);
+
   const packageDotJsonCache = {};
   const problems = {};
-
   stats.compilation.modules.forEach((module) => {
-    packagesDir = ensureTrailingSlash(packagesDir);
     // only concerned with module entries from /packages/ folder (not node_modules)
     if (
       module.resource &&
-      module.resource.indexOf(packagesDir) !== -1
+      module.resource.indexOf('node_modules') === -1
     ) {
-      // get substring from first trailing slash after whatever packagesDir is
-      const packageFolderName = module.resource.split(packagesDir)[1].split('/')[0];
-
-      const packageDotJsonPath = `${packagesDir}${packageFolderName}/package.json`;
+      let packageDotJsonPath;
+      if (isMonorepo) {
+        let packagesDir = `${process.cwd()}/packages`;
+        packagesDir = ensureTrailingSlash(packagesDir);
+        // get substring from first trailing slash after whatever packagesDir is
+        const packageFolderName = module.resource.split(packagesDir)[1].split('/')[0];
+        packageDotJsonPath = `${packagesDir}${packageFolderName}/package.json`;
+      } else {
+        packageDotJsonPath = `${process.cwd()}/package.json`;
+      }
 
       const packageDotJsonContent = (
         packageDotJsonCache[packageDotJsonPath] || ensureReadJsonSync(packageDotJsonPath)
@@ -102,7 +141,6 @@ function parseStatsForDependencyProblems(stats, packagesDir, shouldShowProblemsI
       }
     }
   });
-
   if (Object.keys(problems).length > 0 && shouldShowProblemsInConsole) {
     showProblemsInConsole(problems);
   }
