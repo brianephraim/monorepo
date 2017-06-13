@@ -74,12 +74,10 @@ export default (argv) => {
   }
 
   const outputFiles = {};
-  if (env === 'node') {
-    outputFiles.library = `dist/${libraryNameReduced}`;
-  } else if (env === 'build') {
+  if (env === 'node' || env === 'build') {
     outputFiles.library = `dist/${libraryNameReduced}`;
     outputFiles.libraryMin = `dist/${libraryNameReduced}.min`;
-    outputFiles.demo = 'demo/index';
+    outputFiles.demo = 'dist/demo/index';
   } else {
     outputFiles.demo = 'boot';
     outputFiles.library = `${libraryNameReduced}`;
@@ -150,19 +148,20 @@ export default (argv) => {
       include: /\.min\.js$/,
       minimize: true,
     }));
+
+    const templatePath = 'src/demo/index.ejs';
+    const htmlTemplateExists = fs.existsSync(templatePath);
     const indexHtmlSettings = {
       chunks: [outputFiles.demo],
-      template: 'src/demo/index.ejs',
+      ...(
+        htmlTemplateExists ? { template: templatePath } : {}
+      ),
       title: 'afasdfasdfasd',
       username,
       libraryName,
     };
     registerPlugin('demoIndex-HtmlWebpackPlugin', new HtmlWebpackPlugin({
-      filename: './demo/index.html',
-      ...indexHtmlSettings,
-    }));
-    registerPlugin('rootIndex-HtmlWebpackPlugin', new HtmlWebpackPlugin({
-      filename: './index.html',
+      filename: './dist/demo/index.html',
       ...indexHtmlSettings,
     }));
   } else {

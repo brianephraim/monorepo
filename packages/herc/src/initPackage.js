@@ -7,9 +7,12 @@ const exec = require('child-process-promise').exec;
 const fs = require('fs-extra');
 const generatePackageDotJsonContent = require('./generatePackageDotJsonContent');
 
-function makeJsFile({ repoName, folderPath, flavor, nameWithScope, instructions = [] }) {
+function makeJsFile({
+  folderPath, flavor, nameWithScope, casedFileName, casedVariableName,
+  extension, overrideFilename, instructions = []
+}) {
   const dotFlavor = `.${flavor}`;
-  const filename = `${repoName}${flavor ? dotFlavor : ''}.js`;
+  const filename = `${overrideFilename || casedFileName}${flavor ? dotFlavor : ''}.${extension || 'js'}`;
   const fileContent = instructions.reduce((lines, instruction) => {
     const doers = {
       noConsole: () => {
@@ -22,25 +25,31 @@ function makeJsFile({ repoName, folderPath, flavor, nameWithScope, instructions 
         return '/* eslint-disable no-undef */';
       },
       import: () => {
-        return `import ${repoName} from './${repoName}';\n`;
+        return `import ${casedVariableName} from './${casedFileName}';\n`;
       },
       export: () => {
-        return `export default '(exported value from ${filename})';`;
+        return `export default '(exported value from ${casedFileName})';`;
       },
       importLog: () => {
-        return `console.log('logging from ${filename}', ${repoName});`;
+        return `console.log('logging from ${casedFileName}', ${casedVariableName});`;
       },
       complexLog: () => {
-        return `console.log('logging data retrieved from "./${repoName}" as ${repoName} within  "${filename}" .  The value is "' + ${repoName} + '" .');`;
+        return `console.log('logging data retrieved from "./${casedFileName}" as ${casedVariableName} within  "${filename}" .  The value is "' + ${casedVariableName} + '" .');`;
       },
       simpleLog: () => {
-        return `console.log('logging from ${filename}');`;
+        return `console.log('logging from ${casedFileName}');`;
       },
       test: () => {
         return `${''}test('adds 1 + 2 to equal 3', () => { expect(1 + 2).toBe(3); });`;
       },
       readme: () => {
-        return `experimental - use with caution  \nrepoName: ${repoName}  \nnpm name: ${nameWithScope}  \n`;
+        return [
+          'experimental - use with caution  ',
+          `repoName: ${casedFileName}  `,
+          `\`npm install ${nameWithScope}\`  `,
+          `\`import ${casedVariableName} from '${nameWithScope}';\`  `,
+          `\`var ${casedVariableName} = require('${nameWithScope}');\`  `,
+        ].join('\n');
       },
     };
     lines.push(doers[instruction]());
@@ -96,32 +105,51 @@ function survey() {
 }
 
 function validate(answers) {
+  const useScope = answers.npmScope[0].toLowerCase() === 'y';
+
   const repoName = answers.repoName;
+  const entryCase = caseUtlity.of(repoName);
+  const validCase = entryCase === 'kebab' || entryCase === 'lower' || entryCase === 'camel';
+  const casedFileName = caseUtlity.kebab(repoName);
+  const casedFileNameWithScope = useScope ? `@${process.env.NPM_SCOPE}/${casedFileName}` : casedFileName;
+  const casedSemiEncodedNameWithScope = useScope ? `@${process.env.NPM_SCOPE}${encodeURIComponent('/')}${casedFileName}` : casedFileName;
+  const casedVariableName = caseUtlity.camel(repoName);
+
   const makeMsg = (exclamation, destination, name) => {
     return `${exclamation}!, ${destination}, ${name} is ${(exclamation === 'Bad' ? 'NOT ' : '')}available!`;
   };
-  const useScope = answers.npmScope[0].toLowerCase() === 'y';
+
   const isPrivateNpm = answers.privateNpm[0].toLowerCase() === 'y';
   const isPrivateGithub = answers.privateGithub[0].toLowerCase() === 'y';
-  const nameWithScope = useScope ? `@${process.env.NPM_SCOPE}/${repoName}` : repoName;
-  const semiEncodedNameWithScope = useScope ? `@${process.env.NPM_SCOPE}${encodeURIComponent('/')}${repoName}` : repoName;
-  const folderPath = `${process.cwd()}/packages/${repoName}/`;
+  const folderPath = `${process.cwd()}/packages/${casedFileName}/`;
   const validations = [];
+
+  validations.push(Promise.resolve(validCase).then(() => {
+    console.info(
+      `${validCase ? 'Good' : 'Bad'}, you used ${entryCase} case in naming. ${validCase ? 'Use camelCaser, lowercase, or kebab-case' : ''}`
+    );
+    if (!validCase) {
+      return Promise.reject(`Use camelCase, lowercase, or kebab-case, not ${entryCase} case.`);
+    }
+    return validCase;
+  }));
+
+
   validations.push(Promise.resolve(fs.existsSync(folderPath)).then((folderExists) => {
     const folderAvailable = !folderExists;
-    console.info(folderAvailable ? makeMsg('Good', 'folder', repoName) : makeMsg('Bad', 'folder', repoName));
+    console.info(folderAvailable ? makeMsg('Good', 'folder', casedFileName) : makeMsg('Bad', 'folder', casedFileName));
     if (!folderAvailable) {
-      return Promise.reject(`Folder already exists: packages/${repoName}`);
+      return Promise.reject(`Folder already exists: packages/${casedFileName}`);
     }
     return folderAvailable;
   }));
   if (!isPrivateNpm) {
     validations.push(
-      exec(`curl https://registry.npmjs.org/${semiEncodedNameWithScope}/`).then(({ stdout }) => {
+      exec(`curl https://registry.npmjs.org/${casedSemiEncodedNameWithScope}/`).then(({ stdout }) => {
         const npmAvailable = !JSON.parse(stdout).name;
-        console.info(npmAvailable ? makeMsg('Good', 'NPM', nameWithScope) : makeMsg('Bad', 'NPM', nameWithScope));
+        console.info(npmAvailable ? makeMsg('Good', 'NPM', casedFileNameWithScope) : makeMsg('Bad', 'NPM', casedFileNameWithScope));
         if (!npmAvailable) {
-          return Promise.reject(new Error(`NPM already exists: ${nameWithScope}`));
+          return Promise.reject(new Error(`NPM already exists: ${casedFileNameWithScope}`));
         }
         return npmAvailable;
       })
@@ -129,11 +157,11 @@ function validate(answers) {
   }
   if (!isPrivateGithub) {
     validations.push(
-      exec(`curl -s -o /dev/null -w "%{http_code}" https://github.com/${process.env.NPM_SCOPE}/${repoName}/`).then(({ stdout }) => {
+      exec(`curl -s -o /dev/null -w "%{http_code}" https://github.com/${process.env.NPM_SCOPE}/${casedFileName}/`).then(({ stdout }) => {
         const repoAvailable = stdout !== '200';
-        console.info(repoAvailable ? makeMsg('Good', 'Github', repoName) : makeMsg('Bad', 'Github', repoName));
+        console.info(repoAvailable ? makeMsg('Good', 'Github', casedFileName) : makeMsg('Bad', 'Github', casedFileName));
         if (!repoAvailable) {
-          return Promise.reject(new Error(`Github project already exists: ${repoName}`));
+          return Promise.reject(new Error(`Github project already exists: ${casedFileName}`));
         }
         return repoAvailable;
       })
@@ -145,9 +173,11 @@ function validate(answers) {
       useScope,
       isPrivateNpm,
       isPrivateGithub,
-      nameWithScope,
+      nameWithScope: casedFileNameWithScope,
+      casedFileName,
       repoName,
       folderPath,
+      casedVariableName,
     };
   });
 }
@@ -163,32 +193,27 @@ function boilerplateFolder(details) {
   });
   fs.writeJsonSync(`${details.folderPath}package.json`, packageDotJsonContent, { spaces: 2 });
 
-  makeJsFile({
-    repoName: details.repoName,
-    folderPath: details.folderPath,
+  makeJsFile(Object.assign({
     flavor: null,
-    nameWithScope: details.nameWithScope,
     instructions: ['noConsole', 'preferTemplate', 'simpleLog', 'export'],
-  });
+  }, details));
 
-  makeJsFile({
-    repoName: details.repoName,
-    folderPath: details.folderPath,
+  makeJsFile(Object.assign({
     flavor: 'demo',
-    nameWithScope: details.nameWithScope,
     instructions: ['noConsole', 'preferTemplate', 'import', 'importLog', 'complexLog'],
-  });
+  }, details));
 
-  makeJsFile({
-    repoName: details.repoName,
-    folderPath: details.folderPath,
+  makeJsFile(Object.assign({
     flavor: 'test',
-    nameWithScope: details.nameWithScope,
     instructions: ['noUndef', 'noConsole', 'preferTemplate', 'import', 'importLog', 'test'],
-  });
+  }, details));
 
-  const readmeFileContent = `experimental - use with caution  \nrepoName: ${details.repoName}  \nnpm name: ${details.nameWithScope}  \n`;
-  fs.writeFileSync(`${details.folderPath}README.md`, readmeFileContent);
+  makeJsFile(Object.assign({
+    flavor: null,
+    instructions: ['readme'],
+    overrideFilename: 'README',
+    extension: 'md'
+  }, details));
 }
 
 
