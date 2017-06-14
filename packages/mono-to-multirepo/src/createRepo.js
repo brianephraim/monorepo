@@ -1,10 +1,6 @@
-/* eslint-disable comma-dangle */
-
-const fs = require('fs-extra');
-
-const exec = require('child-process-promise').exec;
-
-const generatePackageDotJsonContent = require('./generatePackageDotJsonContent');
+import { exec } from 'child-process-promise';
+import fs from 'fs-extra';
+import generatePackageDotJsonContent from './generatePackageDotJsonContent';
 
 function createRepo(repoName, token) {
   return exec(`curl -H "Authorization: token ${token}" https://api.github.com/user/repos -d '{"name":"${repoName}"}'`)
@@ -24,8 +20,6 @@ function createRepo(repoName, token) {
       url: response.clone_url,
     });
 
-    console.log('packageDotJsonContents',packageDotJsonContents);
-
     fs.writeJsonSync(packageDotJsonPath, packageDotJsonContents, { spaces: 2 });
     return {
       packageFolderName: repoName,
@@ -34,4 +28,4 @@ function createRepo(repoName, token) {
   });
 }
 
-module.exports = createRepo;
+export default createRepo;

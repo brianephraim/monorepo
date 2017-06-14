@@ -1,15 +1,13 @@
 /* eslint-disable no-console */
-/* eslint-disable comma-dangle */
-
-const caseUtlity = require('case');
-const inquirer = require('inquirer');
-const exec = require('child-process-promise').exec;
-const fs = require('fs-extra');
-const generatePackageDotJsonContent = require('./generatePackageDotJsonContent');
+import caseUtlity from 'case';
+import inquirer from 'inquirer';
+import fs from 'fs-extra';
+import { exec } from 'child-process-promise';
+import generatePackageDotJsonContent from './generatePackageDotJsonContent';
 
 function makeJsFile({
   folderPath, flavor, nameWithScope, casedFileName, casedVariableName,
-  extension, overrideFilename, instructions = []
+  extension, overrideFilename, instructions = [],
 }) {
   const dotFlavor = `.${flavor}`;
   const filename = `${overrideFilename || casedFileName}${flavor ? dotFlavor : ''}.${extension || 'js'}`;
@@ -135,7 +133,7 @@ function validate(answers) {
 
   validations.push(Promise.resolve(validCase).then(() => {
     console.info(
-      `${validCase ? 'Good' : 'Bad'}, you used ${entryCase} case in naming. ${validCase ? 'Use camelCaser, lowercase, or kebab-case' : ''}`
+      `${validCase ? 'Good' : 'Bad'}, you used ${entryCase} case in naming. ${validCase ? 'Use camelCaser, lowercase, or kebab-case' : ''}`,
     );
     if (!validCase) {
       return Promise.reject(`Use camelCase, lowercase, or kebab-case, not ${entryCase} case.`);
@@ -161,7 +159,7 @@ function validate(answers) {
           return Promise.reject(new Error(`NPM already exists: ${casedFileNameWithScope}`));
         }
         return npmAvailable;
-      })
+      }),
     );
   }
   if (!isPrivateGithub) {
@@ -173,7 +171,7 @@ function validate(answers) {
           return Promise.reject(new Error(`Github project already exists: ${casedFileName}`));
         }
         return repoAvailable;
-      })
+      }),
     );
   }
   return Promise.all(validations).then(() => {
@@ -223,12 +221,12 @@ function boilerplateFolder(details) {
     flavor: null,
     instructions: ['readme'],
     overrideFilename: 'README',
-    extension: 'md'
+    extension: 'md',
   }, details));
 }
 
 
-module.exports = () => {
+const toExport = () => {
   survey()
   .then(validate)
   .then(boilerplateFolder)
@@ -236,3 +234,5 @@ module.exports = () => {
     console.log('\x1b[31m', 'INIT PACKAGE FAILED', r, '\x1b[0m');
   });
 };
+
+export default toExport;

@@ -1,6 +1,6 @@
 /* eslint-disable comma-dangle */
 
-const exec = require('child-process-promise').exec;
+import { exec } from 'child-process-promise';
 
 function getChangedPackages() {
   return exec('git ls-files -m')
@@ -18,4 +18,4 @@ function getChangedPackages() {
   });
 }
 
-module.exports = getChangedPackages;
+export default getChangedPackages;

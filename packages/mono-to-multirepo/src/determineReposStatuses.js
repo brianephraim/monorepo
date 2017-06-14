@@ -1,6 +1,5 @@
 /* eslint-disable no-lonely-if */
-
-const fs = require('fs-extra');
+import fs from 'fs-extra';
 
 function determineReposStatuses(packagesWithChanges) {
   const reposStatuses = packagesWithChanges.reduce((statuses, packageFolderName) => {
@@ -36,4 +35,4 @@ function determineReposStatuses(packagesWithChanges) {
   return reposStatuses.reposNeedingCommits;
 }
 
-module.exports = determineReposStatuses;
+export default determineReposStatuses;

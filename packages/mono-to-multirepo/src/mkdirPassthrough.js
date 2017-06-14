@@ -1,4 +1,4 @@
-const exec = require('child-process-promise').exec;
+import { exec } from 'child-process-promise';
 
 function mkdirPassthrough(reposNeedingCommits) {
   if (reposNeedingCommits && reposNeedingCommits.length) {
@@ -8,5 +8,4 @@ function mkdirPassthrough(reposNeedingCommits) {
   }
   return Promise.reject(new Error('No repos'));
 }
-
-module.exports = mkdirPassthrough;
+export default mkdirPassthrough;

@@ -1,4 +1,4 @@
-const fs = require('fs-extra');
+import fs from 'fs-extra';
 
 function filterOutNonRepos(packageFolderNames) {
   return packageFolderNames.reduce((repos, packageFolderName) => {
@@ -21,4 +21,4 @@ function filterOutNonRepos(packageFolderNames) {
   }, []);
 }
 
-module.exports = filterOutNonRepos;
+export default filterOutNonRepos;

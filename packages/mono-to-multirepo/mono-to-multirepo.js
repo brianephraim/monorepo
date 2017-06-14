@@ -1,6 +1,6 @@
-const argv = require('yargs').argv;
-const publish = require('./src/publish');
-const initPackage = require('./src/initPackage');
+import { argv } from 'yargs';
+import publish from './src/publish';
+import initPackage from './src/initPackage';
 
 if (argv.m) {
   publish();

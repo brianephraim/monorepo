@@ -1,4 +1,4 @@
-const exec = require('child-process-promise').exec;
+import { exec } from 'child-process-promise';
 
 function getPackageFolderNames() {
   return exec('ls ./packages/')
@@ -7,4 +7,4 @@ function getPackageFolderNames() {
     return packageFolderNames;
   });
 }
-module.exports = getPackageFolderNames;
+export default getPackageFolderNames;

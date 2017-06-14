@@ -1,11 +1,8 @@
 /* eslint-disable no-plusplus */
 /* eslint-disable no-console */
-
-const createRepo = require('./createRepo');
-
-const argv = require('yargs').argv;
-
-const exec = require('child-process-promise').exec;
+import { argv } from 'yargs';
+import { exec } from 'child-process-promise';
+import createRepo from './createRepo';
 
 function updateRemoteRepos(reposNeedingCommits) {
   let i = 0;
@@ -95,4 +92,4 @@ function updateRemoteRepos(reposNeedingCommits) {
   return recurse();
 }
 
-module.exports = updateRemoteRepos;
+export default updateRemoteRepos;

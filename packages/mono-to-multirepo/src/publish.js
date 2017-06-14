@@ -1,25 +1,11 @@
-/* eslint-disable import/no-extraneous-dependencies */
-/* eslint-disable comma-dangle */
-/* eslint-disable no-lonely-if */
-/* eslint-disable no-plusplus */
 /* eslint-disable no-console */
-/* eslint-disable no-unused-vars */
+import { argv } from 'yargs';
+import getPackageFolderNames from './getPackageFolderNames';
+import filterOutNonRepos from './filterOutNonRepos';
+import mkdirPassthrough from './mkdirPassthrough';
+import updateRemoteRepos from './updateRemoteRepos';
 
-
-require('pretty-error').start();
-
-const argv = require('yargs').argv;
-
-const fs = require('fs-extra');
-
-const exec = require('child-process-promise').exec;
-
-const getPackageFolderNames = require('./getPackageFolderNames');
-const filterOutNonRepos = require('./filterOutNonRepos');
-const mkdirPassthrough = require('./mkdirPassthrough');
-const updateRemoteRepos = require('./updateRemoteRepos');
-
-module.exports = () => {
+const toExport = () => {
   if (argv.m) {
     getPackageFolderNames()
     .then(filterOutNonRepos)
@@ -29,6 +15,8 @@ module.exports = () => {
       console.log('CAUGHT!!', e);
     });
   } else {
-    console.error('You must provide a commit message like ` -m "some message"`');
+    console.error('You must provide a commit message like ` --m "some message"`');
   }
 };
+
+export default toExport;
