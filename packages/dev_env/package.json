@@ -3,7 +3,7 @@
   "version": "0.0.13",
   "scripts": {
     "xyzpostinstall": "./node_modules/.bin/babel ./ --out-dir ./compiled --ignore compiled,node_modules",
-    "prepublish": "./node_modules/.bin/babel-node ./babel.start.js --env=node --dirroot=$(pwd)",
+    "prepublish": "./node_modules/.bin/babel-node ./babel.start.js --env=build --dirroot=$(pwd)",
     "publish": "echo 'insert text here' > ./postpublishplz.txt && rm -rf ./dist"
   },
   "bin": {

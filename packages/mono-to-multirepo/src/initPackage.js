@@ -101,6 +101,14 @@ function survey() {
         return 'no';
       },
     },
+    {
+      type: 'input',
+      name: 'bundleForNode',
+      message: 'Is this targeted for Node enviornment? (Affects bundling).  (default "no")',
+      default: () => {
+        return 'no';
+      },
+    },
   ]);
 }
 
@@ -121,6 +129,7 @@ function validate(answers) {
 
   const isPrivateNpm = answers.privateNpm[0].toLowerCase() === 'y';
   const isPrivateGithub = answers.privateGithub[0].toLowerCase() === 'y';
+  const bundleForNode = answers.bundleForNode[0].toLowerCase() === 'y';
   const folderPath = `${process.cwd()}/packages/${casedFileName}/`;
   const validations = [];
 
@@ -178,6 +187,7 @@ function validate(answers) {
       repoName,
       folderPath,
       casedVariableName,
+      bundleForNode,
     };
   });
 }
@@ -190,6 +200,7 @@ function boilerplateFolder(details) {
     name: details.nameWithScope,
     isPrivate: details.isPrivateNpm,
     isPrivateFromGithub: details.isPrivateGithub,
+    bundleForNode: details.bundleForNode,
   });
   fs.writeJsonSync(`${details.folderPath}package.json`, packageDotJsonContent, { spaces: 2 });
 

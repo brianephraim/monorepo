@@ -60,7 +60,7 @@ function findDependenciesProblems(dependencies, packageDotJsonContent) {
       // `import asdf from '@defualt/asdf';``
       // These dependencies will be either in /node_modules/ or /packages/,
       // the latter for only monorepo use.
-      if (rawRequest.indexOf('.') !== 0 && rawRequest.indexOf('/') !== 0) {
+      if (rawRequest && rawRequest.indexOf('.') !== 0 && rawRequest.indexOf('/') !== 0) {
         const validationResult = validateNpmPackageName(rawRequest);
         if (validationResult.validForNewPackages) {
           if (
