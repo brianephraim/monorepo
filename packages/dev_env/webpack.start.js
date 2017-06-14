@@ -4,7 +4,7 @@ import express from 'express';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpack from 'webpack';
 import url from 'url';
-import generateWebpackConfig from './generate.webpack.config.babel';
+import generateWebpackConfig from './webpack.config.babel';
 import parseStatsForDependencyProblems from './parseStatsForDependencyProblems';
 import testSetup from './testSetup';
 
@@ -17,7 +17,7 @@ if (env === 'test') {
 } else if (doWebpack) {
   const app = express();
   const port = 3000;
-  const config = generateWebpackConfig(argv);
+  const config = generateWebpackConfig;
   const compiler = webpack(config);
   if (env === 'build') {
     compiler.run((err, stats) => {

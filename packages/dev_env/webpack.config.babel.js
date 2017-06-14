@@ -29,6 +29,7 @@
     node_modules and node built-in requires will not be bundled.
 */
 
+import { argv } from 'yargs';
 import StringReplacePlugin from 'string-replace-webpack-plugin';
 import webpack from 'webpack';
 import jsonImporter from 'node-sass-json-importer';
@@ -41,7 +42,7 @@ import webpackConfigResolve from './webpack-config-resolve';
 
 const devHtmlPath = './index.html';
 
-export default (argv) => {
+function generateConfigJson() {
   const env = argv.env;
 
   const dirRoot = argv.dirroot || process.cwd();
@@ -292,5 +293,6 @@ export default (argv) => {
 
   fs.writeFileSync('./_webpack-config-preview.json', JSON.stringify(config, null, 2));
   return config;
-};
+}
 
+export default generateConfigJson();
