@@ -7,9 +7,9 @@
   "scripts": {
     "test": "node ./packages/dev_env/babel.start.js --env=test",
     "dev": "node ./packages/dev_env/babel.start.js",
-    "mono-to-multirepo": "node ./packages/mono-to-multirepo/mono-to-multirepo.js",
-    "new": "npm run mono-to-multirepo -- -i",
-    "scatter": "npm run mono-to-multirepo -- -m 'scattered from monorepo'",
+    "mono-to-multirepo": "babel-node ./packages/mono-to-multirepo/mono-to-multirepo.js",
+    "new": "npm run mono-to-multirepo -- --i",
+    "scatter": "npm run mono-to-multirepo -- --m 'scattered from monorepo'",
     "both": "./node_modules/stmux/bin/stmux.js -M -- [ \"npm run dev\" .. \"npm run test\" ]",
     "start": "babel-node devServer.js",
     "lint": "eslint src",

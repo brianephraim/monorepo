@@ -1,5 +1,4 @@
 const argv = require('yargs').argv;
-
 const publish = require('./src/publish');
 const initPackage = require('./src/initPackage');
 
