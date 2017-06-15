@@ -190,7 +190,7 @@ function generateConfigJson() {
 
   const config = {
     entry,
-    devtool: env === 'build' ? 'source-map' : 'eval',
+    devtool: env === 'build' ? 'source-map' : 'cheap-module-eval-source-map',
     output: {
       path: `${dirRoot}`,
       filename: '[name].js',

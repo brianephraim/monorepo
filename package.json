@@ -5,15 +5,26 @@
   "version": "0.0.0",
   "description": "Redux ToDos example",
   "scripts": {
-    "test": "node ./packages/dev_env/babel.start.js --env=test",
-    "dev": "node ./packages/dev_env/babel.start.js",
+    "mono":  "./packages/mono-to-multirepo/bin/mono-to-multirepo.js --i",
+    "test": "./packages/dev_env/bin/devenv.js --env=test",
+    "dev": "./packages/dev_env/bin/devenv.js",
+    "item": "npm_run_item(){ (./packages/dev_env/bin/devenv.js --item=$1) };npm_run_item",
     "mono-to-multirepo": "babel-node ./packages/mono-to-multirepo/mono-to-multirepo.js",
     "new": "npm run mono-to-multirepo -- --i",
     "scatter": "npm run mono-to-multirepo -- --m='scattered from monorepo'",
     "both": "./node_modules/stmux/bin/stmux.js -M -- [ \"npm run dev\" .. \"npm run test\" ]",
+    "asdf": "(cd ./packages/study && npm run start)",
     "start": "babel-node devServer.js",
     "lint": "eslint src",
-    "testx": "./node_modules/mocha/bin/mocha src/**/*.spec.js --reporter spec"
+    "testx": "./node_modules/mocha/bin/mocha src/**/*.spec.js --reporter spec",
+    "echox": "SHA=${SHA:-};xx=1000; echo $((11 + $xx)) && echo \"xx-$SHA-xx\"",
+    "echo1": "echo $npm_config_asdf",
+    "echo2": "echo asdf && read varname && echo \"aaa $varname aaa\"",
+    "echo3": "a(){ echo $2 $1; };a",
+    "test2": "node ./packages/dev_env/pre-webpack/babel.start.js --env=test",
+    "devold": "node ./packages/dev_env/pre-webpack/babel.start.js",
+    "item2": "npm_run_item(){ (cd ./packages/$1 && npm run start) };npm_run_item",
+    "item3": "./packages/dev_env/bin/devenv.js --item=study"
   },
   "publishConfig": {
     "access": "public"

@@ -4,15 +4,19 @@ import express from 'express';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpack from 'webpack';
 import url from 'url';
+import shellCommand from './pre-webpack/shell-command';
 import generateWebpackConfig from './webpack.config.babel';
 import parseStatsForDependencyProblems from './parseStatsForDependencyProblems';
 import testSetup from './testSetup';
 
 const env = argv.env;
+const item = argv.item;
 
 const doWebpack = true;
-
-if (env === 'test') {
+if (item) {
+  console.log('aaaa', argv);
+  shellCommand(`(cd ./packages/${item} && npm run start)`);
+} else if (env === 'test') {
   testSetup();
 } else if (doWebpack) {
   const app = express();
