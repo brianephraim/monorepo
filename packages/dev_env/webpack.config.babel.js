@@ -45,11 +45,14 @@ const devHtmlPath = './index.html';
 function generateConfigJson() {
   const env = argv.env;
 
+  const isCommandLine = env === 'bundleForNode';
+
   const dirRoot = argv.dirroot || process.cwd();
 
   const packageJson = fs.readJsonSync(`${dirRoot}/package.json`);
 
-  const bundleForNode = packageJson.bundleForNode;
+  const bundleForNode = packageJson.bundleForNode || env === 'bundleForNode';
+  const isBuild = env === 'build' || env === 'bundleForNode';
 
   let username = null;
   if (packageJson.repository && packageJson.repository.url) {
@@ -79,9 +82,8 @@ function generateConfigJson() {
       use: [moreLoaderParams.fallback, ...moreLoaderParams.use],
     };
   }
-
   const outputFiles = {};
-  if (env === 'build') {
+  if (isBuild) {
     outputFiles.library = `dist/${libraryNameReduced}`;
     outputFiles.libraryMin = `dist/${libraryNameReduced}.min`;
     outputFiles.demo = 'dist/demo/index';
@@ -109,12 +111,13 @@ function generateConfigJson() {
       `${dirRoot}/packages/MainApp/MainApp.js`,
     ]),
   };
-  const entry = Object.keys(entryFiles).reduce((accum, entryName) => {
+  let entry = Object.keys(entryFiles).reduce((accum, entryName) => {
     if (entryFiles[entryName].length) {
       accum[entryName] = entryFiles[entryName];
     }
     return accum;
   }, {});
+  
 
   function moveModify(source, modifyPath, modifyContent) {
     let sources = [];
@@ -143,39 +146,41 @@ function generateConfigJson() {
     });
   }
 
-  if (env === 'build') {
-    moveModify(['src/import-examples/**/!(webpack.config).*', 'src/tonicExample.js'], (filePath) => {
-      return filePath.replace('src/', './');
-    },
-    (content) => {
-      return content.replace(/LIBRARYNAME/g, libraryName);
-    });
+  if (!isCommandLine) {
+    if (isBuild) {
+      moveModify(['src/import-examples/**/!(webpack.config).*', 'src/tonicExample.js'], (filePath) => {
+        return filePath.replace('src/', './');
+      },
+      (content) => {
+        return content.replace(/LIBRARYNAME/g, libraryName);
+      });
 
-    registerPlugin('UglifyJsPlugin', new webpack.optimize.UglifyJsPlugin({
-      include: /\.min\.js$/,
-      minimize: true,
-    }));
+      registerPlugin('UglifyJsPlugin', new webpack.optimize.UglifyJsPlugin({
+        include: /\.min\.js$/,
+        minimize: true,
+      }));
 
-    const templatePath = 'src/demo/index.ejs';
-    const htmlTemplateExists = fs.existsSync(templatePath);
-    const indexHtmlSettings = {
-      chunks: [outputFiles.demo],
-      ...(
-        htmlTemplateExists ? { template: templatePath } : {}
-      ),
-      title: 'afasdfasdfasd',
-      username,
-      libraryName,
-    };
-    registerPlugin('demoIndex-HtmlWebpackPlugin', new HtmlWebpackPlugin({
-      filename: './dist/demo/index.html',
-      ...indexHtmlSettings,
-    }));
-  } else {
-    registerPlugin('demoDevIndex-HtmlWebpackPlugin', new HtmlWebpackPlugin({
-      chunks: [outputFiles.demo],
-      filename: devHtmlPath,
-    }));
+      const templatePath = 'src/demo/index.ejs';
+      const htmlTemplateExists = fs.existsSync(templatePath);
+      const indexHtmlSettings = {
+        chunks: [outputFiles.demo],
+        ...(
+          htmlTemplateExists ? { template: templatePath } : {}
+        ),
+        title: 'afasdfasdfasd',
+        username,
+        libraryName,
+      };
+      registerPlugin('demoIndex-HtmlWebpackPlugin', new HtmlWebpackPlugin({
+        filename: './dist/demo/index.html',
+        ...indexHtmlSettings,
+      }));
+    } else {
+      registerPlugin('demoDevIndex-HtmlWebpackPlugin', new HtmlWebpackPlugin({
+        chunks: [outputFiles.demo],
+        filename: devHtmlPath,
+      }));
+    }
   }
   registerPlugin('StringReplacePlugin', new StringReplacePlugin());
 
@@ -188,20 +193,31 @@ function generateConfigJson() {
     },
   }));
 
+  let output = {
+    path: `${dirRoot}`,
+    filename: '[name].js',
+    library: libraryName,
+    libraryTarget: 'umd',
+    umdNamedDefine: true,
+    publicPath: '/',
+    // publicPath: '/assets/',
+  };
+
+  if (isCommandLine) {
+    entry = null;
+    output = null;
+  }
+
   const config = {
     entry,
-    devtool: env === 'build' ? 'source-map' : 'cheap-module-eval-source-map',
-    output: {
-      path: `${dirRoot}`,
-      filename: '[name].js',
-      library: libraryName,
-      libraryTarget: 'umd',
-      umdNamedDefine: true,
-      publicPath: '/',
-      // publicPath: '/assets/',
-    },
+    output,
+    devtool: isBuild ? 'source-map' : 'cheap-module-eval-source-map',
     module: {
       rules: [
+        // Why is this here: https://github.com/Reactive-Extensions/RxJS/issues/1117
+        // Issue only appeard when webpack run on command line for Node bundle
+        { test: /rx\.lite\.aggregates\.js/, use: 'imports-loader?define=>false' },
+
         {
           test: /\.(js)?$/,
           loader: 'babel-loader',
@@ -230,14 +246,14 @@ function generateConfigJson() {
         },
         {
           test: /\.css$/,
-          ...conditionalExtractTextLoaderCss(env === 'build', {
+          ...conditionalExtractTextLoaderCss(isBuild, {
             fallback: 'style-loader',
             use: ['css-loader'],
           }),
         },
         {
           test: /\.scss$/,
-          ...conditionalExtractTextLoaderCss(env === 'build', {
+          ...conditionalExtractTextLoaderCss(isBuild, {
             fallback: 'style-loader',
             use: [
               'css-loader?sourceMap',
