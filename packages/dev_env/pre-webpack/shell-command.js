@@ -20,11 +20,11 @@ module.exports = (commandToRun) => {
   //
   // kexec doesn't work in windows, so fallback to child_process.spawn
   // this logic copied from babel-cli/lib/babel-node.js
-  try {
-    const kexec = require('kexec');
-    kexec(command, args);
-  } catch (err) {
-    if (err.code !== 'MODULE_NOT_FOUND') throw err;
+  // try {
+  //   const kexec = require('kexec');
+  //   kexec(command, args);
+  // } catch (err) {
+    // if (err.code !== 'MODULE_NOT_FOUND') throw err;
 
     const childProcess = require('child_process');
     const proc = childProcess.spawn(command, args, { stdio: 'inherit' });
@@ -37,5 +37,5 @@ module.exports = (commandToRun) => {
         }
       });
     });
-  }
+  // }
 };

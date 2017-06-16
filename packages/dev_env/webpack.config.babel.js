@@ -28,7 +28,7 @@
     Only application files will be bundled.
     node_modules and node built-in requires will not be bundled.
 */
-
+import path from 'path';
 import { argv } from 'yargs';
 import StringReplacePlugin from 'string-replace-webpack-plugin';
 import webpack from 'webpack';
@@ -40,18 +40,26 @@ import globby from 'globby';
 import fs from 'fs-extra';
 import webpackConfigResolve from './webpack-config-resolve';
 
+
 const devHtmlPath = './index.html';
+
+// console.log(process.cwd());
+// // console.log(argv);
+// console.log({
+//   entry: path.resolve(process.cwd(), argv.entry),
+//   output: path.resolve(process.cwd(), argv.output),
+// });
 
 function generateConfigJson() {
   const env = argv.env;
 
-  const isCommandLine = env === 'bundleForNode';
+  const isCommandLine = argv.entry;
 
   const dirRoot = argv.dirroot || process.cwd();
 
   const packageJson = fs.readJsonSync(`${dirRoot}/package.json`);
 
-  const bundleForNode = packageJson.bundleForNode || env === 'bundleForNode';
+  const bundleForNode = packageJson.bundleForNode || argv.entry;
   const isBuild = env === 'build' || env === 'bundleForNode';
 
   let username = null;
@@ -204,8 +212,15 @@ function generateConfigJson() {
   };
 
   if (isCommandLine) {
-    entry = null;
-    output = null;
+    entry = {
+      main: path.resolve(process.cwd(), argv.entry),
+    };
+    output = path.resolve(process.cwd(), argv.output);
+    output = output.split('/');
+    output = {
+      filename: output.pop(),
+      path: output.join('/'),
+    };
   }
 
   const config = {
@@ -302,7 +317,18 @@ function generateConfigJson() {
           __dirname: false,
           __filename: false,
         },
-        externals: [nodeExternals({ modulesFromFile: true })],
+        externals: [
+          nodeExternals({ modulesFromFile: true })
+          // ...(argv.entry ? {
+          //   'yargs': 'commonjs yargs',
+          //   'socket.io': 'commonjs socket.io',
+          //   'webpack': 'commonjs webpack',
+          //   'html-webpack-plugin': 'commonjs html-webpack-plugin',
+          //   'any-promise': 'commonjs any-promise',
+          //   'natives': 'commonjs natives',
+          //    'chokidar': 'commonjs chokidar'
+          // }: )
+        ],
       } : {}
     ),
   };

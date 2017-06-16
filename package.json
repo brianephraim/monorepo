@@ -9,6 +9,7 @@
     "test": "./packages/dev_env/bin/devenv.js --env=test",
     "dev": "./packages/dev_env/bin/devenv.js",
     "item": "npm_run_item(){ (./packages/dev_env/bin/devenv.js --item=$1) };npm_run_item",
+    "devenvnode": "npm_run_item(){ (./packages/dev_env/bin/devenv.js --entry=$1 --output=$2) };npm_run_item",
     "mono-to-multirepo": "babel-node ./packages/mono-to-multirepo/mono-to-multirepo.js",
     "new": "npm run mono-to-multirepo -- --i",
     "scatter": "npm run mono-to-multirepo -- --m='scattered from monorepo'",

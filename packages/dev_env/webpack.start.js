@@ -11,6 +11,7 @@ import testSetup from './testSetup';
 
 const env = argv.env;
 const item = argv.item;
+console.log(argv)
 
 const doWebpack = true;
 if (item) {
@@ -23,7 +24,7 @@ if (item) {
   const port = 3000;
   const config = generateWebpackConfig;
   const compiler = webpack(config);
-  if (env === 'build') {
+  if (env === 'build' || argv.entry) {
     compiler.run((err, stats) => {
       parseStatsForDependencyProblems(stats);
       // fs.writeFileSync(process.cwd() + '/_webpack_stats.json',JSON.stringify(stats, null, 2));
