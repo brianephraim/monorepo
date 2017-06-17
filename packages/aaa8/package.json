@@ -1,6 +1,6 @@
 {
   "name": "@defualt/aaa8",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "publishConfig": {
     "access": "public"
   },
@@ -13,8 +13,8 @@
     "foreach": "^2.0.5"
   },
   "devDependencies": {
-    "@defualt/dev_env": "^0.0.13",
-    "mono-to-multirepo": "^0.0.1"
+    "@defualt/dev_env": "^0.0.14",
+    "mono-to-multirepo": "^0.0.2"
   },
   "repository": {
     "type": "git",

@@ -1,6 +1,6 @@
 {
   "name": "@defualt/dev_env",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "scripts": {
     "xyzpostinstall": "./node_modules/.bin/babel ./ --out-dir ./compiled --ignore compiled,node_modules",
     "prepublish": "./node_modules/.bin/babel-node ./pre-webpack/babel.start.js --env=build --dirroot=$(pwd)",
@@ -11,7 +11,7 @@
     "devenv-node": "./bin/devenv-node.js"
   },
   "dependencies": {
-    "@defualt/dev_env": "^0.0.13",
+    "@defualt/dev_env": "^0.0.14",
     "babel-cli": "^6.24.1",
     "babel-core": "^6.24.1",
     "babel-jest": "^20.0.3",
