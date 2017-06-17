@@ -10,11 +10,12 @@
     "dev": "./packages/dev_env/bin/devenv.js",
     "item": "npm_run_item(){ (./packages/dev_env/bin/devenv.js --item=$1) };npm_run_item",
     "devenvnode": "./packages/dev_env/bin/devenv-node.js",
+    "new": "npm run devenvnode ./packages/mono-to-multirepo/mono-to-multirepo.js -- --i",
 
     "devenvnode3": "npm_run_item(){ (cd ./packages/dev_env && ./node_modules/.bin/babel-node ./pre-webpack/babel.start.js --entry=$1 --output=$2) };npm_run_item",
     "devenvnode2": "npm_run_item(){ (cd ./packages/dev_env && ./bin/devenv.js --entry=$1 --output=$2) };npm_run_item",
     "mono-to-multirepo": "babel-node ./packages/mono-to-multirepo/mono-to-multirepo.js",
-    "new": "npm run mono-to-multirepo -- --i",
+    "new2": "npm run mono-to-multirepo -- --i",
     "scatter": "npm run mono-to-multirepo -- --m='scattered from monorepo'",
     "both": "./node_modules/stmux/bin/stmux.js -M -- [ \"npm run dev\" .. \"npm run test\" ]",
     "asdf": "(cd ./packages/study && npm run start)",
