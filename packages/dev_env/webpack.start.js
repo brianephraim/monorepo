@@ -11,7 +11,6 @@ import testSetup from './testSetup';
 
 const env = argv.env;
 const item = argv.item;
-console.log(argv)
 
 const doWebpack = true;
 if (item) {

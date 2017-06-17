@@ -131,7 +131,6 @@ function generateConfigJson() {
     }
     return accum;
   }, {});
-  
 
   function moveModify(source, modifyPath, modifyContent) {
     let sources = [];
@@ -219,10 +218,7 @@ function generateConfigJson() {
 
   if (isCommandLine) {
     entry = {
-      // main: './webpack.start.js',
-      // main: '/Users/brianephraim/Sites/monorepo/packages/mono-to-multirepo/mono-to-multirepo.js',
       main: argv.entry,
-      // main: path.resolve(process.cwd(), argv.entry),
     };
 
     // output = '/Users/brianephraim/Sites/monorepo/packages/dev_env/wepback.start.temp.js';
@@ -357,7 +353,7 @@ function generateConfigJson() {
           __filename: false,
         },
         externals: [
-          nodeExternals({ modulesFromFile: true })
+          nodeExternals({ modulesFromFile: true }),
           // ...(argv.entry ? {
           //   'yargs': 'commonjs yargs',
           //   'socket.io': 'commonjs socket.io',
