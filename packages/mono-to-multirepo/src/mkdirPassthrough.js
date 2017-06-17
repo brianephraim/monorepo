@@ -1,4 +1,4 @@
-import { exec } from 'child-process-promise';
+import { exec } from 'child-process-es6-promise';
 
 function mkdirPassthrough(reposNeedingCommits) {
   if (reposNeedingCommits && reposNeedingCommits.length) {

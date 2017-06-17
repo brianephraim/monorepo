@@ -1,7 +1,7 @@
 /* eslint-disable no-plusplus */
 /* eslint-disable no-console */
 import { argv } from 'yargs';
-import { exec } from 'child-process-promise';
+import { exec } from 'child-process-es6-promise';
 import createRepo from './createRepo';
 
 function updateRemoteRepos(reposNeedingCommits) {

@@ -43,6 +43,8 @@ import webpackConfigResolve from './webpack-config-resolve';
 
 const devHtmlPath = './index.html';
 
+console.log(argv);
+
 // console.log(process.cwd());
 // // console.log(argv);
 // console.log({
@@ -55,12 +57,16 @@ function generateConfigJson() {
 
   const isCommandLine = argv.entry;
 
-  const dirRoot = argv.dirroot || process.cwd();
+  let dirRoot = argv.dirroot || process.cwd();
+
+  if (argv.entry) {
+    dirRoot = '/Users/brianephraim/Sites/monorepo/packages/dev_env';
+  }
 
   const packageJson = fs.readJsonSync(`${dirRoot}/package.json`);
 
-  const bundleForNode = packageJson.bundleForNode || argv.entry;
-  const isBuild = env === 'build' || env === 'bundleForNode';
+  const bundleForNode = packageJson.bundleForNode || isCommandLine;
+  const isBuild = env === 'build' || isCommandLine;
 
   let username = null;
   if (packageJson.repository && packageJson.repository.url) {
@@ -213,14 +219,47 @@ function generateConfigJson() {
 
   if (isCommandLine) {
     entry = {
-      main: path.resolve(process.cwd(), argv.entry),
+      // main: './webpack.start.js',
+      // main: '/Users/brianephraim/Sites/monorepo/packages/mono-to-multirepo/mono-to-multirepo.js',
+      main: argv.entry,
+      // main: path.resolve(process.cwd(), argv.entry),
     };
-    output = path.resolve(process.cwd(), argv.output);
+
+    // output = '/Users/brianephraim/Sites/monorepo/packages/dev_env/wepback.start.temp.js';
+    // output = path.resolve(process.cwd(), argv.output);
+    // output = output.split('/');
+    // output = {
+    //   filename: output.pop(),
+    //   path: output.join('/'),
+    //   library: libraryName,
+    //   libraryTarget: 'umd',
+    //   umdNamedDefine: true,
+    //   publicPath: '/',
+    // };
+
+    // output = {
+    //   filename: 'wepback.start.temp.js',
+    //   path: '/Users/brianephraim/Sites/monorepo/packages/dev_env/',
+    //   library: libraryName,
+    //   libraryTarget: 'umd',
+    //   umdNamedDefine: true,
+    //   publicPath: '/',
+    // };
+
+    output = argv.output;
     output = output.split('/');
+
     output = {
       filename: output.pop(),
       path: output.join('/'),
+      library: libraryName,
+      libraryTarget: 'umd',
+      umdNamedDefine: true,
+      publicPath: '/',
     };
+
+
+    // /Users/brianephraim/Sites/monorepo/packages/mono-to-multirepo/mono-to-multirepo.js
   }
 
   const config = {

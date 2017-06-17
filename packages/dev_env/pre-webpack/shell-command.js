@@ -26,16 +26,16 @@ module.exports = (commandToRun) => {
   // } catch (err) {
     // if (err.code !== 'MODULE_NOT_FOUND') throw err;
 
-    const childProcess = require('child_process');
-    const proc = childProcess.spawn(command, args, { stdio: 'inherit' });
-    proc.on('exit', (code, signal) => {
-      process.on('exit', () => {
-        if (signal) {
-          process.kill(process.pid, signal);
-        } else {
-          process.exit(code);
-        }
-      });
+  const childProcess = require('child_process');
+  const proc = childProcess.spawn(command, args, { stdio: 'inherit' });
+  proc.on('exit', (code, signal) => {
+    process.on('exit', () => {
+      if (signal) {
+        process.kill(process.pid, signal);
+      } else {
+        process.exit(code);
+      }
     });
+  });
   // }
 };

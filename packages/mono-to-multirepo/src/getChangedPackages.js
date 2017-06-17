@@ -1,6 +1,6 @@
 /* eslint-disable comma-dangle */
 
-import { exec } from 'child-process-promise';
+import { exec } from 'child-process-es6-promise';
 
 function getChangedPackages() {
   return exec('git ls-files -m')

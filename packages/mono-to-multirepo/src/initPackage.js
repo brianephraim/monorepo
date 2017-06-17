@@ -2,7 +2,7 @@
 import caseUtlity from 'case';
 import inquirer from 'inquirer';
 import fs from 'fs-extra';
-import { exec } from 'child-process-promise';
+import { exec } from 'child-process-es6-promise';
 import generatePackageDotJsonContent from './generatePackageDotJsonContent';
 
 function makeJsFile({

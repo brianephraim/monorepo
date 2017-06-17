@@ -11,7 +11,7 @@
   "dependencies": {
     "@defualt/dev_env": "^0.0.13",
     "case": "^1.5.2",
-    "child-process-promise": "^2.2.1",
+    "child-process-es6-promise": "^1.1.0",
     "fs-extra": "^3.0.1",
     "inquirer": "^3.1.0",
     "yargs": "^8.0.1"

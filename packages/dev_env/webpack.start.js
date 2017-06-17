@@ -26,7 +26,7 @@ if (item) {
   const compiler = webpack(config);
   if (env === 'build' || argv.entry) {
     compiler.run((err, stats) => {
-      parseStatsForDependencyProblems(stats);
+      // parseStatsForDependencyProblems(stats);
       // fs.writeFileSync(process.cwd() + '/_webpack_stats.json',JSON.stringify(stats, null, 2));
 
       if (err) {
