@@ -10,8 +10,8 @@
   ],
   "scripts": {
     "y": "devenv",
-    "x": "node ./node_modules/dev_env/pre-webpack/babel.start.js",
-    "build": "./node_modules/.bin/babel-node ./node_modules/dev_env/webpack.start.js --env=build",
+    "x": "node ./node_modules/dev_env/babel.start.js",
+    "build": "./node_modules/.bin/babel-node ./node_modules/dev_env/dev_env.js --env=build",
     "XXX_build": "./node_modules/dev_env/webpack --env=build && npm run commonjs2-import-example && npm run es2015-import-example",
     "commonjs2-import-example": "browserify ./import-examples/commonjs2/index.js -o ./import-examples/commonjs2/index-compiled.js -d",
     "es2015-import-example": "./node_modules/dev_env/webpack --config ./src/import-examples/es2015/webpack.config.babel.js",

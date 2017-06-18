@@ -13,11 +13,11 @@
 */
 
 const path = require('path');
-const shellCommand = require('../pre-webpack/shell-command');
+const shellCommand = require('./shell-command');
 
 const argumentsPassThrough = process.argv.reduce((accum, argString) => {
   const toAppend = argString.indexOf('--') === 0 ? ` ${argString}` : '';
   return `${accum}${toAppend}`;
 }, '');
 
-shellCommand(`${path.resolve(__dirname, '../node_modules/.bin/babel-node')} ${path.resolve(__dirname, '../webpack.start.js')}${argumentsPassThrough}`);
+shellCommand(`${path.resolve(__dirname, './node_modules/.bin/babel-node')} ${path.resolve(__dirname, './dev_env.js')}${argumentsPassThrough}`);
