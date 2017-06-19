@@ -28,7 +28,6 @@
     Only application files will be bundled.
     node_modules and node built-in requires will not be bundled.
 */
-import path from 'path';
 import { argv } from 'yargs';
 import StringReplacePlugin from 'string-replace-webpack-plugin';
 import webpack from 'webpack';
@@ -39,11 +38,10 @@ import nodeExternals from 'webpack-node-externals';
 import globby from 'globby';
 import fs from 'fs-extra';
 import webpackConfigResolve from './webpack-config-resolve';
-
+import webpackEnhanceConfigNode from './webpackEnhanceConfigNode';
 
 const devHtmlPath = './index.html';
 
-console.log(argv);
 
 // console.log(process.cwd());
 // // console.log(argv);
