@@ -39,6 +39,7 @@ import globby from 'globby';
 import fs from 'fs-extra';
 import webpackConfigResolve from './webpack-config-resolve';
 import webpackEnhanceConfigNode from './webpackEnhanceConfigNode';
+import webpackEnhanceConfigWeb from './webpackEnhanceConfigWeb';
 
 const devHtmlPath = './index.html';
 
@@ -63,7 +64,6 @@ function generateConfigJson() {
 
   const packageJson = fs.readJsonSync(`${dirRoot}/package.json`);
 
-  const bundleForNode = packageJson.bundleForNode || isCommandLine;
   const isBuild = env === 'build' || isCommandLine;
 
   let username = null;
@@ -246,17 +246,13 @@ function generateConfigJson() {
     output = {
       filename: output.pop(),
       path: output.join('/'),
-      library: libraryName,
-      libraryTarget: 'umd',
-      umdNamedDefine: true,
-      publicPath: '/',
     };
 
 
     // /Users/brianephraim/Sites/monorepo/packages/mono-to-multirepo/mono-to-multirepo.js
   }
 
-  const config = {
+  let config = {
     entry,
     output,
     devtool: isBuild ? 'source-map' : 'cheap-module-eval-source-map',
@@ -343,29 +339,13 @@ function generateConfigJson() {
     },
     resolve: webpackConfigResolve.resolve,
     plugins,
-    ...(
-      bundleForNode ? {
-        target: 'node',
-        node: {
-          __dirname: false,
-          __filename: false,
-        },
-        externals: [
-          nodeExternals({ modulesFromFile: true }),
-          // ...(argv.entry ? {
-          //   'yargs': 'commonjs yargs',
-          //   'socket.io': 'commonjs socket.io',
-          //   'webpack': 'commonjs webpack',
-          //   'html-webpack-plugin': 'commonjs html-webpack-plugin',
-          //   'any-promise': 'commonjs any-promise',
-          //   'natives': 'commonjs natives',
-          //    'chokidar': 'commonjs chokidar'
-          // }: )
-        ],
-      } : {}
-    ),
   };
 
+  if (packageJson.bundleForNode || isCommandLine) {
+    config = webpackEnhanceConfigNode(config);
+  } else {
+    config = webpackEnhanceConfigWeb(config);
+  }
   fs.writeFileSync('./_webpack-config-preview.json', JSON.stringify(config, null, 2));
   return config;
 }

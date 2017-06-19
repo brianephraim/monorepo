@@ -19,7 +19,7 @@ function enhance(originalConfig) {
       __filename: false,
     },
     externals: [
-      ...originalConfig.externals,
+      ...(originalConfig.externals || []),
       nodeExternals({ modulesFromFile: true }),
     ],
 
