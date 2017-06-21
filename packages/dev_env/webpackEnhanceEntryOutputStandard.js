@@ -1,6 +1,6 @@
 import globby from 'globby';
 
-function enhance(config, dirRoot, libraryName, libraryNameReduced, outputFiles) {
+function enhance(originalConfig, dirRoot, libraryName, libraryNameReduced, outputFiles) {
   const entryFiles = {
     MainApp: globby.sync([`${dirRoot}/packages/MainApp/MainApp.js`]),
     [outputFiles.library]: globby.sync([
@@ -39,7 +39,7 @@ function enhance(config, dirRoot, libraryName, libraryNameReduced, outputFiles) 
   };
 
   return {
-    ...config,
+    ...originalConfig,
     entry,
     output,
   };

@@ -30,11 +30,11 @@
 */
 import { argv } from 'yargs';
 import fs from 'fs-extra';
-import webpackConfigResolve from './webpack-config-resolve';
 import webpackEnhanceConfigNode from './webpackEnhanceConfigNode';
 import webpackEnhanceConfigWeb from './webpackEnhanceConfigWeb';
-import plugins from './pluginRegistry';
 import webpackEnhanceEntryOutputStandard from './webpackEnhanceEntryOutputStandard';
+import webpackEnhanceBaseConfig from './webpackEnhanceBaseConfig';
+import webpackConfigCommandLine from './webpackConfigCommandLine';
 
 // console.log(process.cwd());
 // // console.log(argv);
@@ -44,60 +44,12 @@ import webpackEnhanceEntryOutputStandard from './webpackEnhanceEntryOutputStanda
 // });
 
 function generateConfigJson() {
-  let config = {
-    module: {
-      rules: [
-        {
-          test: /\.(js)?$/,
-          loader: 'babel-loader',
-          exclude: /node_modules/,
-          // include: `${dirRoot}`,
-          // options: {
-          //   presets: [
-
-          //     [
-          //       'es2015',
-          //       // needed for tree shaking
-          //       { modules: false },
-          //     ],
-          //     'react',
-          //     // 'react',
-          //   ],
-          //   plugins: [
-          //     'transform-es2015-spread',
-          //     'transform-object-rest-spread',
-          //   ],
-          //   // mocha needs .babelrc,
-          //   // and .babelrc cannot use the above config
-          //   // so ignore .babelrc here
-          //   babelrc: false,
-          // },
-        },
-      ],
-    },
-    resolve: webpackConfigResolve.resolve,
-    plugins,
-  };
   const isCommandLine = argv.entry;
+  let config;
   if (isCommandLine) {
-    const entry = {
-      main: argv.entry,
-    };
-
-    let output = argv.output;
-    output = output.split('/');
-
-    output = {
-      filename: output.pop(),
-      path: output.join('/'),
-    };
-    config = {
-      ...config,
-      entry,
-      output,
-    };
-    config = webpackEnhanceConfigNode(config);
+    config = webpackConfigCommandLine();
   } else {
+    config = webpackEnhanceBaseConfig();
     const isBuild = argv.env === 'build';
     const dirRoot = argv.dirroot || process.cwd();
     const packageJson = fs.readJsonSync(`${dirRoot}/package.json`);
