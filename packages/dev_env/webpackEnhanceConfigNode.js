@@ -6,11 +6,12 @@ function enhance(originalConfig) {
   const module = { ...(originalConfig && originalConfig.module) };
   module.rules = [
     { test: /rx\.lite\.aggregates\.js/, use: 'imports-loader?define=>false' },
-    ...module.rules,
+    ...(module.rules || []),
   ];
 
   const config = {
     ...originalConfig,
+    devtool: 'cheap-module-eval-source-map',
     module,
     target: 'node',
     node: {

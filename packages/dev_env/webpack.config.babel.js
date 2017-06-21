@@ -29,20 +29,12 @@
     node_modules and node built-in requires will not be bundled.
 */
 import { argv } from 'yargs';
-import StringReplacePlugin from 'string-replace-webpack-plugin';
-import webpack from 'webpack';
-import jsonImporter from 'node-sass-json-importer';
-import ExtractTextPlugin from 'extract-text-webpack-plugin';
-import HtmlWebpackPlugin from 'html-webpack-plugin';
-import nodeExternals from 'webpack-node-externals';
-import globby from 'globby';
 import fs from 'fs-extra';
 import webpackConfigResolve from './webpack-config-resolve';
 import webpackEnhanceConfigNode from './webpackEnhanceConfigNode';
 import webpackEnhanceConfigWeb from './webpackEnhanceConfigWeb';
-
-const devHtmlPath = './index.html';
-
+import plugins from './pluginRegistry';
+import webpackEnhanceEntryOutputStandard from './webpackEnhanceEntryOutputStandard';
 
 // console.log(process.cwd());
 // // console.log(argv);
@@ -52,216 +44,9 @@ const devHtmlPath = './index.html';
 // });
 
 function generateConfigJson() {
-  const env = argv.env;
-
-  const isCommandLine = argv.entry;
-
-  let dirRoot = argv.dirroot || process.cwd();
-
-  if (argv.entry) {
-    dirRoot = '/Users/brianephraim/Sites/monorepo/packages/dev_env';
-  }
-
-  const packageJson = fs.readJsonSync(`${dirRoot}/package.json`);
-
-  const isBuild = env === 'build' || isCommandLine;
-
-  let username = null;
-  if (packageJson.repository && packageJson.repository.url) {
-    username = packageJson.repository.url.replace('://').split('/')[1];
-  }
-
-  const libraryName = packageJson.name;
-  const libraryNameReduced = libraryName.split('/')[1] || libraryName.split('/')[0];
-
-  const plugins = [];
-  const pluginRegistry = {};
-  function registerPlugin(name, plugin) {
-    if (!pluginRegistry[name]) {
-      plugins.push(plugin);
-      pluginRegistry[name] = true;
-      return true;
-    }
-    return false;
-  }
-
-  function conditionalExtractTextLoaderCss(usePlugin, moreLoaderParams) {
-    if (usePlugin) {
-      registerPlugin('ExtractTextPlugin', new ExtractTextPlugin('[name].css'));
-      return { use: ExtractTextPlugin.extract(moreLoaderParams) };
-    }
-    return {
-      use: [moreLoaderParams.fallback, ...moreLoaderParams.use],
-    };
-  }
-  const outputFiles = {};
-  if (isBuild) {
-    outputFiles.library = `dist/${libraryNameReduced}`;
-    outputFiles.libraryMin = `dist/${libraryNameReduced}.min`;
-    outputFiles.demo = 'dist/demo/index';
-  } else {
-    outputFiles.demo = 'boot';
-    outputFiles.library = `${libraryNameReduced}`;
-  }
-  const entryFiles = {
-    MainApp: globby.sync([`${dirRoot}/packages/MainApp/MainApp.js`]),
-    [outputFiles.library]: globby.sync([
-      `${dirRoot}/${libraryNameReduced}.js`,
-      `${dirRoot}/src/library/index.js`,
-    ]),
-    ...(
-      outputFiles.libraryMin ? {
-        [outputFiles.libraryMin]: globby.sync([`${dirRoot}/src/library/index.js`]),
-      } : {}
-    ),
-    [outputFiles.demo]: globby.sync([
-      `${dirRoot}/*.demo.js`,
-      `${dirRoot}/demo.js`,
-      `${dirRoot}/**/*/*.demo.js`,
-      `${dirRoot}/**/*/demo.js`,
-      `!${dirRoot}/packages/**/*`,
-      `${dirRoot}/packages/MainApp/MainApp.js`,
-    ]),
-  };
-  let entry = Object.keys(entryFiles).reduce((accum, entryName) => {
-    if (entryFiles[entryName].length) {
-      accum[entryName] = entryFiles[entryName];
-    }
-    return accum;
-  }, {});
-
-  function moveModify(source, modifyPath, modifyContent) {
-    let sources = [];
-    if (typeof source === 'object') {
-      sources = source;
-    } else {
-      sources.push(source);
-    }
-    let toCopy = [];
-    sources.forEach((pattern) => {
-      toCopy = [
-        ...toCopy,
-        ...globby.sync(pattern),
-      ];
-    });
-    toCopy.forEach((filePath) => {
-      let filePathOut = filePath;
-      if (modifyPath) {
-        filePathOut = modifyPath(filePath);
-      }
-      let content = fs.readFileSync(filePath, 'utf8');
-      if (modifyContent) {
-        content = modifyContent(content, filePath, filePathOut);
-      }
-      fs.outputFileSync(filePathOut, content);
-    });
-  }
-
-  if (!isCommandLine) {
-    if (isBuild) {
-      moveModify(['src/import-examples/**/!(webpack.config).*', 'src/tonicExample.js'], (filePath) => {
-        return filePath.replace('src/', './');
-      },
-      (content) => {
-        return content.replace(/LIBRARYNAME/g, libraryName);
-      });
-
-      registerPlugin('UglifyJsPlugin', new webpack.optimize.UglifyJsPlugin({
-        include: /\.min\.js$/,
-        minimize: true,
-      }));
-
-      const templatePath = 'src/demo/index.ejs';
-      const htmlTemplateExists = fs.existsSync(templatePath);
-      const indexHtmlSettings = {
-        chunks: [outputFiles.demo],
-        ...(
-          htmlTemplateExists ? { template: templatePath } : {}
-        ),
-        title: 'afasdfasdfasd',
-        username,
-        libraryName,
-      };
-      registerPlugin('demoIndex-HtmlWebpackPlugin', new HtmlWebpackPlugin({
-        filename: './dist/demo/index.html',
-        ...indexHtmlSettings,
-      }));
-    } else {
-      registerPlugin('demoDevIndex-HtmlWebpackPlugin', new HtmlWebpackPlugin({
-        chunks: [outputFiles.demo],
-        filename: devHtmlPath,
-      }));
-    }
-  }
-  registerPlugin('StringReplacePlugin', new StringReplacePlugin());
-
-  registerPlugin('LoaderOptionsPlugin', new webpack.LoaderOptionsPlugin({
-    options: {
-      sassLoader: {
-        importer: jsonImporter,
-      },
-      context: dirRoot,
-    },
-  }));
-
-  let output = {
-    path: `${dirRoot}`,
-    filename: '[name].js',
-    library: libraryName,
-    libraryTarget: 'umd',
-    umdNamedDefine: true,
-    publicPath: '/',
-    // publicPath: '/assets/',
-  };
-
-  if (isCommandLine) {
-    entry = {
-      main: argv.entry,
-    };
-
-    // output = '/Users/brianephraim/Sites/monorepo/packages/dev_env/wepback.start.temp.js';
-    // output = path.resolve(process.cwd(), argv.output);
-    // output = output.split('/');
-    // output = {
-    //   filename: output.pop(),
-    //   path: output.join('/'),
-    //   library: libraryName,
-    //   libraryTarget: 'umd',
-    //   umdNamedDefine: true,
-    //   publicPath: '/',
-    // };
-
-    // output = {
-    //   filename: 'wepback.start.temp.js',
-    //   path: '/Users/brianephraim/Sites/monorepo/packages/dev_env/',
-    //   library: libraryName,
-    //   libraryTarget: 'umd',
-    //   umdNamedDefine: true,
-    //   publicPath: '/',
-    // };
-
-    output = argv.output;
-    output = output.split('/');
-
-    output = {
-      filename: output.pop(),
-      path: output.join('/'),
-    };
-
-
-    // /Users/brianephraim/Sites/monorepo/packages/mono-to-multirepo/mono-to-multirepo.js
-  }
-
   let config = {
-    entry,
-    output,
-    devtool: isBuild ? 'source-map' : 'cheap-module-eval-source-map',
     module: {
       rules: [
-        // Why is this here: https://github.com/Reactive-Extensions/RxJS/issues/1117
-        // Issue only appeard when webpack run on command line for Node bundle
-        { test: /rx\.lite\.aggregates\.js/, use: 'imports-loader?define=>false' },
-
         {
           test: /\.(js)?$/,
           loader: 'babel-loader',
@@ -288,63 +73,59 @@ function generateConfigJson() {
           //   babelrc: false,
           // },
         },
-        {
-          test: /\.css$/,
-          ...conditionalExtractTextLoaderCss(isBuild, {
-            fallback: 'style-loader',
-            use: ['css-loader'],
-          }),
-        },
-        {
-          test: /\.scss$/,
-          ...conditionalExtractTextLoaderCss(isBuild, {
-            fallback: 'style-loader',
-            use: [
-              'css-loader?sourceMap',
-              {
-                loader: 'sass-loader?sourceMap',
-                // Apply the JSON importer via sass-loader's options.
-                options: {
-                  importer: jsonImporter,
-                },
-              },
-            ],
-          }),
-        },
-        {
-          test: /\.json$/,
-          loaders: ['json-loader'],
-        },
-        {
-          test: /\.ejs$/,
-          loader: 'ejs-compiled-loader',
-        },
-        {
-          test: /\.md/,
-          loaders: ['html-loader', 'markdown-loader'],
-        },
-        {
-          test: /\.js|\.html|\.ejs$/,
-          exclude: [__filename],
-          loader: StringReplacePlugin.replace({
-            replacements: [{
-              pattern: /LIBRARYNAME/g,
-              replacement(/* match, p1, offset, string */) {
-                return libraryName;
-              },
-            }],
-          }),
-        },
       ],
     },
     resolve: webpackConfigResolve.resolve,
     plugins,
   };
+  const isCommandLine = argv.entry;
+  if (isCommandLine) {
+    const entry = {
+      main: argv.entry,
+    };
 
-  if (packageJson.bundleForNode || isCommandLine) {
+    let output = argv.output;
+    output = output.split('/');
+
+    output = {
+      filename: output.pop(),
+      path: output.join('/'),
+    };
+    config = {
+      ...config,
+      entry,
+      output,
+    };
     config = webpackEnhanceConfigNode(config);
   } else {
-    config = webpackEnhanceConfigWeb(config);
+    const isBuild = argv.env === 'build';
+    const dirRoot = argv.dirroot || process.cwd();
+    const packageJson = fs.readJsonSync(`${dirRoot}/package.json`);
+    const outputFiles = {};
+    const libraryName = packageJson.name;
+    const libraryNameReduced = libraryName.split('/')[1] || libraryName.split('/')[0];
+    if (isBuild) {
+      outputFiles.library = `dist/${libraryNameReduced}`;
+      outputFiles.libraryMin = `dist/${libraryNameReduced}.min`;
+      outputFiles.demo = 'dist/demo/index';
+    } else {
+      outputFiles.demo = 'boot';
+      outputFiles.library = `${libraryNameReduced}`;
+    }
+    config = webpackEnhanceEntryOutputStandard(
+      config, dirRoot, libraryName, libraryNameReduced, outputFiles,
+    );
+    if (packageJson.bundleForNode) {
+      config = webpackEnhanceConfigNode(config);
+    } else {
+      let username = null;
+      if (packageJson.repository && packageJson.repository.url) {
+        username = packageJson.repository.url.replace('://').split('/')[1];
+      }
+      config = webpackEnhanceConfigWeb(
+        config, libraryName, isBuild, dirRoot, username, outputFiles,
+      );
+    }
   }
   fs.writeFileSync('./_webpack-config-preview.json', JSON.stringify(config, null, 2));
   return config;
