@@ -12,7 +12,7 @@
     "devenvnode": "./packages/dev_env/bin/devenv-node.js",
     "new": "npm run devenvnode ./packages/mono-to-multirepo/mono-to-multirepo.js -- --i",
 
-    "devenvnode3": "npm_run_item(){ (cd ./packages/dev_env && ./node_modules/.bin/babel-node ./babel.start.js --entry=$1 --output=$2) };npm_run_item",
+    "devenvnode3": "npm_run_item(){ (cd ./packages/dev_env && ./node_modules/.bin/babel-node ./babelXXXX.start.js --entry=$1 --output=$2) };npm_run_item",
     "devenvnode2": "npm_run_item(){ (cd ./packages/dev_env && ./bin/devenv.js --entry=$1 --output=$2) };npm_run_item",
     "mono-to-multirepo": "babel-node ./packages/mono-to-multirepo/mono-to-multirepo.js",
     "new2": "npm run mono-to-multirepo -- --i",
@@ -26,8 +26,8 @@
     "echo1": "echo $npm_config_asdf",
     "echo2": "echo asdf && read varname && echo \"aaa $varname aaa\"",
     "echo3": "a(){ echo $2 $1; };a",
-    "test2": "node ./packages/dev_env/babel.start.js --env=test",
-    "devold": "node ./packages/dev_env/babel.start.js",
+    "test2": "node ./packages/dev_env/babelXXXX.start.js --env=test",
+    "devold": "node ./packages/dev_env/babelXXXX.start.js",
     "item2": "npm_run_item(){ (cd ./packages/$1 && npm run start) };npm_run_item",
     "item3": "./packages/dev_env/bin/devenv.js --item=study"
   },

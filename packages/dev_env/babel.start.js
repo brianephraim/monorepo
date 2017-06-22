@@ -20,5 +20,6 @@ const argumentsPassThrough = process.argv.reduce((accum, argString) => {
   return `${accum}${toAppend}`;
 }, '');
 
-const devEnv = argv.entry ? './devEnvCommandLine.js' : './dev_env.js';
+// const devEnv = argv.entry ? './devEnvCommandLine.js' : './dev_env.js';
+const devEnv = './dev_env.js';
 shellCommand(`${path.resolve(__dirname, './node_modules/.bin/babel-node')} ${path.resolve(__dirname, devEnv)}${argumentsPassThrough}`);
