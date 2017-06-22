@@ -6,7 +6,7 @@ import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import jsonImporter from 'node-sass-json-importer';
 import fs from 'fs-extra';
 import globby from 'globby';
-import { register as registerPlugin } from './pluginRegistry';
+import plugins, { register as registerPlugin } from './pluginRegistry';
 
 
 function conditionalExtractTextLoaderCss(usePlugin, moreLoaderParams) {
@@ -151,6 +151,7 @@ function enhance(originalConfig, libraryName, isBuild, dirRoot, username, output
     ...originalConfig,
     devtool: isBuild ? 'source-map' : 'cheap-module-eval-source-map',
     module,
+    plugins,
   };
   return config;
 }

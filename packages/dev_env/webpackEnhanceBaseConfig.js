@@ -1,5 +1,4 @@
 import webpackConfigResolve from './webpack-config-resolve';
-import plugins from './pluginRegistry';
 
 function enhance(originalConfig) {
   const config = {
@@ -34,7 +33,6 @@ function enhance(originalConfig) {
       ],
     },
     resolve: webpackConfigResolve.resolve,
-    plugins,
   };
   return {
     ...originalConfig,
