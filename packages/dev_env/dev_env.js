@@ -3,6 +3,7 @@ import { argv } from 'yargs';
 import shellCommand from './shell-command';
 import testSetup from './testSetup';
 import webpackBuild from './webpackBuild';
+import webpackBuildCommandLine from './webpackBuildCommandLine';
 import serve from './webpackExpressServer.js';
 
 const env = argv.env;
@@ -14,7 +15,9 @@ if (item) {
 } else if (env === 'test') {
   testSetup();
 } else {
-  if (env === 'build' || argv.entry) {
+  if (argv.entry) {
+    webpackBuildCommandLine();
+  } else if (env === 'build') {
     webpackBuild();
   } else {
     serve();

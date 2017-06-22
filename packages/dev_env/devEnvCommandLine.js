@@ -1,3 +1,3 @@
-import webpackBuild from './webpackBuildCommandLine';
+import webpackBuildCommandLine from './webpackBuildCommandLine';
 
-webpackBuild();
+webpackBuildCommandLine();
