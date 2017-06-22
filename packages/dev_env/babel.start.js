@@ -11,7 +11,7 @@
     2.  This file is executed during the npm prepublish, which creates the /dist folder
         mentioned in (1) above.
 */
-
+const argv = require('yargs').argv;
 const path = require('path');
 const shellCommand = require('./shell-command');
 
@@ -19,5 +19,9 @@ const argumentsPassThrough = process.argv.reduce((accum, argString) => {
   const toAppend = argString.indexOf('--') === 0 ? ` ${argString}` : '';
   return `${accum}${toAppend}`;
 }, '');
+console.log('argumentsPassThrough',argumentsPassThrough);
+if (argv.entry) {
 
-shellCommand(`${path.resolve(__dirname, './node_modules/.bin/babel-node')} ${path.resolve(__dirname, './dev_env.js')}${argumentsPassThrough}`);
+}
+const devEnv = argv.entry ? 'devEnvCommandLine.js' : './dev_env.js';
+shellCommand(`${path.resolve(__dirname, './node_modules/.bin/babel-node')} ${path.resolve(__dirname, devEnv)}${argumentsPassThrough}`);
