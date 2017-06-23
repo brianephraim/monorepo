@@ -1,5 +1,7 @@
 export default (webpackCompile) => {
+  console.log('opt', __filename, 1);
   webpackCompile().run((err, stats) => {
+    console.log('opt', __filename, 2);
     // parseStatsForDependencyProblems(stats);
     // fs.writeFileSync(process.cwd() + '/_webpack_stats.json',JSON.stringify(stats, null, 2));
 

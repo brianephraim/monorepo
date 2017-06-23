@@ -21,5 +21,6 @@ const argumentsPassThrough = process.argv.reduce((accum, argString) => {
 
 // const devEnv = argv.entry ? './devEnvCommandLine.js' : './dev_env.js';
 const devEnv = './dev_env.js';
+console.log('xxxxv');
 // shellCommand(`${path.resolve(__dirname, './node_modules/.bin/babel-node')} ${path.resolve(__dirname, devEnv)}${argumentsPassThrough}`);
 shellCommand(`${path.resolve(__dirname, './bin/devenv-node.js')} ${path.resolve(__dirname, devEnv)}${argumentsPassThrough}`);
