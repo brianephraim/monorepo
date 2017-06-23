@@ -35,6 +35,15 @@ import webpackEnhanceConfigWeb from './webpackEnhanceConfigWeb';
 import webpackEnhanceEntryOutputStandard from './webpackEnhanceEntryOutputStandard';
 import webpackEnhanceBaseConfig from './webpackEnhanceBaseConfig';
 import webpackConfigCommandLine from './webpackConfigCommandLine';
+import aaa8 from '@defualt/aaa8';
+
+console.log('-----');
+console.log('-----');
+console.log('-----');
+console.log('-----');
+console.log('-----');
+console.log('-----');
+console.log(aaa8);
 
 // console.log(process.cwd());
 // // console.log(argv);
