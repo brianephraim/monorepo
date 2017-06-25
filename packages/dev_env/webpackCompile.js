@@ -3,6 +3,7 @@ import webpackDevMiddleware from 'webpack-dev-middleware';
 
 import webpackConfig from './webpack.config.babel';
 import parseStatsForDependencyProblems from './parseStatsForDependencyProblems';
+
 export default (isDev) => {
   const compiler = webpack(webpackConfig);
   if (isDev) {
