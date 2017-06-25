@@ -13,7 +13,7 @@ const tempFilePath = `${toCompileFolder}/${tempFileName}`;
 if (__dirname.indexOf('/packages/') > __dirname.indexOf('/node_modules/')) {
   const babelNodePathSpecific = '../node_modules/.bin/babel-node';
   const babelNodePath = path.resolve(__dirname, babelNodePathSpecific);
-  const babelStartScript = path.resolve(__dirname, '../devEnvCommandLine.js');
+  const babelStartScript = path.resolve(__dirname, '../core/devEnvCommandLine.js');
   // const cmd = `(cd ${toCompileFolder} && ${babelNodePath} ${babelStartScript} --entry=${toCompile} --output=${tempFilePath}) && node ${tempFilePath} ${process.argv.slice(3).join(' ')} && rm ${tempFilePath}`;
 
   // Within parenthesis so terminal doesn't really cd. The command will run in the cd directory tho.  Nice.

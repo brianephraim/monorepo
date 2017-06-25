@@ -3,7 +3,7 @@ import { argv } from 'yargs';
 import shellCommand from './shell-command';
 import testSetup from './testSetup';
 import webpackBuild from './webpackBuild';
-import webpackBuildCommandLine from './webpackBuildCommandLine';
+import webpackBuildCommandLine from './core/webpackBuildCommandLine';
 import serve from './webpackExpressServer.js';
 
 const env = argv.env;

@@ -1,5 +1,5 @@
 import webpackCompile from './webpackCompile';
-import webpackRunner from './webpackRunner';
+import webpackRunner from './core/webpackRunner';
 
 export default () => {
   webpackRunner(webpackCompile);

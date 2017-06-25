@@ -30,11 +30,11 @@
 */
 import { argv } from 'yargs';
 import fs from 'fs-extra';
-import webpackEnhanceConfigNode from './webpackEnhanceConfigNode';
+import webpackEnhanceConfigNode from './core/webpackEnhanceConfigNode';
 import webpackEnhanceConfigWeb from './webpackEnhanceConfigWeb';
 import webpackEnhanceEntryOutputStandard from './webpackEnhanceEntryOutputStandard';
-import webpackEnhanceBaseConfig from './webpackEnhanceBaseConfig';
-import webpackConfigCommandLine from './webpackConfigCommandLine';
+import webpackEnhanceBaseConfig from './core/webpackEnhanceBaseConfig';
+import webpackConfigCommandLine from './core/webpackConfigCommandLine';
 import aaa8 from '@defualt/aaa8';
 
 console.log('-----');
