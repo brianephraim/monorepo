@@ -1,5 +1,17 @@
 /* eslint-disable camelcase */
 import child_process from 'child_process';
+import path from 'path';
+import getJestConfig from './jest.config';
+
+console.log('TEST SETUP xxxx', __dirname);
+// console.log(path.resolve(__dirname,'./'));
+// const config = `"${JSON.stringify(getJestConfig).replace(/"/g, '\\"')}"`;
+// const config = `${JSON.stringify(getJestConfig).replace(/"/g, '\\"')}`;
+const config = `'${JSON.stringify(getJestConfig).replace(/'/g, "\\'")}'`;
+console.log(config);
+
+const configPath = `${__dirname}/jest.config.js`;
+
 
 export default () => {
   const command = 'sh';
@@ -7,7 +19,7 @@ export default () => {
   const args = [
     '-c',
     // Why `CI=true `? ----- https://github.com/facebook/jest/issues/2959
-    `CI=true ${process.cwd()}/node_modules/.bin/jest --watch --config=${__dirname}/jest.config.js`,
+    `CI=true ${process.cwd()}/node_modules/.bin/jest --watch --config=${configPath}`,
   ];
 
   const proc = child_process.spawn(command, args, { stdio: 'inherit' });

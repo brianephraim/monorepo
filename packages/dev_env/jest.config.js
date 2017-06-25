@@ -1,4 +1,9 @@
 /* eslint-disable no-useless-escape */
+console.log('__dirname',__dirname);
+console.log('__dirname',__dirname);
+console.log('__dirname',__dirname);
+console.log('__dirname',__dirname);
+console.log('__dirname',__dirname);
 module.exports = {
   verbose: true,
   testMatch: ['**/?(*.)(test).js?(x)'],
