@@ -11,21 +11,7 @@ function enhance(originalConfig) {
 
   const plugins = originalConfig.plugins || [];
   plugins.push(new webpack.BannerPlugin({
-    banner: `require("source-map-support").install(
-      { hookRequire: true }
-      // {
-      // retrieveSourceMap: function(source) {
-      //   console.log('source',arguments);
-      //   // if (source === 'compiled.js') {
-      //   //   return {
-      //   //     url: 'original.js',
-      //   //     map: fs.readFileSync('compiled.js.map', 'utf8')
-      //   //   };
-      //   // }
-      //   return null;
-      // }
-    // }
-    );`,
+    banner: `require("source-map-support").install();`,
     raw: true,
     entryOnly: false,
   }));

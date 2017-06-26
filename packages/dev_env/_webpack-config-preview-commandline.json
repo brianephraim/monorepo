@@ -47,11 +47,11 @@
   "plugins": [
     {
       "options": {
-        "banner": "require(\"source-map-support\").install(\n      { hookRequire: true }\n      // {\n      // retrieveSourceMap: function(source) {\n      //   console.log('source',arguments);\n      //   // if (source === 'compiled.js') {\n      //   //   return {\n      //   //     url: 'original.js',\n      //   //     map: fs.readFileSync('compiled.js.map', 'utf8')\n      //   //   };\n      //   // }\n      //   return null;\n      // }\n    // }\n    );",
+        "banner": "require(\"source-map-support\").install();",
         "raw": true,
         "entryOnly": false
       },
-      "banner": "require(\"source-map-support\").install(\n      { hookRequire: true }\n      // {\n      // retrieveSourceMap: function(source) {\n      //   console.log('source',arguments);\n      //   // if (source === 'compiled.js') {\n      //   //   return {\n      //   //     url: 'original.js',\n      //   //     map: fs.readFileSync('compiled.js.map', 'utf8')\n      //   //   };\n      //   // }\n      //   return null;\n      // }\n    // }\n    );"
+      "banner": "require(\"source-map-support\").install();"
     },
     {}
   ]
