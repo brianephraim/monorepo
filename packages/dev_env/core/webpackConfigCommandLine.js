@@ -1,3 +1,4 @@
+import fs from 'fs-extra';
 import { argv } from 'yargs';
 import webpackEnhanceBaseConfig from './webpackEnhanceBaseConfig';
 import webpackEnhanceConfigNode from './webpackEnhanceConfigNode';
@@ -42,6 +43,7 @@ function enhance() {
       });
     },
   });
+  fs.writeFileSync('./_webpack-config-preview-commandline.json', JSON.stringify(config, null, 2));
   return config;
 }
 

@@ -1,5 +1,6 @@
 import aaa8 from '@defualt/aaa8';
-console.log('asdf',aaa8);
+console.log('asdfx',aaa8);
+
 const {
   createNumberIncrementArray,
   placeSegmentsOnGridArray,
@@ -22,6 +23,7 @@ class Board {
     }
   }
   place(placements) {
+    asdf();
     try {
       const gridModification = placeSegmentsOnGridArray({
         gridAsArray: this.gridAsArray,
@@ -57,6 +59,7 @@ class Board {
     }, 0);
   }
   attack(col, row) {
+
     if (col > this.width - 1) {
       return 'Too far right';
     }

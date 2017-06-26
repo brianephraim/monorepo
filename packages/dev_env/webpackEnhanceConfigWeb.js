@@ -9,9 +9,8 @@ import globby from 'globby';
 import plugins, { register as registerPlugin } from './pluginRegistry';
 
 
-function conditionalExtractTextLoaderCss(usePlugin, moreLoaderParams) {
+function generateLoaderParamOfUse(usePlugin, moreLoaderParams) {
   if (usePlugin) {
-    registerPlugin('ExtractTextPlugin', new ExtractTextPlugin('[name].css'));
     return { use: ExtractTextPlugin.extract(moreLoaderParams) };
   }
   return {
@@ -96,18 +95,23 @@ function enhance(originalConfig, libraryName, isBuild, dirRoot, username, output
 
 
   const module = { ...(originalConfig && originalConfig.module) };
+  let usingExtractTextPlugin = false;
+  if (isBuild) {
+    registerPlugin('ExtractTextPlugin', new ExtractTextPlugin('[name].css'));
+    usingExtractTextPlugin = true;
+  }
   module.rules = [
     ...(module.rules || []),
     {
       test: /\.css$/,
-      ...conditionalExtractTextLoaderCss(isBuild, {
+      ...generateLoaderParamOfUse(usingExtractTextPlugin, {
         fallback: 'style-loader',
         use: ['css-loader'],
       }),
     },
     {
       test: /\.scss$/,
-      ...conditionalExtractTextLoaderCss(isBuild, {
+      ...generateLoaderParamOfUse(usingExtractTextPlugin, {
         fallback: 'style-loader',
         use: [
           'css-loader?sourceMap',

@@ -15,7 +15,17 @@ if (__dirname.indexOf('/packages/') > __dirname.indexOf('/node_modules/')) {
   const babelNodePath = path.resolve(__dirname, babelNodePathSpecific);
   const babelStartScript = path.resolve(__dirname, '../core/devEnvCommandLine.js');
   // const cmd = `(cd ${toCompileFolder} && ${babelNodePath} ${babelStartScript} --entry=${toCompile} --output=${tempFilePath}) && node ${tempFilePath} ${process.argv.slice(3).join(' ')} && rm ${tempFilePath}`;
-
+  const cmd = [
+    '(',
+      `cd ${toCompileFolder}`,
+      ' && ',
+      `${babelNodePath} ${babelStartScript} --entry=${toCompile} --output=${tempFilePath}`,
+    ')',
+    ' && ',
+    `node ${tempFilePath} ${process.argv.slice(3).join(' ')}`,
+    ' && ',
+    `rm ${tempFilePath}`
+  ].join('');
   // Within parenthesis so terminal doesn't really cd. The command will run in the cd directory tho.  Nice.
   // Ok, so cd to the folder of the file that is getting compiled.
   // Run babel-node on the babelStartScript with entry and output args
@@ -30,7 +40,10 @@ if (__dirname.indexOf('/packages/') > __dirname.indexOf('/node_modules/')) {
   // This is especially important because the webpack generated file that gets its content run could be a server
   // that stays open indefinately.  If we removed the temp file at the end of the process, it would hang around
   // until that server was closed.
-  const cmd = `(cd ${toCompileFolder} && ${babelNodePath} ${babelStartScript} --entry=${toCompile} --output=${tempFilePath}) && tempFileContent=$(<${tempFilePath}) && rm ${tempFilePath} && node -e "$tempFileContent" someJunkArgumentHereNeeded ${process.argv.slice(3).join(' ')}`;
+  // const cmd = `(cd ${toCompileFolder} && ${babelNodePath} ${babelStartScript} --entry=${toCompile} --output=${tempFilePath}) && tempFileContent=$(<${tempFilePath}) && rm ${tempFilePath} && node -e "$tempFileContent" someJunkArgumentHereNeeded ${process.argv.slice(3).join(' ')}`;
+  // const cmd = `(cd ${toCompileFolder} && ${babelNodePath} ${babelStartScript} --entry=${toCompile} --output=${tempFilePath}) && tempFileContent=$(<${tempFilePath}) && node -e "$tempFileContent" someJunkArgumentHereNeeded ${process.argv.slice(3).join(' ')}`;
+  // const cmd = `(cd ${toCompileFolder} && node ${tempFilePath} ${process.argv.slice(3).join(' ')})`;
+
   shellCommand(cmd);
 } else {
   const devEnvDistPath = path.resolve(__dirname, '../dist/dev_env.js');

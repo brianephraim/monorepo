@@ -1,13 +1,14 @@
+require("source-map-support").install();
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("child_process"), require("fs-extra"), require("path"), require("webpack"), require("webpack-node-externals"), require("yargs"), require("directory-named-webpack-plugin"), require("express"), require("extract-text-webpack-plugin"), require("globby"), require("html-webpack-plugin"), require("node-sass-json-importer"), require("string-replace-webpack-plugin"), require("url"), require("validate-npm-package-name"), require("webpack-dev-middleware"));
+		module.exports = factory(require("webpack"), require("fs-extra"), require("yargs"), require("child_process"), require("globby"), require("path"), require("directory-named-webpack-plugin"), require("express"), require("extract-text-webpack-plugin"), require("html-webpack-plugin"), require("node-sass-json-importer"), require("string-replace-webpack-plugin"), require("url"), require("validate-npm-package-name"), require("webpack-dev-middleware"), require("webpack-node-externals"));
 	else if(typeof define === 'function' && define.amd)
-		define("@defualt/dev_env", ["child_process", "fs-extra", "path", "webpack", "webpack-node-externals", "yargs", "directory-named-webpack-plugin", "express", "extract-text-webpack-plugin", "globby", "html-webpack-plugin", "node-sass-json-importer", "string-replace-webpack-plugin", "url", "validate-npm-package-name", "webpack-dev-middleware"], factory);
+		define("@defualt/dev_env", ["webpack", "fs-extra", "yargs", "child_process", "globby", "path", "directory-named-webpack-plugin", "express", "extract-text-webpack-plugin", "html-webpack-plugin", "node-sass-json-importer", "string-replace-webpack-plugin", "url", "validate-npm-package-name", "webpack-dev-middleware", "webpack-node-externals"], factory);
 	else if(typeof exports === 'object')
-		exports["@defualt/dev_env"] = factory(require("child_process"), require("fs-extra"), require("path"), require("webpack"), require("webpack-node-externals"), require("yargs"), require("directory-named-webpack-plugin"), require("express"), require("extract-text-webpack-plugin"), require("globby"), require("html-webpack-plugin"), require("node-sass-json-importer"), require("string-replace-webpack-plugin"), require("url"), require("validate-npm-package-name"), require("webpack-dev-middleware"));
+		exports["@defualt/dev_env"] = factory(require("webpack"), require("fs-extra"), require("yargs"), require("child_process"), require("globby"), require("path"), require("directory-named-webpack-plugin"), require("express"), require("extract-text-webpack-plugin"), require("html-webpack-plugin"), require("node-sass-json-importer"), require("string-replace-webpack-plugin"), require("url"), require("validate-npm-package-name"), require("webpack-dev-middleware"), require("webpack-node-externals"));
 	else
-		root["@defualt/dev_env"] = factory(root["child_process"], root["fs-extra"], root["path"], root["webpack"], root["webpack-node-externals"], root["yargs"], root["directory-named-webpack-plugin"], root["express"], root["extract-text-webpack-plugin"], root["globby"], root["html-webpack-plugin"], root["node-sass-json-importer"], root["string-replace-webpack-plugin"], root["url"], root["validate-npm-package-name"], root["webpack-dev-middleware"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_1__, __WEBPACK_EXTERNAL_MODULE_2__, __WEBPACK_EXTERNAL_MODULE_3__, __WEBPACK_EXTERNAL_MODULE_4__, __WEBPACK_EXTERNAL_MODULE_5__, __WEBPACK_EXTERNAL_MODULE_6__, __WEBPACK_EXTERNAL_MODULE_17__, __WEBPACK_EXTERNAL_MODULE_18__, __WEBPACK_EXTERNAL_MODULE_19__, __WEBPACK_EXTERNAL_MODULE_20__, __WEBPACK_EXTERNAL_MODULE_21__, __WEBPACK_EXTERNAL_MODULE_22__, __WEBPACK_EXTERNAL_MODULE_23__, __WEBPACK_EXTERNAL_MODULE_24__, __WEBPACK_EXTERNAL_MODULE_25__, __WEBPACK_EXTERNAL_MODULE_26__) {
+		root["@defualt/dev_env"] = factory(root["webpack"], root["fs-extra"], root["yargs"], root["child_process"], root["globby"], root["path"], root["directory-named-webpack-plugin"], root["express"], root["extract-text-webpack-plugin"], root["html-webpack-plugin"], root["node-sass-json-importer"], root["string-replace-webpack-plugin"], root["url"], root["validate-npm-package-name"], root["webpack-dev-middleware"], root["webpack-node-externals"]);
+})(this, function(__WEBPACK_EXTERNAL_MODULE_0__, __WEBPACK_EXTERNAL_MODULE_1__, __WEBPACK_EXTERNAL_MODULE_2__, __WEBPACK_EXTERNAL_MODULE_8__, __WEBPACK_EXTERNAL_MODULE_9__, __WEBPACK_EXTERNAL_MODULE_10__, __WEBPACK_EXTERNAL_MODULE_28__, __WEBPACK_EXTERNAL_MODULE_29__, __WEBPACK_EXTERNAL_MODULE_30__, __WEBPACK_EXTERNAL_MODULE_31__, __WEBPACK_EXTERNAL_MODULE_32__, __WEBPACK_EXTERNAL_MODULE_33__, __WEBPACK_EXTERNAL_MODULE_34__, __WEBPACK_EXTERNAL_MODULE_35__, __WEBPACK_EXTERNAL_MODULE_36__, __WEBPACK_EXTERNAL_MODULE_37__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -73,1024 +74,265 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 27);
+/******/ 	return __webpack_require__(__webpack_require__.s = 38);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _webpack = __webpack_require__(4);
-
-var _webpack2 = _interopRequireDefault(_webpack);
-
-var _webpackDevMiddleware = __webpack_require__(26);
-
-var _webpackDevMiddleware2 = _interopRequireDefault(_webpackDevMiddleware);
-
-var _webpackConfig = __webpack_require__(16);
-
-var _webpackConfig2 = _interopRequireDefault(_webpackConfig);
-
-var _parseStatsForDependencyProblems = __webpack_require__(9);
-
-var _parseStatsForDependencyProblems2 = _interopRequireDefault(_parseStatsForDependencyProblems);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = function (isDev) {
-  var compiler = (0, _webpack2.default)(_webpackConfig2.default);
-  if (isDev) {
-    var activeWebpackDevMiddleware = (0, _webpackDevMiddleware2.default)(compiler, {
-      publicPath: _webpackConfig2.default.output.publicPath,
-      stats: {
-        colors: true
-      }
-    });
-    activeWebpackDevMiddleware.waitUntilValid(function (stats) {
-      (0, _parseStatsForDependencyProblems2.default)(stats);
-    });
-
-    return activeWebpackDevMiddleware;
-  }
-  return compiler;
-};
+eval("module.exports = require(\"webpack\");//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiMC5qcyIsInNvdXJjZXMiOlsid2VicGFjazovLy9leHRlcm5hbCBcIndlYnBhY2tcIj8zOTNkIl0sInNvdXJjZXNDb250ZW50IjpbIm1vZHVsZS5leHBvcnRzID0gcmVxdWlyZShcIndlYnBhY2tcIik7XG5cblxuLy8vLy8vLy8vLy8vLy8vLy8vXG4vLyBXRUJQQUNLIEZPT1RFUlxuLy8gZXh0ZXJuYWwgXCJ3ZWJwYWNrXCJcbi8vIG1vZHVsZSBpZCA9IDBcbi8vIG1vZHVsZSBjaHVua3MgPSAwIl0sIm1hcHBpbmdzIjoiQUFBQSIsInNvdXJjZVJvb3QiOiIifQ==");
 
 /***/ }),
 /* 1 */
 /***/ (function(module, exports) {
 
-module.exports = require("child_process");
+eval("module.exports = require(\"fs-extra\");//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiMS5qcyIsInNvdXJjZXMiOlsid2VicGFjazovLy9leHRlcm5hbCBcImZzLWV4dHJhXCI/N2NhNiJdLCJzb3VyY2VzQ29udGVudCI6WyJtb2R1bGUuZXhwb3J0cyA9IHJlcXVpcmUoXCJmcy1leHRyYVwiKTtcblxuXG4vLy8vLy8vLy8vLy8vLy8vLy9cbi8vIFdFQlBBQ0sgRk9PVEVSXG4vLyBleHRlcm5hbCBcImZzLWV4dHJhXCJcbi8vIG1vZHVsZSBpZCA9IDFcbi8vIG1vZHVsZSBjaHVua3MgPSAwIl0sIm1hcHBpbmdzIjoiQUFBQSIsInNvdXJjZVJvb3QiOiIifQ==");
 
 /***/ }),
 /* 2 */
 /***/ (function(module, exports) {
 
-module.exports = require("fs-extra");
+eval("module.exports = require(\"yargs\");//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiMi5qcyIsInNvdXJjZXMiOlsid2VicGFjazovLy9leHRlcm5hbCBcInlhcmdzXCI/ZTBmYSJdLCJzb3VyY2VzQ29udGVudCI6WyJtb2R1bGUuZXhwb3J0cyA9IHJlcXVpcmUoXCJ5YXJnc1wiKTtcblxuXG4vLy8vLy8vLy8vLy8vLy8vLy9cbi8vIFdFQlBBQ0sgRk9PVEVSXG4vLyBleHRlcm5hbCBcInlhcmdzXCJcbi8vIG1vZHVsZSBpZCA9IDJcbi8vIG1vZHVsZSBjaHVua3MgPSAwIl0sIm1hcHBpbmdzIjoiQUFBQSIsInNvdXJjZVJvb3QiOiIifQ==");
 
 /***/ }),
 /* 3 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = require("path");
+"use strict";
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n\nvar _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };\n\nvar _yargs = __webpack_require__(2);\n\nvar _webpackEnhanceBaseConfig = __webpack_require__(4);\n\nvar _webpackEnhanceBaseConfig2 = _interopRequireDefault(_webpackEnhanceBaseConfig);\n\nvar _webpackEnhanceConfigNode = __webpack_require__(5);\n\nvar _webpackEnhanceConfigNode2 = _interopRequireDefault(_webpackEnhanceConfigNode);\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nfunction enhance() {\n  var config = (0, _webpackEnhanceBaseConfig2.default)();\n  var entry = {\n    main: _yargs.argv.entry\n  };\n  var output = _yargs.argv.output;\n  output = output.split('/');\n\n  output = {\n    filename: output.pop(),\n    path: output.join('/')\n  };\n  config = _extends({}, config, {\n    entry: entry,\n    output: output\n  });\n  config = (0, _webpackEnhanceConfigNode2.default)(config);\n  config.plugins = config.plugins || [];\n\n  // I needed __dirname hardcoded as the original dirname\n  // https://github.com/webpack/webpack/issues/1599#issuecomment-266588898\n  config.plugins.push({\n    apply: function apply(compiler) {\n      function setModuleConstant(expressionName, fn) {\n        compiler.parser.plugin('expression ' + expressionName, function compilerParserPlugin() {\n          this.state.current.addVariable(expressionName, JSON.stringify(fn(this.state.module)));\n          return true;\n        });\n      }\n\n      setModuleConstant('__filename', function (module) {\n        return module.resource;\n      });\n\n      setModuleConstant('__dirname', function (module) {\n        return module.context;\n      });\n    }\n  });\n  return config;\n}\n\nexports.default = enhance;//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiMy5qcyIsInNvdXJjZXMiOlsid2VicGFjazovLy9jb3JlL3dlYnBhY2tDb25maWdDb21tYW5kTGluZS5qcz9iMjA2Il0sInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IGFyZ3YgfSBmcm9tICd5YXJncyc7XG5pbXBvcnQgd2VicGFja0VuaGFuY2VCYXNlQ29uZmlnIGZyb20gJy4vd2VicGFja0VuaGFuY2VCYXNlQ29uZmlnJztcbmltcG9ydCB3ZWJwYWNrRW5oYW5jZUNvbmZpZ05vZGUgZnJvbSAnLi93ZWJwYWNrRW5oYW5jZUNvbmZpZ05vZGUnO1xuXG5mdW5jdGlvbiBlbmhhbmNlKCkge1xuICBsZXQgY29uZmlnID0gd2VicGFja0VuaGFuY2VCYXNlQ29uZmlnKCk7XG4gIGNvbnN0IGVudHJ5ID0ge1xuICAgIG1haW46IGFyZ3YuZW50cnksXG4gIH07XG4gIGxldCBvdXRwdXQgPSBhcmd2Lm91dHB1dDtcbiAgb3V0cHV0ID0gb3V0cHV0LnNwbGl0KCcvJyk7XG5cbiAgb3V0cHV0ID0ge1xuICAgIGZpbGVuYW1lOiBvdXRwdXQucG9wKCksXG4gICAgcGF0aDogb3V0cHV0LmpvaW4oJy8nKSxcbiAgfTtcbiAgY29uZmlnID0ge1xuICAgIC4uLmNvbmZpZyxcbiAgICBlbnRyeSxcbiAgICBvdXRwdXQsXG4gIH07XG4gIGNvbmZpZyA9IHdlYnBhY2tFbmhhbmNlQ29uZmlnTm9kZShjb25maWcpO1xuICBjb25maWcucGx1Z2lucyA9IGNvbmZpZy5wbHVnaW5zIHx8IFtdO1xuXG4gIC8vIEkgbmVlZGVkIF9fZGlybmFtZSBoYXJkY29kZWQgYXMgdGhlIG9yaWdpbmFsIGRpcm5hbWVcbiAgLy8gaHR0cHM6Ly9naXRodWIuY29tL3dlYnBhY2svd2VicGFjay9pc3N1ZXMvMTU5OSNpc3N1ZWNvbW1lbnQtMjY2NTg4ODk4XG4gIGNvbmZpZy5wbHVnaW5zLnB1c2goe1xuICAgIGFwcGx5KGNvbXBpbGVyKSB7XG4gICAgICBmdW5jdGlvbiBzZXRNb2R1bGVDb25zdGFudChleHByZXNzaW9uTmFtZSwgZm4pIHtcbiAgICAgICAgY29tcGlsZXIucGFyc2VyLnBsdWdpbihgZXhwcmVzc2lvbiAke2V4cHJlc3Npb25OYW1lfWAsIGZ1bmN0aW9uIGNvbXBpbGVyUGFyc2VyUGx1Z2luKCkge1xuICAgICAgICAgIHRoaXMuc3RhdGUuY3VycmVudC5hZGRWYXJpYWJsZShleHByZXNzaW9uTmFtZSwgSlNPTi5zdHJpbmdpZnkoZm4odGhpcy5zdGF0ZS5tb2R1bGUpKSk7XG4gICAgICAgICAgcmV0dXJuIHRydWU7XG4gICAgICAgIH0pO1xuICAgICAgfVxuXG4gICAgICBzZXRNb2R1bGVDb25zdGFudCgnX19maWxlbmFtZScsIChtb2R1bGUpID0+IHtcbiAgICAgICAgcmV0dXJuIG1vZHVsZS5yZXNvdXJjZTtcbiAgICAgIH0pO1xuXG4gICAgICBzZXRNb2R1bGVDb25zdGFudCgnX19kaXJuYW1lJywgKG1vZHVsZSkgPT4ge1xuICAgICAgICByZXR1cm4gbW9kdWxlLmNvbnRleHQ7XG4gICAgICB9KTtcbiAgICB9LFxuICB9KTtcbiAgcmV0dXJuIGNvbmZpZztcbn1cblxuZXhwb3J0IGRlZmF1bHQgZW5oYW5jZTtcblxuXG5cbi8vIFdFQlBBQ0sgRk9PVEVSIC8vXG4vLyBjb3JlL3dlYnBhY2tDb25maWdDb21tYW5kTGluZS5qcyJdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7QUFBQTtBQUNBO0FBQUE7QUFDQTs7O0FBQUE7QUFDQTs7Ozs7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQURBO0FBR0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBRkE7QUFJQTtBQUVBO0FBQ0E7QUFIQTtBQUtBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBaEJBO0FBa0JBO0FBQ0E7QUFDQTtBQUNBIiwic291cmNlUm9vdCI6IiJ9");
 
 /***/ }),
 /* 4 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = require("webpack");
+"use strict";
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n\nvar _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };\n\nvar _webpackConfigResolve = __webpack_require__(14);\n\nvar _webpackConfigResolve2 = _interopRequireDefault(_webpackConfigResolve);\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nfunction enhance(originalConfig) {\n  var config = {\n    module: {\n      rules: [{\n        test: /\\.(js)?$/,\n        loader: 'babel-loader',\n        exclude: /node_modules/\n        // include: `${dirRoot}`,\n        // options: {\n        //   presets: [\n\n        //     [\n        //       'es2015',\n        //       // needed for tree shaking\n        //       { modules: false },\n        //     ],\n        //     'react',\n        //     // 'react',\n        //   ],\n        //   plugins: [\n        //     'transform-es2015-spread',\n        //     'transform-object-rest-spread',\n        //   ],\n        //   // mocha needs .babelrc,\n        //   // and .babelrc cannot use the above config\n        //   // so ignore .babelrc here\n        //   babelrc: false,\n        // },\n      }]\n    },\n    resolve: _webpackConfigResolve2.default.resolve\n  };\n  return _extends({}, originalConfig, config);\n}\nexports.default = enhance;//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiNC5qcyIsInNvdXJjZXMiOlsid2VicGFjazovLy9jb3JlL3dlYnBhY2tFbmhhbmNlQmFzZUNvbmZpZy5qcz8wNzZiIl0sInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB3ZWJwYWNrQ29uZmlnUmVzb2x2ZSBmcm9tICcuL3dlYnBhY2stY29uZmlnLXJlc29sdmUnO1xuXG5mdW5jdGlvbiBlbmhhbmNlKG9yaWdpbmFsQ29uZmlnKSB7XG4gIGNvbnN0IGNvbmZpZyA9IHtcbiAgICBtb2R1bGU6IHtcbiAgICAgIHJ1bGVzOiBbXG4gICAgICAgIHtcbiAgICAgICAgICB0ZXN0OiAvXFwuKGpzKT8kLyxcbiAgICAgICAgICBsb2FkZXI6ICdiYWJlbC1sb2FkZXInLFxuICAgICAgICAgIGV4Y2x1ZGU6IC9ub2RlX21vZHVsZXMvLFxuICAgICAgICAgIC8vIGluY2x1ZGU6IGAke2RpclJvb3R9YCxcbiAgICAgICAgICAvLyBvcHRpb25zOiB7XG4gICAgICAgICAgLy8gICBwcmVzZXRzOiBbXG5cbiAgICAgICAgICAvLyAgICAgW1xuICAgICAgICAgIC8vICAgICAgICdlczIwMTUnLFxuICAgICAgICAgIC8vICAgICAgIC8vIG5lZWRlZCBmb3IgdHJlZSBzaGFraW5nXG4gICAgICAgICAgLy8gICAgICAgeyBtb2R1bGVzOiBmYWxzZSB9LFxuICAgICAgICAgIC8vICAgICBdLFxuICAgICAgICAgIC8vICAgICAncmVhY3QnLFxuICAgICAgICAgIC8vICAgICAvLyAncmVhY3QnLFxuICAgICAgICAgIC8vICAgXSxcbiAgICAgICAgICAvLyAgIHBsdWdpbnM6IFtcbiAgICAgICAgICAvLyAgICAgJ3RyYW5zZm9ybS1lczIwMTUtc3ByZWFkJyxcbiAgICAgICAgICAvLyAgICAgJ3RyYW5zZm9ybS1vYmplY3QtcmVzdC1zcHJlYWQnLFxuICAgICAgICAgIC8vICAgXSxcbiAgICAgICAgICAvLyAgIC8vIG1vY2hhIG5lZWRzIC5iYWJlbHJjLFxuICAgICAgICAgIC8vICAgLy8gYW5kIC5iYWJlbHJjIGNhbm5vdCB1c2UgdGhlIGFib3ZlIGNvbmZpZ1xuICAgICAgICAgIC8vICAgLy8gc28gaWdub3JlIC5iYWJlbHJjIGhlcmVcbiAgICAgICAgICAvLyAgIGJhYmVscmM6IGZhbHNlLFxuICAgICAgICAgIC8vIH0sXG4gICAgICAgIH0sXG4gICAgICBdLFxuICAgIH0sXG4gICAgcmVzb2x2ZTogd2VicGFja0NvbmZpZ1Jlc29sdmUucmVzb2x2ZSxcbiAgfTtcbiAgcmV0dXJuIHtcbiAgICAuLi5vcmlnaW5hbENvbmZpZyxcbiAgICAuLi5jb25maWcsXG4gIH07XG59XG5leHBvcnQgZGVmYXVsdCBlbmhhbmNlO1xuXG5cblxuLy8gV0VCUEFDSyBGT09URVIgLy9cbi8vIGNvcmUvd2VicGFja0VuaGFuY2VCYXNlQ29uZmlnLmpzIl0sIm1hcHBpbmdzIjoiOzs7Ozs7OztBQUFBO0FBQ0E7Ozs7O0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFFQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUF4QkE7QUFGQTtBQThCQTtBQS9CQTtBQWlDQTtBQUlBO0FBQ0EiLCJzb3VyY2VSb290IjoiIn0=");
 
 /***/ }),
 /* 5 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = require("webpack-node-externals");
+"use strict";
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n\nvar _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; /* eslint-disable no-mixed-operators */\n\n\nvar _webpack = __webpack_require__(0);\n\nvar _webpack2 = _interopRequireDefault(_webpack);\n\nvar _webpackNodeExternals = __webpack_require__(37);\n\nvar _webpackNodeExternals2 = _interopRequireDefault(_webpackNodeExternals);\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nfunction _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }\n\nfunction enhance(originalConfig) {\n  var module = _extends({}, originalConfig && originalConfig.module);\n  module.rules = [{ test: /rx\\.lite\\.aggregates\\.js/, use: 'imports-loader?define=>false' }].concat(_toConsumableArray(module.rules || []));\n\n  var plugins = originalConfig.plugins || [];\n  plugins.push(new _webpack2.default.BannerPlugin({\n    banner: 'require(\"source-map-support\").install();',\n    raw: true,\n    entryOnly: false\n  }));\n\n  var config = _extends({}, originalConfig, {\n    devtool: 'cheap-module-eval-source-map',\n    module: module,\n    target: 'node',\n    node: _extends({}, originalConfig.node, {\n      __dirname: false,\n      __filename: false\n    }),\n    externals: [].concat(_toConsumableArray(originalConfig.externals || []), [(0, _webpackNodeExternals2.default)({ modulesFromFile: true })]),\n    plugins: plugins\n\n  });\n  return config;\n}\nexports.default = enhance;//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiNS5qcyIsInNvdXJjZXMiOlsid2VicGFjazovLy9jb3JlL3dlYnBhY2tFbmhhbmNlQ29uZmlnTm9kZS5qcz9jNWVkIl0sInNvdXJjZXNDb250ZW50IjpbIi8qIGVzbGludC1kaXNhYmxlIG5vLW1peGVkLW9wZXJhdG9ycyAqL1xuaW1wb3J0IHdlYnBhY2sgZnJvbSAnd2VicGFjayc7XG5pbXBvcnQgbm9kZUV4dGVybmFscyBmcm9tICd3ZWJwYWNrLW5vZGUtZXh0ZXJuYWxzJztcblxuZnVuY3Rpb24gZW5oYW5jZShvcmlnaW5hbENvbmZpZykge1xuICBjb25zdCBtb2R1bGUgPSB7IC4uLihvcmlnaW5hbENvbmZpZyAmJiBvcmlnaW5hbENvbmZpZy5tb2R1bGUpIH07XG4gIG1vZHVsZS5ydWxlcyA9IFtcbiAgICB7IHRlc3Q6IC9yeFxcLmxpdGVcXC5hZ2dyZWdhdGVzXFwuanMvLCB1c2U6ICdpbXBvcnRzLWxvYWRlcj9kZWZpbmU9PmZhbHNlJyB9LFxuICAgIC4uLihtb2R1bGUucnVsZXMgfHwgW10pLFxuICBdO1xuXG4gIGNvbnN0IHBsdWdpbnMgPSBvcmlnaW5hbENvbmZpZy5wbHVnaW5zIHx8IFtdO1xuICBwbHVnaW5zLnB1c2gobmV3IHdlYnBhY2suQmFubmVyUGx1Z2luKHtcbiAgICBiYW5uZXI6ICdyZXF1aXJlKFwic291cmNlLW1hcC1zdXBwb3J0XCIpLmluc3RhbGwoKTsnLFxuICAgIHJhdzogdHJ1ZSxcbiAgICBlbnRyeU9ubHk6IGZhbHNlLFxuICB9KSk7XG5cbiAgY29uc3QgY29uZmlnID0ge1xuICAgIC4uLm9yaWdpbmFsQ29uZmlnLFxuICAgIGRldnRvb2w6ICdjaGVhcC1tb2R1bGUtZXZhbC1zb3VyY2UtbWFwJyxcbiAgICBtb2R1bGUsXG4gICAgdGFyZ2V0OiAnbm9kZScsXG4gICAgbm9kZToge1xuICAgICAgLi4ub3JpZ2luYWxDb25maWcubm9kZSxcbiAgICAgIF9fZGlybmFtZTogZmFsc2UsXG4gICAgICBfX2ZpbGVuYW1lOiBmYWxzZSxcbiAgICB9LFxuICAgIGV4dGVybmFsczogW1xuICAgICAgLi4uKG9yaWdpbmFsQ29uZmlnLmV4dGVybmFscyB8fCBbXSksXG4gICAgICBub2RlRXh0ZXJuYWxzKHsgbW9kdWxlc0Zyb21GaWxlOiB0cnVlIH0pLFxuICAgIF0sXG4gICAgcGx1Z2lucyxcblxuICB9O1xuICByZXR1cm4gY29uZmlnO1xufVxuZXhwb3J0IGRlZmF1bHQgZW5oYW5jZTtcblxuXG5cbi8vIFdFQlBBQ0sgRk9PVEVSIC8vXG4vLyBjb3JlL3dlYnBhY2tFbmhhbmNlQ29uZmlnTm9kZS5qcyJdLCJtYXBwaW5ncyI6Ijs7Ozs7O0FBQUE7QUFDQTtBQUNBO0FBREE7QUFDQTs7O0FBQUE7QUFDQTs7Ozs7OztBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBSUE7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUhBO0FBQ0E7QUFLQTtBQUVBO0FBQ0E7QUFDQTtBQUNBO0FBRUE7QUFDQTtBQUhBO0FBS0E7QUFJQTtBQUNBO0FBZkE7QUFpQkE7QUFDQTtBQUNBIiwic291cmNlUm9vdCI6IiJ9");
 
 /***/ }),
 /* 6 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = require("yargs");
+"use strict";
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n\nexports.default = function (webpackCompile) {\n  webpackCompile().run(function (err, stats) {\n    // parseStatsForDependencyProblems(stats);\n    // fs.writeFileSync(process.cwd() + '/_webpack_stats.json',JSON.stringify(stats, null, 2));\n\n    if (err) {\n      console.error(err.stack || err);\n      if (err.details) {\n        console.error(err.details);\n      }\n      return;\n    }\n\n    var info = stats.toJson();\n\n    if (stats.hasErrors()) {\n      info.errors.forEach(function (e) {\n        console.error('\\x1b[31m', e, '\\x1b[0m');\n      });\n    }\n\n    if (stats.hasWarnings()) {\n      info.warnings.forEach(function (w) {\n        console.warn('\\x1b[33m', w, '\\x1b[0m');\n      });\n    }\n  });\n};//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiNi5qcyIsInNvdXJjZXMiOlsid2VicGFjazovLy9jb3JlL3dlYnBhY2tSdW5uZXIuanM/MTc5NCJdLCJzb3VyY2VzQ29udGVudCI6WyJleHBvcnQgZGVmYXVsdCAod2VicGFja0NvbXBpbGUpID0+IHtcbiAgd2VicGFja0NvbXBpbGUoKS5ydW4oKGVyciwgc3RhdHMpID0+IHtcbiAgICAvLyBwYXJzZVN0YXRzRm9yRGVwZW5kZW5jeVByb2JsZW1zKHN0YXRzKTtcbiAgICAvLyBmcy53cml0ZUZpbGVTeW5jKHByb2Nlc3MuY3dkKCkgKyAnL193ZWJwYWNrX3N0YXRzLmpzb24nLEpTT04uc3RyaW5naWZ5KHN0YXRzLCBudWxsLCAyKSk7XG5cbiAgICBpZiAoZXJyKSB7XG4gICAgICBjb25zb2xlLmVycm9yKGVyci5zdGFjayB8fCBlcnIpO1xuICAgICAgaWYgKGVyci5kZXRhaWxzKSB7XG4gICAgICAgIGNvbnNvbGUuZXJyb3IoZXJyLmRldGFpbHMpO1xuICAgICAgfVxuICAgICAgcmV0dXJuO1xuICAgIH1cblxuICAgIGNvbnN0IGluZm8gPSBzdGF0cy50b0pzb24oKTtcblxuICAgIGlmIChzdGF0cy5oYXNFcnJvcnMoKSkge1xuICAgICAgaW5mby5lcnJvcnMuZm9yRWFjaCgoZSkgPT4ge1xuICAgICAgICBjb25zb2xlLmVycm9yKCdcXHgxYlszMW0nLCBlLCAnXFx4MWJbMG0nKTtcbiAgICAgIH0pO1xuICAgIH1cblxuICAgIGlmIChzdGF0cy5oYXNXYXJuaW5ncygpKSB7XG4gICAgICBpbmZvLndhcm5pbmdzLmZvckVhY2goKHcpID0+IHtcbiAgICAgICAgY29uc29sZS53YXJuKCdcXHgxYlszM20nLCB3LCAnXFx4MWJbMG0nKTtcbiAgICAgIH0pO1xuICAgIH1cbiAgfSk7XG59O1xuXG5cblxuLy8gV0VCUEFDSyBGT09URVIgLy9cbi8vIGNvcmUvd2VicGFja1J1bm5lci5qcyJdLCJtYXBwaW5ncyI6Ijs7Ozs7O0FBQUE7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0EiLCJzb3VyY2VSb290IjoiIn0=");
 
 /***/ }),
 /* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
-
-var _yargs = __webpack_require__(6);
-
-var _shellCommand = __webpack_require__(10);
-
-var _shellCommand2 = _interopRequireDefault(_shellCommand);
-
-var _testSetup = __webpack_require__(11);
-
-var _testSetup2 = _interopRequireDefault(_testSetup);
-
-var _webpackBuild = __webpack_require__(13);
-
-var _webpackBuild2 = _interopRequireDefault(_webpackBuild);
-
-var _webpackExpressServer = __webpack_require__(15);
-
-var _webpackExpressServer2 = _interopRequireDefault(_webpackExpressServer);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var env = _yargs.argv.env; /* eslint-disable no-console */
-
-var item = _yargs.argv.item;
-
-if (item) {
-  console.log('aaaa', _yargs.argv);
-  (0, _shellCommand2.default)('(cd ./packages/' + item + ' && npm run start)');
-} else if (env === 'test') {
-  (0, _testSetup2.default)();
-} else {
-  if (env === 'build' || _yargs.argv.entry) {
-    (0, _webpackBuild2.default)();
-  } else {
-    (0, _webpackExpressServer2.default)();
-  }
-}
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n\nvar _webpack = __webpack_require__(0);\n\nvar _webpack2 = _interopRequireDefault(_webpack);\n\nvar _webpackDevMiddleware = __webpack_require__(36);\n\nvar _webpackDevMiddleware2 = _interopRequireDefault(_webpackDevMiddleware);\n\nvar _webpackConfig = __webpack_require__(21);\n\nvar _webpackConfig2 = _interopRequireDefault(_webpackConfig);\n\nvar _parseStatsForDependencyProblems = __webpack_require__(18);\n\nvar _parseStatsForDependencyProblems2 = _interopRequireDefault(_parseStatsForDependencyProblems);\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nexports.default = function (isDev) {\n  var compiler = (0, _webpack2.default)(_webpackConfig2.default);\n  if (isDev) {\n    var activeWebpackDevMiddleware = (0, _webpackDevMiddleware2.default)(compiler, {\n      publicPath: _webpackConfig2.default.output.publicPath,\n      stats: {\n        colors: true\n      }\n    });\n    activeWebpackDevMiddleware.waitUntilValid(function (stats) {\n      (0, _parseStatsForDependencyProblems2.default)(stats);\n    });\n\n    return activeWebpackDevMiddleware;\n  }\n  return compiler;\n};//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiNy5qcyIsInNvdXJjZXMiOlsid2VicGFjazovLy93ZWJwYWNrQ29tcGlsZS5qcz80MTk3Il0sInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB3ZWJwYWNrIGZyb20gJ3dlYnBhY2snO1xuaW1wb3J0IHdlYnBhY2tEZXZNaWRkbGV3YXJlIGZyb20gJ3dlYnBhY2stZGV2LW1pZGRsZXdhcmUnO1xuXG5pbXBvcnQgd2VicGFja0NvbmZpZyBmcm9tICcuL3dlYnBhY2suY29uZmlnLmJhYmVsJztcbmltcG9ydCBwYXJzZVN0YXRzRm9yRGVwZW5kZW5jeVByb2JsZW1zIGZyb20gJy4vcGFyc2VTdGF0c0ZvckRlcGVuZGVuY3lQcm9ibGVtcyc7XG5cbmV4cG9ydCBkZWZhdWx0IChpc0RldikgPT4ge1xuICBjb25zdCBjb21waWxlciA9IHdlYnBhY2sod2VicGFja0NvbmZpZyk7XG4gIGlmIChpc0Rldikge1xuICAgIGNvbnN0IGFjdGl2ZVdlYnBhY2tEZXZNaWRkbGV3YXJlID0gd2VicGFja0Rldk1pZGRsZXdhcmUoY29tcGlsZXIsIHtcbiAgICAgIHB1YmxpY1BhdGg6IHdlYnBhY2tDb25maWcub3V0cHV0LnB1YmxpY1BhdGgsXG4gICAgICBzdGF0czoge1xuICAgICAgICBjb2xvcnM6IHRydWUsXG4gICAgICB9LFxuICAgIH0pO1xuICAgIGFjdGl2ZVdlYnBhY2tEZXZNaWRkbGV3YXJlLndhaXRVbnRpbFZhbGlkKChzdGF0cykgPT4ge1xuICAgICAgcGFyc2VTdGF0c0ZvckRlcGVuZGVuY3lQcm9ibGVtcyhzdGF0cyk7XG4gICAgfSk7XG5cbiAgICByZXR1cm4gYWN0aXZlV2VicGFja0Rldk1pZGRsZXdhcmU7XG4gIH1cbiAgcmV0dXJuIGNvbXBpbGVyO1xufTtcblxuXG5cbi8vIFdFQlBBQ0sgRk9PVEVSIC8vXG4vLyB3ZWJwYWNrQ29tcGlsZS5qcyJdLCJtYXBwaW5ncyI6Ijs7Ozs7O0FBQUE7QUFDQTs7O0FBQUE7QUFDQTs7O0FBQ0E7QUFDQTs7O0FBQUE7QUFDQTs7Ozs7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQURBO0FBRkE7QUFNQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBIiwic291cmNlUm9vdCI6IiJ9");
 
 /***/ }),
 /* 8 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-
-
-/* eslint-disable func-names */
-function parseRequestResolvePlugin() {
-  var parseRequest = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function () {};
-
-  return {
-    apply: function apply(resolver) {
-      // I don't know why 'module' or 'resolve' are those values.
-      // Something to do with the the way they are used in this file:
-      // https://github.com/webpack/enhanced-resolve/blob/master/lib/ResolverFactory.js
-      // So they can be other values as seen in that file.
-      resolver.plugin( /* 'modules'*/'resolve', function (request, callback) {
-        var newRequestStr = parseRequest(request.request);
-        if (newRequestStr && newRequestStr !== request.request) {
-          var obj = Object.assign({}, request, {
-            request: newRequestStr
-          });
-          this.doResolve('resolve', obj, 'blah blah', callback);
-        } else {
-          callback();
-        }
-      });
-    }
-  };
-}
-
-module.exports = parseRequestResolvePlugin;
+eval("module.exports = require(\"child_process\");//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiOC5qcyIsInNvdXJjZXMiOlsid2VicGFjazovLy9leHRlcm5hbCBcImNoaWxkX3Byb2Nlc3NcIj80MzA4Il0sInNvdXJjZXNDb250ZW50IjpbIm1vZHVsZS5leHBvcnRzID0gcmVxdWlyZShcImNoaWxkX3Byb2Nlc3NcIik7XG5cblxuLy8vLy8vLy8vLy8vLy8vLy8vXG4vLyBXRUJQQUNLIEZPT1RFUlxuLy8gZXh0ZXJuYWwgXCJjaGlsZF9wcm9jZXNzXCJcbi8vIG1vZHVsZSBpZCA9IDhcbi8vIG1vZHVsZSBjaHVua3MgPSAwIl0sIm1hcHBpbmdzIjoiQUFBQSIsInNvdXJjZVJvb3QiOiIifQ==");
 
 /***/ }),
 /* 9 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _fsExtra = __webpack_require__(2);
-
-var _fsExtra2 = _interopRequireDefault(_fsExtra);
-
-var _validateNpmPackageName = __webpack_require__(25);
-
-var _validateNpmPackageName2 = _interopRequireDefault(_validateNpmPackageName);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } } /* eslint-disable no-console */
-
-
-function ensureTrailingSlash(str) {
-  return str.replace(/\/?$/, '/');
-}
-
-function ensureReadJsonSync(packageDotJsonPath) {
-  var packageDotJsonContent = void 0;
-  try {
-    packageDotJsonContent = _fsExtra2.default.readJsonSync(packageDotJsonPath);
-  } catch (e) {
-    packageDotJsonContent = {};
-  }
-  return packageDotJsonContent;
-}
-
-function showProblemsInConsole(problems) {
-  if (Object.keys(problems).length) {
-    console.info('\x1b[1m', '\nProblems with dependencies', '\x1b[0m');
-  }
-  Object.keys(problems).forEach(function (moduleResource) {
-    console.info('\x1b[36m', '\nProblem in module with `import` statement:', '\x1b[0m');
-    console.info('\x1b[37m', ' ' + moduleResource, '\x1b[0m');
-    Object.keys(problems[moduleResource]).forEach(function (depName) {
-      var problemMsg = problems[moduleResource][depName].msg;
-      console.info('\x1b[33m', 'Dependency requested as:', '\x1b[0m');
-      console.info('\x1b[37m', ' ' + depName, '\x1b[0m');
-      console.info('\x1b[33m', 'Message: ' + problemMsg, '\x1b[0m');
-      var problemInfo = problems[moduleResource][depName].info;
-      if (problemInfo) {
-        console.info('\x1b[37m', '- ' + problemInfo.join('\n - '), '\x1b[0m');
-      }
-    });
-  });
-}
-
-function findDependenciesProblems(dependencies, packageDotJsonContent) {
-  var problems = {};
-
-  dependencies.forEach(function (dep) {
-    if (dep.module) {
-      var rawRequest = dep.module.rawRequest;
-      // if (rawRequest.indexOf('/Users/brianephraim/Sites/monorepo/packages') === 0) {
-      //   console.info('\x1b[33m', 'depWTF', rawRequest, '\x1b[0m');
-      //   console.log('depWTF', dep);
-      // } else {
-      //   console.info('\x1b[33m', 'depGGG', rawRequest, '\x1b[0m');
-      //   console.log('depGGG', dep);
-      // }
-
-      // not a relative dependency
-      // not an absolut dependency
-      // we are only concerned with depenencies referenced like
-      // `import asdf from 'asdf';`
-      // or
-      // `import qwer from 'asdf/qwer';``
-      // or
-      // `import asdf from '@defualt/asdf';``
-      // These dependencies will be either in /node_modules/ or /packages/,
-      // the latter for only monorepo use.
-      if (rawRequest && rawRequest.indexOf('.') !== 0 && rawRequest.indexOf('/') !== 0) {
-        var validationResult = (0, _validateNpmPackageName2.default)(rawRequest);
-        if (validationResult.validForNewPackages) {
-          if (!packageDotJsonContent || (!packageDotJsonContent.dependencies || !packageDotJsonContent.dependencies[rawRequest]) && (!packageDotJsonContent.devDependencies || !packageDotJsonContent.devDependencies[rawRequest])) {
-            problems[rawRequest] = { msg: 'MISSING FROM PACKAGE.JSON' };
-          }
-        } else {
-          var info = [].concat(_toConsumableArray(validationResult.warnings || []), _toConsumableArray(validationResult.errors || [])).filter(function (msg) {
-            return msg !== 'name can only contain URL-friendly characters';
-          });
-          // console.log(validationResult);
-          if (info.length) {
-            problems[rawRequest] = {
-              msg: 'BAD FORMATTING',
-              info: [].concat(_toConsumableArray(validationResult.warnings || []), _toConsumableArray(validationResult.errors || []))
-            };
-          }
-        }
-      }
-    }
-  });
-
-  return Object.keys(problems).length ? problems : null;
-}
-
-function parseStatsForDependencyProblems(stats) {
-  var shouldShowProblemsInConsole = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
-
-  var isMonorepo = _fsExtra2.default.existsSync(process.cwd() + '/packages');
-
-  var packageDotJsonCache = {};
-  var problems = {};
-  stats.compilation.modules.forEach(function (module) {
-    // only concerned with module entries from /packages/ folder (not node_modules)
-    if (module.resource && module.resource.indexOf('node_modules') === -1) {
-      var packageDotJsonPath = void 0;
-      if (isMonorepo) {
-        var packagesDir = process.cwd() + '/packages';
-        packagesDir = ensureTrailingSlash(packagesDir);
-        // get substring from first trailing slash after whatever packagesDir is
-        var packageFolderName = module.resource.split(packagesDir)[1].split('/')[0];
-        packageDotJsonPath = '' + packagesDir + packageFolderName + '/package.json';
-      } else {
-        packageDotJsonPath = process.cwd() + '/package.json';
-      }
-
-      var packageDotJsonContent = packageDotJsonCache[packageDotJsonPath] || ensureReadJsonSync(packageDotJsonPath);
-      packageDotJsonCache[packageDotJsonPath] = packageDotJsonContent;
-
-      var packageSomehowPublic = !packageDotJsonContent.private || !packageDotJsonContent.privateFromGithub;
-
-      // only concerned if module's package.json is not empty,
-      // and if it is public on either NPM or Girhub
-      if (Object.keys(packageDotJsonContent).length && packageSomehowPublic) {
-        var depProblems = findDependenciesProblems(module.dependencies, packageDotJsonContent);
-        if (depProblems) {
-          problems[module.resource] = depProblems;
-        }
-      }
-    }
-  });
-  if (Object.keys(problems).length > 0 && shouldShowProblemsInConsole) {
-    showProblemsInConsole(problems);
-  }
-
-  return problems;
-}
-
-exports.default = parseStatsForDependencyProblems;
+eval("module.exports = require(\"globby\");//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiOS5qcyIsInNvdXJjZXMiOlsid2VicGFjazovLy9leHRlcm5hbCBcImdsb2JieVwiP2ZiYzYiXSwic291cmNlc0NvbnRlbnQiOlsibW9kdWxlLmV4cG9ydHMgPSByZXF1aXJlKFwiZ2xvYmJ5XCIpO1xuXG5cbi8vLy8vLy8vLy8vLy8vLy8vL1xuLy8gV0VCUEFDSyBGT09URVJcbi8vIGV4dGVybmFsIFwiZ2xvYmJ5XCJcbi8vIG1vZHVsZSBpZCA9IDlcbi8vIG1vZHVsZSBjaHVua3MgPSAwIl0sIm1hcHBpbmdzIjoiQUFBQSIsInNvdXJjZVJvb3QiOiIifQ==");
 
 /***/ }),
 /* 10 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-
-
-/* eslint-disable global-require */
-/*
-  This file used in 2 places
-    1.  This file is executed by the monorepo serving as the monorepo's dev environment.
-        (Only the monorepo uses dev_env like this. When the monorepo's packages are scattered
-        into individual repos, each individual repo has a dev_env dependency
-        in its node_modules folder,
-        but this dev_env is executed from a compiled version of the dev_env.
-        This is called from the individual repo's ./node_modules/.bin/devenv,
-        which points to ./node_modules/@defualt/dev_env/dist/dev_env.js.)
-    2.  This file is executed during the npm prepublish, which creates the /dist folder
-        mentioned in (1) above.
-*/
-module.exports = function (commandToRun) {
-  var command = 'sh';
-  var args = ['-c', commandToRun];
-  //
-  // kexec doesn't work in windows, so fallback to child_process.spawn
-  // this logic copied from babel-cli/lib/babel-node.js
-  // try {
-  //   const kexec = require('kexec');
-  //   kexec(command, args);
-  // } catch (err) {
-  // if (err.code !== 'MODULE_NOT_FOUND') throw err;
-
-  var childProcess = __webpack_require__(1);
-  var proc = childProcess.spawn(command, args, { stdio: 'inherit' });
-  proc.on('exit', function (code, signal) {
-    process.on('exit', function () {
-      if (signal) {
-        process.kill(process.pid, signal);
-      } else {
-        process.exit(code);
-      }
-    });
-  });
-  // }
-};
+eval("module.exports = require(\"path\");//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiMTAuanMiLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8vZXh0ZXJuYWwgXCJwYXRoXCI/NWIyYSJdLCJzb3VyY2VzQ29udGVudCI6WyJtb2R1bGUuZXhwb3J0cyA9IHJlcXVpcmUoXCJwYXRoXCIpO1xuXG5cbi8vLy8vLy8vLy8vLy8vLy8vL1xuLy8gV0VCUEFDSyBGT09URVJcbi8vIGV4dGVybmFsIFwicGF0aFwiXG4vLyBtb2R1bGUgaWQgPSAxMFxuLy8gbW9kdWxlIGNodW5rcyA9IDAiXSwibWFwcGluZ3MiOiJBQUFBIiwic291cmNlUm9vdCI6IiJ9");
 
 /***/ }),
 /* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _child_process = __webpack_require__(1);
-
-var _child_process2 = _interopRequireDefault(_child_process);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = function () {
-  var command = 'sh';
-
-  var args = ['-c',
-  // Why `CI=true `? ----- https://github.com/facebook/jest/issues/2959
-  'CI=true ' + process.cwd() + '/node_modules/.bin/jest --watch --config=' + __dirname + '/jest.config.js'];
-
-  var proc = _child_process2.default.spawn(command, args, { stdio: 'inherit' });
-  proc.on('exit', function (code, signal) {
-    process.on('exit', function () {
-      if (signal) {
-        process.kill(process.pid, signal);
-      } else {
-        process.exit(code);
-      }
-    });
-  });
-}; /* eslint-disable camelcase */
+eval("\n\nvar _yargs = __webpack_require__(2);\n\nvar _shellCommand = __webpack_require__(20);\n\nvar _shellCommand2 = _interopRequireDefault(_shellCommand);\n\nvar _jestSpawnProcess = __webpack_require__(17);\n\nvar _jestSpawnProcess2 = _interopRequireDefault(_jestSpawnProcess);\n\nvar _webpackBuild = __webpack_require__(22);\n\nvar _webpackBuild2 = _interopRequireDefault(_webpackBuild);\n\nvar _webpackBuildCommandLine = __webpack_require__(15);\n\nvar _webpackBuildCommandLine2 = _interopRequireDefault(_webpackBuildCommandLine);\n\nvar _webpackExpressServer = __webpack_require__(25);\n\nvar _webpackExpressServer2 = _interopRequireDefault(_webpackExpressServer);\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\n/* eslint-disable no-console */\nvar env = _yargs.argv.env;\nvar item = _yargs.argv.item;\nif (item) {\n  console.log('aaaa', _yargs.argv);\n  (0, _shellCommand2.default)('(cd ./packages/' + item + ' && npm run start)');\n} else if (env === 'test') {\n  (0, _jestSpawnProcess2.default)();\n} else {\n  if (_yargs.argv.entry) {\n    (0, _webpackBuildCommandLine2.default)();\n  } else if (env === 'build') {\n    (0, _webpackBuild2.default)();\n  } else {\n    (0, _webpackExpressServer2.default)();\n  }\n}//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiMTEuanMiLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8vZGV2X2Vudi5qcz9mNGQzIl0sInNvdXJjZXNDb250ZW50IjpbIi8qIGVzbGludC1kaXNhYmxlIG5vLWNvbnNvbGUgKi9cbmltcG9ydCB7IGFyZ3YgfSBmcm9tICd5YXJncyc7XG5pbXBvcnQgc2hlbGxDb21tYW5kIGZyb20gJy4vc2hlbGwtY29tbWFuZCc7XG5pbXBvcnQgamVzdFNwYXduUHJvY2VzcyBmcm9tICcuL2plc3RTcGF3blByb2Nlc3MnO1xuaW1wb3J0IHdlYnBhY2tCdWlsZCBmcm9tICcuL3dlYnBhY2tCdWlsZCc7XG5pbXBvcnQgd2VicGFja0J1aWxkQ29tbWFuZExpbmUgZnJvbSAnLi9jb3JlL3dlYnBhY2tCdWlsZENvbW1hbmRMaW5lJztcbmltcG9ydCBzZXJ2ZSBmcm9tICcuL3dlYnBhY2tFeHByZXNzU2VydmVyLmpzJztcblxuY29uc3QgZW52ID0gYXJndi5lbnY7XG5jb25zdCBpdGVtID0gYXJndi5pdGVtO1xuaWYgKGl0ZW0pIHtcbiAgY29uc29sZS5sb2coJ2FhYWEnLCBhcmd2KTtcbiAgc2hlbGxDb21tYW5kKGAoY2QgLi9wYWNrYWdlcy8ke2l0ZW19ICYmIG5wbSBydW4gc3RhcnQpYCk7XG59IGVsc2UgaWYgKGVudiA9PT0gJ3Rlc3QnKSB7XG4gIGplc3RTcGF3blByb2Nlc3MoKTtcbn0gZWxzZSB7XG4gIGlmIChhcmd2LmVudHJ5KSB7XG4gICAgd2VicGFja0J1aWxkQ29tbWFuZExpbmUoKTtcbiAgfSBlbHNlIGlmIChlbnYgPT09ICdidWlsZCcpIHtcbiAgICB3ZWJwYWNrQnVpbGQoKTtcbiAgfSBlbHNlIHtcbiAgICBzZXJ2ZSgpO1xuICB9XG59XG5cblxuXG4vLyBXRUJQQUNLIEZPT1RFUiAvL1xuLy8gZGV2X2Vudi5qcyJdLCJtYXBwaW5ncyI6Ijs7QUFDQTtBQUNBO0FBQUE7QUFDQTs7O0FBQUE7QUFDQTs7O0FBQUE7QUFDQTs7O0FBQUE7QUFDQTs7O0FBQUE7QUFDQTs7Ozs7QUFQQTtBQVFBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBIiwic291cmNlUm9vdCI6IiJ9");
 
 /***/ }),
 /* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
-
-var DirectoryNamedWebpackPlugin = __webpack_require__(17);
-var parseRequestResolvePlugin = __webpack_require__(8);
-var path = __webpack_require__(3);
-
-module.exports = {
-  resolve: {
-    modules: [path.resolve('./src/library'), path.resolve(process.cwd(), 'packages'), path.resolve(process.cwd(), '../../packages'), 'node_modules'],
-    extensions: ['.js',
-
-    // Why is this here? : https://github.com/npm/normalize-package-data/issues/88
-    // Issue only appeard when webpack run on command line for Node bundle
-    '.json'],
-    plugins: [parseRequestResolvePlugin(function (requestStr) {
-      if (requestStr.indexOf('@') === 0 && requestStr.indexOf('/') !== -1) {
-        return requestStr.split('/')[1];
-      }
-      return false;
-    }), new DirectoryNamedWebpackPlugin(true)]
-  }
-};
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n\nvar _foreach = __webpack_require__(27);\n\nvar _foreach2 = _interopRequireDefault(_foreach);\n\nvar _two = __webpack_require__(26);\n\nvar _two2 = _interopRequireDefault(_two);\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nconsole.log('logging from aaa8.js');\n\nconsole.log(_foreach2.default.toString());\nconsole.log(_two2.default.toString());\nexports.default = 'Hi I am aaa8';//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiMTIuanMiLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8vLi4vYWFhOC9hYWE4LmpzPzViZjciXSwic291cmNlc0NvbnRlbnQiOlsiY29uc29sZS5sb2coJ2xvZ2dpbmcgZnJvbSBhYWE4LmpzJyk7XG5pbXBvcnQgZm9yZWFjaFggZnJvbSAnZm9yZWFjaCc7XG5pbXBvcnQgc3VtIGZyb20gJ3N1bS90d28nO1xuY29uc29sZS5sb2coZm9yZWFjaFgudG9TdHJpbmcoKSk7XG5jb25zb2xlLmxvZyhzdW0udG9TdHJpbmcoKSk7XG5leHBvcnQgZGVmYXVsdCAnSGkgSSBhbSBhYWE4JztcblxuXG4vLyBXRUJQQUNLIEZPT1RFUiAvL1xuLy8gLi4vYWFhOC9hYWE4LmpzIl0sIm1hcHBpbmdzIjoiOzs7Ozs7QUFDQTtBQUNBOzs7QUFBQTtBQUNBOzs7OztBQUhBO0FBQ0E7QUFFQTtBQUNBO0FBQ0EiLCJzb3VyY2VSb290IjoiIn0=");
 
 /***/ }),
 /* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _webpackCompile = __webpack_require__(0);
-
-var _webpackCompile2 = _interopRequireDefault(_webpackCompile);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = function () {
-  (0, _webpackCompile2.default)().run(function (err, stats) {
-    // parseStatsForDependencyProblems(stats);
-    // fs.writeFileSync(process.cwd() + '/_webpack_stats.json',JSON.stringify(stats, null, 2));
-
-    if (err) {
-      console.error(err.stack || err);
-      if (err.details) {
-        console.error(err.details);
-      }
-      return;
-    }
-
-    var info = stats.toJson();
-
-    if (stats.hasErrors()) {
-      info.errors.forEach(function (e) {
-        console.error('\x1b[31m', e, '\x1b[0m');
-      });
-    }
-
-    if (stats.hasWarnings()) {
-      info.warnings.forEach(function (w) {
-        console.warn('\x1b[33m', w, '\x1b[0m');
-      });
-    }
-  });
-};
+eval("\n\n/* eslint-disable func-names */\nfunction parseRequestResolvePlugin() {\n  var parseRequest = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function () {};\n\n  return {\n    apply: function apply(resolver) {\n      // I don't know why 'module' or 'resolve' are those values.\n      // Something to do with the the way they are used in this file:\n      // https://github.com/webpack/enhanced-resolve/blob/master/lib/ResolverFactory.js\n      // So they can be other values as seen in that file.\n      resolver.plugin( /* 'modules'*/'resolve', function (request, callback) {\n        var newRequestStr = parseRequest(request.request);\n        if (newRequestStr && newRequestStr !== request.request) {\n          var obj = Object.assign({}, request, {\n            request: newRequestStr\n          });\n          this.doResolve('resolve', obj, 'blah blah', callback);\n        } else {\n          callback();\n        }\n      });\n    }\n  };\n}\n\nmodule.exports = parseRequestResolvePlugin;//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiMTMuanMiLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8vY29yZS9wYXJzZVJlcXVlc3RSZXNvbHZlUGx1Z2luLmpzPzgzYmMiXSwic291cmNlc0NvbnRlbnQiOlsiLyogZXNsaW50LWRpc2FibGUgZnVuYy1uYW1lcyAqL1xuZnVuY3Rpb24gcGFyc2VSZXF1ZXN0UmVzb2x2ZVBsdWdpbihwYXJzZVJlcXVlc3QgPSAoKSA9PiB7fSkge1xuICByZXR1cm4ge1xuICAgIGFwcGx5KHJlc29sdmVyKSB7XG4gICAgICAvLyBJIGRvbid0IGtub3cgd2h5ICdtb2R1bGUnIG9yICdyZXNvbHZlJyBhcmUgdGhvc2UgdmFsdWVzLlxuICAgICAgLy8gU29tZXRoaW5nIHRvIGRvIHdpdGggdGhlIHRoZSB3YXkgdGhleSBhcmUgdXNlZCBpbiB0aGlzIGZpbGU6XG4gICAgICAvLyBodHRwczovL2dpdGh1Yi5jb20vd2VicGFjay9lbmhhbmNlZC1yZXNvbHZlL2Jsb2IvbWFzdGVyL2xpYi9SZXNvbHZlckZhY3RvcnkuanNcbiAgICAgIC8vIFNvIHRoZXkgY2FuIGJlIG90aGVyIHZhbHVlcyBhcyBzZWVuIGluIHRoYXQgZmlsZS5cbiAgICAgIHJlc29sdmVyLnBsdWdpbigvKiAnbW9kdWxlcycqLyAncmVzb2x2ZScsIGZ1bmN0aW9uIChyZXF1ZXN0LCBjYWxsYmFjaykge1xuICAgICAgICBjb25zdCBuZXdSZXF1ZXN0U3RyID0gcGFyc2VSZXF1ZXN0KHJlcXVlc3QucmVxdWVzdCk7XG4gICAgICAgIGlmIChuZXdSZXF1ZXN0U3RyICYmIG5ld1JlcXVlc3RTdHIgIT09IHJlcXVlc3QucmVxdWVzdCkge1xuICAgICAgICAgIGNvbnN0IG9iaiA9IE9iamVjdC5hc3NpZ24oe30sIHJlcXVlc3QsIHtcbiAgICAgICAgICAgIHJlcXVlc3Q6IG5ld1JlcXVlc3RTdHIsXG4gICAgICAgICAgfSk7XG4gICAgICAgICAgdGhpcy5kb1Jlc29sdmUoJ3Jlc29sdmUnLCBvYmosICdibGFoIGJsYWgnLCBjYWxsYmFjayk7XG4gICAgICAgIH0gZWxzZSB7XG4gICAgICAgICAgY2FsbGJhY2soKTtcbiAgICAgICAgfVxuICAgICAgfSk7XG4gICAgfSxcbiAgfTtcbn1cblxubW9kdWxlLmV4cG9ydHMgPSBwYXJzZVJlcXVlc3RSZXNvbHZlUGx1Z2luO1xuXG5cblxuLy8gV0VCUEFDSyBGT09URVIgLy9cbi8vIGNvcmUvcGFyc2VSZXF1ZXN0UmVzb2x2ZVBsdWdpbi5qcyJdLCJtYXBwaW5ncyI6Ijs7QUFBQTtBQUNBO0FBQUE7QUFDQTtBQUFBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFEQTtBQUdBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQWpCQTtBQW1CQTtBQUNBO0FBQ0EiLCJzb3VyY2VSb290IjoiIn0=");
 
 /***/ }),
 /* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _webpackNodeExternals = __webpack_require__(5);
-
-var _webpackNodeExternals2 = _interopRequireDefault(_webpackNodeExternals);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = {
-  target: 'node',
-  node: {
-    __dirname: false,
-    __filename: false
-  },
-  externals: [(0, _webpackNodeExternals2.default)({ modulesFromFile: true })]
-};
+eval("\n\nvar DirectoryNamedWebpackPlugin = __webpack_require__(28);\nvar parseRequestResolvePlugin = __webpack_require__(13);\nvar path = __webpack_require__(10);\nmodule.exports = {\n  resolve: {\n    modules: [path.resolve('./src/library'), path.resolve(process.cwd(), 'packages'), path.resolve(process.cwd(), '../../packages'), 'node_modules'],\n    extensions: ['.js',\n\n    // Why is this here? : https://github.com/npm/normalize-package-data/issues/88\n    // Issue only appeard when webpack run on command line for Node bundle\n    '.json'],\n    plugins: [parseRequestResolvePlugin(function (requestStr) {\n      if (requestStr.indexOf('@') === 0 && requestStr.indexOf('/') !== -1) {\n        return requestStr.split('/')[1];\n      }\n      return false;\n    }), new DirectoryNamedWebpackPlugin(true)]\n  }\n};//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiMTQuanMiLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8vY29yZS93ZWJwYWNrLWNvbmZpZy1yZXNvbHZlLmpzPzQ1ZDUiXSwic291cmNlc0NvbnRlbnQiOlsiY29uc3QgRGlyZWN0b3J5TmFtZWRXZWJwYWNrUGx1Z2luID0gcmVxdWlyZSgnZGlyZWN0b3J5LW5hbWVkLXdlYnBhY2stcGx1Z2luJyk7XG5jb25zdCBwYXJzZVJlcXVlc3RSZXNvbHZlUGx1Z2luID0gcmVxdWlyZSgnLi9wYXJzZVJlcXVlc3RSZXNvbHZlUGx1Z2luJyk7XG5jb25zdCBwYXRoID0gcmVxdWlyZSgncGF0aCcpO1xubW9kdWxlLmV4cG9ydHMgPSB7XG4gIHJlc29sdmU6IHtcbiAgICBtb2R1bGVzOiBbXG4gICAgICBwYXRoLnJlc29sdmUoJy4vc3JjL2xpYnJhcnknKSxcbiAgICAgIHBhdGgucmVzb2x2ZShwcm9jZXNzLmN3ZCgpLCAncGFja2FnZXMnKSxcbiAgICAgIHBhdGgucmVzb2x2ZShwcm9jZXNzLmN3ZCgpLCAnLi4vLi4vcGFja2FnZXMnKSxcbiAgICAgICdub2RlX21vZHVsZXMnLFxuICAgIF0sXG4gICAgZXh0ZW5zaW9uczogW1xuICAgICAgJy5qcycsXG5cbiAgICAgIC8vIFdoeSBpcyB0aGlzIGhlcmU/IDogaHR0cHM6Ly9naXRodWIuY29tL25wbS9ub3JtYWxpemUtcGFja2FnZS1kYXRhL2lzc3Vlcy84OFxuICAgICAgLy8gSXNzdWUgb25seSBhcHBlYXJkIHdoZW4gd2VicGFjayBydW4gb24gY29tbWFuZCBsaW5lIGZvciBOb2RlIGJ1bmRsZVxuICAgICAgJy5qc29uJyxcbiAgICBdLFxuICAgIHBsdWdpbnM6IFtcbiAgICAgIHBhcnNlUmVxdWVzdFJlc29sdmVQbHVnaW4oKHJlcXVlc3RTdHIpID0+IHtcbiAgICAgICAgaWYgKHJlcXVlc3RTdHIuaW5kZXhPZignQCcpID09PSAwICYmIHJlcXVlc3RTdHIuaW5kZXhPZignLycpICE9PSAtMSkge1xuICAgICAgICAgIHJldHVybiByZXF1ZXN0U3RyLnNwbGl0KCcvJylbMV07XG4gICAgICAgIH1cbiAgICAgICAgcmV0dXJuIGZhbHNlO1xuICAgICAgfSksXG4gICAgICBuZXcgRGlyZWN0b3J5TmFtZWRXZWJwYWNrUGx1Z2luKHRydWUpLFxuICAgIF0sXG4gIH0sXG59O1xuXG5cblxuLy8gV0VCUEFDSyBGT09URVIgLy9cbi8vIGNvcmUvd2VicGFjay1jb25maWctcmVzb2x2ZS5qcyJdLCJtYXBwaW5ncyI6Ijs7QUFBQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFNQTtBQUNBO0FBRUE7QUFDQTtBQUNBO0FBRUE7QUFFQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBcEJBO0FBREEiLCJzb3VyY2VSb290IjoiIn0=");
 
 /***/ }),
 /* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _express = __webpack_require__(18);
-
-var _express2 = _interopRequireDefault(_express);
-
-var _url = __webpack_require__(24);
-
-var _url2 = _interopRequireDefault(_url);
-
-var _webpackCompile = __webpack_require__(0);
-
-var _webpackCompile2 = _interopRequireDefault(_webpackCompile);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = function (app) {
-  var port = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 3000;
-
-  var appIsBrandNew = false;
-  if (!app) {
-    appIsBrandNew = true;
-    app = (0, _express2.default)();
-  }
-  app.use(function (req, res, next) {
-    var urlSplit = _url2.default.parse(req.url).pathname.split('/');
-    var lastPart = urlSplit[urlSplit.length - 1];
-    var lastPartContainsDot = lastPart.indexOf('.') !== -1;
-    var lastPartContainsDotHtml = lastPart.indexOf('.html') !== -1;
-    if (!lastPartContainsDot || lastPartContainsDotHtml) {
-      req.url = '/';
-    }
-    next();
-  });
-
-  console.info('🔷 Starting webpack ...');
-
-  app.use((0, _webpackCompile2.default)(true));
-
-  app.use('/images', _express2.default.static('packages/images'));
-  app.use('/fonts', _express2.default.static('packages/fonts'));
-  // app.get(new RegExp('^[/](images|fonts)[/](.+)'), (req, res) => {
-  //   res.sendFile(path.join(__dirname, `packages${url.parse(req.url).pathname}`));
-  // });
-
-  // app.get('/*', (req, res) => {
-  //   console.log(url.parse(req.url).pathname);
-  //   res.sendFile(path.join(process.cwd(), 'index.html'));
-  // });
-
-  // app.get(new RegExp('/^\/(.*)\.html$'), (req, res) => {
-  //   res.sendFile(path.join(process.cwd(), 'index.html'));
-  // });
-  if (appIsBrandNew) {
-    app.listen(port, function (error) {
-      if (error) {
-        console.error(error);
-      } else {
-        console.info('🌎 Listening on port %s. Open up http://localhost:%s/ in your browser.', port, port);
-      }
-    });
-  }
-
-  return app;
-};
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n\nvar _webpack = __webpack_require__(0);\n\nvar _webpack2 = _interopRequireDefault(_webpack);\n\nvar _webpackRunner = __webpack_require__(6);\n\nvar _webpackRunner2 = _interopRequireDefault(_webpackRunner);\n\nvar _webpackConfigCommandLine = __webpack_require__(3);\n\nvar _webpackConfigCommandLine2 = _interopRequireDefault(_webpackConfigCommandLine);\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nfunction webpackCompile() {\n  var compiler = (0, _webpack2.default)((0, _webpackConfigCommandLine2.default)());\n  return compiler;\n}\n\nexports.default = function () {\n  (0, _webpackRunner2.default)(webpackCompile);\n};//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiMTUuanMiLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8vY29yZS93ZWJwYWNrQnVpbGRDb21tYW5kTGluZS5qcz80ODVmIl0sInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB3ZWJwYWNrIGZyb20gJ3dlYnBhY2snO1xuaW1wb3J0IHdlYnBhY2tSdW5uZXIgZnJvbSAnLi93ZWJwYWNrUnVubmVyJztcbmltcG9ydCB3ZWJwYWNrQ29uZmlnIGZyb20gJy4vd2VicGFja0NvbmZpZ0NvbW1hbmRMaW5lJztcblxuZnVuY3Rpb24gd2VicGFja0NvbXBpbGUoKSB7XG4gIGNvbnN0IGNvbXBpbGVyID0gd2VicGFjayh3ZWJwYWNrQ29uZmlnKCkpO1xuICByZXR1cm4gY29tcGlsZXI7XG59XG5cbmV4cG9ydCBkZWZhdWx0ICgpID0+IHtcbiAgd2VicGFja1J1bm5lcih3ZWJwYWNrQ29tcGlsZSk7XG59O1xuXG5cblxuLy8gV0VCUEFDSyBGT09URVIgLy9cbi8vIGNvcmUvd2VicGFja0J1aWxkQ29tbWFuZExpbmUuanMiXSwibWFwcGluZ3MiOiI7Ozs7OztBQUFBO0FBQ0E7OztBQUFBO0FBQ0E7OztBQUFBO0FBQ0E7Ozs7O0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQSIsInNvdXJjZVJvb3QiOiIifQ==");
 
 /***/ }),
 /* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-var _path = __webpack_require__(3);
-
-var _path2 = _interopRequireDefault(_path);
-
-var _yargs = __webpack_require__(6);
-
-var _stringReplaceWebpackPlugin = __webpack_require__(23);
-
-var _stringReplaceWebpackPlugin2 = _interopRequireDefault(_stringReplaceWebpackPlugin);
-
-var _webpack = __webpack_require__(4);
-
-var _webpack2 = _interopRequireDefault(_webpack);
-
-var _nodeSassJsonImporter = __webpack_require__(22);
-
-var _nodeSassJsonImporter2 = _interopRequireDefault(_nodeSassJsonImporter);
-
-var _extractTextWebpackPlugin = __webpack_require__(19);
-
-var _extractTextWebpackPlugin2 = _interopRequireDefault(_extractTextWebpackPlugin);
-
-var _htmlWebpackPlugin = __webpack_require__(21);
-
-var _htmlWebpackPlugin2 = _interopRequireDefault(_htmlWebpackPlugin);
-
-var _webpackNodeExternals = __webpack_require__(5);
-
-var _webpackNodeExternals2 = _interopRequireDefault(_webpackNodeExternals);
-
-var _globby = __webpack_require__(20);
-
-var _globby2 = _interopRequireDefault(_globby);
-
-var _fsExtra = __webpack_require__(2);
-
-var _fsExtra2 = _interopRequireDefault(_fsExtra);
-
-var _webpackConfigResolve = __webpack_require__(12);
-
-var _webpackConfigResolve2 = _interopRequireDefault(_webpackConfigResolve);
-
-var _webpackConfigNodeBundle = __webpack_require__(14);
-
-var _webpackConfigNodeBundle2 = _interopRequireDefault(_webpackConfigNodeBundle);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } } /*
-                                                                                                                                                                                                      This files return a function that when called generates a webpack config json.
-                                                                                                                                                                                                      `argv` is passed into this function.
-                                                                                                                                                                                                    
-                                                                                                                                                                                                      when `argv.env === falsey`
-                                                                                                                                                                                                        This compiles for a dev server via webpack-dev-middleware.  No files are created to disk,
-                                                                                                                                                                                                        only created in memory.
-                                                                                                                                                                                                    
-                                                                                                                                                                                                      when `argv.env === 'build'`
-                                                                                                                                                                                                        This compiles files to disk in a /dist folder and a /demo folder.
-                                                                                                                                                                                                    
-                                                                                                                                                                                                      when `argv.dirroot === some path`
-                                                                                                                                                                                                        This is used when dev_env itself is compiled.
-                                                                                                                                                                                                        This very file is compiled according the config set by this file.
-                                                                                                                                                                                                        This is needed to make dev_env portable via npm.
-                                                                                                                                                                                                        babel-node needs to compile this dev_env to work,
-                                                                                                                                                                                                        but this does not play well when dev_env is in a node_modules folder.
-                                                                                                                                                                                                        So we need to compile dev_env before publishing to npm.
-                                                                                                                                                                                                        Directory paths need to be tweaked to accomplish this,
-                                                                                                                                                                                                        and that's what `argv.dirroot` helps with.
-                                                                                                                                                                                                    
-                                                                                                                                                                                                    
-                                                                                                                                                                                                      This function is also affected by package.json.
-                                                                                                                                                                                                    
-                                                                                                                                                                                                      when package.json.bundleForNode === true
-                                                                                                                                                                                                        in conjunction with `argv.env === 'build'`, the bundle will
-                                                                                                                                                                                                        have special consideration for a node platform.
-                                                                                                                                                                                                        Only application files will be bundled.
-                                                                                                                                                                                                        node_modules and node built-in requires will not be bundled.
-                                                                                                                                                                                                    */
-
-
-var devHtmlPath = './index.html';
-
-console.log(_yargs.argv);
-
-// console.log(process.cwd());
-// // console.log(argv);
-// console.log({
-//   entry: path.resolve(process.cwd(), argv.entry),
-//   output: path.resolve(process.cwd(), argv.output),
-// });
-
-function generateConfigJson() {
-  var env = _yargs.argv.env;
-
-  var isCommandLine = _yargs.argv.entry;
-
-  var dirRoot = _yargs.argv.dirroot || process.cwd();
-
-  if (_yargs.argv.entry) {
-    dirRoot = '/Users/brianephraim/Sites/monorepo/packages/dev_env';
-  }
-
-  var packageJson = _fsExtra2.default.readJsonSync(dirRoot + '/package.json');
-
-  var bundleForNode = packageJson.bundleForNode || isCommandLine;
-  var isBuild = env === 'build' || isCommandLine;
-
-  var username = null;
-  if (packageJson.repository && packageJson.repository.url) {
-    username = packageJson.repository.url.replace('://').split('/')[1];
-  }
-
-  var libraryName = packageJson.name;
-  var libraryNameReduced = libraryName.split('/')[1] || libraryName.split('/')[0];
-
-  var plugins = [];
-  var pluginRegistry = {};
-  function registerPlugin(name, plugin) {
-    if (!pluginRegistry[name]) {
-      plugins.push(plugin);
-      pluginRegistry[name] = true;
-      return true;
-    }
-    return false;
-  }
-
-  function conditionalExtractTextLoaderCss(usePlugin, moreLoaderParams) {
-    if (usePlugin) {
-      registerPlugin('ExtractTextPlugin', new _extractTextWebpackPlugin2.default('[name].css'));
-      return { use: _extractTextWebpackPlugin2.default.extract(moreLoaderParams) };
-    }
-    return {
-      use: [moreLoaderParams.fallback].concat(_toConsumableArray(moreLoaderParams.use))
-    };
-  }
-  var outputFiles = {};
-  if (isBuild) {
-    outputFiles.library = 'dist/' + libraryNameReduced;
-    outputFiles.libraryMin = 'dist/' + libraryNameReduced + '.min';
-    outputFiles.demo = 'dist/demo/index';
-  } else {
-    outputFiles.demo = 'boot';
-    outputFiles.library = '' + libraryNameReduced;
-  }
-  var entryFiles = _extends(_defineProperty({
-    MainApp: _globby2.default.sync([dirRoot + '/packages/MainApp/MainApp.js'])
-  }, outputFiles.library, _globby2.default.sync([dirRoot + '/' + libraryNameReduced + '.js', dirRoot + '/src/library/index.js'])), outputFiles.libraryMin ? _defineProperty({}, outputFiles.libraryMin, _globby2.default.sync([dirRoot + '/src/library/index.js'])) : {}, _defineProperty({}, outputFiles.demo, _globby2.default.sync([dirRoot + '/*.demo.js', dirRoot + '/demo.js', dirRoot + '/**/*/*.demo.js', dirRoot + '/**/*/demo.js', '!' + dirRoot + '/packages/**/*', dirRoot + '/packages/MainApp/MainApp.js'])));
-  var entry = Object.keys(entryFiles).reduce(function (accum, entryName) {
-    if (entryFiles[entryName].length) {
-      accum[entryName] = entryFiles[entryName];
-    }
-    return accum;
-  }, {});
-
-  function moveModify(source, modifyPath, modifyContent) {
-    var sources = [];
-    if ((typeof source === 'undefined' ? 'undefined' : _typeof(source)) === 'object') {
-      sources = source;
-    } else {
-      sources.push(source);
-    }
-    var toCopy = [];
-    sources.forEach(function (pattern) {
-      toCopy = [].concat(_toConsumableArray(toCopy), _toConsumableArray(_globby2.default.sync(pattern)));
-    });
-    toCopy.forEach(function (filePath) {
-      var filePathOut = filePath;
-      if (modifyPath) {
-        filePathOut = modifyPath(filePath);
-      }
-      var content = _fsExtra2.default.readFileSync(filePath, 'utf8');
-      if (modifyContent) {
-        content = modifyContent(content, filePath, filePathOut);
-      }
-      _fsExtra2.default.outputFileSync(filePathOut, content);
-    });
-  }
-
-  if (!isCommandLine) {
-    if (isBuild) {
-      moveModify(['src/import-examples/**/!(webpack.config).*', 'src/tonicExample.js'], function (filePath) {
-        return filePath.replace('src/', './');
-      }, function (content) {
-        return content.replace(/LIBRARYNAME/g, libraryName);
-      });
-
-      registerPlugin('UglifyJsPlugin', new _webpack2.default.optimize.UglifyJsPlugin({
-        include: /\.min\.js$/,
-        minimize: true
-      }));
-
-      var templatePath = 'src/demo/index.ejs';
-      var htmlTemplateExists = _fsExtra2.default.existsSync(templatePath);
-      var indexHtmlSettings = _extends({
-        chunks: [outputFiles.demo]
-      }, htmlTemplateExists ? { template: templatePath } : {}, {
-        title: 'afasdfasdfasd',
-        username: username,
-        libraryName: libraryName
-      });
-      registerPlugin('demoIndex-HtmlWebpackPlugin', new _htmlWebpackPlugin2.default(_extends({
-        filename: './dist/demo/index.html'
-      }, indexHtmlSettings)));
-    } else {
-      registerPlugin('demoDevIndex-HtmlWebpackPlugin', new _htmlWebpackPlugin2.default({
-        chunks: [outputFiles.demo],
-        filename: devHtmlPath
-      }));
-    }
-  }
-  registerPlugin('StringReplacePlugin', new _stringReplaceWebpackPlugin2.default());
-
-  registerPlugin('LoaderOptionsPlugin', new _webpack2.default.LoaderOptionsPlugin({
-    options: {
-      sassLoader: {
-        importer: _nodeSassJsonImporter2.default
-      },
-      context: dirRoot
-    }
-  }));
-
-  var output = {
-    path: '' + dirRoot,
-    filename: '[name].js',
-    library: libraryName,
-    libraryTarget: 'umd',
-    umdNamedDefine: true,
-    publicPath: '/'
-    // publicPath: '/assets/',
-  };
-
-  if (isCommandLine) {
-    entry = {
-      main: _yargs.argv.entry
-    };
-
-    // output = '/Users/brianephraim/Sites/monorepo/packages/dev_env/wepback.start.temp.js';
-    // output = path.resolve(process.cwd(), argv.output);
-    // output = output.split('/');
-    // output = {
-    //   filename: output.pop(),
-    //   path: output.join('/'),
-    //   library: libraryName,
-    //   libraryTarget: 'umd',
-    //   umdNamedDefine: true,
-    //   publicPath: '/',
-    // };
-
-    // output = {
-    //   filename: 'wepback.start.temp.js',
-    //   path: '/Users/brianephraim/Sites/monorepo/packages/dev_env/',
-    //   library: libraryName,
-    //   libraryTarget: 'umd',
-    //   umdNamedDefine: true,
-    //   publicPath: '/',
-    // };
-
-    output = _yargs.argv.output;
-    output = output.split('/');
-
-    output = {
-      filename: output.pop(),
-      path: output.join('/'),
-      library: libraryName,
-      libraryTarget: 'umd',
-      umdNamedDefine: true,
-      publicPath: '/'
-    };
-
-    // /Users/brianephraim/Sites/monorepo/packages/mono-to-multirepo/mono-to-multirepo.js
-  }
-
-  var config = _extends({
-    entry: entry,
-    output: output,
-    devtool: isBuild ? 'source-map' : 'cheap-module-eval-source-map',
-    module: {
-      rules: [
-      // Why is this here: https://github.com/Reactive-Extensions/RxJS/issues/1117
-      // Issue only appeard when webpack run on command line for Node bundle
-      { test: /rx\.lite\.aggregates\.js/, use: 'imports-loader?define=>false' }, {
-        test: /\.(js)?$/,
-        loader: 'babel-loader',
-        exclude: /node_modules/
-        // include: `${dirRoot}`,
-        // options: {
-        //   presets: [
-
-        //     [
-        //       'es2015',
-        //       // needed for tree shaking
-        //       { modules: false },
-        //     ],
-        //     'react',
-        //     // 'react',
-        //   ],
-        //   plugins: [
-        //     'transform-es2015-spread',
-        //     'transform-object-rest-spread',
-        //   ],
-        //   // mocha needs .babelrc,
-        //   // and .babelrc cannot use the above config
-        //   // so ignore .babelrc here
-        //   babelrc: false,
-        // },
-      }, _extends({
-        test: /\.css$/
-      }, conditionalExtractTextLoaderCss(isBuild, {
-        fallback: 'style-loader',
-        use: ['css-loader']
-      })), _extends({
-        test: /\.scss$/
-      }, conditionalExtractTextLoaderCss(isBuild, {
-        fallback: 'style-loader',
-        use: ['css-loader?sourceMap', {
-          loader: 'sass-loader?sourceMap',
-          // Apply the JSON importer via sass-loader's options.
-          options: {
-            importer: _nodeSassJsonImporter2.default
-          }
-        }]
-      })), {
-        test: /\.json$/,
-        loaders: ['json-loader']
-      }, {
-        test: /\.ejs$/,
-        loader: 'ejs-compiled-loader'
-      }, {
-        test: /\.md/,
-        loaders: ['html-loader', 'markdown-loader']
-      }, {
-        test: /\.js|\.html|\.ejs$/,
-        exclude: [__filename],
-        loader: _stringReplaceWebpackPlugin2.default.replace({
-          replacements: [{
-            pattern: /LIBRARYNAME/g,
-            replacement: function replacement() /* match, p1, offset, string */{
-              return libraryName;
-            }
-          }]
-        })
-      }]
-    },
-    resolve: _webpackConfigResolve2.default.resolve,
-    plugins: plugins
-  }, bundleForNode ? {
-    target: 'node',
-    node: {
-      __dirname: false,
-      __filename: false
-    },
-    externals: [(0, _webpackNodeExternals2.default)({ modulesFromFile: true })]
-  } : {});
-
-  _fsExtra2.default.writeFileSync('./_webpack-config-preview.json', JSON.stringify(config, null, 2));
-  return config;
-}
-
-exports.default = generateConfigJson();
+eval("\n\n/* eslint-disable no-useless-escape */\nmodule.exports = {\n  verbose: true,\n  testMatch: ['**/?(*.)(test).js?(x)'],\n  rootDir: process.cwd(),\n  moduleDirectories: ['node_modules', 'packages'],\n  moduleNameMapper: {\n    '\\\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$': __dirname + '/__mocks__/fileMock.js',\n    '\\\\.(css|less)$': 'identity-obj-proxy'\n  },\n  resolver: __dirname + '/jestWebpackResolver.js',\n  moduleFileExtensions: ['js', 'jsx'],\n  modulePathIgnorePatterns: ['<rootDir>.*\\/node_modules\\/.*']\n};//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiMTYuanMiLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8vamVzdENvbmZpZy5qcz8xZTVmIl0sInNvdXJjZXNDb250ZW50IjpbIi8qIGVzbGludC1kaXNhYmxlIG5vLXVzZWxlc3MtZXNjYXBlICovXG5tb2R1bGUuZXhwb3J0cyA9IHtcbiAgdmVyYm9zZTogdHJ1ZSxcbiAgdGVzdE1hdGNoOiBbJyoqLz8oKi4pKHRlc3QpLmpzPyh4KSddLFxuICByb290RGlyOiBwcm9jZXNzLmN3ZCgpLFxuICBtb2R1bGVEaXJlY3RvcmllczogWydub2RlX21vZHVsZXMnLCAncGFja2FnZXMnXSxcbiAgbW9kdWxlTmFtZU1hcHBlcjoge1xuICAgICdcXFxcLihqcGd8anBlZ3xwbmd8Z2lmfGVvdHxvdGZ8d2VicHxzdmd8dHRmfHdvZmZ8d29mZjJ8bXA0fHdlYm18d2F2fG1wM3xtNGF8YWFjfG9nYSkkJzogYCR7X19kaXJuYW1lfS9fX21vY2tzX18vZmlsZU1vY2suanNgLFxuICAgICdcXFxcLihjc3N8bGVzcykkJzogJ2lkZW50aXR5LW9iai1wcm94eScsXG4gIH0sXG4gIHJlc29sdmVyOiBgJHtfX2Rpcm5hbWV9L2plc3RXZWJwYWNrUmVzb2x2ZXIuanNgLFxuICBtb2R1bGVGaWxlRXh0ZW5zaW9uczogWydqcycsICdqc3gnXSxcbiAgbW9kdWxlUGF0aElnbm9yZVBhdHRlcm5zOiBbXG4gICAgJzxyb290RGlyPi4qXFwvbm9kZV9tb2R1bGVzXFwvLionLFxuICBdLFxufTtcblxuXG5cbi8vIFdFQlBBQ0sgRk9PVEVSIC8vXG4vLyBqZXN0Q29uZmlnLmpzIl0sIm1hcHBpbmdzIjoiOztBQUFBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUZBO0FBSUE7QUFDQTtBQUNBO0FBWEEiLCJzb3VyY2VSb290IjoiIn0=");
 
 /***/ }),
 /* 17 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = require("directory-named-webpack-plugin");
+"use strict";
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n\nvar _child_process = __webpack_require__(8);\n\nvar _child_process2 = _interopRequireDefault(_child_process);\n\nvar _path = __webpack_require__(10);\n\nvar _path2 = _interopRequireDefault(_path);\n\nvar _jestConfig = __webpack_require__(16);\n\nvar _jestConfig2 = _interopRequireDefault(_jestConfig);\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nconsole.log('TEST SETUP xxxx', __dirname);\n// console.log(path.resolve(__dirname,'./'));\n// const config = `\"${JSON.stringify(getJestConfig).replace(/\"/g, '\\\\\"')}\"`;\n// const config = `${JSON.stringify(getJestConfig).replace(/\"/g, '\\\\\"')}`;\n/* eslint-disable camelcase */\nvar config = '\\'' + JSON.stringify(_jestConfig2.default).replace(/'/g, \"\\\\'\") + '\\'';\nconsole.log(config);\n\nvar configPath = __dirname + '/jestConfig.js';\n\nexports.default = function () {\n  var command = 'sh';\n\n  var args = ['-c',\n  // Why `CI=true `? ----- https://github.com/facebook/jest/issues/2959\n  'CI=true ' + process.cwd() + '/node_modules/.bin/jest --watch --config=' + configPath];\n\n  var proc = _child_process2.default.spawn(command, args, { stdio: 'inherit' });\n  proc.on('exit', function (code, signal) {\n    process.on('exit', function () {\n      if (signal) {\n        process.kill(process.pid, signal);\n      } else {\n        process.exit(code);\n      }\n    });\n  });\n};//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiMTcuanMiLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8vamVzdFNwYXduUHJvY2Vzcy5qcz9jZjA1Il0sInNvdXJjZXNDb250ZW50IjpbIi8qIGVzbGludC1kaXNhYmxlIGNhbWVsY2FzZSAqL1xuaW1wb3J0IGNoaWxkX3Byb2Nlc3MgZnJvbSAnY2hpbGRfcHJvY2Vzcyc7XG5pbXBvcnQgcGF0aCBmcm9tICdwYXRoJztcbmltcG9ydCBqZXN0Q29uZmlnIGZyb20gJy4vamVzdENvbmZpZyc7XG5cbmNvbnNvbGUubG9nKCdURVNUIFNFVFVQIHh4eHgnLCBfX2Rpcm5hbWUpO1xuLy8gY29uc29sZS5sb2cocGF0aC5yZXNvbHZlKF9fZGlybmFtZSwnLi8nKSk7XG4vLyBjb25zdCBjb25maWcgPSBgXCIke0pTT04uc3RyaW5naWZ5KGdldEplc3RDb25maWcpLnJlcGxhY2UoL1wiL2csICdcXFxcXCInKX1cImA7XG4vLyBjb25zdCBjb25maWcgPSBgJHtKU09OLnN0cmluZ2lmeShnZXRKZXN0Q29uZmlnKS5yZXBsYWNlKC9cIi9nLCAnXFxcXFwiJyl9YDtcbmNvbnN0IGNvbmZpZyA9IGAnJHtKU09OLnN0cmluZ2lmeShqZXN0Q29uZmlnKS5yZXBsYWNlKC8nL2csIFwiXFxcXCdcIil9J2A7XG5jb25zb2xlLmxvZyhjb25maWcpO1xuXG5jb25zdCBjb25maWdQYXRoID0gYCR7X19kaXJuYW1lfS9qZXN0Q29uZmlnLmpzYDtcblxuXG5leHBvcnQgZGVmYXVsdCAoKSA9PiB7XG4gIGNvbnN0IGNvbW1hbmQgPSAnc2gnO1xuXG4gIGNvbnN0IGFyZ3MgPSBbXG4gICAgJy1jJyxcbiAgICAvLyBXaHkgYENJPXRydWUgYD8gLS0tLS0gaHR0cHM6Ly9naXRodWIuY29tL2ZhY2Vib29rL2plc3QvaXNzdWVzLzI5NTlcbiAgICBgQ0k9dHJ1ZSAke3Byb2Nlc3MuY3dkKCl9L25vZGVfbW9kdWxlcy8uYmluL2plc3QgLS13YXRjaCAtLWNvbmZpZz0ke2NvbmZpZ1BhdGh9YCxcbiAgXTtcblxuICBjb25zdCBwcm9jID0gY2hpbGRfcHJvY2Vzcy5zcGF3bihjb21tYW5kLCBhcmdzLCB7IHN0ZGlvOiAnaW5oZXJpdCcgfSk7XG4gIHByb2Mub24oJ2V4aXQnLCAoY29kZSwgc2lnbmFsKSA9PiB7XG4gICAgcHJvY2Vzcy5vbignZXhpdCcsICgpID0+IHtcbiAgICAgIGlmIChzaWduYWwpIHtcbiAgICAgICAgcHJvY2Vzcy5raWxsKHByb2Nlc3MucGlkLCBzaWduYWwpO1xuICAgICAgfSBlbHNlIHtcbiAgICAgICAgcHJvY2Vzcy5leGl0KGNvZGUpO1xuICAgICAgfVxuICAgIH0pO1xuICB9KTtcbn07XG5cblxuXG4vLyBXRUJQQUNLIEZPT1RFUiAvL1xuLy8gamVzdFNwYXduUHJvY2Vzcy5qcyJdLCJtYXBwaW5ncyI6Ijs7Ozs7O0FBQ0E7QUFDQTs7O0FBQUE7QUFDQTs7O0FBQUE7QUFDQTs7Ozs7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQVJBO0FBU0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUVBO0FBQ0E7QUFDQTtBQUNBO0FBRUE7QUFGQTtBQUNBO0FBS0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQSIsInNvdXJjZVJvb3QiOiIifQ==");
 
 /***/ }),
 /* 18 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = require("express");
+"use strict";
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n\nvar _fsExtra = __webpack_require__(1);\n\nvar _fsExtra2 = _interopRequireDefault(_fsExtra);\n\nvar _validateNpmPackageName = __webpack_require__(35);\n\nvar _validateNpmPackageName2 = _interopRequireDefault(_validateNpmPackageName);\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nfunction _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } } /* eslint-disable no-console */\n\n\nfunction ensureTrailingSlash(str) {\n  return str.replace(/\\/?$/, '/');\n}\n\nfunction ensureReadJsonSync(packageDotJsonPath) {\n  var packageDotJsonContent = void 0;\n  try {\n    packageDotJsonContent = _fsExtra2.default.readJsonSync(packageDotJsonPath);\n  } catch (e) {\n    packageDotJsonContent = {};\n  }\n  return packageDotJsonContent;\n}\n\nfunction showProblemsInConsole(problems) {\n  if (Object.keys(problems).length) {\n    console.info('\\x1b[1m', '\\nProblems with dependencies', '\\x1b[0m');\n  }\n  Object.keys(problems).forEach(function (moduleResource) {\n    console.info('\\x1b[36m', '\\nProblem in module with `import` statement:', '\\x1b[0m');\n    console.info('\\x1b[37m', ' ' + moduleResource, '\\x1b[0m');\n    Object.keys(problems[moduleResource]).forEach(function (depName) {\n      var problemMsg = problems[moduleResource][depName].msg;\n      console.info('\\x1b[33m', 'Dependency requested as:', '\\x1b[0m');\n      console.info('\\x1b[37m', ' ' + depName, '\\x1b[0m');\n      console.info('\\x1b[33m', 'Message: ' + problemMsg, '\\x1b[0m');\n      var problemInfo = problems[moduleResource][depName].info;\n      if (problemInfo) {\n        console.info('\\x1b[37m', '- ' + problemInfo.join('\\n - '), '\\x1b[0m');\n      }\n    });\n  });\n}\n\nfunction findDependenciesProblems(dependencies, packageDotJsonContent) {\n  var problems = {};\n\n  dependencies.forEach(function (dep) {\n    if (dep.module) {\n      var rawRequest = dep.module.rawRequest;\n      // if (rawRequest.indexOf('/Users/brianephraim/Sites/monorepo/packages') === 0) {\n      //   console.info('\\x1b[33m', 'depWTF', rawRequest, '\\x1b[0m');\n      //   console.log('depWTF', dep);\n      // } else {\n      //   console.info('\\x1b[33m', 'depGGG', rawRequest, '\\x1b[0m');\n      //   console.log('depGGG', dep);\n      // }\n\n      // not a relative dependency\n      // not an absolut dependency\n      // we are only concerned with depenencies referenced like\n      // `import asdf from 'asdf';`\n      // or\n      // `import qwer from 'asdf/qwer';``\n      // or\n      // `import asdf from '@defualt/asdf';``\n      // These dependencies will be either in /node_modules/ or /packages/,\n      // the latter for only monorepo use.\n      if (rawRequest && rawRequest.indexOf('.') !== 0 && rawRequest.indexOf('/') !== 0) {\n        var validationResult = (0, _validateNpmPackageName2.default)(rawRequest);\n        if (validationResult.validForNewPackages) {\n          if (!packageDotJsonContent || (!packageDotJsonContent.dependencies || !packageDotJsonContent.dependencies[rawRequest]) && (!packageDotJsonContent.devDependencies || !packageDotJsonContent.devDependencies[rawRequest])) {\n            problems[rawRequest] = { msg: 'MISSING FROM PACKAGE.JSON' };\n          }\n        } else {\n          var info = [].concat(_toConsumableArray(validationResult.warnings || []), _toConsumableArray(validationResult.errors || [])).filter(function (msg) {\n            return msg !== 'name can only contain URL-friendly characters';\n          });\n          // console.log(validationResult);\n          if (info.length) {\n            problems[rawRequest] = {\n              msg: 'BAD FORMATTING',\n              info: [].concat(_toConsumableArray(validationResult.warnings || []), _toConsumableArray(validationResult.errors || []))\n            };\n          }\n        }\n      }\n    }\n  });\n\n  return Object.keys(problems).length ? problems : null;\n}\n\nfunction parseStatsForDependencyProblems(stats) {\n  var shouldShowProblemsInConsole = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;\n\n  var isMonorepo = _fsExtra2.default.existsSync(process.cwd() + '/packages');\n\n  var packageDotJsonCache = {};\n  var problems = {};\n  stats.compilation.modules.forEach(function (module) {\n    // only concerned with module entries from /packages/ folder (not node_modules)\n    if (module.resource && module.resource.indexOf('node_modules') === -1) {\n      var packageDotJsonPath = void 0;\n      if (isMonorepo) {\n        var packagesDir = process.cwd() + '/packages';\n        packagesDir = ensureTrailingSlash(packagesDir);\n        // get substring from first trailing slash after whatever packagesDir is\n        var packageFolderName = module.resource.split(packagesDir)[1].split('/')[0];\n        packageDotJsonPath = '' + packagesDir + packageFolderName + '/package.json';\n      } else {\n        packageDotJsonPath = process.cwd() + '/package.json';\n      }\n\n      var packageDotJsonContent = packageDotJsonCache[packageDotJsonPath] || ensureReadJsonSync(packageDotJsonPath);\n      packageDotJsonCache[packageDotJsonPath] = packageDotJsonContent;\n\n      var packageSomehowPublic = !packageDotJsonContent.private || !packageDotJsonContent.privateFromGithub;\n\n      // only concerned if module's package.json is not empty,\n      // and if it is public on either NPM or Girhub\n      if (Object.keys(packageDotJsonContent).length && packageSomehowPublic) {\n        var depProblems = findDependenciesProblems(module.dependencies, packageDotJsonContent);\n        if (depProblems) {\n          problems[module.resource] = depProblems;\n        }\n      }\n    }\n  });\n  if (Object.keys(problems).length > 0 && shouldShowProblemsInConsole) {\n    showProblemsInConsole(problems);\n  }\n\n  return problems;\n}\n\nexports.default = parseStatsForDependencyProblems;//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiMTguanMiLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8vcGFyc2VTdGF0c0ZvckRlcGVuZGVuY3lQcm9ibGVtcy5qcz9kYmNmIl0sInNvdXJjZXNDb250ZW50IjpbIi8qIGVzbGludC1kaXNhYmxlIG5vLWNvbnNvbGUgKi9cbmltcG9ydCBmcyBmcm9tICdmcy1leHRyYSc7XG5pbXBvcnQgdmFsaWRhdGVOcG1QYWNrYWdlTmFtZSBmcm9tICd2YWxpZGF0ZS1ucG0tcGFja2FnZS1uYW1lJztcblxuZnVuY3Rpb24gZW5zdXJlVHJhaWxpbmdTbGFzaChzdHIpIHtcbiAgcmV0dXJuIHN0ci5yZXBsYWNlKC9cXC8/JC8sICcvJyk7XG59XG5cbmZ1bmN0aW9uIGVuc3VyZVJlYWRKc29uU3luYyhwYWNrYWdlRG90SnNvblBhdGgpIHtcbiAgbGV0IHBhY2thZ2VEb3RKc29uQ29udGVudDtcbiAgdHJ5IHtcbiAgICBwYWNrYWdlRG90SnNvbkNvbnRlbnQgPSBmcy5yZWFkSnNvblN5bmMocGFja2FnZURvdEpzb25QYXRoKTtcbiAgfSBjYXRjaCAoZSkge1xuICAgIHBhY2thZ2VEb3RKc29uQ29udGVudCA9IHt9O1xuICB9XG4gIHJldHVybiBwYWNrYWdlRG90SnNvbkNvbnRlbnQ7XG59XG5cbmZ1bmN0aW9uIHNob3dQcm9ibGVtc0luQ29uc29sZShwcm9ibGVtcykge1xuICBpZiAoT2JqZWN0LmtleXMocHJvYmxlbXMpLmxlbmd0aCkge1xuICAgIGNvbnNvbGUuaW5mbygnXFx4MWJbMW0nLCAnXFxuUHJvYmxlbXMgd2l0aCBkZXBlbmRlbmNpZXMnLCAnXFx4MWJbMG0nKTtcbiAgfVxuICBPYmplY3Qua2V5cyhwcm9ibGVtcykuZm9yRWFjaCgobW9kdWxlUmVzb3VyY2UpID0+IHtcbiAgICBjb25zb2xlLmluZm8oJ1xceDFiWzM2bScsICdcXG5Qcm9ibGVtIGluIG1vZHVsZSB3aXRoIGBpbXBvcnRgIHN0YXRlbWVudDonLCAnXFx4MWJbMG0nKTtcbiAgICBjb25zb2xlLmluZm8oJ1xceDFiWzM3bScsIGAgJHttb2R1bGVSZXNvdXJjZX1gLCAnXFx4MWJbMG0nKTtcbiAgICBPYmplY3Qua2V5cyhwcm9ibGVtc1ttb2R1bGVSZXNvdXJjZV0pLmZvckVhY2goKGRlcE5hbWUpID0+IHtcbiAgICAgIGNvbnN0IHByb2JsZW1Nc2cgPSBwcm9ibGVtc1ttb2R1bGVSZXNvdXJjZV1bZGVwTmFtZV0ubXNnO1xuICAgICAgY29uc29sZS5pbmZvKCdcXHgxYlszM20nLCAnRGVwZW5kZW5jeSByZXF1ZXN0ZWQgYXM6JywgJ1xceDFiWzBtJyk7XG4gICAgICBjb25zb2xlLmluZm8oJ1xceDFiWzM3bScsIGAgJHtkZXBOYW1lfWAsICdcXHgxYlswbScpO1xuICAgICAgY29uc29sZS5pbmZvKCdcXHgxYlszM20nLCBgTWVzc2FnZTogJHtwcm9ibGVtTXNnfWAsICdcXHgxYlswbScpO1xuICAgICAgY29uc3QgcHJvYmxlbUluZm8gPSBwcm9ibGVtc1ttb2R1bGVSZXNvdXJjZV1bZGVwTmFtZV0uaW5mbztcbiAgICAgIGlmIChwcm9ibGVtSW5mbykge1xuICAgICAgICBjb25zb2xlLmluZm8oJ1xceDFiWzM3bScsIGAtICR7cHJvYmxlbUluZm8uam9pbignXFxuIC0gJyl9YCwgJ1xceDFiWzBtJyk7XG4gICAgICB9XG4gICAgfSk7XG4gIH0pO1xufVxuXG5mdW5jdGlvbiBmaW5kRGVwZW5kZW5jaWVzUHJvYmxlbXMoZGVwZW5kZW5jaWVzLCBwYWNrYWdlRG90SnNvbkNvbnRlbnQpIHtcbiAgY29uc3QgcHJvYmxlbXMgPSB7fTtcblxuICBkZXBlbmRlbmNpZXMuZm9yRWFjaCgoZGVwKSA9PiB7XG4gICAgaWYgKGRlcC5tb2R1bGUpIHtcbiAgICAgIGNvbnN0IHJhd1JlcXVlc3QgPSBkZXAubW9kdWxlLnJhd1JlcXVlc3Q7XG4gICAgICAvLyBpZiAocmF3UmVxdWVzdC5pbmRleE9mKCcvVXNlcnMvYnJpYW5lcGhyYWltL1NpdGVzL21vbm9yZXBvL3BhY2thZ2VzJykgPT09IDApIHtcbiAgICAgIC8vICAgY29uc29sZS5pbmZvKCdcXHgxYlszM20nLCAnZGVwV1RGJywgcmF3UmVxdWVzdCwgJ1xceDFiWzBtJyk7XG4gICAgICAvLyAgIGNvbnNvbGUubG9nKCdkZXBXVEYnLCBkZXApO1xuICAgICAgLy8gfSBlbHNlIHtcbiAgICAgIC8vICAgY29uc29sZS5pbmZvKCdcXHgxYlszM20nLCAnZGVwR0dHJywgcmF3UmVxdWVzdCwgJ1xceDFiWzBtJyk7XG4gICAgICAvLyAgIGNvbnNvbGUubG9nKCdkZXBHR0cnLCBkZXApO1xuICAgICAgLy8gfVxuXG4gICAgICAvLyBub3QgYSByZWxhdGl2ZSBkZXBlbmRlbmN5XG4gICAgICAvLyBub3QgYW4gYWJzb2x1dCBkZXBlbmRlbmN5XG4gICAgICAvLyB3ZSBhcmUgb25seSBjb25jZXJuZWQgd2l0aCBkZXBlbmVuY2llcyByZWZlcmVuY2VkIGxpa2VcbiAgICAgIC8vIGBpbXBvcnQgYXNkZiBmcm9tICdhc2RmJztgXG4gICAgICAvLyBvclxuICAgICAgLy8gYGltcG9ydCBxd2VyIGZyb20gJ2FzZGYvcXdlcic7YGBcbiAgICAgIC8vIG9yXG4gICAgICAvLyBgaW1wb3J0IGFzZGYgZnJvbSAnQGRlZnVhbHQvYXNkZic7YGBcbiAgICAgIC8vIFRoZXNlIGRlcGVuZGVuY2llcyB3aWxsIGJlIGVpdGhlciBpbiAvbm9kZV9tb2R1bGVzLyBvciAvcGFja2FnZXMvLFxuICAgICAgLy8gdGhlIGxhdHRlciBmb3Igb25seSBtb25vcmVwbyB1c2UuXG4gICAgICBpZiAocmF3UmVxdWVzdCAmJiByYXdSZXF1ZXN0LmluZGV4T2YoJy4nKSAhPT0gMCAmJiByYXdSZXF1ZXN0LmluZGV4T2YoJy8nKSAhPT0gMCkge1xuICAgICAgICBjb25zdCB2YWxpZGF0aW9uUmVzdWx0ID0gdmFsaWRhdGVOcG1QYWNrYWdlTmFtZShyYXdSZXF1ZXN0KTtcbiAgICAgICAgaWYgKHZhbGlkYXRpb25SZXN1bHQudmFsaWRGb3JOZXdQYWNrYWdlcykge1xuICAgICAgICAgIGlmIChcbiAgICAgICAgICAgICFwYWNrYWdlRG90SnNvbkNvbnRlbnQgfHxcbiAgICAgICAgICAgIChcbiAgICAgICAgICAgICAgKFxuICAgICAgICAgICAgICAgICFwYWNrYWdlRG90SnNvbkNvbnRlbnQuZGVwZW5kZW5jaWVzIHx8XG4gICAgICAgICAgICAgICAgIXBhY2thZ2VEb3RKc29uQ29udGVudC5kZXBlbmRlbmNpZXNbcmF3UmVxdWVzdF1cbiAgICAgICAgICAgICAgKSAmJlxuICAgICAgICAgICAgICAoXG4gICAgICAgICAgICAgICAgIXBhY2thZ2VEb3RKc29uQ29udGVudC5kZXZEZXBlbmRlbmNpZXMgfHxcbiAgICAgICAgICAgICAgICAhcGFja2FnZURvdEpzb25Db250ZW50LmRldkRlcGVuZGVuY2llc1tyYXdSZXF1ZXN0XVxuICAgICAgICAgICAgICApXG4gICAgICAgICAgICApXG4gICAgICAgICAgKSB7XG4gICAgICAgICAgICBwcm9ibGVtc1tyYXdSZXF1ZXN0XSA9IHsgbXNnOiAnTUlTU0lORyBGUk9NIFBBQ0tBR0UuSlNPTicgfTtcbiAgICAgICAgICB9XG4gICAgICAgIH0gZWxzZSB7XG4gICAgICAgICAgY29uc3QgaW5mbyA9IFtcbiAgICAgICAgICAgIC4uLnZhbGlkYXRpb25SZXN1bHQud2FybmluZ3MgfHwgW10sIC4uLnZhbGlkYXRpb25SZXN1bHQuZXJyb3JzIHx8IFtdLFxuICAgICAgICAgIF0uZmlsdGVyKChtc2cpID0+IHtcbiAgICAgICAgICAgIHJldHVybiBtc2cgIT09ICduYW1lIGNhbiBvbmx5IGNvbnRhaW4gVVJMLWZyaWVuZGx5IGNoYXJhY3RlcnMnO1xuICAgICAgICAgIH0pO1xuICAgICAgICAgIC8vIGNvbnNvbGUubG9nKHZhbGlkYXRpb25SZXN1bHQpO1xuICAgICAgICAgIGlmIChpbmZvLmxlbmd0aCkge1xuICAgICAgICAgICAgcHJvYmxlbXNbcmF3UmVxdWVzdF0gPSB7XG4gICAgICAgICAgICAgIG1zZzogJ0JBRCBGT1JNQVRUSU5HJyxcbiAgICAgICAgICAgICAgaW5mbzogWy4uLnZhbGlkYXRpb25SZXN1bHQud2FybmluZ3MgfHwgW10sIC4uLnZhbGlkYXRpb25SZXN1bHQuZXJyb3JzIHx8IFtdXSxcbiAgICAgICAgICAgIH07XG4gICAgICAgICAgfVxuICAgICAgICB9XG4gICAgICB9XG4gICAgfVxuICB9KTtcblxuICByZXR1cm4gT2JqZWN0LmtleXMocHJvYmxlbXMpLmxlbmd0aCA/IHByb2JsZW1zIDogbnVsbDtcbn1cblxuZnVuY3Rpb24gcGFyc2VTdGF0c0ZvckRlcGVuZGVuY3lQcm9ibGVtcyhzdGF0cywgc2hvdWxkU2hvd1Byb2JsZW1zSW5Db25zb2xlID0gdHJ1ZSkge1xuICBjb25zdCBpc01vbm9yZXBvID0gZnMuZXhpc3RzU3luYyhgJHtwcm9jZXNzLmN3ZCgpfS9wYWNrYWdlc2ApO1xuXG4gIGNvbnN0IHBhY2thZ2VEb3RKc29uQ2FjaGUgPSB7fTtcbiAgY29uc3QgcHJvYmxlbXMgPSB7fTtcbiAgc3RhdHMuY29tcGlsYXRpb24ubW9kdWxlcy5mb3JFYWNoKChtb2R1bGUpID0+IHtcbiAgICAvLyBvbmx5IGNvbmNlcm5lZCB3aXRoIG1vZHVsZSBlbnRyaWVzIGZyb20gL3BhY2thZ2VzLyBmb2xkZXIgKG5vdCBub2RlX21vZHVsZXMpXG4gICAgaWYgKFxuICAgICAgbW9kdWxlLnJlc291cmNlICYmXG4gICAgICBtb2R1bGUucmVzb3VyY2UuaW5kZXhPZignbm9kZV9tb2R1bGVzJykgPT09IC0xXG4gICAgKSB7XG4gICAgICBsZXQgcGFja2FnZURvdEpzb25QYXRoO1xuICAgICAgaWYgKGlzTW9ub3JlcG8pIHtcbiAgICAgICAgbGV0IHBhY2thZ2VzRGlyID0gYCR7cHJvY2Vzcy5jd2QoKX0vcGFja2FnZXNgO1xuICAgICAgICBwYWNrYWdlc0RpciA9IGVuc3VyZVRyYWlsaW5nU2xhc2gocGFja2FnZXNEaXIpO1xuICAgICAgICAvLyBnZXQgc3Vic3RyaW5nIGZyb20gZmlyc3QgdHJhaWxpbmcgc2xhc2ggYWZ0ZXIgd2hhdGV2ZXIgcGFja2FnZXNEaXIgaXNcbiAgICAgICAgY29uc3QgcGFja2FnZUZvbGRlck5hbWUgPSBtb2R1bGUucmVzb3VyY2Uuc3BsaXQocGFja2FnZXNEaXIpWzFdLnNwbGl0KCcvJylbMF07XG4gICAgICAgIHBhY2thZ2VEb3RKc29uUGF0aCA9IGAke3BhY2thZ2VzRGlyfSR7cGFja2FnZUZvbGRlck5hbWV9L3BhY2thZ2UuanNvbmA7XG4gICAgICB9IGVsc2Uge1xuICAgICAgICBwYWNrYWdlRG90SnNvblBhdGggPSBgJHtwcm9jZXNzLmN3ZCgpfS9wYWNrYWdlLmpzb25gO1xuICAgICAgfVxuXG4gICAgICBjb25zdCBwYWNrYWdlRG90SnNvbkNvbnRlbnQgPSAoXG4gICAgICAgIHBhY2thZ2VEb3RKc29uQ2FjaGVbcGFja2FnZURvdEpzb25QYXRoXSB8fCBlbnN1cmVSZWFkSnNvblN5bmMocGFja2FnZURvdEpzb25QYXRoKVxuICAgICAgKTtcbiAgICAgIHBhY2thZ2VEb3RKc29uQ2FjaGVbcGFja2FnZURvdEpzb25QYXRoXSA9IHBhY2thZ2VEb3RKc29uQ29udGVudDtcblxuICAgICAgY29uc3QgcGFja2FnZVNvbWVob3dQdWJsaWMgPSAoXG4gICAgICAgICFwYWNrYWdlRG90SnNvbkNvbnRlbnQucHJpdmF0ZSB8fFxuICAgICAgICAhcGFja2FnZURvdEpzb25Db250ZW50LnByaXZhdGVGcm9tR2l0aHViXG4gICAgICApO1xuXG4gICAgICAvLyBvbmx5IGNvbmNlcm5lZCBpZiBtb2R1bGUncyBwYWNrYWdlLmpzb24gaXMgbm90IGVtcHR5LFxuICAgICAgLy8gYW5kIGlmIGl0IGlzIHB1YmxpYyBvbiBlaXRoZXIgTlBNIG9yIEdpcmh1YlxuICAgICAgaWYgKE9iamVjdC5rZXlzKHBhY2thZ2VEb3RKc29uQ29udGVudCkubGVuZ3RoICYmIHBhY2thZ2VTb21laG93UHVibGljKSB7XG4gICAgICAgIGNvbnN0IGRlcFByb2JsZW1zID0gZmluZERlcGVuZGVuY2llc1Byb2JsZW1zKG1vZHVsZS5kZXBlbmRlbmNpZXMsIHBhY2thZ2VEb3RKc29uQ29udGVudCk7XG4gICAgICAgIGlmIChkZXBQcm9ibGVtcykge1xuICAgICAgICAgIHByb2JsZW1zW21vZHVsZS5yZXNvdXJjZV0gPSBkZXBQcm9ibGVtcztcbiAgICAgICAgfVxuICAgICAgfVxuICAgIH1cbiAgfSk7XG4gIGlmIChPYmplY3Qua2V5cyhwcm9ibGVtcykubGVuZ3RoID4gMCAmJiBzaG91bGRTaG93UHJvYmxlbXNJbkNvbnNvbGUpIHtcbiAgICBzaG93UHJvYmxlbXNJbkNvbnNvbGUocHJvYmxlbXMpO1xuICB9XG5cbiAgcmV0dXJuIHByb2JsZW1zO1xufVxuXG5leHBvcnQgZGVmYXVsdCBwYXJzZVN0YXRzRm9yRGVwZW5kZW5jeVByb2JsZW1zO1xuXG5cblxuLy8gV0VCUEFDSyBGT09URVIgLy9cbi8vIHBhcnNlU3RhdHNGb3JEZXBlbmRlbmN5UHJvYmxlbXMuanMiXSwibWFwcGluZ3MiOiI7Ozs7OztBQUNBO0FBQ0E7OztBQUFBO0FBQ0E7Ozs7O0FBSEE7QUFDQTtBQUNBO0FBRUE7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQWFBO0FBQ0E7QUFDQTtBQUNBO0FBR0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFGQTtBQUlBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQUE7QUFDQTtBQUFBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBSUE7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBR0E7QUFDQTtBQUNBO0FBQ0E7QUFJQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0EiLCJzb3VyY2VSb290IjoiIn0=");
 
 /***/ }),
 /* 19 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = require("extract-text-webpack-plugin");
+"use strict";
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n\nvar _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nvar PluginRegistry = function () {\n  function PluginRegistry() {\n    _classCallCheck(this, PluginRegistry);\n\n    this.registry = {};\n    this.plugins = [];\n  }\n\n  _createClass(PluginRegistry, [{\n    key: \"register\",\n    value: function register(name, plugin) {\n      if (!this.registry[name]) {\n        this.plugins.push(plugin);\n        this.registry[name] = true;\n        return true;\n      }\n      return false;\n    }\n  }]);\n\n  return PluginRegistry;\n}();\n\nvar pluginRegistry = new PluginRegistry();\nvar plugins = pluginRegistry.plugins;\nvar register = pluginRegistry.register.bind(pluginRegistry);\nexports.register = register;\nexports.default = plugins;//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiMTkuanMiLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8vcGx1Z2luUmVnaXN0cnkuanM/ZjgxZCJdLCJzb3VyY2VzQ29udGVudCI6WyJjbGFzcyBQbHVnaW5SZWdpc3RyeSB7XG4gIGNvbnN0cnVjdG9yKCkge1xuICAgIHRoaXMucmVnaXN0cnkgPSB7fTtcbiAgICB0aGlzLnBsdWdpbnMgPSBbXTtcbiAgfVxuICByZWdpc3RlcihuYW1lLCBwbHVnaW4pIHtcbiAgICBpZiAoIXRoaXMucmVnaXN0cnlbbmFtZV0pIHtcbiAgICAgIHRoaXMucGx1Z2lucy5wdXNoKHBsdWdpbik7XG4gICAgICB0aGlzLnJlZ2lzdHJ5W25hbWVdID0gdHJ1ZTtcbiAgICAgIHJldHVybiB0cnVlO1xuICAgIH1cbiAgICByZXR1cm4gZmFsc2U7XG4gIH1cbn1cblxuY29uc3QgcGx1Z2luUmVnaXN0cnkgPSBuZXcgUGx1Z2luUmVnaXN0cnkoKTtcbmNvbnN0IHBsdWdpbnMgPSBwbHVnaW5SZWdpc3RyeS5wbHVnaW5zO1xuY29uc3QgcmVnaXN0ZXIgPSBwbHVnaW5SZWdpc3RyeS5yZWdpc3Rlci5iaW5kKHBsdWdpblJlZ2lzdHJ5KTtcbmV4cG9ydCB7IHJlZ2lzdGVyIH07XG5leHBvcnQgZGVmYXVsdCBwbHVnaW5zO1xuXG5cblxuLy8gV0VCUEFDSyBGT09URVIgLy9cbi8vIHBsdWdpblJlZ2lzdHJ5LmpzIl0sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7O0FBQUE7QUFDQTtBQUFBO0FBQ0E7QUFBQTtBQUNBO0FBQ0E7QUFDQTs7O0FBQUE7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTs7Ozs7O0FBR0E7QUFDQTtBQUNBO0FBQ0E7QUFDQSIsInNvdXJjZVJvb3QiOiIifQ==");
 
 /***/ }),
 /* 20 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = require("globby");
+"use strict";
+eval("\n\n/* eslint-disable global-require */\n/*\n  This file used in 2 places\n    1.  This file is executed by the monorepo serving as the monorepo's dev environment.\n        (Only the monorepo uses dev_env like this. When the monorepo's packages are scattered\n        into individual repos, each individual repo has a dev_env dependency\n        in its node_modules folder,\n        but this dev_env is executed from a compiled version of the dev_env.\n        This is called from the individual repo's ./node_modules/.bin/devenv,\n        which points to ./node_modules/@defualt/dev_env/dist/dev_env.js.)\n    2.  This file is executed during the npm prepublish, which creates the /dist folder\n        mentioned in (1) above.\n*/\nmodule.exports = function (commandToRun) {\n  var command = 'sh';\n  var args = ['-c', commandToRun];\n  //\n  // kexec doesn't work in windows, so fallback to child_process.spawn\n  // this logic copied from babel-cli/lib/babel-node.js\n  // try {\n  //   const kexec = require('kexec');\n  //   kexec(command, args);\n  // } catch (err) {\n  // if (err.code !== 'MODULE_NOT_FOUND') throw err;\n\n  var childProcess = __webpack_require__(8);\n  var proc = childProcess.spawn(command, args, { stdio: 'inherit' });\n  proc.on('exit', function (code, signal) {\n    process.on('exit', function () {\n      if (signal) {\n        process.kill(process.pid, signal);\n      } else {\n        process.exit(code);\n      }\n    });\n  });\n  // }\n};//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiMjAuanMiLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8vc2hlbGwtY29tbWFuZC5qcz8wZjUzIl0sInNvdXJjZXNDb250ZW50IjpbIi8qIGVzbGludC1kaXNhYmxlIGdsb2JhbC1yZXF1aXJlICovXG4vKlxuICBUaGlzIGZpbGUgdXNlZCBpbiAyIHBsYWNlc1xuICAgIDEuICBUaGlzIGZpbGUgaXMgZXhlY3V0ZWQgYnkgdGhlIG1vbm9yZXBvIHNlcnZpbmcgYXMgdGhlIG1vbm9yZXBvJ3MgZGV2IGVudmlyb25tZW50LlxuICAgICAgICAoT25seSB0aGUgbW9ub3JlcG8gdXNlcyBkZXZfZW52IGxpa2UgdGhpcy4gV2hlbiB0aGUgbW9ub3JlcG8ncyBwYWNrYWdlcyBhcmUgc2NhdHRlcmVkXG4gICAgICAgIGludG8gaW5kaXZpZHVhbCByZXBvcywgZWFjaCBpbmRpdmlkdWFsIHJlcG8gaGFzIGEgZGV2X2VudiBkZXBlbmRlbmN5XG4gICAgICAgIGluIGl0cyBub2RlX21vZHVsZXMgZm9sZGVyLFxuICAgICAgICBidXQgdGhpcyBkZXZfZW52IGlzIGV4ZWN1dGVkIGZyb20gYSBjb21waWxlZCB2ZXJzaW9uIG9mIHRoZSBkZXZfZW52LlxuICAgICAgICBUaGlzIGlzIGNhbGxlZCBmcm9tIHRoZSBpbmRpdmlkdWFsIHJlcG8ncyAuL25vZGVfbW9kdWxlcy8uYmluL2RldmVudixcbiAgICAgICAgd2hpY2ggcG9pbnRzIHRvIC4vbm9kZV9tb2R1bGVzL0BkZWZ1YWx0L2Rldl9lbnYvZGlzdC9kZXZfZW52LmpzLilcbiAgICAyLiAgVGhpcyBmaWxlIGlzIGV4ZWN1dGVkIGR1cmluZyB0aGUgbnBtIHByZXB1Ymxpc2gsIHdoaWNoIGNyZWF0ZXMgdGhlIC9kaXN0IGZvbGRlclxuICAgICAgICBtZW50aW9uZWQgaW4gKDEpIGFib3ZlLlxuKi9cbm1vZHVsZS5leHBvcnRzID0gKGNvbW1hbmRUb1J1bikgPT4ge1xuICBjb25zdCBjb21tYW5kID0gJ3NoJztcbiAgY29uc3QgYXJncyA9IFtcbiAgICAnLWMnLFxuICAgIGNvbW1hbmRUb1J1bixcbiAgXTtcbiAgLy9cbiAgLy8ga2V4ZWMgZG9lc24ndCB3b3JrIGluIHdpbmRvd3MsIHNvIGZhbGxiYWNrIHRvIGNoaWxkX3Byb2Nlc3Muc3Bhd25cbiAgLy8gdGhpcyBsb2dpYyBjb3BpZWQgZnJvbSBiYWJlbC1jbGkvbGliL2JhYmVsLW5vZGUuanNcbiAgLy8gdHJ5IHtcbiAgLy8gICBjb25zdCBrZXhlYyA9IHJlcXVpcmUoJ2tleGVjJyk7XG4gIC8vICAga2V4ZWMoY29tbWFuZCwgYXJncyk7XG4gIC8vIH0gY2F0Y2ggKGVycikge1xuICAgIC8vIGlmIChlcnIuY29kZSAhPT0gJ01PRFVMRV9OT1RfRk9VTkQnKSB0aHJvdyBlcnI7XG5cbiAgY29uc3QgY2hpbGRQcm9jZXNzID0gcmVxdWlyZSgnY2hpbGRfcHJvY2VzcycpO1xuICBjb25zdCBwcm9jID0gY2hpbGRQcm9jZXNzLnNwYXduKGNvbW1hbmQsIGFyZ3MsIHsgc3RkaW86ICdpbmhlcml0JyB9KTtcbiAgcHJvYy5vbignZXhpdCcsIChjb2RlLCBzaWduYWwpID0+IHtcbiAgICBwcm9jZXNzLm9uKCdleGl0JywgKCkgPT4ge1xuICAgICAgaWYgKHNpZ25hbCkge1xuICAgICAgICBwcm9jZXNzLmtpbGwocHJvY2Vzcy5waWQsIHNpZ25hbCk7XG4gICAgICB9IGVsc2Uge1xuICAgICAgICBwcm9jZXNzLmV4aXQoY29kZSk7XG4gICAgICB9XG4gICAgfSk7XG4gIH0pO1xuICAvLyB9XG59O1xuXG5cblxuLy8gV0VCUEFDSyBGT09URVIgLy9cbi8vIHNoZWxsLWNvbW1hbmQuanMiXSwibWFwcGluZ3MiOiI7O0FBQUE7QUFDQTs7Ozs7Ozs7Ozs7O0FBWUE7QUFDQTtBQUNBO0FBSUE7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0EiLCJzb3VyY2VSb290IjoiIn0=");
 
 /***/ }),
 /* 21 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = require("html-webpack-plugin");
+"use strict";
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n\nvar _yargs = __webpack_require__(2);\n\nvar _fsExtra = __webpack_require__(1);\n\nvar _fsExtra2 = _interopRequireDefault(_fsExtra);\n\nvar _webpackEnhanceConfigNode = __webpack_require__(5);\n\nvar _webpackEnhanceConfigNode2 = _interopRequireDefault(_webpackEnhanceConfigNode);\n\nvar _webpackEnhanceConfigWeb = __webpack_require__(23);\n\nvar _webpackEnhanceConfigWeb2 = _interopRequireDefault(_webpackEnhanceConfigWeb);\n\nvar _webpackEnhanceEntryOutputStandard = __webpack_require__(24);\n\nvar _webpackEnhanceEntryOutputStandard2 = _interopRequireDefault(_webpackEnhanceEntryOutputStandard);\n\nvar _webpackEnhanceBaseConfig = __webpack_require__(4);\n\nvar _webpackEnhanceBaseConfig2 = _interopRequireDefault(_webpackEnhanceBaseConfig);\n\nvar _webpackConfigCommandLine = __webpack_require__(3);\n\nvar _webpackConfigCommandLine2 = _interopRequireDefault(_webpackConfigCommandLine);\n\nvar _aaa = __webpack_require__(12);\n\nvar _aaa2 = _interopRequireDefault(_aaa);\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\n/*\n  This files return a function that when called generates a webpack config json.\n  `argv` is passed into this function.\n\n  when `argv.env === falsey`\n    This compiles for a dev server via webpack-dev-middleware.  No files are created to disk,\n    only created in memory.\n\n  when `argv.env === 'build'`\n    This compiles files to disk in a /dist folder and a /demo folder.\n\n  when `argv.dirroot === some path`\n    This is used when dev_env itself is compiled.\n    This very file is compiled according the config set by this file.\n    This is needed to make dev_env portable via npm.\n    babel-node needs to compile this dev_env to work,\n    but this does not play well when dev_env is in a node_modules folder.\n    So we need to compile dev_env before publishing to npm.\n    Directory paths need to be tweaked to accomplish this,\n    and that's what `argv.dirroot` helps with.\n\n\n  This function is also affected by package.json.\n\n  when package.json.bundleForNode === true\n    in conjunction with `argv.env === 'build'`, the bundle will\n    have special consideration for a node platform.\n    Only application files will be bundled.\n    node_modules and node built-in requires will not be bundled.\n*/\nconsole.log('-----');\nconsole.log('-----');\nconsole.log('-----');\nconsole.log('-----');\nconsole.log('-----');\nconsole.log('-----');\nconsole.log(_aaa2.default);\n\n// console.log(process.cwd());\n// // console.log(argv);\n// console.log({\n//   entry: path.resolve(process.cwd(), argv.entry),\n//   output: path.resolve(process.cwd(), argv.output),\n// });\n\nfunction generateConfigJson() {\n  var isCommandLine = _yargs.argv.entry;\n  var config = void 0;\n  if (isCommandLine) {\n    config = (0, _webpackConfigCommandLine2.default)();\n  } else {\n    config = (0, _webpackEnhanceBaseConfig2.default)();\n    var isBuild = _yargs.argv.env === 'build';\n    var dirRoot = _yargs.argv.dirroot || process.cwd();\n    var packageJson = _fsExtra2.default.readJsonSync(dirRoot + '/package.json');\n    var outputFiles = {};\n    var libraryName = packageJson.name;\n    var libraryNameReduced = libraryName.split('/')[1] || libraryName.split('/')[0];\n    if (isBuild) {\n      outputFiles.library = 'dist/' + libraryNameReduced;\n      outputFiles.libraryMin = 'dist/' + libraryNameReduced + '.min';\n      outputFiles.demo = 'dist/demo/index';\n    } else {\n      outputFiles.demo = 'boot';\n      outputFiles.library = '' + libraryNameReduced;\n    }\n    config = (0, _webpackEnhanceEntryOutputStandard2.default)(config, dirRoot, libraryName, libraryNameReduced, outputFiles);\n    if (packageJson.bundleForNode) {\n      config = (0, _webpackEnhanceConfigNode2.default)(config);\n    } else {\n      var username = null;\n      if (packageJson.repository && packageJson.repository.url) {\n        username = packageJson.repository.url.replace('://').split('/')[1];\n      }\n      config = (0, _webpackEnhanceConfigWeb2.default)(config, libraryName, isBuild, dirRoot, username, outputFiles);\n    }\n  }\n  _fsExtra2.default.writeFileSync('./_webpack-config-preview.json', JSON.stringify(config, null, 2));\n  return config;\n}\n\nexports.default = generateConfigJson();//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiMjEuanMiLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8vd2VicGFjay5jb25maWcuYmFiZWwuanM/M2ZlNCJdLCJzb3VyY2VzQ29udGVudCI6WyIvKlxuICBUaGlzIGZpbGVzIHJldHVybiBhIGZ1bmN0aW9uIHRoYXQgd2hlbiBjYWxsZWQgZ2VuZXJhdGVzIGEgd2VicGFjayBjb25maWcganNvbi5cbiAgYGFyZ3ZgIGlzIHBhc3NlZCBpbnRvIHRoaXMgZnVuY3Rpb24uXG5cbiAgd2hlbiBgYXJndi5lbnYgPT09IGZhbHNleWBcbiAgICBUaGlzIGNvbXBpbGVzIGZvciBhIGRldiBzZXJ2ZXIgdmlhIHdlYnBhY2stZGV2LW1pZGRsZXdhcmUuICBObyBmaWxlcyBhcmUgY3JlYXRlZCB0byBkaXNrLFxuICAgIG9ubHkgY3JlYXRlZCBpbiBtZW1vcnkuXG5cbiAgd2hlbiBgYXJndi5lbnYgPT09ICdidWlsZCdgXG4gICAgVGhpcyBjb21waWxlcyBmaWxlcyB0byBkaXNrIGluIGEgL2Rpc3QgZm9sZGVyIGFuZCBhIC9kZW1vIGZvbGRlci5cblxuICB3aGVuIGBhcmd2LmRpcnJvb3QgPT09IHNvbWUgcGF0aGBcbiAgICBUaGlzIGlzIHVzZWQgd2hlbiBkZXZfZW52IGl0c2VsZiBpcyBjb21waWxlZC5cbiAgICBUaGlzIHZlcnkgZmlsZSBpcyBjb21waWxlZCBhY2NvcmRpbmcgdGhlIGNvbmZpZyBzZXQgYnkgdGhpcyBmaWxlLlxuICAgIFRoaXMgaXMgbmVlZGVkIHRvIG1ha2UgZGV2X2VudiBwb3J0YWJsZSB2aWEgbnBtLlxuICAgIGJhYmVsLW5vZGUgbmVlZHMgdG8gY29tcGlsZSB0aGlzIGRldl9lbnYgdG8gd29yayxcbiAgICBidXQgdGhpcyBkb2VzIG5vdCBwbGF5IHdlbGwgd2hlbiBkZXZfZW52IGlzIGluIGEgbm9kZV9tb2R1bGVzIGZvbGRlci5cbiAgICBTbyB3ZSBuZWVkIHRvIGNvbXBpbGUgZGV2X2VudiBiZWZvcmUgcHVibGlzaGluZyB0byBucG0uXG4gICAgRGlyZWN0b3J5IHBhdGhzIG5lZWQgdG8gYmUgdHdlYWtlZCB0byBhY2NvbXBsaXNoIHRoaXMsXG4gICAgYW5kIHRoYXQncyB3aGF0IGBhcmd2LmRpcnJvb3RgIGhlbHBzIHdpdGguXG5cblxuICBUaGlzIGZ1bmN0aW9uIGlzIGFsc28gYWZmZWN0ZWQgYnkgcGFja2FnZS5qc29uLlxuXG4gIHdoZW4gcGFja2FnZS5qc29uLmJ1bmRsZUZvck5vZGUgPT09IHRydWVcbiAgICBpbiBjb25qdW5jdGlvbiB3aXRoIGBhcmd2LmVudiA9PT0gJ2J1aWxkJ2AsIHRoZSBidW5kbGUgd2lsbFxuICAgIGhhdmUgc3BlY2lhbCBjb25zaWRlcmF0aW9uIGZvciBhIG5vZGUgcGxhdGZvcm0uXG4gICAgT25seSBhcHBsaWNhdGlvbiBmaWxlcyB3aWxsIGJlIGJ1bmRsZWQuXG4gICAgbm9kZV9tb2R1bGVzIGFuZCBub2RlIGJ1aWx0LWluIHJlcXVpcmVzIHdpbGwgbm90IGJlIGJ1bmRsZWQuXG4qL1xuaW1wb3J0IHsgYXJndiB9IGZyb20gJ3lhcmdzJztcbmltcG9ydCBmcyBmcm9tICdmcy1leHRyYSc7XG5pbXBvcnQgd2VicGFja0VuaGFuY2VDb25maWdOb2RlIGZyb20gJy4vY29yZS93ZWJwYWNrRW5oYW5jZUNvbmZpZ05vZGUnO1xuaW1wb3J0IHdlYnBhY2tFbmhhbmNlQ29uZmlnV2ViIGZyb20gJy4vd2VicGFja0VuaGFuY2VDb25maWdXZWInO1xuaW1wb3J0IHdlYnBhY2tFbmhhbmNlRW50cnlPdXRwdXRTdGFuZGFyZCBmcm9tICcuL3dlYnBhY2tFbmhhbmNlRW50cnlPdXRwdXRTdGFuZGFyZCc7XG5pbXBvcnQgd2VicGFja0VuaGFuY2VCYXNlQ29uZmlnIGZyb20gJy4vY29yZS93ZWJwYWNrRW5oYW5jZUJhc2VDb25maWcnO1xuaW1wb3J0IHdlYnBhY2tDb25maWdDb21tYW5kTGluZSBmcm9tICcuL2NvcmUvd2VicGFja0NvbmZpZ0NvbW1hbmRMaW5lJztcbmltcG9ydCBhYWE4IGZyb20gJ0BkZWZ1YWx0L2FhYTgnO1xuXG5jb25zb2xlLmxvZygnLS0tLS0nKTtcbmNvbnNvbGUubG9nKCctLS0tLScpO1xuY29uc29sZS5sb2coJy0tLS0tJyk7XG5jb25zb2xlLmxvZygnLS0tLS0nKTtcbmNvbnNvbGUubG9nKCctLS0tLScpO1xuY29uc29sZS5sb2coJy0tLS0tJyk7XG5jb25zb2xlLmxvZyhhYWE4KTtcblxuLy8gY29uc29sZS5sb2cocHJvY2Vzcy5jd2QoKSk7XG4vLyAvLyBjb25zb2xlLmxvZyhhcmd2KTtcbi8vIGNvbnNvbGUubG9nKHtcbi8vICAgZW50cnk6IHBhdGgucmVzb2x2ZShwcm9jZXNzLmN3ZCgpLCBhcmd2LmVudHJ5KSxcbi8vICAgb3V0cHV0OiBwYXRoLnJlc29sdmUocHJvY2Vzcy5jd2QoKSwgYXJndi5vdXRwdXQpLFxuLy8gfSk7XG5cbmZ1bmN0aW9uIGdlbmVyYXRlQ29uZmlnSnNvbigpIHtcbiAgY29uc3QgaXNDb21tYW5kTGluZSA9IGFyZ3YuZW50cnk7XG4gIGxldCBjb25maWc7XG4gIGlmIChpc0NvbW1hbmRMaW5lKSB7XG4gICAgY29uZmlnID0gd2VicGFja0NvbmZpZ0NvbW1hbmRMaW5lKCk7XG4gIH0gZWxzZSB7XG4gICAgY29uZmlnID0gd2VicGFja0VuaGFuY2VCYXNlQ29uZmlnKCk7XG4gICAgY29uc3QgaXNCdWlsZCA9IGFyZ3YuZW52ID09PSAnYnVpbGQnO1xuICAgIGNvbnN0IGRpclJvb3QgPSBhcmd2LmRpcnJvb3QgfHwgcHJvY2Vzcy5jd2QoKTtcbiAgICBjb25zdCBwYWNrYWdlSnNvbiA9IGZzLnJlYWRKc29uU3luYyhgJHtkaXJSb290fS9wYWNrYWdlLmpzb25gKTtcbiAgICBjb25zdCBvdXRwdXRGaWxlcyA9IHt9O1xuICAgIGNvbnN0IGxpYnJhcnlOYW1lID0gcGFja2FnZUpzb24ubmFtZTtcbiAgICBjb25zdCBsaWJyYXJ5TmFtZVJlZHVjZWQgPSBsaWJyYXJ5TmFtZS5zcGxpdCgnLycpWzFdIHx8IGxpYnJhcnlOYW1lLnNwbGl0KCcvJylbMF07XG4gICAgaWYgKGlzQnVpbGQpIHtcbiAgICAgIG91dHB1dEZpbGVzLmxpYnJhcnkgPSBgZGlzdC8ke2xpYnJhcnlOYW1lUmVkdWNlZH1gO1xuICAgICAgb3V0cHV0RmlsZXMubGlicmFyeU1pbiA9IGBkaXN0LyR7bGlicmFyeU5hbWVSZWR1Y2VkfS5taW5gO1xuICAgICAgb3V0cHV0RmlsZXMuZGVtbyA9ICdkaXN0L2RlbW8vaW5kZXgnO1xuICAgIH0gZWxzZSB7XG4gICAgICBvdXRwdXRGaWxlcy5kZW1vID0gJ2Jvb3QnO1xuICAgICAgb3V0cHV0RmlsZXMubGlicmFyeSA9IGAke2xpYnJhcnlOYW1lUmVkdWNlZH1gO1xuICAgIH1cbiAgICBjb25maWcgPSB3ZWJwYWNrRW5oYW5jZUVudHJ5T3V0cHV0U3RhbmRhcmQoXG4gICAgICBjb25maWcsIGRpclJvb3QsIGxpYnJhcnlOYW1lLCBsaWJyYXJ5TmFtZVJlZHVjZWQsIG91dHB1dEZpbGVzLFxuICAgICk7XG4gICAgaWYgKHBhY2thZ2VKc29uLmJ1bmRsZUZvck5vZGUpIHtcbiAgICAgIGNvbmZpZyA9IHdlYnBhY2tFbmhhbmNlQ29uZmlnTm9kZShjb25maWcpO1xuICAgIH0gZWxzZSB7XG4gICAgICBsZXQgdXNlcm5hbWUgPSBudWxsO1xuICAgICAgaWYgKHBhY2thZ2VKc29uLnJlcG9zaXRvcnkgJiYgcGFja2FnZUpzb24ucmVwb3NpdG9yeS51cmwpIHtcbiAgICAgICAgdXNlcm5hbWUgPSBwYWNrYWdlSnNvbi5yZXBvc2l0b3J5LnVybC5yZXBsYWNlKCc6Ly8nKS5zcGxpdCgnLycpWzFdO1xuICAgICAgfVxuICAgICAgY29uZmlnID0gd2VicGFja0VuaGFuY2VDb25maWdXZWIoXG4gICAgICAgIGNvbmZpZywgbGlicmFyeU5hbWUsIGlzQnVpbGQsIGRpclJvb3QsIHVzZXJuYW1lLCBvdXRwdXRGaWxlcyxcbiAgICAgICk7XG4gICAgfVxuICB9XG4gIGZzLndyaXRlRmlsZVN5bmMoJy4vX3dlYnBhY2stY29uZmlnLXByZXZpZXcuanNvbicsIEpTT04uc3RyaW5naWZ5KGNvbmZpZywgbnVsbCwgMikpO1xuICByZXR1cm4gY29uZmlnO1xufVxuXG5leHBvcnQgZGVmYXVsdCBnZW5lcmF0ZUNvbmZpZ0pzb24oKTtcblxuXG5cbi8vIFdFQlBBQ0sgRk9PVEVSIC8vXG4vLyB3ZWJwYWNrLmNvbmZpZy5iYWJlbC5qcyJdLCJtYXBwaW5ncyI6Ijs7Ozs7O0FBOEJBO0FBQ0E7QUFBQTtBQUNBOzs7QUFBQTtBQUNBOzs7QUFBQTtBQUNBOzs7QUFBQTtBQUNBOzs7QUFBQTtBQUNBOzs7QUFBQTtBQUNBOzs7QUFBQTtBQUNBOzs7OztBQXRDQTs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7O0FBdUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBR0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUdBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBIiwic291cmNlUm9vdCI6IiJ9");
 
 /***/ }),
 /* 22 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = require("node-sass-json-importer");
+"use strict";
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n\nvar _webpackCompile = __webpack_require__(7);\n\nvar _webpackCompile2 = _interopRequireDefault(_webpackCompile);\n\nvar _webpackRunner = __webpack_require__(6);\n\nvar _webpackRunner2 = _interopRequireDefault(_webpackRunner);\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nexports.default = function () {\n  (0, _webpackRunner2.default)(_webpackCompile2.default);\n};//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiMjIuanMiLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8vd2VicGFja0J1aWxkLmpzPzU1NGYiXSwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHdlYnBhY2tDb21waWxlIGZyb20gJy4vd2VicGFja0NvbXBpbGUnO1xuaW1wb3J0IHdlYnBhY2tSdW5uZXIgZnJvbSAnLi9jb3JlL3dlYnBhY2tSdW5uZXInO1xuXG5leHBvcnQgZGVmYXVsdCAoKSA9PiB7XG4gIHdlYnBhY2tSdW5uZXIod2VicGFja0NvbXBpbGUpO1xufTtcblxuXG5cbi8vIFdFQlBBQ0sgRk9PVEVSIC8vXG4vLyB3ZWJwYWNrQnVpbGQuanMiXSwibWFwcGluZ3MiOiI7Ozs7OztBQUFBO0FBQ0E7OztBQUFBO0FBQ0E7Ozs7O0FBQ0E7QUFDQTtBQUNBIiwic291cmNlUm9vdCI6IiJ9");
 
 /***/ }),
 /* 23 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = require("string-replace-webpack-plugin");
+"use strict";
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n\nvar _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };\n\nvar _typeof = typeof Symbol === \"function\" && typeof Symbol.iterator === \"symbol\" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === \"function\" && obj.constructor === Symbol && obj !== Symbol.prototype ? \"symbol\" : typeof obj; };\n\nvar _webpack = __webpack_require__(0);\n\nvar _webpack2 = _interopRequireDefault(_webpack);\n\nvar _htmlWebpackPlugin = __webpack_require__(31);\n\nvar _htmlWebpackPlugin2 = _interopRequireDefault(_htmlWebpackPlugin);\n\nvar _stringReplaceWebpackPlugin = __webpack_require__(33);\n\nvar _stringReplaceWebpackPlugin2 = _interopRequireDefault(_stringReplaceWebpackPlugin);\n\nvar _extractTextWebpackPlugin = __webpack_require__(30);\n\nvar _extractTextWebpackPlugin2 = _interopRequireDefault(_extractTextWebpackPlugin);\n\nvar _nodeSassJsonImporter = __webpack_require__(32);\n\nvar _nodeSassJsonImporter2 = _interopRequireDefault(_nodeSassJsonImporter);\n\nvar _fsExtra = __webpack_require__(1);\n\nvar _fsExtra2 = _interopRequireDefault(_fsExtra);\n\nvar _globby = __webpack_require__(9);\n\nvar _globby2 = _interopRequireDefault(_globby);\n\nvar _pluginRegistry = __webpack_require__(19);\n\nvar _pluginRegistry2 = _interopRequireDefault(_pluginRegistry);\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nfunction _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } } /* eslint-disable no-mixed-operators */\n\n\nfunction generateLoaderParamOfUse(usePlugin, moreLoaderParams) {\n  if (usePlugin) {\n    return { use: _extractTextWebpackPlugin2.default.extract(moreLoaderParams) };\n  }\n  return {\n    use: [moreLoaderParams.fallback].concat(_toConsumableArray(moreLoaderParams.use))\n  };\n}\n\nfunction moveModify(source, modifyPath, modifyContent) {\n  var sources = [];\n  if ((typeof source === 'undefined' ? 'undefined' : _typeof(source)) === 'object') {\n    sources = source;\n  } else {\n    sources.push(source);\n  }\n  var toCopy = [];\n  sources.forEach(function (pattern) {\n    toCopy = [].concat(_toConsumableArray(toCopy), _toConsumableArray(_globby2.default.sync(pattern)));\n  });\n  toCopy.forEach(function (filePath) {\n    var filePathOut = filePath;\n    if (modifyPath) {\n      filePathOut = modifyPath(filePath);\n    }\n    var content = _fsExtra2.default.readFileSync(filePath, 'utf8');\n    if (modifyContent) {\n      content = modifyContent(content, filePath, filePathOut);\n    }\n    _fsExtra2.default.outputFileSync(filePathOut, content);\n  });\n}\n\nfunction enhance(originalConfig, libraryName, isBuild, dirRoot, username, outputFiles) {\n  var devHtmlPath = './index.html';\n  if (isBuild) {\n    moveModify(['src/import-examples/**/!(webpack.config).*', 'src/tonicExample.js'], function (filePath) {\n      return filePath.replace('src/', './');\n    }, function (content) {\n      return content.replace(/LIBRARYNAME/g, libraryName);\n    });\n\n    (0, _pluginRegistry.register)('UglifyJsPlugin', new _webpack2.default.optimize.UglifyJsPlugin({\n      include: /\\.min\\.js$/,\n      minimize: true\n    }));\n\n    var templatePath = 'src/demo/index.ejs';\n    var htmlTemplateExists = _fsExtra2.default.existsSync(templatePath);\n    var indexHtmlSettings = _extends({\n      chunks: [outputFiles.demo]\n    }, htmlTemplateExists ? { template: templatePath } : {}, {\n      title: 'afasdfasdfasd',\n      username: username,\n      libraryName: libraryName\n    });\n    (0, _pluginRegistry.register)('demoIndex-HtmlWebpackPlugin', new _htmlWebpackPlugin2.default(_extends({\n      filename: './dist/demo/index.html'\n    }, indexHtmlSettings)));\n  } else {\n    (0, _pluginRegistry.register)('demoDevIndex-HtmlWebpackPlugin', new _htmlWebpackPlugin2.default({\n      chunks: [outputFiles.demo],\n      filename: devHtmlPath\n    }));\n  }\n\n  (0, _pluginRegistry.register)('StringReplacePlugin', new _stringReplaceWebpackPlugin2.default());\n\n  (0, _pluginRegistry.register)('LoaderOptionsPlugin', new _webpack2.default.LoaderOptionsPlugin({\n    options: {\n      sassLoader: {\n        importer: _nodeSassJsonImporter2.default\n      },\n      context: dirRoot\n    }\n  }));\n\n  var module = _extends({}, originalConfig && originalConfig.module);\n  var usingExtractTextPlugin = false;\n  if (isBuild) {\n    (0, _pluginRegistry.register)('ExtractTextPlugin', new _extractTextWebpackPlugin2.default('[name].css'));\n    usingExtractTextPlugin = true;\n  }\n  module.rules = [].concat(_toConsumableArray(module.rules || []), [_extends({\n    test: /\\.css$/\n  }, generateLoaderParamOfUse(usingExtractTextPlugin, {\n    fallback: 'style-loader',\n    use: ['css-loader']\n  })), _extends({\n    test: /\\.scss$/\n  }, generateLoaderParamOfUse(usingExtractTextPlugin, {\n    fallback: 'style-loader',\n    use: ['css-loader?sourceMap', {\n      loader: 'sass-loader?sourceMap',\n      // Apply the JSON importer via sass-loader's options.\n      options: {\n        importer: _nodeSassJsonImporter2.default\n      }\n    }]\n  })), {\n    test: /\\.json$/,\n    loaders: ['json-loader']\n  }, {\n    test: /\\.ejs$/,\n    loader: 'ejs-compiled-loader'\n  }, {\n    test: /\\.md/,\n    loaders: ['html-loader', 'markdown-loader']\n  }, {\n    test: /\\.js|\\.html|\\.ejs$/,\n    exclude: [__filename],\n    loader: _stringReplaceWebpackPlugin2.default.replace({\n      replacements: [{\n        pattern: /LIBRARYNAME/g,\n        replacement: function replacement() /* match, p1, offset, string */{\n          return libraryName;\n        }\n      }]\n    })\n  }]);\n\n  var config = _extends({}, originalConfig, {\n    devtool: isBuild ? 'source-map' : 'cheap-module-eval-source-map',\n    module: module,\n    plugins: _pluginRegistry2.default\n  });\n  return config;\n}\nexports.default = enhance;//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiMjMuanMiLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8vd2VicGFja0VuaGFuY2VDb25maWdXZWIuanM/OGRiOSJdLCJzb3VyY2VzQ29udGVudCI6WyIvKiBlc2xpbnQtZGlzYWJsZSBuby1taXhlZC1vcGVyYXRvcnMgKi9cbmltcG9ydCB3ZWJwYWNrIGZyb20gJ3dlYnBhY2snO1xuaW1wb3J0IEh0bWxXZWJwYWNrUGx1Z2luIGZyb20gJ2h0bWwtd2VicGFjay1wbHVnaW4nO1xuaW1wb3J0IFN0cmluZ1JlcGxhY2VQbHVnaW4gZnJvbSAnc3RyaW5nLXJlcGxhY2Utd2VicGFjay1wbHVnaW4nO1xuaW1wb3J0IEV4dHJhY3RUZXh0UGx1Z2luIGZyb20gJ2V4dHJhY3QtdGV4dC13ZWJwYWNrLXBsdWdpbic7XG5pbXBvcnQganNvbkltcG9ydGVyIGZyb20gJ25vZGUtc2Fzcy1qc29uLWltcG9ydGVyJztcbmltcG9ydCBmcyBmcm9tICdmcy1leHRyYSc7XG5pbXBvcnQgZ2xvYmJ5IGZyb20gJ2dsb2JieSc7XG5pbXBvcnQgcGx1Z2lucywgeyByZWdpc3RlciBhcyByZWdpc3RlclBsdWdpbiB9IGZyb20gJy4vcGx1Z2luUmVnaXN0cnknO1xuXG5cbmZ1bmN0aW9uIGdlbmVyYXRlTG9hZGVyUGFyYW1PZlVzZSh1c2VQbHVnaW4sIG1vcmVMb2FkZXJQYXJhbXMpIHtcbiAgaWYgKHVzZVBsdWdpbikge1xuICAgIHJldHVybiB7IHVzZTogRXh0cmFjdFRleHRQbHVnaW4uZXh0cmFjdChtb3JlTG9hZGVyUGFyYW1zKSB9O1xuICB9XG4gIHJldHVybiB7XG4gICAgdXNlOiBbbW9yZUxvYWRlclBhcmFtcy5mYWxsYmFjaywgLi4ubW9yZUxvYWRlclBhcmFtcy51c2VdLFxuICB9O1xufVxuXG5mdW5jdGlvbiBtb3ZlTW9kaWZ5KHNvdXJjZSwgbW9kaWZ5UGF0aCwgbW9kaWZ5Q29udGVudCkge1xuICBsZXQgc291cmNlcyA9IFtdO1xuICBpZiAodHlwZW9mIHNvdXJjZSA9PT0gJ29iamVjdCcpIHtcbiAgICBzb3VyY2VzID0gc291cmNlO1xuICB9IGVsc2Uge1xuICAgIHNvdXJjZXMucHVzaChzb3VyY2UpO1xuICB9XG4gIGxldCB0b0NvcHkgPSBbXTtcbiAgc291cmNlcy5mb3JFYWNoKChwYXR0ZXJuKSA9PiB7XG4gICAgdG9Db3B5ID0gW1xuICAgICAgLi4udG9Db3B5LFxuICAgICAgLi4uZ2xvYmJ5LnN5bmMocGF0dGVybiksXG4gICAgXTtcbiAgfSk7XG4gIHRvQ29weS5mb3JFYWNoKChmaWxlUGF0aCkgPT4ge1xuICAgIGxldCBmaWxlUGF0aE91dCA9IGZpbGVQYXRoO1xuICAgIGlmIChtb2RpZnlQYXRoKSB7XG4gICAgICBmaWxlUGF0aE91dCA9IG1vZGlmeVBhdGgoZmlsZVBhdGgpO1xuICAgIH1cbiAgICBsZXQgY29udGVudCA9IGZzLnJlYWRGaWxlU3luYyhmaWxlUGF0aCwgJ3V0ZjgnKTtcbiAgICBpZiAobW9kaWZ5Q29udGVudCkge1xuICAgICAgY29udGVudCA9IG1vZGlmeUNvbnRlbnQoY29udGVudCwgZmlsZVBhdGgsIGZpbGVQYXRoT3V0KTtcbiAgICB9XG4gICAgZnMub3V0cHV0RmlsZVN5bmMoZmlsZVBhdGhPdXQsIGNvbnRlbnQpO1xuICB9KTtcbn1cblxuZnVuY3Rpb24gZW5oYW5jZShvcmlnaW5hbENvbmZpZywgbGlicmFyeU5hbWUsIGlzQnVpbGQsIGRpclJvb3QsIHVzZXJuYW1lLCBvdXRwdXRGaWxlcykge1xuICBjb25zdCBkZXZIdG1sUGF0aCA9ICcuL2luZGV4Lmh0bWwnO1xuICBpZiAoaXNCdWlsZCkge1xuICAgIG1vdmVNb2RpZnkoWydzcmMvaW1wb3J0LWV4YW1wbGVzLyoqLyEod2VicGFjay5jb25maWcpLionLCAnc3JjL3RvbmljRXhhbXBsZS5qcyddLCAoZmlsZVBhdGgpID0+IHtcbiAgICAgIHJldHVybiBmaWxlUGF0aC5yZXBsYWNlKCdzcmMvJywgJy4vJyk7XG4gICAgfSxcbiAgICAoY29udGVudCkgPT4ge1xuICAgICAgcmV0dXJuIGNvbnRlbnQucmVwbGFjZSgvTElCUkFSWU5BTUUvZywgbGlicmFyeU5hbWUpO1xuICAgIH0pO1xuXG4gICAgcmVnaXN0ZXJQbHVnaW4oJ1VnbGlmeUpzUGx1Z2luJywgbmV3IHdlYnBhY2sub3B0aW1pemUuVWdsaWZ5SnNQbHVnaW4oe1xuICAgICAgaW5jbHVkZTogL1xcLm1pblxcLmpzJC8sXG4gICAgICBtaW5pbWl6ZTogdHJ1ZSxcbiAgICB9KSk7XG5cbiAgICBjb25zdCB0ZW1wbGF0ZVBhdGggPSAnc3JjL2RlbW8vaW5kZXguZWpzJztcbiAgICBjb25zdCBodG1sVGVtcGxhdGVFeGlzdHMgPSBmcy5leGlzdHNTeW5jKHRlbXBsYXRlUGF0aCk7XG4gICAgY29uc3QgaW5kZXhIdG1sU2V0dGluZ3MgPSB7XG4gICAgICBjaHVua3M6IFtvdXRwdXRGaWxlcy5kZW1vXSxcbiAgICAgIC4uLihcbiAgICAgICAgaHRtbFRlbXBsYXRlRXhpc3RzID8geyB0ZW1wbGF0ZTogdGVtcGxhdGVQYXRoIH0gOiB7fVxuICAgICAgKSxcbiAgICAgIHRpdGxlOiAnYWZhc2RmYXNkZmFzZCcsXG4gICAgICB1c2VybmFtZSxcbiAgICAgIGxpYnJhcnlOYW1lLFxuICAgIH07XG4gICAgcmVnaXN0ZXJQbHVnaW4oJ2RlbW9JbmRleC1IdG1sV2VicGFja1BsdWdpbicsIG5ldyBIdG1sV2VicGFja1BsdWdpbih7XG4gICAgICBmaWxlbmFtZTogJy4vZGlzdC9kZW1vL2luZGV4Lmh0bWwnLFxuICAgICAgLi4uaW5kZXhIdG1sU2V0dGluZ3MsXG4gICAgfSkpO1xuICB9IGVsc2Uge1xuICAgIHJlZ2lzdGVyUGx1Z2luKCdkZW1vRGV2SW5kZXgtSHRtbFdlYnBhY2tQbHVnaW4nLCBuZXcgSHRtbFdlYnBhY2tQbHVnaW4oe1xuICAgICAgY2h1bmtzOiBbb3V0cHV0RmlsZXMuZGVtb10sXG4gICAgICBmaWxlbmFtZTogZGV2SHRtbFBhdGgsXG4gICAgfSkpO1xuICB9XG5cbiAgcmVnaXN0ZXJQbHVnaW4oJ1N0cmluZ1JlcGxhY2VQbHVnaW4nLCBuZXcgU3RyaW5nUmVwbGFjZVBsdWdpbigpKTtcblxuICByZWdpc3RlclBsdWdpbignTG9hZGVyT3B0aW9uc1BsdWdpbicsIG5ldyB3ZWJwYWNrLkxvYWRlck9wdGlvbnNQbHVnaW4oe1xuICAgIG9wdGlvbnM6IHtcbiAgICAgIHNhc3NMb2FkZXI6IHtcbiAgICAgICAgaW1wb3J0ZXI6IGpzb25JbXBvcnRlcixcbiAgICAgIH0sXG4gICAgICBjb250ZXh0OiBkaXJSb290LFxuICAgIH0sXG4gIH0pKTtcblxuXG4gIGNvbnN0IG1vZHVsZSA9IHsgLi4uKG9yaWdpbmFsQ29uZmlnICYmIG9yaWdpbmFsQ29uZmlnLm1vZHVsZSkgfTtcbiAgbGV0IHVzaW5nRXh0cmFjdFRleHRQbHVnaW4gPSBmYWxzZTtcbiAgaWYgKGlzQnVpbGQpIHtcbiAgICByZWdpc3RlclBsdWdpbignRXh0cmFjdFRleHRQbHVnaW4nLCBuZXcgRXh0cmFjdFRleHRQbHVnaW4oJ1tuYW1lXS5jc3MnKSk7XG4gICAgdXNpbmdFeHRyYWN0VGV4dFBsdWdpbiA9IHRydWU7XG4gIH1cbiAgbW9kdWxlLnJ1bGVzID0gW1xuICAgIC4uLihtb2R1bGUucnVsZXMgfHwgW10pLFxuICAgIHtcbiAgICAgIHRlc3Q6IC9cXC5jc3MkLyxcbiAgICAgIC4uLmdlbmVyYXRlTG9hZGVyUGFyYW1PZlVzZSh1c2luZ0V4dHJhY3RUZXh0UGx1Z2luLCB7XG4gICAgICAgIGZhbGxiYWNrOiAnc3R5bGUtbG9hZGVyJyxcbiAgICAgICAgdXNlOiBbJ2Nzcy1sb2FkZXInXSxcbiAgICAgIH0pLFxuICAgIH0sXG4gICAge1xuICAgICAgdGVzdDogL1xcLnNjc3MkLyxcbiAgICAgIC4uLmdlbmVyYXRlTG9hZGVyUGFyYW1PZlVzZSh1c2luZ0V4dHJhY3RUZXh0UGx1Z2luLCB7XG4gICAgICAgIGZhbGxiYWNrOiAnc3R5bGUtbG9hZGVyJyxcbiAgICAgICAgdXNlOiBbXG4gICAgICAgICAgJ2Nzcy1sb2FkZXI/c291cmNlTWFwJyxcbiAgICAgICAgICB7XG4gICAgICAgICAgICBsb2FkZXI6ICdzYXNzLWxvYWRlcj9zb3VyY2VNYXAnLFxuICAgICAgICAgICAgLy8gQXBwbHkgdGhlIEpTT04gaW1wb3J0ZXIgdmlhIHNhc3MtbG9hZGVyJ3Mgb3B0aW9ucy5cbiAgICAgICAgICAgIG9wdGlvbnM6IHtcbiAgICAgICAgICAgICAgaW1wb3J0ZXI6IGpzb25JbXBvcnRlcixcbiAgICAgICAgICAgIH0sXG4gICAgICAgICAgfSxcbiAgICAgICAgXSxcbiAgICAgIH0pLFxuICAgIH0sXG4gICAge1xuICAgICAgdGVzdDogL1xcLmpzb24kLyxcbiAgICAgIGxvYWRlcnM6IFsnanNvbi1sb2FkZXInXSxcbiAgICB9LFxuICAgIHtcbiAgICAgIHRlc3Q6IC9cXC5lanMkLyxcbiAgICAgIGxvYWRlcjogJ2Vqcy1jb21waWxlZC1sb2FkZXInLFxuICAgIH0sXG4gICAge1xuICAgICAgdGVzdDogL1xcLm1kLyxcbiAgICAgIGxvYWRlcnM6IFsnaHRtbC1sb2FkZXInLCAnbWFya2Rvd24tbG9hZGVyJ10sXG4gICAgfSxcbiAgICB7XG4gICAgICB0ZXN0OiAvXFwuanN8XFwuaHRtbHxcXC5lanMkLyxcbiAgICAgIGV4Y2x1ZGU6IFtfX2ZpbGVuYW1lXSxcbiAgICAgIGxvYWRlcjogU3RyaW5nUmVwbGFjZVBsdWdpbi5yZXBsYWNlKHtcbiAgICAgICAgcmVwbGFjZW1lbnRzOiBbe1xuICAgICAgICAgIHBhdHRlcm46IC9MSUJSQVJZTkFNRS9nLFxuICAgICAgICAgIHJlcGxhY2VtZW50KC8qIG1hdGNoLCBwMSwgb2Zmc2V0LCBzdHJpbmcgKi8pIHtcbiAgICAgICAgICAgIHJldHVybiBsaWJyYXJ5TmFtZTtcbiAgICAgICAgICB9LFxuICAgICAgICB9XSxcbiAgICAgIH0pLFxuICAgIH0sXG4gIF07XG5cbiAgY29uc3QgY29uZmlnID0ge1xuICAgIC4uLm9yaWdpbmFsQ29uZmlnLFxuICAgIGRldnRvb2w6IGlzQnVpbGQgPyAnc291cmNlLW1hcCcgOiAnY2hlYXAtbW9kdWxlLWV2YWwtc291cmNlLW1hcCcsXG4gICAgbW9kdWxlLFxuICAgIHBsdWdpbnMsXG4gIH07XG4gIHJldHVybiBjb25maWc7XG59XG5leHBvcnQgZGVmYXVsdCBlbmhhbmNlO1xuXG5cblxuLy8gV0VCUEFDSyBGT09URVIgLy9cbi8vIHdlYnBhY2tFbmhhbmNlQ29uZmlnV2ViLmpzIl0sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7O0FBQ0E7QUFDQTs7O0FBQUE7QUFDQTs7O0FBQUE7QUFDQTs7O0FBQUE7QUFDQTs7O0FBQUE7QUFDQTs7O0FBQUE7QUFDQTs7O0FBQUE7QUFDQTs7O0FBQUE7QUFDQTs7Ozs7QUFUQTtBQUNBO0FBQ0E7QUFTQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFEQTtBQUdBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUlBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFFQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFGQTtBQUNBO0FBSUE7QUFDQTtBQUNBO0FBQ0E7QUFEQTtBQUtBO0FBQ0E7QUFDQTtBQVBBO0FBU0E7QUFDQTtBQURBO0FBSUE7QUFDQTtBQUNBO0FBQ0E7QUFGQTtBQUlBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFEQTtBQUdBO0FBSkE7QUFEQTtBQUNBO0FBU0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFHQTtBQUhBO0FBS0E7QUFDQTtBQUZBO0FBTUE7QUFWQTtBQVlBO0FBQ0E7QUFHQTtBQUNBO0FBQ0E7QUFDQTtBQURBO0FBSEE7QUFKQTtBQWVBO0FBQ0E7QUFGQTtBQUtBO0FBQ0E7QUFGQTtBQUtBO0FBQ0E7QUFGQTtBQUtBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFKQTtBQURBO0FBSEE7QUFDQTtBQWFBO0FBRUE7QUFDQTtBQUNBO0FBSkE7QUFNQTtBQUNBO0FBQ0EiLCJzb3VyY2VSb290IjoiIn0=");
 
 /***/ }),
 /* 24 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = require("url");
+"use strict";
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n\nvar _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };\n\nvar _globby = __webpack_require__(9);\n\nvar _globby2 = _interopRequireDefault(_globby);\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nfunction _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }\n\nfunction enhance(originalConfig, dirRoot, libraryName, libraryNameReduced, outputFiles) {\n  var entryFiles = _extends(_defineProperty({\n    MainApp: _globby2.default.sync([dirRoot + '/packages/MainApp/MainApp.js'])\n  }, outputFiles.library, _globby2.default.sync([dirRoot + '/' + libraryNameReduced + '.js', dirRoot + '/src/library/index.js'])), outputFiles.libraryMin ? _defineProperty({}, outputFiles.libraryMin, _globby2.default.sync([dirRoot + '/src/library/index.js'])) : {}, _defineProperty({}, outputFiles.demo, _globby2.default.sync([dirRoot + '/*.demo.js', dirRoot + '/demo.js', dirRoot + '/**/*/*.demo.js', dirRoot + '/**/*/demo.js', '!' + dirRoot + '/packages/**/*', dirRoot + '/packages/MainApp/MainApp.js'])));\n  var entry = Object.keys(entryFiles).reduce(function (accum, entryName) {\n    if (entryFiles[entryName].length) {\n      accum[entryName] = entryFiles[entryName];\n    }\n    return accum;\n  }, {});\n\n  var output = {\n    path: '' + dirRoot,\n    filename: '[name].js',\n    library: libraryName,\n    libraryTarget: 'umd',\n    umdNamedDefine: true,\n    publicPath: '/'\n    // publicPath: '/assets/',\n  };\n\n  return _extends({}, originalConfig, {\n    entry: entry,\n    output: output\n  });\n}\nexports.default = enhance;//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiMjQuanMiLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8vd2VicGFja0VuaGFuY2VFbnRyeU91dHB1dFN0YW5kYXJkLmpzPzYwZmUiXSwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IGdsb2JieSBmcm9tICdnbG9iYnknO1xuXG5mdW5jdGlvbiBlbmhhbmNlKG9yaWdpbmFsQ29uZmlnLCBkaXJSb290LCBsaWJyYXJ5TmFtZSwgbGlicmFyeU5hbWVSZWR1Y2VkLCBvdXRwdXRGaWxlcykge1xuICBjb25zdCBlbnRyeUZpbGVzID0ge1xuICAgIE1haW5BcHA6IGdsb2JieS5zeW5jKFtgJHtkaXJSb290fS9wYWNrYWdlcy9NYWluQXBwL01haW5BcHAuanNgXSksXG4gICAgW291dHB1dEZpbGVzLmxpYnJhcnldOiBnbG9iYnkuc3luYyhbXG4gICAgICBgJHtkaXJSb290fS8ke2xpYnJhcnlOYW1lUmVkdWNlZH0uanNgLFxuICAgICAgYCR7ZGlyUm9vdH0vc3JjL2xpYnJhcnkvaW5kZXguanNgLFxuICAgIF0pLFxuICAgIC4uLihcbiAgICAgIG91dHB1dEZpbGVzLmxpYnJhcnlNaW4gPyB7XG4gICAgICAgIFtvdXRwdXRGaWxlcy5saWJyYXJ5TWluXTogZ2xvYmJ5LnN5bmMoW2Ake2RpclJvb3R9L3NyYy9saWJyYXJ5L2luZGV4LmpzYF0pLFxuICAgICAgfSA6IHt9XG4gICAgKSxcbiAgICBbb3V0cHV0RmlsZXMuZGVtb106IGdsb2JieS5zeW5jKFtcbiAgICAgIGAke2RpclJvb3R9LyouZGVtby5qc2AsXG4gICAgICBgJHtkaXJSb290fS9kZW1vLmpzYCxcbiAgICAgIGAke2RpclJvb3R9LyoqLyovKi5kZW1vLmpzYCxcbiAgICAgIGAke2RpclJvb3R9LyoqLyovZGVtby5qc2AsXG4gICAgICBgISR7ZGlyUm9vdH0vcGFja2FnZXMvKiovKmAsXG4gICAgICBgJHtkaXJSb290fS9wYWNrYWdlcy9NYWluQXBwL01haW5BcHAuanNgLFxuICAgIF0pLFxuICB9O1xuICBjb25zdCBlbnRyeSA9IE9iamVjdC5rZXlzKGVudHJ5RmlsZXMpLnJlZHVjZSgoYWNjdW0sIGVudHJ5TmFtZSkgPT4ge1xuICAgIGlmIChlbnRyeUZpbGVzW2VudHJ5TmFtZV0ubGVuZ3RoKSB7XG4gICAgICBhY2N1bVtlbnRyeU5hbWVdID0gZW50cnlGaWxlc1tlbnRyeU5hbWVdO1xuICAgIH1cbiAgICByZXR1cm4gYWNjdW07XG4gIH0sIHt9KTtcblxuICBjb25zdCBvdXRwdXQgPSB7XG4gICAgcGF0aDogYCR7ZGlyUm9vdH1gLFxuICAgIGZpbGVuYW1lOiAnW25hbWVdLmpzJyxcbiAgICBsaWJyYXJ5OiBsaWJyYXJ5TmFtZSxcbiAgICBsaWJyYXJ5VGFyZ2V0OiAndW1kJyxcbiAgICB1bWROYW1lZERlZmluZTogdHJ1ZSxcbiAgICBwdWJsaWNQYXRoOiAnLycsXG4gICAgLy8gcHVibGljUGF0aDogJy9hc3NldHMvJyxcbiAgfTtcblxuICByZXR1cm4ge1xuICAgIC4uLm9yaWdpbmFsQ29uZmlnLFxuICAgIGVudHJ5LFxuICAgIG91dHB1dCxcbiAgfTtcbn1cbmV4cG9ydCBkZWZhdWx0IGVuaGFuY2U7XG5cblxuXG4vLyBXRUJQQUNLIEZPT1RFUiAvL1xuLy8gd2VicGFja0VuaGFuY2VFbnRyeU91dHB1dFN0YW5kYXJkLmpzIl0sIm1hcHBpbmdzIjoiOzs7Ozs7OztBQUFBO0FBQ0E7Ozs7Ozs7QUFDQTtBQUNBO0FBQ0E7QUFEQTtBQW9CQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFQQTtBQUNBO0FBU0E7QUFFQTtBQUNBO0FBSEE7QUFLQTtBQUNBIiwic291cmNlUm9vdCI6IiJ9");
 
 /***/ }),
 /* 25 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = require("validate-npm-package-name");
+"use strict";
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n\nvar _express = __webpack_require__(29);\n\nvar _express2 = _interopRequireDefault(_express);\n\nvar _url = __webpack_require__(34);\n\nvar _url2 = _interopRequireDefault(_url);\n\nvar _webpackCompile = __webpack_require__(7);\n\nvar _webpackCompile2 = _interopRequireDefault(_webpackCompile);\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nexports.default = function (app) {\n  var port = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 3000;\n\n  var appIsBrandNew = false;\n  if (!app) {\n    appIsBrandNew = true;\n    app = (0, _express2.default)();\n  }\n  app.use(function (req, res, next) {\n    var urlSplit = _url2.default.parse(req.url).pathname.split('/');\n    var lastPart = urlSplit[urlSplit.length - 1];\n    var lastPartContainsDot = lastPart.indexOf('.') !== -1;\n    var lastPartContainsDotHtml = lastPart.indexOf('.html') !== -1;\n    if (!lastPartContainsDot || lastPartContainsDotHtml) {\n      req.url = '/';\n    }\n    next();\n  });\n\n  console.info('🔷 Starting webpack ...');\n\n  app.use((0, _webpackCompile2.default)(true));\n\n  app.use('/images', _express2.default.static('packages/images'));\n  app.use('/fonts', _express2.default.static('packages/fonts'));\n  // app.get(new RegExp('^[/](images|fonts)[/](.+)'), (req, res) => {\n  //   res.sendFile(path.join(__dirname, `packages${url.parse(req.url).pathname}`));\n  // });\n\n  // app.get('/*', (req, res) => {\n  //   console.log(url.parse(req.url).pathname);\n  //   res.sendFile(path.join(process.cwd(), 'index.html'));\n  // });\n\n  // app.get(new RegExp('/^\\/(.*)\\.html$'), (req, res) => {\n  //   res.sendFile(path.join(process.cwd(), 'index.html'));\n  // });\n  if (appIsBrandNew) {\n    app.listen(port, function (error) {\n      if (error) {\n        console.error(error);\n      } else {\n        console.info('🌎 Listening on port %s. Open up http://localhost:%s/ in your browser.', port, port);\n      }\n    });\n  }\n\n  return app;\n};//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiMjUuanMiLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8vd2VicGFja0V4cHJlc3NTZXJ2ZXIuanM/NzU0NCJdLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgZXhwcmVzcyBmcm9tICdleHByZXNzJztcbmltcG9ydCB1cmwgZnJvbSAndXJsJztcbmltcG9ydCB3ZWJwYWNrQ29tcGlsZSBmcm9tICcuL3dlYnBhY2tDb21waWxlJztcblxuZXhwb3J0IGRlZmF1bHQgKGFwcCwgcG9ydCA9IDMwMDApID0+IHtcbiAgbGV0IGFwcElzQnJhbmROZXcgPSBmYWxzZTtcbiAgaWYgKCFhcHApIHtcbiAgICBhcHBJc0JyYW5kTmV3ID0gdHJ1ZTtcbiAgICBhcHAgPSBleHByZXNzKCk7XG4gIH1cbiAgYXBwLnVzZSgocmVxLCByZXMsIG5leHQpID0+IHtcbiAgICBjb25zdCB1cmxTcGxpdCA9IHVybC5wYXJzZShyZXEudXJsKS5wYXRobmFtZS5zcGxpdCgnLycpO1xuICAgIGNvbnN0IGxhc3RQYXJ0ID0gdXJsU3BsaXRbdXJsU3BsaXQubGVuZ3RoIC0gMV07XG4gICAgY29uc3QgbGFzdFBhcnRDb250YWluc0RvdCA9IGxhc3RQYXJ0LmluZGV4T2YoJy4nKSAhPT0gLTE7XG4gICAgY29uc3QgbGFzdFBhcnRDb250YWluc0RvdEh0bWwgPSBsYXN0UGFydC5pbmRleE9mKCcuaHRtbCcpICE9PSAtMTtcbiAgICBpZiAoIWxhc3RQYXJ0Q29udGFpbnNEb3QgfHwgbGFzdFBhcnRDb250YWluc0RvdEh0bWwpIHtcbiAgICAgIHJlcS51cmwgPSAnLyc7XG4gICAgfVxuICAgIG5leHQoKTtcbiAgfSk7XG5cbiAgY29uc29sZS5pbmZvKCfwn5S3IFN0YXJ0aW5nIHdlYnBhY2sgLi4uJyk7XG5cbiAgYXBwLnVzZSh3ZWJwYWNrQ29tcGlsZSh0cnVlKSk7XG5cbiAgYXBwLnVzZSgnL2ltYWdlcycsIGV4cHJlc3Muc3RhdGljKCdwYWNrYWdlcy9pbWFnZXMnKSk7XG4gIGFwcC51c2UoJy9mb250cycsIGV4cHJlc3Muc3RhdGljKCdwYWNrYWdlcy9mb250cycpKTtcbiAgLy8gYXBwLmdldChuZXcgUmVnRXhwKCdeWy9dKGltYWdlc3xmb250cylbL10oLispJyksIChyZXEsIHJlcykgPT4ge1xuICAvLyAgIHJlcy5zZW5kRmlsZShwYXRoLmpvaW4oX19kaXJuYW1lLCBgcGFja2FnZXMke3VybC5wYXJzZShyZXEudXJsKS5wYXRobmFtZX1gKSk7XG4gIC8vIH0pO1xuXG4gIC8vIGFwcC5nZXQoJy8qJywgKHJlcSwgcmVzKSA9PiB7XG4gIC8vICAgY29uc29sZS5sb2codXJsLnBhcnNlKHJlcS51cmwpLnBhdGhuYW1lKTtcbiAgLy8gICByZXMuc2VuZEZpbGUocGF0aC5qb2luKHByb2Nlc3MuY3dkKCksICdpbmRleC5odG1sJykpO1xuICAvLyB9KTtcblxuICAvLyBhcHAuZ2V0KG5ldyBSZWdFeHAoJy9eXFwvKC4qKVxcLmh0bWwkJyksIChyZXEsIHJlcykgPT4ge1xuICAvLyAgIHJlcy5zZW5kRmlsZShwYXRoLmpvaW4ocHJvY2Vzcy5jd2QoKSwgJ2luZGV4Lmh0bWwnKSk7XG4gIC8vIH0pO1xuICBpZiAoYXBwSXNCcmFuZE5ldykge1xuICAgIGFwcC5saXN0ZW4ocG9ydCwgKGVycm9yKSA9PiB7XG4gICAgICBpZiAoZXJyb3IpIHtcbiAgICAgICAgY29uc29sZS5lcnJvcihlcnJvcik7XG4gICAgICB9IGVsc2Uge1xuICAgICAgICBjb25zb2xlLmluZm8oXG4gICAgICAgICAgJ/CfjI4gTGlzdGVuaW5nIG9uIHBvcnQgJXMuIE9wZW4gdXAgaHR0cDovL2xvY2FsaG9zdDolcy8gaW4geW91ciBicm93c2VyLicsXG4gICAgICAgICAgcG9ydCxcbiAgICAgICAgICBwb3J0LFxuICAgICAgICApO1xuICAgICAgfVxuICAgIH0pO1xuICB9XG5cbiAgcmV0dXJuIGFwcDtcbn07XG5cblxuXG4vLyBXRUJQQUNLIEZPT1RFUiAvL1xuLy8gd2VicGFja0V4cHJlc3NTZXJ2ZXIuanMiXSwibWFwcGluZ3MiOiI7Ozs7OztBQUFBO0FBQ0E7OztBQUFBO0FBQ0E7OztBQUFBO0FBQ0E7Ozs7O0FBQ0E7QUFBQTtBQUNBO0FBQUE7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFLQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0EiLCJzb3VyY2VSb290IjoiIn0=");
 
 /***/ }),
 /* 26 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = require("webpack-dev-middleware");
+"use strict";
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\nfunction two() {\n  return 2;\n}\n\nexports.default = two;//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiMjYuanMiLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8vLi4vc3VtL3R3by90d28uanM/MzMwOCJdLCJzb3VyY2VzQ29udGVudCI6WyJmdW5jdGlvbiB0d28oKSB7XG4gIHJldHVybiAyO1xufVxuXG5leHBvcnQgZGVmYXVsdCB0d287XG5cblxuXG4vLyBXRUJQQUNLIEZPT1RFUiAvL1xuLy8gLi4vc3VtL3R3by90d28uanMiXSwibWFwcGluZ3MiOiI7Ozs7O0FBQUE7QUFDQTtBQUNBO0FBQ0E7QUFDQSIsInNvdXJjZVJvb3QiOiIifQ==");
 
 /***/ }),
 /* 27 */
+/***/ (function(module, exports) {
+
+eval("\nvar hasOwn = Object.prototype.hasOwnProperty;\nvar toString = Object.prototype.toString;\n\nmodule.exports = function forEach (obj, fn, ctx) {\n    if (toString.call(fn) !== '[object Function]') {\n        throw new TypeError('iterator must be a function');\n    }\n    var l = obj.length;\n    if (l === +l) {\n        for (var i = 0; i < l; i++) {\n            fn.call(ctx, obj[i], i, obj);\n        }\n    } else {\n        for (var k in obj) {\n            if (hasOwn.call(obj, k)) {\n                fn.call(ctx, obj[k], k, obj);\n            }\n        }\n    }\n};\n\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiMjcuanMiLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8vL1VzZXJzL2JyaWFuZXBocmFpbS9TaXRlcy9tb25vcmVwby9+L2ZvcmVhY2gvaW5kZXguanM/YTZiNCJdLCJzb3VyY2VzQ29udGVudCI6WyJcbnZhciBoYXNPd24gPSBPYmplY3QucHJvdG90eXBlLmhhc093blByb3BlcnR5O1xudmFyIHRvU3RyaW5nID0gT2JqZWN0LnByb3RvdHlwZS50b1N0cmluZztcblxubW9kdWxlLmV4cG9ydHMgPSBmdW5jdGlvbiBmb3JFYWNoIChvYmosIGZuLCBjdHgpIHtcbiAgICBpZiAodG9TdHJpbmcuY2FsbChmbikgIT09ICdbb2JqZWN0IEZ1bmN0aW9uXScpIHtcbiAgICAgICAgdGhyb3cgbmV3IFR5cGVFcnJvcignaXRlcmF0b3IgbXVzdCBiZSBhIGZ1bmN0aW9uJyk7XG4gICAgfVxuICAgIHZhciBsID0gb2JqLmxlbmd0aDtcbiAgICBpZiAobCA9PT0gK2wpIHtcbiAgICAgICAgZm9yICh2YXIgaSA9IDA7IGkgPCBsOyBpKyspIHtcbiAgICAgICAgICAgIGZuLmNhbGwoY3R4LCBvYmpbaV0sIGksIG9iaik7XG4gICAgICAgIH1cbiAgICB9IGVsc2Uge1xuICAgICAgICBmb3IgKHZhciBrIGluIG9iaikge1xuICAgICAgICAgICAgaWYgKGhhc093bi5jYWxsKG9iaiwgaykpIHtcbiAgICAgICAgICAgICAgICBmbi5jYWxsKGN0eCwgb2JqW2tdLCBrLCBvYmopO1xuICAgICAgICAgICAgfVxuICAgICAgICB9XG4gICAgfVxufTtcblxuXG5cblxuLy8vLy8vLy8vLy8vLy8vLy8vXG4vLyBXRUJQQUNLIEZPT1RFUlxuLy8gL1VzZXJzL2JyaWFuZXBocmFpbS9TaXRlcy9tb25vcmVwby9+L2ZvcmVhY2gvaW5kZXguanNcbi8vIG1vZHVsZSBpZCA9IDI3XG4vLyBtb2R1bGUgY2h1bmtzID0gMCJdLCJtYXBwaW5ncyI6IkFBQUE7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7Iiwic291cmNlUm9vdCI6IiJ9");
+
+/***/ }),
+/* 28 */
+/***/ (function(module, exports) {
+
+eval("module.exports = require(\"directory-named-webpack-plugin\");//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiMjguanMiLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8vZXh0ZXJuYWwgXCJkaXJlY3RvcnktbmFtZWQtd2VicGFjay1wbHVnaW5cIj9iYWM5Il0sInNvdXJjZXNDb250ZW50IjpbIm1vZHVsZS5leHBvcnRzID0gcmVxdWlyZShcImRpcmVjdG9yeS1uYW1lZC13ZWJwYWNrLXBsdWdpblwiKTtcblxuXG4vLy8vLy8vLy8vLy8vLy8vLy9cbi8vIFdFQlBBQ0sgRk9PVEVSXG4vLyBleHRlcm5hbCBcImRpcmVjdG9yeS1uYW1lZC13ZWJwYWNrLXBsdWdpblwiXG4vLyBtb2R1bGUgaWQgPSAyOFxuLy8gbW9kdWxlIGNodW5rcyA9IDAiXSwibWFwcGluZ3MiOiJBQUFBIiwic291cmNlUm9vdCI6IiJ9");
+
+/***/ }),
+/* 29 */
+/***/ (function(module, exports) {
+
+eval("module.exports = require(\"express\");//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiMjkuanMiLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8vZXh0ZXJuYWwgXCJleHByZXNzXCI/ZDJkMiJdLCJzb3VyY2VzQ29udGVudCI6WyJtb2R1bGUuZXhwb3J0cyA9IHJlcXVpcmUoXCJleHByZXNzXCIpO1xuXG5cbi8vLy8vLy8vLy8vLy8vLy8vL1xuLy8gV0VCUEFDSyBGT09URVJcbi8vIGV4dGVybmFsIFwiZXhwcmVzc1wiXG4vLyBtb2R1bGUgaWQgPSAyOVxuLy8gbW9kdWxlIGNodW5rcyA9IDAiXSwibWFwcGluZ3MiOiJBQUFBIiwic291cmNlUm9vdCI6IiJ9");
+
+/***/ }),
+/* 30 */
+/***/ (function(module, exports) {
+
+eval("module.exports = require(\"extract-text-webpack-plugin\");//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiMzAuanMiLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8vZXh0ZXJuYWwgXCJleHRyYWN0LXRleHQtd2VicGFjay1wbHVnaW5cIj81YmI1Il0sInNvdXJjZXNDb250ZW50IjpbIm1vZHVsZS5leHBvcnRzID0gcmVxdWlyZShcImV4dHJhY3QtdGV4dC13ZWJwYWNrLXBsdWdpblwiKTtcblxuXG4vLy8vLy8vLy8vLy8vLy8vLy9cbi8vIFdFQlBBQ0sgRk9PVEVSXG4vLyBleHRlcm5hbCBcImV4dHJhY3QtdGV4dC13ZWJwYWNrLXBsdWdpblwiXG4vLyBtb2R1bGUgaWQgPSAzMFxuLy8gbW9kdWxlIGNodW5rcyA9IDAiXSwibWFwcGluZ3MiOiJBQUFBIiwic291cmNlUm9vdCI6IiJ9");
+
+/***/ }),
+/* 31 */
+/***/ (function(module, exports) {
+
+eval("module.exports = require(\"html-webpack-plugin\");//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiMzEuanMiLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8vZXh0ZXJuYWwgXCJodG1sLXdlYnBhY2stcGx1Z2luXCI/MThlYyJdLCJzb3VyY2VzQ29udGVudCI6WyJtb2R1bGUuZXhwb3J0cyA9IHJlcXVpcmUoXCJodG1sLXdlYnBhY2stcGx1Z2luXCIpO1xuXG5cbi8vLy8vLy8vLy8vLy8vLy8vL1xuLy8gV0VCUEFDSyBGT09URVJcbi8vIGV4dGVybmFsIFwiaHRtbC13ZWJwYWNrLXBsdWdpblwiXG4vLyBtb2R1bGUgaWQgPSAzMVxuLy8gbW9kdWxlIGNodW5rcyA9IDAiXSwibWFwcGluZ3MiOiJBQUFBIiwic291cmNlUm9vdCI6IiJ9");
+
+/***/ }),
+/* 32 */
+/***/ (function(module, exports) {
+
+eval("module.exports = require(\"node-sass-json-importer\");//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiMzIuanMiLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8vZXh0ZXJuYWwgXCJub2RlLXNhc3MtanNvbi1pbXBvcnRlclwiPzUxNTgiXSwic291cmNlc0NvbnRlbnQiOlsibW9kdWxlLmV4cG9ydHMgPSByZXF1aXJlKFwibm9kZS1zYXNzLWpzb24taW1wb3J0ZXJcIik7XG5cblxuLy8vLy8vLy8vLy8vLy8vLy8vXG4vLyBXRUJQQUNLIEZPT1RFUlxuLy8gZXh0ZXJuYWwgXCJub2RlLXNhc3MtanNvbi1pbXBvcnRlclwiXG4vLyBtb2R1bGUgaWQgPSAzMlxuLy8gbW9kdWxlIGNodW5rcyA9IDAiXSwibWFwcGluZ3MiOiJBQUFBIiwic291cmNlUm9vdCI6IiJ9");
+
+/***/ }),
+/* 33 */
+/***/ (function(module, exports) {
+
+eval("module.exports = require(\"string-replace-webpack-plugin\");//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiMzMuanMiLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8vZXh0ZXJuYWwgXCJzdHJpbmctcmVwbGFjZS13ZWJwYWNrLXBsdWdpblwiPzQxNWUiXSwic291cmNlc0NvbnRlbnQiOlsibW9kdWxlLmV4cG9ydHMgPSByZXF1aXJlKFwic3RyaW5nLXJlcGxhY2Utd2VicGFjay1wbHVnaW5cIik7XG5cblxuLy8vLy8vLy8vLy8vLy8vLy8vXG4vLyBXRUJQQUNLIEZPT1RFUlxuLy8gZXh0ZXJuYWwgXCJzdHJpbmctcmVwbGFjZS13ZWJwYWNrLXBsdWdpblwiXG4vLyBtb2R1bGUgaWQgPSAzM1xuLy8gbW9kdWxlIGNodW5rcyA9IDAiXSwibWFwcGluZ3MiOiJBQUFBIiwic291cmNlUm9vdCI6IiJ9");
+
+/***/ }),
+/* 34 */
+/***/ (function(module, exports) {
+
+eval("module.exports = require(\"url\");//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiMzQuanMiLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8vZXh0ZXJuYWwgXCJ1cmxcIj9jYWVjIl0sInNvdXJjZXNDb250ZW50IjpbIm1vZHVsZS5leHBvcnRzID0gcmVxdWlyZShcInVybFwiKTtcblxuXG4vLy8vLy8vLy8vLy8vLy8vLy9cbi8vIFdFQlBBQ0sgRk9PVEVSXG4vLyBleHRlcm5hbCBcInVybFwiXG4vLyBtb2R1bGUgaWQgPSAzNFxuLy8gbW9kdWxlIGNodW5rcyA9IDAiXSwibWFwcGluZ3MiOiJBQUFBIiwic291cmNlUm9vdCI6IiJ9");
+
+/***/ }),
+/* 35 */
+/***/ (function(module, exports) {
+
+eval("module.exports = require(\"validate-npm-package-name\");//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiMzUuanMiLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8vZXh0ZXJuYWwgXCJ2YWxpZGF0ZS1ucG0tcGFja2FnZS1uYW1lXCI/OGZhYiJdLCJzb3VyY2VzQ29udGVudCI6WyJtb2R1bGUuZXhwb3J0cyA9IHJlcXVpcmUoXCJ2YWxpZGF0ZS1ucG0tcGFja2FnZS1uYW1lXCIpO1xuXG5cbi8vLy8vLy8vLy8vLy8vLy8vL1xuLy8gV0VCUEFDSyBGT09URVJcbi8vIGV4dGVybmFsIFwidmFsaWRhdGUtbnBtLXBhY2thZ2UtbmFtZVwiXG4vLyBtb2R1bGUgaWQgPSAzNVxuLy8gbW9kdWxlIGNodW5rcyA9IDAiXSwibWFwcGluZ3MiOiJBQUFBIiwic291cmNlUm9vdCI6IiJ9");
+
+/***/ }),
+/* 36 */
+/***/ (function(module, exports) {
+
+eval("module.exports = require(\"webpack-dev-middleware\");//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiMzYuanMiLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8vZXh0ZXJuYWwgXCJ3ZWJwYWNrLWRldi1taWRkbGV3YXJlXCI/NjQ1ZCJdLCJzb3VyY2VzQ29udGVudCI6WyJtb2R1bGUuZXhwb3J0cyA9IHJlcXVpcmUoXCJ3ZWJwYWNrLWRldi1taWRkbGV3YXJlXCIpO1xuXG5cbi8vLy8vLy8vLy8vLy8vLy8vL1xuLy8gV0VCUEFDSyBGT09URVJcbi8vIGV4dGVybmFsIFwid2VicGFjay1kZXYtbWlkZGxld2FyZVwiXG4vLyBtb2R1bGUgaWQgPSAzNlxuLy8gbW9kdWxlIGNodW5rcyA9IDAiXSwibWFwcGluZ3MiOiJBQUFBIiwic291cmNlUm9vdCI6IiJ9");
+
+/***/ }),
+/* 37 */
+/***/ (function(module, exports) {
+
+eval("module.exports = require(\"webpack-node-externals\");//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiMzcuanMiLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8vZXh0ZXJuYWwgXCJ3ZWJwYWNrLW5vZGUtZXh0ZXJuYWxzXCI/YjllNiJdLCJzb3VyY2VzQ29udGVudCI6WyJtb2R1bGUuZXhwb3J0cyA9IHJlcXVpcmUoXCJ3ZWJwYWNrLW5vZGUtZXh0ZXJuYWxzXCIpO1xuXG5cbi8vLy8vLy8vLy8vLy8vLy8vL1xuLy8gV0VCUEFDSyBGT09URVJcbi8vIGV4dGVybmFsIFwid2VicGFjay1ub2RlLWV4dGVybmFsc1wiXG4vLyBtb2R1bGUgaWQgPSAzN1xuLy8gbW9kdWxlIGNodW5rcyA9IDAiXSwibWFwcGluZ3MiOiJBQUFBIiwic291cmNlUm9vdCI6IiJ9");
+
+/***/ }),
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(7);
+module.exports = __webpack_require__(11);
 
 
 /***/ })
 /******/ ]);
 });
-//# sourceMappingURL=dev_env.js.map

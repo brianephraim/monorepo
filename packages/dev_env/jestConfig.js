@@ -1,9 +1,4 @@
 /* eslint-disable no-useless-escape */
-console.log('__dirname',__dirname);
-console.log('__dirname',__dirname);
-console.log('__dirname',__dirname);
-console.log('__dirname',__dirname);
-console.log('__dirname',__dirname);
 module.exports = {
   verbose: true,
   testMatch: ['**/?(*.)(test).js?(x)'],
@@ -13,7 +8,7 @@ module.exports = {
     '\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$': `${__dirname}/__mocks__/fileMock.js`,
     '\\.(css|less)$': 'identity-obj-proxy',
   },
-  resolver: `${__dirname}/jest-webpack-resolver.js`,
+  resolver: `${__dirname}/jestWebpackResolver.js`,
   moduleFileExtensions: ['js', 'jsx'],
   modulePathIgnorePatterns: [
     '<rootDir>.*\/node_modules\/.*',
