@@ -15,7 +15,9 @@ if (__dirname.indexOf('/packages/') > __dirname.indexOf('/node_modules/')) {
   const babelNodePath = path.resolve(__dirname, babelNodePathSpecific);
   const babelStartScript = path.resolve(__dirname, '../core/devEnvCommandLine.js');
   // const cmd = `(cd ${toCompileFolder} && ${babelNodePath} ${babelStartScript} --entry=${toCompile} --output=${tempFilePath}) && node ${tempFilePath} ${process.argv.slice(3).join(' ')} && rm ${tempFilePath}`;
-  const cmd = [
+  
+
+  const cmd1 = [
     '(',
       `cd ${toCompileFolder}`,
       ' && ',
@@ -23,9 +25,27 @@ if (__dirname.indexOf('/packages/') > __dirname.indexOf('/node_modules/')) {
     ')',
     ' && ',
     `node ${tempFilePath} ${process.argv.slice(3).join(' ')}`,
-    ' && ',
-    `rm ${tempFilePath}`
+    // `rm ${tempFilePath}`
   ].join('');
+
+  const cmd2 = [
+    `TMPFILE=\`mktemp -u $TMPDIR$(uuidgen).js \` &&`,
+    // `echo "$TMPFILE"`
+    '(',
+      `cd ${toCompileFolder}`,
+      ' && ',
+      `${babelNodePath} ${babelStartScript} --entry=${toCompile} --output=$TMPFILE`,
+    ')',
+    ' && ',
+    `NODE_PATH='${path.resolve(process.cwd(),'./node_modules')}' `,
+    `node $TMPFILE ${process.argv.slice(3).join(' ')}`,
+    ' && ',
+    'rm $TMPFILE',
+    '\n',
+  ].join('');
+
+  const cmd = cmd2;
+  console.log(cmd);
   // Within parenthesis so terminal doesn't really cd. The command will run in the cd directory tho.  Nice.
   // Ok, so cd to the folder of the file that is getting compiled.
   // Run babel-node on the babelStartScript with entry and output args

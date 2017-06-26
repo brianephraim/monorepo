@@ -14,8 +14,8 @@
   },
   "resolve": {
     "modules": [
-      "/Users/brianephraim/Sites/monorepo/packages/dev_env/src/library",
-      "/Users/brianephraim/Sites/monorepo/packages/dev_env/packages",
+      "/Users/brianephraim/Sites/monorepo/packages/mono-to-multirepo/src/library",
+      "/Users/brianephraim/Sites/monorepo/packages/mono-to-multirepo/packages",
       "/Users/brianephraim/Sites/monorepo/packages",
       "node_modules"
     ],
@@ -29,10 +29,10 @@
     ]
   },
   "entry": {
-    "main": "/Users/brianephraim/Sites/monorepo/packages/dev_env/dev_env.js"
+    "main": "/Users/brianephraim/Sites/monorepo/packages/mono-to-multirepo/mono-to-multirepo.js"
   },
   "output": {
-    "filename": "F5D612EF-8423-4CCA-A61B-C76F39E83A95.js",
+    "filename": "D6522943-F371-4AFC-8698-3C9D6922E2E8.js",
     "path": "/var/folders/t0/dms578js4lg8x73s9jzmvcp40000gn/T"
   },
   "devtool": "source-map",

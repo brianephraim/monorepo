@@ -12,7 +12,7 @@ console.log('TEST SETUP xxxx', __dirname);
 const config = `'${JSON.stringify(jestConfig).replace(/'/g, "\\'")}'`;
 console.log(config);
 const configPath = `${__dirname}/jestConfig.js`;
-qwer();
+// qwer();
 
 
 
