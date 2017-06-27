@@ -3,7 +3,7 @@
 // https://github.com/mkg0/jest-webpack-resolver
 const ResolverFactory = require('enhanced-resolve').ResolverFactory;
 
-const webpackConfigResolve = require('./core/webpack-config-resolve.js');
+const webpackConfigResolve = require('../core/webpack-config-resolve.js');
 
 module.exports = (value, options) => {
   const resolver = ResolverFactory.createResolver(

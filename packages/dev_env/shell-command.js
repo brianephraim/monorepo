@@ -11,7 +11,7 @@
     2.  This file is executed during the npm prepublish, which creates the /dist folder
         mentioned in (1) above.
 */
-module.exports = (commandToRun) => {
+module.exports = (commandToRun, options = { stdio: 'inherit' }) => {
   const command = 'sh';
   const args = [
     '-c',
@@ -27,7 +27,8 @@ module.exports = (commandToRun) => {
     // if (err.code !== 'MODULE_NOT_FOUND') throw err;
 
   const childProcess = require('child_process');
-  const proc = childProcess.spawn(command, args, { stdio: 'inherit' });
+  console.log('args',args);
+  const proc = childProcess.spawn(command, args, options || {});
   proc.on('exit', (code, signal) => {
     process.on('exit', () => {
       if (signal) {
@@ -37,5 +38,6 @@ module.exports = (commandToRun) => {
       }
     });
   });
+  return proc;
   // }
 };

@@ -15,5 +15,8 @@
     "no-throw-literal": 0,
     "no-shadow": 0,
     "import/extensions": 0
+  },
+  "env": {
+    "jest": true
   }
 }
