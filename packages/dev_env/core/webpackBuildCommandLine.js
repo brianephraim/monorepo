@@ -1,12 +1,12 @@
 import webpack from 'webpack';
-import webpackRunner from './webpackRunner';
+import webpackRunCompiler from './webpackRunCompiler';
 import webpackConfig from './webpackConfigCommandLine';
 
-function webpackCompile() {
+function webpackMakeCompiler() {
   const compiler = webpack(webpackConfig());
   return compiler;
 }
 
 export default () => {
-  webpackRunner(webpackCompile);
+  webpackRunCompiler(webpackMakeCompiler);
 };

@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 const path = require('path');
+var findNodeModules = require('find-node-modules');
 const shellCommand = require('../shell-command');
 
 const toCompile = path.resolve(process.cwd(), process.argv[2]);
@@ -15,7 +16,11 @@ if (__dirname.indexOf('/packages/') > __dirname.indexOf('/node_modules/')) {
   const babelNodePath = path.resolve(__dirname, babelNodePathSpecific);
   const babelStartScript = path.resolve(__dirname, '../core/devEnvCommandLine.js');
   // const cmd = `(cd ${toCompileFolder} && ${babelNodePath} ${babelStartScript} --entry=${toCompile} --output=${tempFilePath}) && node ${tempFilePath} ${process.argv.slice(3).join(' ')} && rm ${tempFilePath}`;
+  // for NODE_PATH, on windows, seperator is ; instead of :.  fun.
+  const nodePathSeparator = /^win/.test(process.platform) ? ';' : ':';
   
+  const nodePaths = findNodeModules({relative: false})
+  console.log(nodePaths)
 
   const cmd1 = [
     '(',
@@ -25,7 +30,8 @@ if (__dirname.indexOf('/packages/') > __dirname.indexOf('/node_modules/')) {
     ')',
     ' && ',
     `node ${tempFilePath} ${process.argv.slice(3).join(' ')}`,
-    // `rm ${tempFilePath}`
+    ' && ',
+    `rm ${tempFilePath}`
   ].join('');
 
   const cmd2 = [
@@ -37,10 +43,13 @@ if (__dirname.indexOf('/packages/') > __dirname.indexOf('/node_modules/')) {
       `${babelNodePath} ${babelStartScript} --entry=${toCompile} --output=$TMPFILE`,
     ')',
     ' && ',
-    `NODE_PATH='${path.resolve(process.cwd(),'./node_modules')}' `,
+    // `NODE_PATH='/Users/brianephraim/Sites/monorepo/node_modules' `,
+    `NODE_PATH='${nodePaths.join(nodePathSeparator)}' `,
+    // `NODE_PATH='${path.resolve(process.cwd(),'./node_modules')}' `,
     `node $TMPFILE ${process.argv.slice(3).join(' ')}`,
-    ' && ',
-    'rm $TMPFILE',
+    // ' && ',
+    // 'rm $TMPFILE',
+    ' && echo "$NODE_PATH"',
     '\n',
   ].join('');
 

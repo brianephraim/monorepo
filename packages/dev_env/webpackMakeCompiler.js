@@ -1,8 +1,8 @@
 import webpack from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 
-import webpackConfig from './webpack.config.babel';
-import parseStatsForDependencyProblems from './parseStatsForDependencyProblems';
+import webpackConfig from './webpackConfig';
+import webpackParseStatsForDepProblems from './webpackParseStatsForDepProblems';
 
 export default (isDev) => {
   const compiler = webpack(webpackConfig);
@@ -14,7 +14,7 @@ export default (isDev) => {
       },
     });
     activeWebpackDevMiddleware.waitUntilValid((stats) => {
-      parseStatsForDependencyProblems(stats);
+      webpackParseStatsForDepProblems(stats);
     });
 
     return activeWebpackDevMiddleware;

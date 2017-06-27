@@ -1,19 +1,26 @@
+/* eslint-disable no-console */
+
 import express from 'express';
 import url from 'url';
-import webpackCompile from './webpackCompile';
+import webpackMakeCompiler from './webpackMakeCompiler';
 
 export default (app, port = 3000) => {
+  // This module either extends an existing express app
+  // or creates a new express app
   let appIsBrandNew = false;
   if (!app) {
     appIsBrandNew = true;
     app = express();
   }
+
+  // SPA server support
+  // All URLs that suggest an HTML file request get routed the same.
   app.use((req, res, next) => {
-    const urlSplit = url.parse(req.url).pathname.split('/');
-    const lastPart = urlSplit[urlSplit.length - 1];
-    const lastPartContainsDot = lastPart.indexOf('.') !== -1;
-    const lastPartContainsDotHtml = lastPart.indexOf('.html') !== -1;
-    if (!lastPartContainsDot || lastPartContainsDotHtml) {
+    const lastPartOfURL = url.parse(req.url).pathname.split('/').pop();
+    const urlFormatSuggestsHtmlFileRequest = (
+      lastPartOfURL.indexOf('.') === -1 || lastPartOfURL.indexOf('.html') !== -1
+    );
+    if (urlFormatSuggestsHtmlFileRequest) {
       req.url = '/';
     }
     next();
@@ -21,22 +28,27 @@ export default (app, port = 3000) => {
 
   console.info('🔷 Starting webpack ...');
 
-  app.use(webpackCompile(true));
+  app.use(webpackMakeCompiler(true));
 
   app.use('/images', express.static('packages/images'));
   app.use('/fonts', express.static('packages/fonts'));
-  // app.get(new RegExp('^[/](images|fonts)[/](.+)'), (req, res) => {
-  //   res.sendFile(path.join(__dirname, `packages${url.parse(req.url).pathname}`));
-  // });
 
-  // app.get('/*', (req, res) => {
-  //   console.log(url.parse(req.url).pathname);
-  //   res.sendFile(path.join(process.cwd(), 'index.html'));
-  // });
+  // Some Express code I don't want to lose yet.
+  /*
+  app.get(new RegExp('^[/](images|fonts)[/](.+)'), (req, res) => {
+    res.sendFile(path.join(__dirname, `packages${url.parse(req.url).pathname}`));
+  });
 
-  // app.get(new RegExp('/^\/(.*)\.html$'), (req, res) => {
-  //   res.sendFile(path.join(process.cwd(), 'index.html'));
-  // });
+  app.get('/*', (req, res) => {
+    console.log(url.parse(req.url).pathname);
+    res.sendFile(path.join(process.cwd(), 'index.html'));
+  });
+
+  app.get(new RegExp('/^\/(.*)\.html$'), (req, res) => {
+    res.sendFile(path.join(process.cwd(), 'index.html'));
+  });
+  */
+
   if (appIsBrandNew) {
     app.listen(port, (error) => {
       if (error) {

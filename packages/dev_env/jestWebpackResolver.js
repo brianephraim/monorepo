@@ -5,13 +5,6 @@ const ResolverFactory = require('enhanced-resolve').ResolverFactory;
 
 const webpackConfigResolve = require('./core/webpack-config-resolve.js');
 
-console.log('*********');
-console.log('*********');
-console.log('*********');
-console.log('*********');
-console.log('*********');
-console.log('*********');
-
 module.exports = (value, options) => {
   const resolver = ResolverFactory.createResolver(
     Object.assign(

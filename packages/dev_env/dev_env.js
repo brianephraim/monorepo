@@ -2,7 +2,8 @@
 import { argv } from 'yargs';
 import shellCommand from './shell-command';
 import jestSpawnProcess from './jestSpawnProcess';
-import webpackBuild from './webpackBuild';
+import webpackMakeCompiler from './webpackMakeCompiler';
+import webpackRunCompiler from './core/webpackRunCompiler';
 import webpackBuildCommandLine from './core/webpackBuildCommandLine';
 import serve from './webpackExpressServer.js';
 
@@ -13,12 +14,10 @@ if (item) {
   shellCommand(`(cd ./packages/${item} && npm run start)`);
 } else if (env === 'test') {
   jestSpawnProcess();
+} else if (argv.entry) {
+  webpackBuildCommandLine();
+} else if (env === 'build') {
+  webpackRunCompiler(webpackMakeCompiler);
 } else {
-  if (argv.entry) {
-    webpackBuildCommandLine();
-  } else if (env === 'build') {
-    webpackBuild();
-  } else {
-    serve();
-  }
+  serve();
 }

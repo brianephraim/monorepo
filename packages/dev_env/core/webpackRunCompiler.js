@@ -1,8 +1,5 @@
-export default (webpackCompile) => {
-  webpackCompile().run((err, stats) => {
-    // parseStatsForDependencyProblems(stats);
-    // fs.writeFileSync(process.cwd() + '/_webpack_stats.json',JSON.stringify(stats, null, 2));
-
+export default (webpackMakeCompiler) => {
+  webpackMakeCompiler().run((err, stats) => {
     if (err) {
       console.error(err.stack || err);
       if (err.details) {

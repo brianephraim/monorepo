@@ -99,7 +99,7 @@ function findDependenciesProblems(dependencies, packageDotJsonContent) {
   return Object.keys(problems).length ? problems : null;
 }
 
-function parseStatsForDependencyProblems(stats, shouldShowProblemsInConsole = true) {
+function webpackParseStatsForDepProblems(stats, shouldShowProblemsInConsole = true) {
   const isMonorepo = fs.existsSync(`${process.cwd()}/packages`);
 
   const packageDotJsonCache = {};
@@ -148,4 +148,4 @@ function parseStatsForDependencyProblems(stats, shouldShowProblemsInConsole = tr
   return problems;
 }
 
-export default parseStatsForDependencyProblems;
+export default webpackParseStatsForDepProblems;
