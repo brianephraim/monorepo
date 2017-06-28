@@ -20,7 +20,6 @@ if (__dirname.indexOf('/packages/') > __dirname.indexOf('/node_modules/')) {
   const nodePathSeparator = /^win/.test(process.platform) ? ';' : ':';
   
   const nodePaths = findNodeModules({relative: false})
-  console.log(nodePaths)
 
   const cmd1 = [
     '(',
@@ -54,7 +53,7 @@ if (__dirname.indexOf('/packages/') > __dirname.indexOf('/node_modules/')) {
   ].join('');
 
   const cmd = cmd2;
-  console.log(cmd);
+  // console.log(cmd);
   // Within parenthesis so terminal doesn't really cd. The command will run in the cd directory tho.  Nice.
   // Ok, so cd to the folder of the file that is getting compiled.
   // Run babel-node on the babelStartScript with entry and output args

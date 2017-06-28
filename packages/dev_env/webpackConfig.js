@@ -35,15 +35,8 @@ import webpackEnhanceConfigWeb from './webpackEnhanceConfigWeb';
 import webpackEnhanceEntryOutputStandard from './webpackEnhanceEntryOutputStandard';
 import webpackEnhanceBaseConfig from './core/webpackEnhanceBaseConfig';
 import webpackConfigCommandLine from './core/webpackConfigCommandLine';
-import aaa8 from '@defualt/aaa8';
-
-console.log('-----');
-console.log('-----');
-console.log('-----');
-console.log('-----');
-console.log('-----');
-console.log('-----');
-console.log(aaa8);
+// import aaa8 from '@defualt/aaa8';
+// console.log(aaa8);
 
 // console.log(process.cwd());
 // // console.log(argv);
@@ -53,6 +46,7 @@ console.log(aaa8);
 // });
 
 function generateConfigJson() {
+  console.log('ARGV',argv)
   const isCommandLine = argv.entry;
   let config;
   if (isCommandLine) {
@@ -74,7 +68,7 @@ function generateConfigJson() {
       outputFiles.library = `${libraryNameReduced}`;
     }
     config = webpackEnhanceEntryOutputStandard(
-      config, dirRoot, libraryName, libraryNameReduced, outputFiles,
+      config, dirRoot, libraryName, libraryNameReduced, outputFiles, argv.asdf
     );
     if (packageJson.bundleForNode) {
       config = webpackEnhanceConfigNode(config);

@@ -7,6 +7,10 @@
       },
       {
         "test": {},
+        "use": "imports-loader?define=>false"
+      },
+      {
+        "test": {},
         "loader": "babel-loader",
         "exclude": {}
       }
@@ -14,9 +18,9 @@
   },
   "resolve": {
     "modules": [
-      "/Users/brianephraim/Sites/monorepo/testingtemp/packages/dev_env/src/library",
-      "/Users/brianephraim/Sites/monorepo/testingtemp/packages/dev_env/packages",
-      "/Users/brianephraim/Sites/monorepo/testingtemp/packages",
+      "/Users/brianephraim/Sites/monorepo/src/library",
+      "/Users/brianephraim/Sites/monorepo/packages",
+      "/Users/brianephraim/packages",
       "node_modules"
     ],
     "extensions": [
@@ -27,13 +31,6 @@
       {},
       {}
     ]
-  },
-  "entry": {
-    "main": "/Users/brianephraim/Sites/monorepo/testingtemp/packages/dev_env/dev_env.js"
-  },
-  "output": {
-    "filename": "47AC9168-B12F-4A73-8178-6997B41CAFE7.js",
-    "path": "/var/folders/t0/dms578js4lg8x73s9jzmvcp40000gn/T"
   },
   "devtool": "source-map",
   "target": "node",
@@ -53,6 +50,10 @@
       },
       "banner": "require(\"source-map-support\").install();"
     },
-    {}
+    {},
+    {
+      "resourceRegExp": {},
+      "contextRegExp": {}
+    }
   ]
 }

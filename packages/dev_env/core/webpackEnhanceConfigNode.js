@@ -1,11 +1,13 @@
 /* eslint-disable no-mixed-operators */
 import webpack from 'webpack';
 import nodeExternals from 'webpack-node-externals';
+import path from 'path';
 
 function enhance(originalConfig) {
   const module = { ...(originalConfig && originalConfig.module) };
   module.rules = [
     { test: /rx\.lite\.aggregates\.js/, use: 'imports-loader?define=>false' },
+    { test: /async\.js/, use: 'imports-loader?define=>false' },
     ...(module.rules || []),
   ];
 
@@ -16,6 +18,12 @@ function enhance(originalConfig) {
     entryOnly: false,
   }));
 
+  let modulesDir = '../node_modules';
+  if (__dirname.indexOf('/packages/') > __dirname.indexOf('/node_modules/')) {
+    modulesDir = `${__dirname.split('/packages/')[0]}/node_modules`;
+  }
+  console.log('a',modulesDir);
+  console.log('b','/Users/brianephraim/Sites/monorepo/node_modules');
   const config = {
     ...originalConfig,
     // devtool: 'cheap-module-eval-source-map',
@@ -34,7 +42,10 @@ function enhance(originalConfig) {
     },
     externals: [
       ...(originalConfig.externals || []),
-      nodeExternals({ modulesFromFile: true }),
+      nodeExternals({ 
+        // modulesFromFile: true,
+        modulesDir: '/Users/brianephraim/Sites/monorepo/node_modules'
+      }),
     ],
     plugins,
 

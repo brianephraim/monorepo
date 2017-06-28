@@ -27,7 +27,6 @@ module.exports = (commandToRun, options = { stdio: 'inherit' }) => {
     // if (err.code !== 'MODULE_NOT_FOUND') throw err;
 
   const childProcess = require('child_process');
-  console.log('args',args);
   const proc = childProcess.spawn(command, args, options || {});
   proc.on('exit', (code, signal) => {
     process.on('exit', () => {

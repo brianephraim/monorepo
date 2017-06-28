@@ -28,10 +28,18 @@ function enhance() {
   config.plugins.push({
     apply(compiler) {
       function setModuleConstant(expressionName, fn) {
-        compiler.parser.plugin(`expression ${expressionName}`, function compilerParserPlugin() {
-          this.state.current.addVariable(expressionName, JSON.stringify(fn(this.state.module)));
-          return true;
+        compiler.plugin("compilation", function(compilation, data) {
+          data.normalModuleFactory.plugin("parser", function(parser, options) {
+            parser.plugin(`expression ${expressionName}`, function compilerParserPlugin() {
+              this.state.current.addVariable(expressionName, JSON.stringify(fn(this.state.module)));
+              return true;
+            });
+          });
         });
+        // compiler.parser.plugin(`expression ${expressionName}`, function compilerParserPlugin() {
+        //   this.state.current.addVariable(expressionName, JSON.stringify(fn(this.state.module)));
+        //   return true;
+        // });
       }
 
       setModuleConstant('__filename', (module) => {

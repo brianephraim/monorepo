@@ -7,6 +7,10 @@
       },
       {
         "test": {},
+        "use": "imports-loader?define=>false"
+      },
+      {
+        "test": {},
         "loader": "babel-loader",
         "exclude": {}
       }
@@ -32,7 +36,7 @@
     "main": "/Users/brianephraim/Sites/monorepo/packages/dev_env/dev_env.js"
   },
   "output": {
-    "filename": "E78B7B9A-52A5-4740-9B45-0F99F74C803D.js",
+    "filename": "112BBFDA-3DC0-45F6-817C-B57FE73F67F9.js",
     "path": "/var/folders/t0/dms578js4lg8x73s9jzmvcp40000gn/T"
   },
   "devtool": "source-map",

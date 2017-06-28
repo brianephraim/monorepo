@@ -1,24 +1,16 @@
+import webpack from 'webpack';
 import fs from 'fs-extra';
 import { argv } from 'yargs';
 import webpackEnhanceBaseConfig from './webpackEnhanceBaseConfig';
 import webpackEnhanceConfigNode from './webpackEnhanceConfigNode';
 
+console.log('MMMMOOOOCCCHHAAA');
+
 function enhance() {
   let config = webpackEnhanceBaseConfig();
-  const entry = {
-    main: argv.entry,
-  };
-  let output = argv.output;
-  output = output.split('/');
-
-  output = {
-    filename: output.pop(),
-    path: output.join('/'),
-  };
+  
   config = {
     ...config,
-    entry,
-    output,
   };
   config = webpackEnhanceConfigNode(config);
   config.plugins = config.plugins || [];
@@ -28,9 +20,13 @@ function enhance() {
   config.plugins.push({
     apply(compiler) {
       function setModuleConstant(expressionName, fn) {
-        compiler.parser.plugin(`expression ${expressionName}`, function compilerParserPlugin() {
-          this.state.current.addVariable(expressionName, JSON.stringify(fn(this.state.module)));
-          return true;
+        compiler.plugin("compilation", function(compilation, data) {
+          data.normalModuleFactory.plugin("parser", function(parser, options) {
+            parser.plugin(`expression ${expressionName}`, function compilerParserPlugin() {
+              this.state.current.addVariable(expressionName, JSON.stringify(fn(this.state.module)));
+              return true;
+            });
+          });
         });
       }
 
@@ -43,8 +39,9 @@ function enhance() {
       });
     },
   });
+  config.plugins.push(new webpack.IgnorePlugin(/regenerator|nodent|js-beautify/, /ajv/, /website-scraper/));
   fs.writeFileSync('./_webpack-config-preview-commandline.json', JSON.stringify(config, null, 2));
   return config;
 }
 
-export default enhance;
+export default enhance();
