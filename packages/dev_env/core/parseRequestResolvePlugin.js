@@ -1,5 +1,8 @@
 /* eslint-disable func-names */
 function printProgress(progress){
+    if (!process || !process.stdout || !process.stdout.clearLine ) {
+      return;
+    }
     process.stdout.clearLine();
     process.stdout.cursorTo(0);
     process.stdout.write(progress + `-xxxxxx`);
