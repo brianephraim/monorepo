@@ -240,12 +240,6 @@ describe('asdf', function () {
                   console.log('resource', resource.url, resource.text.substring(0, 20));
                   console.log('IS IT THERE', resource.text.indexOf(contentToBundle) !== -1);
                   bundleHasContent = bundleHasContent || resource.text.indexOf(contentToBundle) !== -1;
-                  // assert.equal(-1, [1,2,3].indexOf(4));
-                  // !d && done();
-                  // d = true;
-                  // assert.equal(2, 3);
-
-                  // resolvex();
                 }
               }, {
                 key: 'errorCleanup',
