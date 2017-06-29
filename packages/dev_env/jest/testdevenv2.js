@@ -22,7 +22,7 @@ describe('asdf', function() {
       fs.writeFileSync(testdevenvMainJs, `document.body.append('${contentToBundle}');`);
 
       const devEnvProcess = shellCommand(`(
-        npm run dev -- --asdf
+        npm run dev -- --tailor-web-bundle-for-testing-of-dev-env-itself
       )`, null/*{ detached: true }*/);
       devEnvProcess.stdout.on('data', (data) => {
         console.log('stdout from mocha child process of `npm run dev`:\n---\n' + data.toString());
@@ -66,16 +66,16 @@ describe('asdf', function() {
         }
       });
       devEnvProcess.stderr.on('data', function (data) {
-        console.log('stderr: ' + data.toString());
+        console.log('stderr: ', data);
       });
       devEnvProcess.on('exit', function (code) {
         // shellCommand(`rm -rf ${testingTempDir}`);
         console.log('child process exited with code:',code);
       });
     });
-    it('should return -1 when the value is not present', () => {
+    it('bundleHasContent', () => {
       console.log('bundleHasContentbundleHasContentbundleHasContentbundleHasContent',bundleHasContent)
-      assert.equal(2, 2);
+      assert.equal(bundleHasContent, true);
       
     });
   });

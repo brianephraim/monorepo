@@ -24,7 +24,7 @@ describe('asdf', function() {
       fs.writeFileSync(testdevenvMainJs, `document.body.append('${contentToBundle}');`);
 
       const devEnvProcess = shellCommand(`(
-        npm run dev -- --asdf
+        npm run dev -- --tailor-web-bundle-for-testing-of-dev-env-itself
       )`, null/*{ detached: true }*/);
       devEnvProcess.stdout.on('data', (data) => {
         console.log('stdout from mocha child process of `npm run dev`:\n---\n' + data.toString());
@@ -75,7 +75,7 @@ describe('asdf', function() {
         console.log('child process exited with code:',code);
       });
     });
-    it('should return -1 when the value is not present', () => {
+    it('bundleHasContent', () => {
       console.log('bundleHasContentbundleHasContentbundleHasContentbundleHasContent',bundleHasContent);
       expect(bundleHasContent).toBe(true)
       

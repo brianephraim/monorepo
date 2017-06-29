@@ -67,8 +67,14 @@ function generateConfigJson() {
       outputFiles.demo = 'boot';
       outputFiles.library = `${libraryNameReduced}`;
     }
+
+    const overrideEntryFiles = argv['tailor-web-bundle-for-testing-of-dev-env-itself'] ? {
+      [outputFiles.demo]: [`${dirRoot}/packages/testdevenv-main/testdevenv-main.js`],
+    } : null;
+    
+
     config = webpackEnhanceEntryOutputStandard(
-      config, dirRoot, libraryName, libraryNameReduced, outputFiles, argv.asdf
+      config, dirRoot, libraryName, libraryNameReduced, outputFiles, overrideEntryFiles
     );
     if (packageJson.bundleForNode) {
       config = webpackEnhanceConfigNode(config);
