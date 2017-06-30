@@ -260,7 +260,7 @@ describe('testdevenv', function() {
     });
   });
 
-  describe.only('test', () => {
+  describe('test', () => {
     const contentToBundle = makeUuid();
     let testsPassed = false;
     const importToAttempt = 'testdevenv-some-dep';
