@@ -95,6 +95,7 @@ module.exports = require("child_process");
 */
 module.exports = function (commandToRun) {
   var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : { stdio: 'inherit' };
+  var killParentOnExit = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
 
   var command = 'sh';
   var args = ['-c', commandToRun];
@@ -110,13 +111,15 @@ module.exports = function (commandToRun) {
   var childProcess = __webpack_require__(0);
   var proc = childProcess.spawn(command, args, options || {});
   proc.on('exit', function (code, signal) {
-    process.on('exit', function () {
-      if (signal) {
-        process.kill(process.pid, signal);
-      } else {
-        process.exit(code);
-      }
-    });
+    if (killParentOnExit) {
+      process.on('exit', function () {
+        if (signal) {
+          process.kill(process.pid, signal);
+        } else {
+          process.exit(code);
+        }
+      });
+    }
   });
   return proc;
   // }
@@ -165,8 +168,6 @@ module.exports = require("website-scraper");
 "use strict";
 /* WEBPACK VAR INJECTION */(function(__dirname) {
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /* eslint-disable no-console */
 
 // import walkSync from 'walk-sync';
@@ -204,81 +205,126 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+function duringServer(_ref) {
+  var onAsset = _ref.onAsset,
+      assetsToGenerate = _ref.assetsToGenerate;
+
+  before(function (done) {
+    this.timeout(60000);
+    assetsToGenerate.forEach(function (assetInfo) {
+      var dir = _path2.default.dirname(assetInfo.path);
+      _fsExtra2.default.ensureDirSync(dir);
+      _fsExtra2.default.writeFileSync(assetInfo.path, assetInfo.text);
+    });
+
+    var devEnvProcess = (0, _shellCommand2.default)('(\n      npm run dev -- --tailor-web-bundle-for-testing-of-dev-env-itself\n    )', null /*{ detached: true }*/, false);
+    var scrapeDir = _path2.default.resolve(__dirname, './scrape');
+    var finished = false;
+    function finish() {
+      if (finished) {
+        return;
+      }
+      console.log('FINISHED');
+      finished = true;
+
+      // fs.removeSync(scrapeDir);
+      // assetsToGenerate.forEach((assetInfo) => {
+      //   const dir = path.dirname(assetInfo.path);
+      //   fs.removeSync(dir);
+      // });
+
+      (0, _terminate2.default)(devEnvProcess.pid, function (err) {
+        if (err) {
+          // you will get an error if you did not supply a valid process.pid
+          console.log("Oopsy during terminate: ", err); // handle errors in your preferred way.
+        } else {
+          console.log('done for terminate'); // terminating the Processes succeeded.
+        }
+      });
+
+      setTimeout(function () {
+        done();
+      }, 1000);
+    }
+    var once = false;
+    devEnvProcess.stdout.on('data', function (data) {
+      var dataString = data.toString();
+      if (dataString.indexOf('webpack: Compiled successfully.') !== -1 && !once) {
+        once = true;
+
+        var d = false;
+        (0, _websiteScraper2.default)({
+          urls: ['http://localhost:3000/'],
+          directory: scrapeDir,
+          resourceSaver: function () {
+            function MyResourceSaver() {
+              _classCallCheck(this, MyResourceSaver);
+            }
+
+            _createClass(MyResourceSaver, [{
+              key: 'saveResource',
+              value: function saveResource(resource) {
+                onAsset(resource);
+              }
+            }, {
+              key: 'errorCleanup',
+              value: function errorCleanup(err) {
+                console.log('resource error', err);
+              }
+            }]);
+
+            return MyResourceSaver;
+          }()
+        }).then(function () {
+          finish();
+        });
+      }
+    });
+    devEnvProcess.stderr.on('data', function (data) {
+      console.log('stderr: ', data);
+    });
+    devEnvProcess.on('exit', function (code) {
+      console.log('child process exited with code:', code);
+      finish();
+    });
+  });
+}
+
 describe('asdf', function () {
   describe('localhost dev environment', function () {
     var contentToBundle = (0, _nodeUuid.v4)();
+    console.log('contentToBundle', contentToBundle);
     var bundleHasContent = false;
-    before(function (done) {
-      this.timeout(60000);
-      var monorepoDir = _path2.default.resolve(__dirname, '../../../');
-      var testdevenvMain = _path2.default.resolve(monorepoDir, './packages/testdevenv-main');
-      var testdevenvMainJs = _path2.default.resolve(testdevenvMain, './testdevenv-main.js');
-      _fsExtra2.default.ensureDirSync(testdevenvMain);
-      _fsExtra2.default.writeFileSync(testdevenvMainJs, 'document.body.append(\'' + contentToBundle + '\');');
-
-      var devEnvProcess = (0, _shellCommand2.default)('(\n        npm run dev -- --tailor-web-bundle-for-testing-of-dev-env-itself\n      )', null /*{ detached: true }*/);
-      devEnvProcess.stdout.on('data', function (data) {
-        console.log('stdout from mocha child process of `npm run dev`:\n---\n' + data.toString());
-        var dataString = data.toString();
-
-        if (dataString.indexOf('webpack: Compiled successfully.') !== -1) {
-          console.log('OK LETS CHECK OUT THE HTML');
-          var scrapeDir = _path2.default.resolve(testdevenvMain, './scrape');
-          _fsExtra2.default.removeSync(scrapeDir);
-          var d = false;
-          (0, _websiteScraper2.default)({
-            urls: ['http://localhost:3000/'],
-            directory: scrapeDir,
-            resourceSaver: function () {
-              function MyResourceSaver() {
-                _classCallCheck(this, MyResourceSaver);
-              }
-
-              _createClass(MyResourceSaver, [{
-                key: 'saveResource',
-                value: function saveResource(resource) {
-                  console.log('resource', resource.url, resource.text.substring(0, 20));
-                  console.log('IS IT THERE', resource.text.indexOf(contentToBundle) !== -1);
-                  bundleHasContent = bundleHasContent || resource.text.indexOf(contentToBundle) !== -1;
-                }
-              }, {
-                key: 'errorCleanup',
-                value: function errorCleanup(err) {
-                  console.log('resource error', err);
-                }
-              }]);
-
-              return MyResourceSaver;
-            }()
-          }).then(function () {
-            console.log('THEN');
-            // 
-            done();
-            console.log('devEnvProcess', devEnvProcess.pid, _typeof(devEnvProcess.pid)
-            // process.kill(-devEnvProcess.pid);
-            );(0, _terminate2.default)(devEnvProcess.pid, function (err) {
-              if (err) {
-                // you will get an error if you did not supply a valid process.pid
-                console.log("Oopsy: " + err); // handle errors in your preferred way.
-              } else {
-                console.log('done'); // terminating the Processes succeeded.
-              }
-            });
-            // process.kill(devEnvProcess.pid, 'SIGTERM');
-            // ;
-          });
-        }
-      });
-      devEnvProcess.stderr.on('data', function (data) {
-        console.log('stderr: ' + data.toString());
-      });
-      devEnvProcess.on('exit', function (code) {
-        // shellCommand(`rm -rf ${testingTempDir}`);
-        console.log('child process exited with code:', code);
-      });
+    var monorepoDir = _path2.default.resolve(__dirname, '../../../');
+    duringServer({
+      assetsToGenerate: [{
+        path: _path2.default.resolve(monorepoDir, './packages/testdevenv-main/testdevenv-main.js'),
+        text: 'document.body.append(\'' + contentToBundle + '\');'
+      }],
+      onAsset: function onAsset(resource) {
+        bundleHasContent = bundleHasContent || resource.text.indexOf(contentToBundle) !== -1;
+      }
     });
     it('bundleHasContent', function () {
-      console.log('bundleHasContentbundleHasContentbundleHasContentbundleHasContent', bundleHasContent);
+      _assert2.default.equal(bundleHasContent, true);
+    });
+  });
+
+  describe('localhost dev environment', function () {
+    var contentToBundle = (0, _nodeUuid.v4)();
+    console.log('contentToBundle', contentToBundle);
+    var bundleHasContent = false;
+    var monorepoDir = _path2.default.resolve(__dirname, '../../../');
+    duringServer({
+      assetsToGenerate: [{
+        path: _path2.default.resolve(monorepoDir, './packages/testdevenv-main/testdevenv-main.js'),
+        text: 'document.body.append(\'' + contentToBundle + '\');'
+      }],
+      onAsset: function onAsset(resource) {
+        bundleHasContent = bundleHasContent || resource.text.indexOf(contentToBundle) !== -1;
+      }
+    });
+    it('bundleHasContent', function () {
       _assert2.default.equal(bundleHasContent, true);
     });
   });

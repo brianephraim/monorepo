@@ -9,72 +9,121 @@ import { spawn } from 'child_process';
 import shellCommand from '../shell-command';
 import { v4 as makeUuid  } from 'node-uuid';
 
+function duringServer({onAsset, assetsToGenerate}) {
+  before(function (done) {
+    this.timeout(60000);
+    assetsToGenerate.forEach((assetInfo) => {
+      const dir = path.dirname(assetInfo.path);
+      fs.ensureDirSync(dir);
+      fs.writeFileSync(assetInfo.path, assetInfo.text);
+    });
+
+    const devEnvProcess = shellCommand(`(
+      npm run dev -- --tailor-web-bundle-for-testing-of-dev-env-itself
+    )`, null/*{ detached: true }*/, false);
+    const scrapeDir = path.resolve(__dirname,'./scrape');
+    let finished = false;
+    function finish() {
+      if (finished) {
+        return;
+      }
+      console.log('FINISHED');
+      finished = true;
+      
+      // fs.removeSync(scrapeDir);
+      // assetsToGenerate.forEach((assetInfo) => {
+      //   const dir = path.dirname(assetInfo.path);
+      //   fs.removeSync(dir);
+      // });
+
+      terminate(devEnvProcess.pid,function (err) {
+        if (err) { // you will get an error if you did not supply a valid process.pid
+          console.log("Oopsy during terminate: ", err); // handle errors in your preferred way.
+        }
+        else {
+          console.log('done for terminate'); // terminating the Processes succeeded.
+        }
+      });
+
+      setTimeout(() => { 
+        done();
+      }, 1000);
+
+      
+    }
+    var once = false;
+    devEnvProcess.stdout.on('data', (data) => {
+      const dataString = data.toString();
+      if (dataString.indexOf('webpack: Compiled successfully.') !== -1 && !once) {
+        once = true;
+        
+        var d = false;
+        scrape({
+          urls: ['http://localhost:3000/'],
+          directory: scrapeDir,
+          resourceSaver: class MyResourceSaver {
+            saveResource (resource) {
+              onAsset(resource);
+            }
+            errorCleanup (err) {
+              console.log('resource error', err);
+            }
+          }
+        }).then(() => {
+          finish();
+        });
+      }
+    });
+    devEnvProcess.stderr.on('data', function (data) {
+      console.log('stderr: ', data);
+    });
+    devEnvProcess.on('exit', function (code) {
+      console.log('child process exited with code:',code);
+      finish();
+    });
+  });
+}
+
 describe('asdf', function() {
   describe('localhost dev environment', () => {
     const contentToBundle = makeUuid();
+    console.log('contentToBundle',contentToBundle);
     let bundleHasContent = false;
-    before(function (done) {
-      this.timeout(60000);
-      const monorepoDir = path.resolve(__dirname, '../../../');
-      const testdevenvMain = path.resolve(monorepoDir, './packages/testdevenv-main');
-      const testdevenvMainJs = path.resolve(testdevenvMain, './testdevenv-main.js');
-      fs.ensureDirSync(testdevenvMain);
-      fs.writeFileSync(testdevenvMainJs, `document.body.append('${contentToBundle}');`);
-
-      const devEnvProcess = shellCommand(`(
-        npm run dev -- --tailor-web-bundle-for-testing-of-dev-env-itself
-      )`, null/*{ detached: true }*/);
-      devEnvProcess.stdout.on('data', (data) => {
-        console.log('stdout from mocha child process of `npm run dev`:\n---\n' + data.toString());
-        const dataString = data.toString();
-        
-        if (dataString.indexOf('webpack: Compiled successfully.') !== -1) {
-          console.log('OK LETS CHECK OUT THE HTML')
-          const scrapeDir = path.resolve(testdevenvMain,'./scrape');
-          fs.removeSync(scrapeDir);
-          var d = false;
-          scrape({
-            urls: ['http://localhost:3000/'],
-            directory: scrapeDir,
-            resourceSaver: class MyResourceSaver {
-              saveResource (resource) {
-                console.log('resource', resource.url, resource.text.substring(0,20));
-                console.log('IS IT THERE', resource.text.indexOf(contentToBundle) !== -1);
-                bundleHasContent = bundleHasContent || resource.text.indexOf(contentToBundle) !== -1;
-              }
-              errorCleanup (err) {
-                console.log('resource error', err);
-              }
-            }
-          }).then(() => {
-            console.log('THEN');
-            // 
-            done();
-            console.log('devEnvProcess',devEnvProcess.pid, typeof devEnvProcess.pid)
-            // process.kill(-devEnvProcess.pid);
-            terminate(devEnvProcess.pid,function (err) {
-              if (err) { // you will get an error if you did not supply a valid process.pid
-                console.log("Oopsy: " + err); // handle errors in your preferred way.
-              }
-              else {
-                console.log('done'); // terminating the Processes succeeded.
-              }
-            });
-            // process.kill(devEnvProcess.pid, 'SIGTERM');
-            // ;
-          });
+    const monorepoDir = path.resolve(__dirname, '../../../');
+    duringServer({
+      assetsToGenerate: [
+        {
+          path: path.resolve(monorepoDir, './packages/testdevenv-main/testdevenv-main.js'),
+          text: `document.body.append('${contentToBundle}');`
         }
-      });
-      devEnvProcess.stderr.on('data', function (data) {
-        console.log('stderr: ', data);
-      });
-      devEnvProcess.on('exit', function (code) {
-        // shellCommand(`rm -rf ${testingTempDir}`);
-        console.log('child process exited with code:',code);
-      });
+      ],
+      onAsset: (resource) => {
+        bundleHasContent = bundleHasContent || resource.text.indexOf(contentToBundle) !== -1;
+      }
     });
     it('bundleHasContent', () => {
-      console.log('bundleHasContentbundleHasContentbundleHasContentbundleHasContent',bundleHasContent)
+      assert.equal(bundleHasContent, true);
+      
+    });
+  });
+
+  describe('localhost dev environment', () => {
+    const contentToBundle = makeUuid();
+    console.log('contentToBundle',contentToBundle);
+    let bundleHasContent = false;
+    const monorepoDir = path.resolve(__dirname, '../../../');
+    duringServer({
+      assetsToGenerate: [
+        {
+          path: path.resolve(monorepoDir, './packages/testdevenv-main/testdevenv-main.js'),
+          text: `document.body.append('${contentToBundle}');`
+        }
+      ],
+      onAsset: (resource) => {
+        bundleHasContent = bundleHasContent || resource.text.indexOf(contentToBundle) !== -1;
+      }
+    });
+    it('bundleHasContent', () => {
       assert.equal(bundleHasContent, true);
       
     });
