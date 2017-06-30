@@ -45,9 +45,9 @@ function duringServer({onAsset, assetsToGenerate}) {
         }
       });
 
-      setTimeout(() => { 
+      // setTimeout(() => { 
         done();
-      }, 1000);
+      // }, 1000);
 
       
     }

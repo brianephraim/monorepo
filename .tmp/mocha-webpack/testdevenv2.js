@@ -242,9 +242,10 @@ function duringServer(_ref) {
         }
       });
 
-      setTimeout(function () {
-        done();
-      }, 1000);
+      // setTimeout(() => { 
+      done();
+      // }, 1000);
+
     }
     var once = false;
     devEnvProcess.stdout.on('data', function (data) {
