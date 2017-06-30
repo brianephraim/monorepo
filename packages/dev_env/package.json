@@ -42,6 +42,7 @@
     "jest": "^20.0.4",
     "json-loader": "^0.5.4",
     "lerna": "^2.0.0-rc.4",
+    "log-update": "^2.0.0",
     "markdown-loader": "^2.0.0",
     "mocha": "^3.4.1",
     "mocha-webpack": "^0.7.0",
@@ -58,7 +59,7 @@
     "webpack": "^2.5.1",
     "webpack-dev-middleware": "^1.10.2",
     "webpack-node-externals": "^1.6.0",
-    "webpsite-scraper": "^3.1.0",
+    "website-scraper": "^3.1.0",
     "yargs": "^8.0.1"
   },
   "publishConfig": {

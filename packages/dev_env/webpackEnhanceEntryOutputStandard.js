@@ -1,26 +1,7 @@
 import globby from 'globby';
 
-function enhance(originalConfig, dirRoot, libraryName, libraryNameReduced, outputFiles, overrideEntryFiles) {
-  let entryFiles = overrideEntryFiles ? overrideEntryFiles : {
-    MainApp: globby.sync([`${dirRoot}/packages/MainApp/MainApp.js`]),
-    [outputFiles.library]: globby.sync([
-      `${dirRoot}/${libraryNameReduced}.js`,
-      `${dirRoot}/src/library/index.js`,
-    ]),
-    ...(
-      outputFiles.libraryMin ? {
-        [outputFiles.libraryMin]: globby.sync([`${dirRoot}/src/library/index.js`]),
-      } : {}
-    ),
-    [outputFiles.demo]: globby.sync([
-      `${dirRoot}/*.demo.js`,
-      `${dirRoot}/demo.js`,
-      `${dirRoot}/**/*/*.demo.js`,
-      `${dirRoot}/**/*/demo.js`,
-      `!${dirRoot}/packages/**/*`,
-      `${dirRoot}/packages/MainApp/MainApp.js`,
-    ]),
-  };
+function enhance(originalConfig, dirRoot, libraryName, entryFiles) {
+
 
   const entry = Object.keys(entryFiles).reduce((accum, entryName) => {
     if (entryFiles[entryName].length) {

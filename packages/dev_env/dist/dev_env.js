@@ -1,14 +1,14 @@
 require("source-map-support").install();
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("fs-extra"), require("webpack"), require("yargs"), require("child_process"), require("globby"), require("directory-named-webpack-plugin"), require("express"), require("extract-text-webpack-plugin"), require("html-webpack-plugin"), require("node-sass-json-importer"), require("path"), require("string-replace-webpack-plugin"), require("url"), require("validate-npm-package-name"), require("webpack-dev-middleware"), require("webpack-node-externals"));
+		module.exports = factory(require("fs-extra"), require("webpack"), require("globby"), require("path"), require("yargs"), require("child_process"), require("directory-named-webpack-plugin"), require("express"), require("extract-text-webpack-plugin"), require("html-webpack-plugin"), require("node-sass-json-importer"), require("string-replace-webpack-plugin"), require("url"), require("validate-npm-package-name"), require("webpack-dev-middleware"), require("webpack-node-externals"));
 	else if(typeof define === 'function' && define.amd)
-		define("@defualt/dev_env", ["fs-extra", "webpack", "yargs", "child_process", "globby", "directory-named-webpack-plugin", "express", "extract-text-webpack-plugin", "html-webpack-plugin", "node-sass-json-importer", "path", "string-replace-webpack-plugin", "url", "validate-npm-package-name", "webpack-dev-middleware", "webpack-node-externals"], factory);
+		define("@defualt/dev_env", ["fs-extra", "webpack", "globby", "path", "yargs", "child_process", "directory-named-webpack-plugin", "express", "extract-text-webpack-plugin", "html-webpack-plugin", "node-sass-json-importer", "string-replace-webpack-plugin", "url", "validate-npm-package-name", "webpack-dev-middleware", "webpack-node-externals"], factory);
 	else if(typeof exports === 'object')
-		exports["@defualt/dev_env"] = factory(require("fs-extra"), require("webpack"), require("yargs"), require("child_process"), require("globby"), require("directory-named-webpack-plugin"), require("express"), require("extract-text-webpack-plugin"), require("html-webpack-plugin"), require("node-sass-json-importer"), require("path"), require("string-replace-webpack-plugin"), require("url"), require("validate-npm-package-name"), require("webpack-dev-middleware"), require("webpack-node-externals"));
+		exports["@defualt/dev_env"] = factory(require("fs-extra"), require("webpack"), require("globby"), require("path"), require("yargs"), require("child_process"), require("directory-named-webpack-plugin"), require("express"), require("extract-text-webpack-plugin"), require("html-webpack-plugin"), require("node-sass-json-importer"), require("string-replace-webpack-plugin"), require("url"), require("validate-npm-package-name"), require("webpack-dev-middleware"), require("webpack-node-externals"));
 	else
-		root["@defualt/dev_env"] = factory(root["fs-extra"], root["webpack"], root["yargs"], root["child_process"], root["globby"], root["directory-named-webpack-plugin"], root["express"], root["extract-text-webpack-plugin"], root["html-webpack-plugin"], root["node-sass-json-importer"], root["path"], root["string-replace-webpack-plugin"], root["url"], root["validate-npm-package-name"], root["webpack-dev-middleware"], root["webpack-node-externals"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_0__, __WEBPACK_EXTERNAL_MODULE_1__, __WEBPACK_EXTERNAL_MODULE_2__, __WEBPACK_EXTERNAL_MODULE_8__, __WEBPACK_EXTERNAL_MODULE_9__, __WEBPACK_EXTERNAL_MODULE_22__, __WEBPACK_EXTERNAL_MODULE_23__, __WEBPACK_EXTERNAL_MODULE_24__, __WEBPACK_EXTERNAL_MODULE_25__, __WEBPACK_EXTERNAL_MODULE_26__, __WEBPACK_EXTERNAL_MODULE_27__, __WEBPACK_EXTERNAL_MODULE_28__, __WEBPACK_EXTERNAL_MODULE_29__, __WEBPACK_EXTERNAL_MODULE_30__, __WEBPACK_EXTERNAL_MODULE_31__, __WEBPACK_EXTERNAL_MODULE_32__) {
+		root["@defualt/dev_env"] = factory(root["fs-extra"], root["webpack"], root["globby"], root["path"], root["yargs"], root["child_process"], root["directory-named-webpack-plugin"], root["express"], root["extract-text-webpack-plugin"], root["html-webpack-plugin"], root["node-sass-json-importer"], root["string-replace-webpack-plugin"], root["url"], root["validate-npm-package-name"], root["webpack-dev-middleware"], root["webpack-node-externals"]);
+})(this, function(__WEBPACK_EXTERNAL_MODULE_0__, __WEBPACK_EXTERNAL_MODULE_1__, __WEBPACK_EXTERNAL_MODULE_2__, __WEBPACK_EXTERNAL_MODULE_3__, __WEBPACK_EXTERNAL_MODULE_4__, __WEBPACK_EXTERNAL_MODULE_10__, __WEBPACK_EXTERNAL_MODULE_24__, __WEBPACK_EXTERNAL_MODULE_25__, __WEBPACK_EXTERNAL_MODULE_26__, __WEBPACK_EXTERNAL_MODULE_27__, __WEBPACK_EXTERNAL_MODULE_28__, __WEBPACK_EXTERNAL_MODULE_29__, __WEBPACK_EXTERNAL_MODULE_30__, __WEBPACK_EXTERNAL_MODULE_31__, __WEBPACK_EXTERNAL_MODULE_32__, __WEBPACK_EXTERNAL_MODULE_33__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -74,7 +74,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 33);
+/******/ 	return __webpack_require__(__webpack_require__.s = 34);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -93,10 +93,22 @@ module.exports = require("webpack");
 /* 2 */
 /***/ (function(module, exports) {
 
-module.exports = require("yargs");
+module.exports = require("globby");
 
 /***/ }),
 /* 3 */
+/***/ (function(module, exports) {
+
+module.exports = require("path");
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports) {
+
+module.exports = require("yargs");
+
+/***/ }),
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -112,15 +124,19 @@ var _fsExtra = __webpack_require__(0);
 
 var _fsExtra2 = _interopRequireDefault(_fsExtra);
 
-var _yargs = __webpack_require__(2);
+var _yargs = __webpack_require__(4);
 
-var _webpackEnhanceBaseConfig = __webpack_require__(4);
+var _webpackEnhanceBaseConfig = __webpack_require__(6);
 
 var _webpackEnhanceBaseConfig2 = _interopRequireDefault(_webpackEnhanceBaseConfig);
 
-var _webpackEnhanceConfigNode = __webpack_require__(5);
+var _webpackEnhanceConfigNode = __webpack_require__(7);
 
 var _webpackEnhanceConfigNode2 = _interopRequireDefault(_webpackEnhanceConfigNode);
+
+var _webpackEnhanceImmediateConfig = __webpack_require__(15);
+
+var _webpackEnhanceImmediateConfig2 = _interopRequireDefault(_webpackEnhanceImmediateConfig);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -141,28 +157,7 @@ function enhance() {
     output: output
   });
   config = (0, _webpackEnhanceConfigNode2.default)(config);
-  config.plugins = config.plugins || [];
-
-  // I needed __dirname hardcoded as the original dirname
-  // https://github.com/webpack/webpack/issues/1599#issuecomment-266588898
-  config.plugins.push({
-    apply: function apply(compiler) {
-      function setModuleConstant(expressionName, fn) {
-        compiler.parser.plugin('expression ' + expressionName, function compilerParserPlugin() {
-          this.state.current.addVariable(expressionName, JSON.stringify(fn(this.state.module)));
-          return true;
-        });
-      }
-
-      setModuleConstant('__filename', function (module) {
-        return module.resource;
-      });
-
-      setModuleConstant('__dirname', function (module) {
-        return module.context;
-      });
-    }
-  });
+  config = (0, _webpackEnhanceImmediateConfig2.default)(config);
   _fsExtra2.default.writeFileSync('./_webpack-config-preview-commandline.json', JSON.stringify(config, null, 2));
   return config;
 }
@@ -170,7 +165,7 @@ function enhance() {
 exports.default = enhance;
 
 /***/ }),
-/* 4 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -182,7 +177,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _webpackConfigResolve = __webpack_require__(12);
+var _webpackConfigResolve = __webpack_require__(13);
 
 var _webpackConfigResolve2 = _interopRequireDefault(_webpackConfigResolve);
 
@@ -225,7 +220,7 @@ function enhance(originalConfig) {
 exports.default = enhance;
 
 /***/ }),
-/* 5 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -242,9 +237,13 @@ var _webpack = __webpack_require__(1);
 
 var _webpack2 = _interopRequireDefault(_webpack);
 
-var _webpackNodeExternals = __webpack_require__(32);
+var _webpackNodeExternals = __webpack_require__(33);
 
 var _webpackNodeExternals2 = _interopRequireDefault(_webpackNodeExternals);
+
+var _path = __webpack_require__(3);
+
+var _path2 = _interopRequireDefault(_path);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -252,7 +251,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
 function enhance(originalConfig) {
   var module = _extends({}, originalConfig && originalConfig.module);
-  module.rules = [{ test: /rx\.lite\.aggregates\.js/, use: 'imports-loader?define=>false' }].concat(_toConsumableArray(module.rules || []));
+  module.rules = [{ test: /rx\.lite\.aggregates\.js/, use: 'imports-loader?define=>false' }, { test: /async\.js/, use: 'imports-loader?define=>false' }].concat(_toConsumableArray(module.rules || []));
 
   var plugins = originalConfig.plugins || [];
   plugins.push(new _webpack2.default.BannerPlugin({
@@ -261,6 +260,12 @@ function enhance(originalConfig) {
     entryOnly: false
   }));
 
+  var modulesDir = '../node_modules';
+  if (__dirname.indexOf('/packages/') > __dirname.indexOf('/node_modules/')) {
+    modulesDir = __dirname.split('/packages/')[0] + '/node_modules';
+  }
+  console.log('a', modulesDir);
+  console.log('b', '/Users/brianephraim/Sites/monorepo/node_modules');
   var config = _extends({}, originalConfig, {
     // devtool: 'cheap-module-eval-source-map',
     // devtool: 'cheap-source-map',
@@ -275,7 +280,10 @@ function enhance(originalConfig) {
       __dirname: false,
       __filename: false
     }),
-    externals: [].concat(_toConsumableArray(originalConfig.externals || []), [(0, _webpackNodeExternals2.default)({ modulesFromFile: true })]),
+    externals: [].concat(_toConsumableArray(originalConfig.externals || []), [(0, _webpackNodeExternals2.default)({
+      // modulesFromFile: true,
+      modulesDir: '/Users/brianephraim/Sites/monorepo/node_modules'
+    })]),
     plugins: plugins
 
   });
@@ -284,7 +292,7 @@ function enhance(originalConfig) {
 exports.default = enhance;
 
 /***/ }),
-/* 6 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -321,7 +329,7 @@ exports.default = function (webpackMakeCompiler) {
 };
 
 /***/ }),
-/* 7 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -335,15 +343,15 @@ var _webpack = __webpack_require__(1);
 
 var _webpack2 = _interopRequireDefault(_webpack);
 
-var _webpackDevMiddleware = __webpack_require__(31);
+var _webpackDevMiddleware = __webpack_require__(32);
 
 var _webpackDevMiddleware2 = _interopRequireDefault(_webpackDevMiddleware);
 
-var _webpackConfig = __webpack_require__(17);
+var _webpackConfig = __webpack_require__(19);
 
 var _webpackConfig2 = _interopRequireDefault(_webpackConfig);
 
-var _webpackParseStatsForDepProblems = __webpack_require__(21);
+var _webpackParseStatsForDepProblems = __webpack_require__(23);
 
 var _webpackParseStatsForDepProblems2 = _interopRequireDefault(_webpackParseStatsForDepProblems);
 
@@ -368,47 +376,41 @@ exports.default = function (isDev) {
 };
 
 /***/ }),
-/* 8 */
+/* 10 */
 /***/ (function(module, exports) {
 
 module.exports = require("child_process");
 
 /***/ }),
-/* 9 */
-/***/ (function(module, exports) {
-
-module.exports = require("globby");
-
-/***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _yargs = __webpack_require__(2);
+var _yargs = __webpack_require__(4);
 
-var _shellCommand = __webpack_require__(16);
+var _shellCommand = __webpack_require__(18);
 
 var _shellCommand2 = _interopRequireDefault(_shellCommand);
 
-var _jestSpawnProcess = __webpack_require__(14);
+var _jestSpawnProcess = __webpack_require__(16);
 
 var _jestSpawnProcess2 = _interopRequireDefault(_jestSpawnProcess);
 
-var _webpackMakeCompiler = __webpack_require__(7);
+var _webpackMakeCompiler = __webpack_require__(9);
 
 var _webpackMakeCompiler2 = _interopRequireDefault(_webpackMakeCompiler);
 
-var _webpackRunCompiler = __webpack_require__(6);
+var _webpackRunCompiler = __webpack_require__(8);
 
 var _webpackRunCompiler2 = _interopRequireDefault(_webpackRunCompiler);
 
-var _webpackBuildCommandLine = __webpack_require__(13);
+var _webpackBuildCommandLine = __webpack_require__(14);
 
 var _webpackBuildCommandLine2 = _interopRequireDefault(_webpackBuildCommandLine);
 
-var _webpackExpressServer = __webpack_require__(20);
+var _webpackExpressServer = __webpack_require__(22);
 
 var _webpackExpressServer2 = _interopRequireDefault(_webpackExpressServer);
 
@@ -430,13 +432,21 @@ if (item) {
 }
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 /* eslint-disable func-names */
+function printProgress(progress) {
+  if (!process || !process.stdout || !process.stdout.clearLine) {
+    return;
+  }
+  process.stdout.clearLine();
+  process.stdout.cursorTo(0);
+  process.stdout.write(progress + '-xxxxxx');
+}
 function parseRequestResolvePlugin() {
   var parseRequest = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function () {};
 
@@ -447,6 +457,8 @@ function parseRequestResolvePlugin() {
       // https://github.com/webpack/enhanced-resolve/blob/master/lib/ResolverFactory.js
       // So they can be other values as seen in that file.
       resolver.plugin( /* 'modules'*/'resolve', function (request, callback) {
+        printProgress('' + request.request);
+        // console.log('request.request',request.request)
         var newRequestStr = parseRequest(request.request);
         if (newRequestStr && newRequestStr !== request.request) {
           var obj = Object.assign({}, request, {
@@ -454,6 +466,7 @@ function parseRequestResolvePlugin() {
           });
           this.doResolve('resolve', obj, 'blah blah', callback);
         } else {
+          // process.stdout.write(`\n`);
           callback();
         }
       });
@@ -464,15 +477,15 @@ function parseRequestResolvePlugin() {
 module.exports = parseRequestResolvePlugin;
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var DirectoryNamedWebpackPlugin = __webpack_require__(22);
-var parseRequestResolvePlugin = __webpack_require__(11);
-var path = __webpack_require__(27);
+var DirectoryNamedWebpackPlugin = __webpack_require__(24);
+var parseRequestResolvePlugin = __webpack_require__(12);
+var path = __webpack_require__(3);
 module.exports = {
   resolve: {
     modules: [path.resolve('./src/library'), path.resolve(process.cwd(), 'packages'), path.resolve(process.cwd(), '../../packages'), 'node_modules'],
@@ -491,7 +504,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -505,11 +518,11 @@ var _webpack = __webpack_require__(1);
 
 var _webpack2 = _interopRequireDefault(_webpack);
 
-var _webpackRunCompiler = __webpack_require__(6);
+var _webpackRunCompiler = __webpack_require__(8);
 
 var _webpackRunCompiler2 = _interopRequireDefault(_webpackRunCompiler);
 
-var _webpackConfigCommandLine = __webpack_require__(3);
+var _webpackConfigCommandLine = __webpack_require__(5);
 
 var _webpackConfigCommandLine2 = _interopRequireDefault(_webpackConfigCommandLine);
 
@@ -525,7 +538,7 @@ exports.default = function () {
 };
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -535,17 +548,67 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _child_process = __webpack_require__(8);
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+function enhance(originalConfig) {
+  var config = _extends({}, originalConfig);
+  config.plugins = config.plugins || [];
+
+  // I needed __dirname hardcoded as the original dirname
+  // https://github.com/webpack/webpack/issues/1599#issuecomment-266588898
+  config.plugins.push({
+    apply: function apply(compiler) {
+      function setModuleConstant(expressionName, fn) {
+        compiler.plugin("compilation", function (compilation, data) {
+          data.normalModuleFactory.plugin("parser", function (parser, options) {
+            parser.plugin("expression " + expressionName, function compilerParserPlugin() {
+              this.state.current.addVariable(expressionName, JSON.stringify(fn(this.state.module)));
+              return true;
+            });
+          });
+        });
+      }
+
+      setModuleConstant('__filename', function (module) {
+        return module.resource;
+      });
+
+      setModuleConstant('__dirname', function (module) {
+        return module.context;
+      });
+    }
+  });
+  return config;
+}
+
+exports.default = enhance;
+
+/***/ }),
+/* 16 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _child_process = __webpack_require__(10);
 
 var _child_process2 = _interopRequireDefault(_child_process);
+
+var _path = __webpack_require__(3);
+
+var _path2 = _interopRequireDefault(_path);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // import jestConfig from './jestConfig';
 // const config = `'${JSON.stringify(jestConfig).replace(/'/g, "\\'")}'`;
 
-var configPath = __dirname + '/jestConfig.js'; /* eslint-disable camelcase */
-
+/* eslint-disable camelcase */
+var configPath = __dirname + '/jestConfig.js';
 var configBasePath = __dirname + '/jestConfigBase.js';
 // qwer();
 
@@ -556,7 +619,8 @@ exports.default = function (testdevenv) {
   var commandBody = 'CI=true ' + process.cwd() + '/node_modules/.bin/jest --watch --config=' + configPath;
   if (testdevenv) {
     // commandBody = `CI=true ${process.cwd()}/node_modules/.bin/jest -t testdevenv --config=${configBasePath}`;
-    commandBody = 'CI=true ' + process.cwd() + '/node_modules/.bin/jest ' + __dirname + '/testdevenv.js  --config=' + configBasePath;
+    // commandBody = `CI=true ${process.cwd()}/node_modules/.bin/jest ${__dirname}/testdevenv.js  --config=${configBasePath}`;
+    commandBody = 'CI=true ' + process.cwd() + '/node_modules/.bin/mocha-webpack --require babel-core/register --webpack-config ' + _path2.default.resolve(__dirname, '../core/webpackConfigMocha.js') + ' "' + _path2.default.resolve(__dirname, './testdevenv2.js') + '"';
   }
   var args = ['-c', commandBody];
   var proc = _child_process2.default.spawn(command, args, { stdio: 'inherit' });
@@ -572,7 +636,7 @@ exports.default = function (testdevenv) {
 };
 
 /***/ }),
-/* 15 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -616,7 +680,7 @@ exports.register = register;
 exports.default = plugins;
 
 /***/ }),
-/* 16 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -637,6 +701,7 @@ exports.default = plugins;
 */
 module.exports = function (commandToRun) {
   var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : { stdio: 'inherit' };
+  var killParentOnExit = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
 
   var command = 'sh';
   var args = ['-c', commandToRun];
@@ -649,23 +714,25 @@ module.exports = function (commandToRun) {
   // } catch (err) {
   // if (err.code !== 'MODULE_NOT_FOUND') throw err;
 
-  var childProcess = __webpack_require__(8);
+  var childProcess = __webpack_require__(10);
   var proc = childProcess.spawn(command, args, options || {});
   proc.on('exit', function (code, signal) {
-    process.on('exit', function () {
-      if (signal) {
-        process.kill(process.pid, signal);
-      } else {
-        process.exit(code);
-      }
-    });
+    if (killParentOnExit) {
+      process.on('exit', function () {
+        if (signal) {
+          process.kill(process.pid, signal);
+        } else {
+          process.exit(code);
+        }
+      });
+    }
   });
   return proc;
   // }
 };
 
 /***/ }),
-/* 17 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -675,33 +742,71 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _yargs = __webpack_require__(2);
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _yargs = __webpack_require__(4);
 
 var _fsExtra = __webpack_require__(0);
 
 var _fsExtra2 = _interopRequireDefault(_fsExtra);
 
-var _webpackEnhanceConfigNode = __webpack_require__(5);
+var _globby = __webpack_require__(2);
+
+var _globby2 = _interopRequireDefault(_globby);
+
+var _webpackEnhanceConfigNode = __webpack_require__(7);
 
 var _webpackEnhanceConfigNode2 = _interopRequireDefault(_webpackEnhanceConfigNode);
 
-var _webpackEnhanceConfigWeb = __webpack_require__(18);
+var _webpackEnhanceConfigWeb = __webpack_require__(20);
 
 var _webpackEnhanceConfigWeb2 = _interopRequireDefault(_webpackEnhanceConfigWeb);
 
-var _webpackEnhanceEntryOutputStandard = __webpack_require__(19);
+var _webpackEnhanceEntryOutputStandard = __webpack_require__(21);
 
 var _webpackEnhanceEntryOutputStandard2 = _interopRequireDefault(_webpackEnhanceEntryOutputStandard);
 
-var _webpackEnhanceBaseConfig = __webpack_require__(4);
+var _webpackEnhanceBaseConfig = __webpack_require__(6);
 
 var _webpackEnhanceBaseConfig2 = _interopRequireDefault(_webpackEnhanceBaseConfig);
 
-var _webpackConfigCommandLine = __webpack_require__(3);
+var _webpackConfigCommandLine = __webpack_require__(5);
 
 var _webpackConfigCommandLine2 = _interopRequireDefault(_webpackConfigCommandLine);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; } /*
+                                                                                                                                                                                                                    This files return a function that when called generates a webpack config json.
+                                                                                                                                                                                                                    `argv` is passed into this function.
+                                                                                                                                                                                                                  
+                                                                                                                                                                                                                    when `argv.env === falsey`
+                                                                                                                                                                                                                      This compiles for a dev server via webpack-dev-middleware.  No files are created to disk,
+                                                                                                                                                                                                                      only created in memory.
+                                                                                                                                                                                                                  
+                                                                                                                                                                                                                    when `argv.env === 'build'`
+                                                                                                                                                                                                                      This compiles files to disk in a /dist folder and a /demo folder.
+                                                                                                                                                                                                                  
+                                                                                                                                                                                                                    when `argv.dirroot === some path`
+                                                                                                                                                                                                                      This is used when dev_env itself is compiled.
+                                                                                                                                                                                                                      This very file is compiled according the config set by this file.
+                                                                                                                                                                                                                      This is needed to make dev_env portable via npm.
+                                                                                                                                                                                                                      babel-node needs to compile this dev_env to work,
+                                                                                                                                                                                                                      but this does not play well when dev_env is in a node_modules folder.
+                                                                                                                                                                                                                      So we need to compile dev_env before publishing to npm.
+                                                                                                                                                                                                                      Directory paths need to be tweaked to accomplish this,
+                                                                                                                                                                                                                      and that's what `argv.dirroot` helps with.
+                                                                                                                                                                                                                  
+                                                                                                                                                                                                                  
+                                                                                                                                                                                                                    This function is also affected by package.json.
+                                                                                                                                                                                                                  
+                                                                                                                                                                                                                    when package.json.bundleForNode === true
+                                                                                                                                                                                                                      in conjunction with `argv.env === 'build'`, the bundle will
+                                                                                                                                                                                                                      have special consideration for a node platform.
+                                                                                                                                                                                                                      Only application files will be bundled.
+                                                                                                                                                                                                                      node_modules and node built-in requires will not be bundled.
+                                                                                                                                                                                                                  */
+
 
 // import aaa8 from '@defualt/aaa8';
 // console.log(aaa8);
@@ -735,7 +840,17 @@ function generateConfigJson() {
       outputFiles.demo = 'boot';
       outputFiles.library = '' + libraryNameReduced;
     }
-    config = (0, _webpackEnhanceEntryOutputStandard2.default)(config, dirRoot, libraryName, libraryNameReduced, outputFiles, _yargs.argv.asdf);
+
+    var entryFiles = void 0;
+    if (_yargs.argv['tailor-web-bundle-for-testing-of-dev-env-itself']) {
+      entryFiles = _defineProperty({}, outputFiles.demo, [dirRoot + '/packages/testdevenv-main/testdevenv-main.js']);
+    } else {
+      entryFiles = _extends(_defineProperty({
+        MainApp: _globby2.default.sync([dirRoot + '/packages/MainApp/MainApp.js'])
+      }, outputFiles.library, _globby2.default.sync([dirRoot + '/' + libraryNameReduced + '.js', dirRoot + '/src/library/index.js'])), outputFiles.libraryMin ? _defineProperty({}, outputFiles.libraryMin, _globby2.default.sync([dirRoot + '/src/library/index.js'])) : {}, _defineProperty({}, outputFiles.demo, _globby2.default.sync([dirRoot + '/*.demo.js', dirRoot + '/demo.js', dirRoot + '/**/*/*.demo.js', dirRoot + '/**/*/demo.js', '!' + dirRoot + '/packages/**/*', dirRoot + '/packages/MainApp/MainApp.js'])));
+    }
+
+    config = (0, _webpackEnhanceEntryOutputStandard2.default)(config, dirRoot, libraryName, libraryNameReduced, outputFiles, entryFiles);
     if (packageJson.bundleForNode) {
       config = (0, _webpackEnhanceConfigNode2.default)(config);
     } else {
@@ -748,40 +863,12 @@ function generateConfigJson() {
   }
   _fsExtra2.default.writeFileSync('./_webpack-config-preview.json', JSON.stringify(config, null, 2));
   return config;
-} /*
-    This files return a function that when called generates a webpack config json.
-    `argv` is passed into this function.
-  
-    when `argv.env === falsey`
-      This compiles for a dev server via webpack-dev-middleware.  No files are created to disk,
-      only created in memory.
-  
-    when `argv.env === 'build'`
-      This compiles files to disk in a /dist folder and a /demo folder.
-  
-    when `argv.dirroot === some path`
-      This is used when dev_env itself is compiled.
-      This very file is compiled according the config set by this file.
-      This is needed to make dev_env portable via npm.
-      babel-node needs to compile this dev_env to work,
-      but this does not play well when dev_env is in a node_modules folder.
-      So we need to compile dev_env before publishing to npm.
-      Directory paths need to be tweaked to accomplish this,
-      and that's what `argv.dirroot` helps with.
-  
-  
-    This function is also affected by package.json.
-  
-    when package.json.bundleForNode === true
-      in conjunction with `argv.env === 'build'`, the bundle will
-      have special consideration for a node platform.
-      Only application files will be bundled.
-      node_modules and node built-in requires will not be bundled.
-  */
+}
+
 exports.default = generateConfigJson();
 
 /***/ }),
-/* 18 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -799,19 +886,19 @@ var _webpack = __webpack_require__(1);
 
 var _webpack2 = _interopRequireDefault(_webpack);
 
-var _htmlWebpackPlugin = __webpack_require__(25);
+var _htmlWebpackPlugin = __webpack_require__(27);
 
 var _htmlWebpackPlugin2 = _interopRequireDefault(_htmlWebpackPlugin);
 
-var _stringReplaceWebpackPlugin = __webpack_require__(28);
+var _stringReplaceWebpackPlugin = __webpack_require__(29);
 
 var _stringReplaceWebpackPlugin2 = _interopRequireDefault(_stringReplaceWebpackPlugin);
 
-var _extractTextWebpackPlugin = __webpack_require__(24);
+var _extractTextWebpackPlugin = __webpack_require__(26);
 
 var _extractTextWebpackPlugin2 = _interopRequireDefault(_extractTextWebpackPlugin);
 
-var _nodeSassJsonImporter = __webpack_require__(26);
+var _nodeSassJsonImporter = __webpack_require__(28);
 
 var _nodeSassJsonImporter2 = _interopRequireDefault(_nodeSassJsonImporter);
 
@@ -819,11 +906,11 @@ var _fsExtra = __webpack_require__(0);
 
 var _fsExtra2 = _interopRequireDefault(_fsExtra);
 
-var _globby = __webpack_require__(9);
+var _globby = __webpack_require__(2);
 
 var _globby2 = _interopRequireDefault(_globby);
 
-var _pluginRegistry = __webpack_require__(15);
+var _pluginRegistry = __webpack_require__(17);
 
 var _pluginRegistry2 = _interopRequireDefault(_pluginRegistry);
 
@@ -963,7 +1050,7 @@ function enhance(originalConfig, libraryName, isBuild, dirRoot, username, output
 exports.default = enhance;
 
 /***/ }),
-/* 19 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -975,21 +1062,14 @@ Object.defineProperty(exports, "__esModule", {
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _globby = __webpack_require__(9);
+var _globby = __webpack_require__(2);
 
 var _globby2 = _interopRequireDefault(_globby);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function enhance(originalConfig, dirRoot, libraryName, libraryNameReduced, outputFiles, entryFiles) {
 
-function enhance(originalConfig, dirRoot, libraryName, libraryNameReduced, outputFiles, testdevenv) {
-  var entryFiles = _extends(_defineProperty({
-    MainApp: _globby2.default.sync([dirRoot + '/packages/MainApp/MainApp.js'])
-  }, outputFiles.library, _globby2.default.sync([dirRoot + '/' + libraryNameReduced + '.js', dirRoot + '/src/library/index.js'])), outputFiles.libraryMin ? _defineProperty({}, outputFiles.libraryMin, _globby2.default.sync([dirRoot + '/src/library/index.js'])) : {}, _defineProperty({}, outputFiles.demo, _globby2.default.sync([dirRoot + '/*.demo.js', dirRoot + '/demo.js', dirRoot + '/**/*/*.demo.js', dirRoot + '/**/*/demo.js', '!' + dirRoot + '/packages/**/*', dirRoot + '/packages/MainApp/MainApp.js'])));
-  if (testdevenv) {
-    entryFiles = _defineProperty({}, outputFiles.demo, [dirRoot + '/packages/testdevenv-main/testdevenv-main.js']);
-  }
   var entry = Object.keys(entryFiles).reduce(function (accum, entryName) {
     if (entryFiles[entryName].length) {
       accum[entryName] = entryFiles[entryName];
@@ -1015,7 +1095,7 @@ function enhance(originalConfig, dirRoot, libraryName, libraryNameReduced, outpu
 exports.default = enhance;
 
 /***/ }),
-/* 20 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1025,15 +1105,15 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _express = __webpack_require__(23);
+var _express = __webpack_require__(25);
 
 var _express2 = _interopRequireDefault(_express);
 
-var _url = __webpack_require__(29);
+var _url = __webpack_require__(30);
 
 var _url2 = _interopRequireDefault(_url);
 
-var _webpackMakeCompiler = __webpack_require__(7);
+var _webpackMakeCompiler = __webpack_require__(9);
 
 var _webpackMakeCompiler2 = _interopRequireDefault(_webpackMakeCompiler);
 
@@ -1096,7 +1176,7 @@ exports.default = function (app) {
 }; /* eslint-disable no-console */
 
 /***/ }),
-/* 21 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1110,7 +1190,7 @@ var _fsExtra = __webpack_require__(0);
 
 var _fsExtra2 = _interopRequireDefault(_fsExtra);
 
-var _validateNpmPackageName = __webpack_require__(30);
+var _validateNpmPackageName = __webpack_require__(31);
 
 var _validateNpmPackageName2 = _interopRequireDefault(_validateNpmPackageName);
 
@@ -1248,76 +1328,70 @@ function webpackParseStatsForDepProblems(stats) {
 exports.default = webpackParseStatsForDepProblems;
 
 /***/ }),
-/* 22 */
+/* 24 */
 /***/ (function(module, exports) {
 
 module.exports = require("directory-named-webpack-plugin");
 
 /***/ }),
-/* 23 */
+/* 25 */
 /***/ (function(module, exports) {
 
 module.exports = require("express");
 
 /***/ }),
-/* 24 */
+/* 26 */
 /***/ (function(module, exports) {
 
 module.exports = require("extract-text-webpack-plugin");
 
 /***/ }),
-/* 25 */
+/* 27 */
 /***/ (function(module, exports) {
 
 module.exports = require("html-webpack-plugin");
 
 /***/ }),
-/* 26 */
+/* 28 */
 /***/ (function(module, exports) {
 
 module.exports = require("node-sass-json-importer");
 
 /***/ }),
-/* 27 */
-/***/ (function(module, exports) {
-
-module.exports = require("path");
-
-/***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports) {
 
 module.exports = require("string-replace-webpack-plugin");
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports) {
 
 module.exports = require("url");
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports) {
 
 module.exports = require("validate-npm-package-name");
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports) {
 
 module.exports = require("webpack-dev-middleware");
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports) {
 
 module.exports = require("webpack-node-externals");
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(10);
+module.exports = __webpack_require__(11);
 
 
 /***/ })
