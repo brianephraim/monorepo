@@ -9,17 +9,21 @@ import { spawn } from 'child_process';
 import shellCommand from '../shell-command';
 import { v4 as makeUuid  } from 'node-uuid';
 
-function duringServer({onAsset, assetsToGenerate}) {
+function duringServer({onAsset = () => {}, onData = () => {}, assetsToGenerate}) {
   before(function (done) {
     this.timeout(60000);
+    let pathToDemoEntry;
     assetsToGenerate.forEach((assetInfo) => {
       const dir = path.dirname(assetInfo.path);
       fs.ensureDirSync(dir);
       fs.writeFileSync(assetInfo.path, assetInfo.text);
+      if (assetInfo.isDemoEntry) {
+        pathToDemoEntry = assetInfo.path;
+      }
     });
 
     const devEnvProcess = shellCommand(`(
-      npm run dev -- --tailor-web-bundle-for-testing-of-dev-env-itself
+      npm run dev -- --demo-entry='${pathToDemoEntry}'
     )`, null/*{ detached: true }*/, false);
     const scrapeDir = path.resolve(__dirname,'./scrape');
     let finished = false;
@@ -30,11 +34,11 @@ function duringServer({onAsset, assetsToGenerate}) {
       console.log('FINISHED');
       finished = true;
       
-      // fs.removeSync(scrapeDir);
-      // assetsToGenerate.forEach((assetInfo) => {
-      //   const dir = path.dirname(assetInfo.path);
-      //   fs.removeSync(dir);
-      // });
+      fs.removeSync(scrapeDir);
+      assetsToGenerate.forEach((assetInfo) => {
+        const dir = path.dirname(assetInfo.path);
+        fs.removeSync(dir);
+      });
 
       terminate(devEnvProcess.pid,function (err) {
         if (err) { // you will get an error if you did not supply a valid process.pid
@@ -54,10 +58,15 @@ function duringServer({onAsset, assetsToGenerate}) {
     var once = false;
     devEnvProcess.stdout.on('data', (data) => {
       const dataString = data.toString();
+      onData(dataString);
+      console.log('devEnvProcess.stdout\n', dataString);
+      if (dataString.indexOf('webpack: Failed to compile.') !== -1 && !once) {
+        once = true;
+        finish();
+      }
       if (dataString.indexOf('webpack: Compiled successfully.') !== -1 && !once) {
         once = true;
         
-        var d = false;
         scrape({
           urls: ['http://localhost:3000/'],
           directory: scrapeDir,
@@ -75,6 +84,9 @@ function duringServer({onAsset, assetsToGenerate}) {
       }
     });
     devEnvProcess.stderr.on('data', function (data) {
+      if (data && data.toString){
+        data = data.toString();
+      }
       console.log('stderr: ', data);
     });
     devEnvProcess.on('exit', function (code) {
@@ -84,46 +96,75 @@ function duringServer({onAsset, assetsToGenerate}) {
   });
 }
 
-describe('asdf', function() {
+const monorepoDir = path.resolve(__dirname, '../../../');
+describe('testdevenv', function() {
   describe('localhost dev environment', () => {
     const contentToBundle = makeUuid();
-    console.log('contentToBundle',contentToBundle);
     let bundleHasContent = false;
-    const monorepoDir = path.resolve(__dirname, '../../../');
+    
     duringServer({
       assetsToGenerate: [
         {
           path: path.resolve(monorepoDir, './packages/testdevenv-main/testdevenv-main.js'),
-          text: `document.body.append('${contentToBundle}');`
+          text: `document.body.append('${contentToBundle}');`,
+          isDemoEntry: true,
         }
       ],
       onAsset: (resource) => {
         bundleHasContent = bundleHasContent || resource.text.indexOf(contentToBundle) !== -1;
       }
     });
-    it('bundleHasContent', () => {
+    it('basic bundleHasContent', () => {
       assert.equal(bundleHasContent, true);
+    });
+  });
+
+  describe('non-existent imports', () => {
+    let notFoundError = false;
+    const importToAttempt = 'some-depMAYBE-A-TYPE';
+    duringServer({
+      assetsToGenerate: [
+        {
+          path: path.resolve(monorepoDir, './packages/testdevenv-main/testdevenv-main.js'),
+          text: `import someDep from '${importToAttempt}';\n;someDep();`,
+          isDemoEntry: true,
+        },
+        {
+          path: path.resolve(monorepoDir, './packages/some-dep/some-dep.js'),
+          text: `export default () => { document.body.append('some-dep'); };`,
+        }
+      ],
+      onData: (data) => {
+        notFoundError = notFoundError || data.indexOf(`Module not found: Error: Can't resolve '${importToAttempt}'`) !== -1;
+      }
+    });
+    it('webpack bundling throws error for non-existent imports within assets', () => {
+      assert.equal(notFoundError, true);
       
     });
   });
 
-  describe('localhost dev environment', () => {
+  describe('existent imports', () => {
     const contentToBundle = makeUuid();
-    console.log('contentToBundle',contentToBundle);
     let bundleHasContent = false;
-    const monorepoDir = path.resolve(__dirname, '../../../');
+    const importToAttempt = 'some-dep';
     duringServer({
       assetsToGenerate: [
         {
           path: path.resolve(monorepoDir, './packages/testdevenv-main/testdevenv-main.js'),
-          text: `document.body.append('${contentToBundle}');`
+          text: `import someDep from '${importToAttempt}';\n;someDep();`,
+          isDemoEntry: true,
+        },
+        {
+          path: path.resolve(monorepoDir, './packages/some-dep/some-dep.js'),
+          text: `export default () => { document.body.append('${contentToBundle}'); };`,
         }
       ],
       onAsset: (resource) => {
         bundleHasContent = bundleHasContent || resource.text.indexOf(contentToBundle) !== -1;
       }
     });
-    it('bundleHasContent', () => {
+    it('bundleHasContent proving import bundling', () => {
       assert.equal(bundleHasContent, true);
       
     });

@@ -32,7 +32,7 @@
       {}
     ]
   },
-  "devtool": "source-map",
+  "devtool": "inline-source-map",
   "target": "node",
   "node": {
     "__dirname": false,

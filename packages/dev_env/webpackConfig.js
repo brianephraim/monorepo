@@ -70,10 +70,20 @@ function generateConfigJson() {
     }
 
     let entryFiles;
-    if (argv['tailor-web-bundle-for-testing-of-dev-env-itself']) {
+    console.log('argvargvargv',argv)
+    if (argv['demo-entry']) {
       entryFiles = {
-        [outputFiles.demo]: [`${dirRoot}/packages/testdevenv-main/testdevenv-main.js`],
+        [outputFiles.demo]: [argv['demo-entry']],
       };
+    // } else if (argv['tailor-web-bundle-for-testing-of-dev-env-itself']) {
+    //   console.log('YEEEEHAW');
+    //   console.log('YEEEEHAW');
+    //   console.log('YEEEEHAW');
+    //   console.log('YEEEEHAW');
+    //   console.log('YEEEEHAW');
+    //   entryFiles = {
+    //     [outputFiles.demo]: [`${dirRoot}/packages/testdevenv-main/testdevenv-main.js`],
+    //   };
     } else {
       entryFiles = {
         MainApp: globby.sync([`${dirRoot}/packages/MainApp/MainApp.js`]),
