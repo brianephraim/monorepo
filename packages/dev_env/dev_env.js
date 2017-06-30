@@ -12,7 +12,7 @@ const item = argv.item;
 if (item) {
   shellCommand(`(cd ./packages/${item} && npm run start)`);
 } else if (env === 'test') {
-  jestSpawnProcess(argv.testdevenv);
+  jestSpawnProcess(argv.testdevenv, argv.watch, argv.testPathPattern);
 } else if (argv.entry) {
   webpackBuildCommandLine();
 } else if (env === 'build') {
