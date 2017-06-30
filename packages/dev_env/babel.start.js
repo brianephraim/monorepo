@@ -13,13 +13,19 @@
 */
 const path = require('path');
 const shellCommand = require('./shell-command');
+const fs = require('fs-extra');
 
 const argumentsPassThrough = process.argv.reduce((accum, argString) => {
   const toAppend = argString.indexOf('--') === 0 ? ` ${argString}` : '';
   return `${accum}${toAppend}`;
 }, '');
 
-// const devEnv = argv.entry ? './devEnvCommandLine.js' : './dev_env.js';
-const devEnv = './dev_env.js';
-// shellCommand(`${path.resolve(__dirname, './node_modules/.bin/babel-node')} ${path.resolve(__dirname, devEnv)}${argumentsPassThrough}`);
-shellCommand(`${path.resolve(__dirname, './bin/devenv-node.js')} ${path.resolve(__dirname, devEnv)}${argumentsPassThrough}`);
+console.log('------', );
+var pathToCheckFile = path.resolve('../../', '.lernahoist-running');
+if (!fs.existsSync(pathToCheckFile)) {
+  // const devEnv = argv.entry ? './devEnvCommandLine.js' : './dev_env.js';
+  const devEnv = './dev_env.js';
+  // shellCommand(`${path.resolve(__dirname, './node_modules/.bin/babel-node')} ${path.resolve(__dirname, devEnv)}${argumentsPassThrough}`);
+  shellCommand(`${path.resolve(__dirname, './bin/devenv-node.js')} ${path.resolve(__dirname, devEnv)}${argumentsPassThrough}`);
+
+}

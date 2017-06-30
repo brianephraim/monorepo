@@ -12,6 +12,8 @@
     "item": "npm_run_item(){ (./packages/dev_env/bin/devenv.js --item=$1) };npm_run_item",
     "devenvnode": "./packages/dev_env/bin/devenv-node.js",
     "new": "npm run devenvnode ./packages/mono-to-multirepo/mono-to-multirepo.js -- --i",
+    "lernahoist": "./packages/dev_env/bin/lernahoist.js",
+    "lernahoist2": "lerna bootstrap --hoist",
 
     "devenvnode3": "npm_run_item(){ (cd ./packages/dev_env && ./node_modules/.bin/babel-node ./babelXXXX.start.js --entry=$1 --output=$2) };npm_run_item",
     "devenvnode2": "npm_run_item(){ (cd ./packages/dev_env && ./bin/devenv.js --entry=$1 --output=$2) };npm_run_item",

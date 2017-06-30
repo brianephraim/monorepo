@@ -29,6 +29,7 @@ module.exports = (commandToRun, options = { stdio: 'inherit' }, killParentOnExit
   const childProcess = require('child_process');
   const proc = childProcess.spawn(command, args, options || {});
   proc.on('exit', (code, signal) => {
+    console.log('DOO')
     if (killParentOnExit) {
       process.on('exit', () => {
         if (signal) {

@@ -1,11 +1,13 @@
 /* eslint-disable func-names */
+import { stdout as singleLineLog } from 'single-line-log';
 function printProgress(progress){
     if (!process || !process.stdout || !process.stdout.clearLine ) {
       return;
     }
-    process.stdout.clearLine();
-    process.stdout.cursorTo(0);
-    process.stdout.write(progress + `-xxxxxx`);
+    singleLineLog(progress + `-xxxxxx`);
+    // process.stdout.clearLine();
+    // process.stdout.cursorTo(0);
+    // process.stdout.write(progress + `-xxxxxx`);
 }
 function parseRequestResolvePlugin(parseRequest = () => {}) {
   return {
