@@ -1,0 +1,7 @@
+language: node_js
+node_js:
+  - "7"
+after_success:
+- pwd
+- npm run lernahoist
+- npm run testdevenv

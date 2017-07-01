@@ -73,7 +73,7 @@ function duringTest({onAsset = () => {}, onData = () => {}, onStderr = () => {},
   });
 }
 
-function duringServer({onAsset = () => {}, onData = () => {}, assetsToGenerate}) {
+function duringServer({onAsset = () => {}, onData = () => {}, onStderr = () => {}, assetsToGenerate}) {
   before(function (done) {
     this.timeout(60000);
     let pathToDemoEntry;
@@ -150,6 +150,7 @@ function duringServer({onAsset = () => {}, onData = () => {}, assetsToGenerate})
     devEnvProcess.stderr.on('data', function (data) {
       if (data && data.toString){
         data = data.toString();
+        onStderr(data);
       }
       console.log('stderr: ', data);
     });
@@ -185,7 +186,7 @@ describe('testdevenv', function() {
 
   describe('non-existent imports', () => {
     let notFoundError = false;
-    const importToAttempt = 'testdevenv-some-depMAYBE-A-TYPE';
+    const importToAttempt = 'testdevenv-some-depMAYBE-A-TYPO';
     duringServer({
       assetsToGenerate: [
         {
@@ -198,7 +199,8 @@ describe('testdevenv', function() {
           text: `export default () => { document.body.append('testdevenv-some-dep'); };`,
         }
       ],
-      onData: (data) => {
+      onStderr: (data) => {
+        console.log('onData',data);
         notFoundError = notFoundError || data.indexOf(`Module not found: Error: Can't resolve '${importToAttempt}'`) !== -1;
       }
     });

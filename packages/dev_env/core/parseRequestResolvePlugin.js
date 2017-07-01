@@ -1,5 +1,6 @@
 /* eslint-disable func-names */
-import { stdout as singleLineLog } from 'single-line-log';
+const singleLineLog = require('single-line-log').stdout;
+
 function printProgress(progress){
     if (!process || !process.stdout || !process.stdout.clearLine ) {
       return;
