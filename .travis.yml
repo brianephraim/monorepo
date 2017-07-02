@@ -3,7 +3,7 @@ node_js:
   - "7"
 before_script:
   - npm run lernahoist
-  - npm run testdevenv
+  # - npm run testdevenv
 # the npm package `sharp` affects this file in the lines marked !*%*!
 addons:
   apt:

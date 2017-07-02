@@ -7,7 +7,7 @@
   "scripts": {
     "mono": "./packages/mono-to-multirepo/bin/mono-to-multirepo.js --i",
     "testpackages": "./packages/dev_env/bin/devenv.js --env=test",
-    "testdevenv": "./packages/dev_env/bin/devenv.js --env=test --testdevenv",
+    "test": "./packages/dev_env/bin/devenv.js --env=test --testdevenv",
     "dev": "./packages/dev_env/bin/devenv.js",
     "item": "npm_run_item(){ (./packages/dev_env/bin/devenv.js --item=$1) };npm_run_item",
     "devenvnode": "./packages/dev_env/bin/devenv-node.js",
