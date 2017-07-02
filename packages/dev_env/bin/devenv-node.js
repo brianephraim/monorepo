@@ -1,7 +1,9 @@
 #!/usr/bin/env node
 const path = require('path');
 var findNodeModules = require('find-node-modules');
+var makeUuid = require('node-uuid').v4;
 const shellCommand = require('../shell-command');
+const os = require('os');
 
 const toCompile = path.resolve(process.cwd(), process.argv[2]);
 
@@ -33,8 +35,10 @@ if (__dirname.indexOf('/packages/') > __dirname.indexOf('/node_modules/')) {
     `rm ${tempFilePath}`
   ].join('');
 
+  const tempFilePath2 = path.resolve(os.tmpdir(), `./${makeUuid()}XXX.js`);
   const cmd2 = [
-    `TMPFILE=\`mktemp -u $TMPDIR$(uuidgen).js \` &&`,
+    // $TMPDIR"${makeUuid()}XXX.js"
+    `TMPFILE=\`mktemp -u ${tempFilePath2} \` &&`,
     // `echo "$TMPFILE"`
     '(',
       `cd ${toCompileFolder}`,

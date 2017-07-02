@@ -23,7 +23,7 @@ function duringTest({onAsset = () => {}, onData = () => {}, onStderr = () => {},
     });
 
     const devEnvProcess = shellCommand(`(
-      npm run test -- --watch=false --testPathPattern='${testPathPattern}'
+      npm run testpackages -- --watch=false --testPathPattern='${testPathPattern}'
     )`, null/*{ detached: true }*/, false);
     let finished = false;
     function finish() {

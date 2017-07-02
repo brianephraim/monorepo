@@ -3,7 +3,9 @@ import webpackRunCompiler from './webpackRunCompiler';
 import webpackConfig from './webpackConfigCommandLine';
 
 function webpackMakeCompiler() {
-  const compiler = webpack(webpackConfig());
+  const config = webpackConfig();
+  console.log(config);
+  const compiler = webpack(config);
   return compiler;
 }
 

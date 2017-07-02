@@ -13,8 +13,7 @@
     "foreach": "^2.0.5"
   },
   "devDependencies": {
-    "@defualt/dev_env": "^0.0.14",
-    "mono-to-multirepo": "^0.0.2"
+    "@defualt/dev_env": "^0.0.14"
   },
   "repository": {
     "type": "git",

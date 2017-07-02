@@ -6,13 +6,14 @@
   "description": "Redux ToDos example",
   "scripts": {
     "mono": "./packages/mono-to-multirepo/bin/mono-to-multirepo.js --i",
-    "test": "./packages/dev_env/bin/devenv.js --env=test",
+    "testpackages": "./packages/dev_env/bin/devenv.js --env=test",
     "testdevenv": "./packages/dev_env/bin/devenv.js --env=test --testdevenv",
     "dev": "./packages/dev_env/bin/devenv.js",
     "item": "npm_run_item(){ (./packages/dev_env/bin/devenv.js --item=$1) };npm_run_item",
     "devenvnode": "./packages/dev_env/bin/devenv-node.js",
     "new": "npm run devenvnode ./packages/mono-to-multirepo/mono-to-multirepo.js -- --i",
-    "lernahoist": "./packages/dev_env/bin/lernahoist.js",
+    "lernahoist": "lerna bootstrap --hoist",
+    "lernahoist3": "./packages/dev_env/bin/lernahoist.js",
     "lernahoist2": "lerna bootstrap --hoist",
     "devenvnode3": "npm_run_item(){ (cd ./packages/dev_env && ./node_modules/.bin/babel-node ./babelXXXX.start.js --entry=$1 --output=$2) };npm_run_item",
     "devenvnode2": "npm_run_item(){ (cd ./packages/dev_env && ./bin/devenv.js --entry=$1 --output=$2) };npm_run_item",
@@ -38,7 +39,7 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "lerna": "^2.0.0-rc.5",
+    "lerna": "^2.0.0-rc.4",
     "npm": "^4.6.1"
   }
 }

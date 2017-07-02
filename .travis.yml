@@ -1,7 +1,31 @@
 language: node_js
 node_js:
   - "7"
+# I used uuidgen somehwere.  This is native in OSx, but not in ubunutu apparently.
+# sudo: required
+# before_install:
+  # I used uuidgen somehwere.  This is native in OSx, but not in ubunutu apparently.
+  # - sudo apt-get install uuid-runtime
+before_script:
+  - npm run lernahoist
+  - npm run testdevenv
+  # - npm install sharp --save
 after_success:
-- pwd
-- npm run lernahoist
-- npm run testdevenv
+  - echo 'YAY'
+
+
+addons:
+  apt:
+    # packages:
+    # I used uuidgen somehwere.  This is native in OSx, but not in ubunutu apparently.
+    # - uuid-runtime
+    sources:
+    # this is needed for sharp (an npm package used somewhere here).  same for lines commented with ***
+    - ubuntu-toolchain-r-test
+    packages:
+    # ***
+    - g++-4.8
+env:
+  global:
+    - CXX=g++-4.8
+    - TMPDIR=/tmp

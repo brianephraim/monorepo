@@ -44,7 +44,7 @@ function enhance(originalConfig) {
       ...(originalConfig.externals || []),
       nodeExternals({ 
         // modulesFromFile: true,
-        modulesDir: '/Users/brianephraim/Sites/monorepo/node_modules'
+        modulesDir: path.resolve(__dirname.split('/packages/dev_env')[0], './node_modules')
       }),
     ],
     plugins,
