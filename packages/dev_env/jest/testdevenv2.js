@@ -1,89 +1,19 @@
-/* eslint-disable no-console */
 /* eslint-disable class-methods-use-this */
 import terminate from 'terminate';
 import assert from 'assert';
 import path from 'path';
 import fs from 'fs-extra';
-import chalkLib from 'chalk';
-import colorPairsPicker from 'color-pairs-picker';
-import hasAnsi from 'has-ansi';
 import scrape from 'website-scraper';
 import { v4 as makeUuid } from 'node-uuid';
 import { it, describe, before } from 'mocha';
-import shellCommand from '../shell-command';
+import shellCommand from '../core/shellCommand';
+import fancyLog from '../core/fancyLog';
 
-const chalk = new chalkLib.constructor({ level: 3 });
-function formatLog(color, heading, ...args) {
-  const bg = colorPairsPicker(color, { contrast: 8 }).bg.split('(')[1].split(')')[0].split(',').map((item) => {
-    return +item;
-  });
-  const fg = colorPairsPicker(color, { contrast: 8 }).fg.split('(')[1].split(')')[0].split(',').map((item) => {
-    return +item;
-  });
-  console.log(chalk.rgb(...fg).bgRgb(...bg)(heading));
-
-  if (typeof args.find((item) => { return hasAnsi(item); }) === 'undefined') {
-    console.log(chalk[color](...args));
-  } else {
-    console.log(...args);
-  }
-}
-
-
-function duringTest({
+function duringProcess({
   onData = () => {},
   onStderr = () => {},
-  assetsToGenerate,
-  testPathPattern,
-}) {
-  before(function beforeDuringTest(done) {
-    this.timeout(60000);
-    assetsToGenerate.forEach((assetInfo) => {
-      const dir = path.dirname(assetInfo.path);
-      fs.ensureDirSync(dir);
-      fs.writeFileSync(assetInfo.path, assetInfo.text);
-    });
-
-    const devEnvProcess = shellCommand(`(
-      npm run testpackages -- --watch=false --testPathPattern='${testPathPattern}'
-    )`, null, false);
-    let finished = false;
-    function finish() {
-      if (finished) {
-        return;
-      }
-      formatLog('green', 'FINISHED', 'code');
-      finished = true;
-
-      assetsToGenerate.forEach((assetInfo) => {
-        const dir = path.dirname(assetInfo.path);
-        fs.removeSync(dir);
-      });
-      done();
-    }
-    devEnvProcess.stdout.on('data', (data) => {
-      const dataString = data.toString();
-      formatLog('blue', 'devEnvProcess.stdout:', dataString);
-      onData(dataString);
-    });
-    devEnvProcess.stderr.on('data', (data) => {
-      if (data && data.toString) {
-        data = data.toString();
-        onStderr(data);
-      }
-      formatLog('cyan', 'devEnvProcess.stderr:', data);
-    });
-    devEnvProcess.on('exit', (code) => {
-      formatLog('yellow', 'child process exited with code:', code);
-      finish();
-    });
-  });
-}
-
-function duringServer({
-  onAsset = () => {},
-  onData = () => {},
-  onStderr = () => {},
+  makeShellCmdStr = () => {},
+  cleanup = () => {},
   assetsToGenerate,
 }) {
   before(function duringServerBefore(done) {
@@ -97,39 +27,52 @@ function duringServer({
         pathToDemoEntry = assetInfo.path;
       }
     });
-
-    const devEnvProcess = shellCommand(`(
-      npm run dev -- --demo-entry='${pathToDemoEntry}'
-    )`, null, false);
-    const scrapeDir = path.resolve(__dirname, './scrape');
+    const devEnvProcess = shellCommand(makeShellCmdStr(pathToDemoEntry), null, false);
     let finished = false;
     function finish() {
       if (finished) {
         return;
       }
-      formatLog('green', 'FINISHED', 'code');
+      fancyLog('green', 'FINISHED', 'code');
       finished = true;
 
-      fs.removeSync(scrapeDir);
       assetsToGenerate.forEach((assetInfo) => {
         const dir = path.dirname(assetInfo.path);
         fs.removeSync(dir);
       });
-
-      terminate(devEnvProcess.pid, (err) => {
-        if (err) { // you will get an error if you did not supply a valid process.pid
-          formatLog('red', 'Oopsy during terminate:', err);
-        } else {
-          formatLog('green', 'done for terminate', '');
-        }
-      });
+      cleanup(devEnvProcess);
       done();
     }
-    let once = false;
     devEnvProcess.stdout.on('data', (data) => {
       const dataString = data.toString();
-      onData(dataString);
-      formatLog('blue', 'devEnvProcess.stdout:', dataString);
+      fancyLog('blue', 'devEnvProcess.stdout:', dataString);
+      onData(dataString, finish);
+    });
+    devEnvProcess.stderr.on('data', (data) => {
+      if (data && data.toString) {
+        data = data.toString();
+        onStderr(data);
+      }
+      fancyLog('cyan', 'devEnvProcess.stderr:', data);
+    });
+    devEnvProcess.on('exit', (code) => {
+      fancyLog('yellow', 'child process exited with code:', code);
+      finish();
+    });
+  });
+}
+
+function duringServer({
+  onAsset = () => {},
+  onData = () => {},
+  onStderr = () => {},
+  assetsToGenerate,
+}) {
+  const scrapeDir = path.resolve(__dirname, './scrape');
+  let once = false;
+  duringProcess({
+    onData: (dataString, finish) => {
+      onData(dataString, finish);
       if (dataString.indexOf('webpack: Failed to compile.') !== -1 && !once) {
         once = true;
         finish();
@@ -145,25 +88,49 @@ function duringServer({
               onAsset(resource);
             }
             errorCleanup(err) {
-              formatLog('pink', 'scrape resource error:', err);
+              fancyLog('pink', 'scrape resource error:', err);
             }
           },
         }).then(() => {
           finish();
         });
       }
-    });
-    devEnvProcess.stderr.on('data', (data) => {
-      if (data && data.toString) {
-        data = data.toString();
-        onStderr(data);
-      }
-      formatLog('cyan', 'devEnvProcess.stderr:', data);
-    });
-    devEnvProcess.on('exit', (code) => {
-      formatLog('yellow', 'child process exited with code:', code);
-      finish();
-    });
+    },
+    onStderr,
+    assetsToGenerate,
+    makeShellCmdStr: (pathToDemoEntry) => {
+      return `(
+        npm run dev -- --demo-entry='${pathToDemoEntry}'
+      )`;
+    },
+    cleanup: (devEnvProcess) => {
+      fs.removeSync(scrapeDir);
+      terminate(devEnvProcess.pid, (err) => {
+        if (err) {
+          fancyLog('red', 'Oopsy during terminate:', err);
+        } else {
+          fancyLog('green', 'done for terminate', '');
+        }
+      });
+    },
+  });
+}
+
+function duringTest({
+  testPathPattern,
+  onStderr = () => {},
+  onData = () => {},
+  assetsToGenerate,
+}) {
+  duringProcess({
+    onStderr,
+    onData,
+    assetsToGenerate,
+    makeShellCmdStr: () => {
+      return `(
+        npm run testpackages -- --watch=false --testPathPattern='${testPathPattern}'
+      )`;
+    },
   });
 }
 

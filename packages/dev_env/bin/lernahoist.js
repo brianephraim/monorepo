@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const shellCommand = require('../shell-command');
+const shellCommand = require('../core/shellCommand');
 const fs = require('fs');
 
 fs.writeFileSync('.lernahoist-running', '');

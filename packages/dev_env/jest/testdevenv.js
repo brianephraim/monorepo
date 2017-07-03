@@ -6,7 +6,7 @@ import fs from 'fs-extra';
 // import walkSync from 'walk-sync';
 import scrape from 'website-scraper';
 import { spawn } from 'child_process';
-import shellCommand from '../shell-command';
+import shellCommand from '../core/shellCommand';
 import { v4 as makeUuid  } from 'node-uuid';
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 30000;

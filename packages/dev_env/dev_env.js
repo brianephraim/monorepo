@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import { argv } from 'yargs';
-import shellCommand from './shell-command';
+import shellCommand from './core/shellCommand';
 import jestSpawnProcess from './jest/jestSpawnProcess';
 import webpackMakeCompiler from './webpackMakeCompiler';
 import webpackRunCompiler from './core/webpackRunCompiler';

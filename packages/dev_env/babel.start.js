@@ -12,7 +12,7 @@
         mentioned in (1) above.
 */
 const path = require('path');
-const shellCommand = require('./shell-command');
+const shellCommand = require('./core/shellCommand');
 const fs = require('fs-extra');
 
 const argumentsPassThrough = process.argv.reduce((accum, argString) => {
