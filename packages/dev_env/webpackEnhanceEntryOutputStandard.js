@@ -1,8 +1,4 @@
-import globby from 'globby';
-
 function enhance(originalConfig, dirRoot, libraryName, entryFiles) {
-
-
   const entry = Object.keys(entryFiles).reduce((accum, entryName) => {
     if (entryFiles[entryName].length) {
       accum[entryName] = entryFiles[entryName];

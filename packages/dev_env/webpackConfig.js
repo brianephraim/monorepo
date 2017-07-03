@@ -47,7 +47,6 @@ import webpackConfigCommandLine from './core/webpackConfigCommandLine';
 // });
 
 function generateConfigJson() {
-  console.log('ARGV',argv)
   const isCommandLine = argv.entry;
   let config;
   if (isCommandLine) {
@@ -70,7 +69,6 @@ function generateConfigJson() {
     }
 
     let entryFiles;
-    console.log('argvargvargv',argv)
     if (argv['demo-entry']) {
       entryFiles = {
         [outputFiles.demo]: [argv['demo-entry']],
@@ -106,10 +104,9 @@ function generateConfigJson() {
         ]),
       };
     }
-    
 
     config = webpackEnhanceEntryOutputStandard(
-      config, dirRoot, libraryName, entryFiles
+      config, dirRoot, libraryName, entryFiles,
     );
     if (packageJson.bundleForNode) {
       config = webpackEnhanceConfigNode(config);

@@ -1,6 +1,7 @@
 const DirectoryNamedWebpackPlugin = require('directory-named-webpack-plugin');
 const parseRequestResolvePlugin = require('./parseRequestResolvePlugin');
 const path = require('path');
+
 module.exports = {
   resolve: {
     modules: [

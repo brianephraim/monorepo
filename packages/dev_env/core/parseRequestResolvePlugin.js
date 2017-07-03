@@ -1,14 +1,14 @@
 /* eslint-disable func-names */
 const singleLineLog = require('single-line-log').stdout;
 
-function printProgress(progress){
-    if (!process || !process.stdout || !process.stdout.clearLine ) {
-      return;
-    }
-    singleLineLog(`Resolving: ${progress}\n`);
-    // process.stdout.clearLine();
-    // process.stdout.cursorTo(0);
-    // process.stdout.write(progress + `-xxxxxx`);
+function printProgress(progress) {
+  if (!process || !process.stdout || !process.stdout.clearLine) {
+    return;
+  }
+  singleLineLog(`Resolving: ${progress}\n`);
+  // process.stdout.clearLine();
+  // process.stdout.cursorTo(0);
+  // process.stdout.write(progress + `-xxxxxx`);
 }
 function parseRequestResolvePlugin(parseRequest = () => {}) {
   return {

@@ -1,6 +1,6 @@
 
 function enhance(originalConfig) {
-  let config = { ...originalConfig };
+  const config = { ...originalConfig };
   config.plugins = config.plugins || [];
 
   // I needed __dirname hardcoded as the original dirname
@@ -8,8 +8,8 @@ function enhance(originalConfig) {
   config.plugins.push({
     apply(compiler) {
       function setModuleConstant(expressionName, fn) {
-        compiler.plugin("compilation", function(compilation, data) {
-          data.normalModuleFactory.plugin("parser", function(parser, options) {
+        compiler.plugin('compilation', (compilation, data) => {
+          data.normalModuleFactory.plugin('parser', (parser) => {
             parser.plugin(`expression ${expressionName}`, function compilerParserPlugin() {
               this.state.current.addVariable(expressionName, JSON.stringify(fn(this.state.module)));
               return true;

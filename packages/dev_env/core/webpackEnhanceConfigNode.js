@@ -13,15 +13,10 @@ function enhance(originalConfig) {
 
   const plugins = originalConfig.plugins || [];
   plugins.push(new webpack.BannerPlugin({
-    banner: `require("source-map-support").install();`,
+    banner: 'require("source-map-support").install();',
     raw: true,
     entryOnly: false,
   }));
-
-  let modulesDir = '../node_modules';
-  if (__dirname.indexOf('/packages/') > __dirname.indexOf('/node_modules/')) {
-    modulesDir = `${__dirname.split('/packages/')[0]}/node_modules`;
-  }
 
   const config = {
     ...originalConfig,
@@ -41,9 +36,9 @@ function enhance(originalConfig) {
     },
     externals: [
       ...(originalConfig.externals || []),
-      nodeExternals({ 
+      nodeExternals({
         // modulesFromFile: true,
-        modulesDir: path.resolve(__dirname.split('/packages/dev_env')[0], './node_modules')
+        modulesDir: path.resolve(__dirname.split('/packages/dev_env')[0], './node_modules'),
       }),
     ],
     plugins,

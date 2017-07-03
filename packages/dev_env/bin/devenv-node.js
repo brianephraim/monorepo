@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 const path = require('path');
-var findNodeModules = require('find-node-modules');
-var makeUuid = require('node-uuid').v4;
+const findNodeModules = require('find-node-modules');
+const makeUuid = require('node-uuid').v4;
 const shellCommand = require('../shell-command');
 const os = require('os');
 
@@ -20,7 +20,7 @@ if (__dirname.indexOf('/packages/') > __dirname.indexOf('/node_modules/')) {
   // const cmd = `(cd ${toCompileFolder} && ${babelNodePath} ${babelStartScript} --entry=${toCompile} --output=${tempFilePath}) && node ${tempFilePath} ${process.argv.slice(3).join(' ')} && rm ${tempFilePath}`;
   // for NODE_PATH, on windows, seperator is ; instead of :.  fun.
   const nodePathSeparator = /^win/.test(process.platform) ? ';' : ':';
-  
+
   const nodePaths = findNodeModules({relative: false})
 
   const cmd1 = [
