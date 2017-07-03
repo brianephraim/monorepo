@@ -3,11 +3,35 @@ import terminate from 'terminate';
 import assert from 'assert';
 import path from 'path';
 import fs from 'fs-extra';
+import chalkLib from 'chalk';
+import colorPairsPicker from 'color-pairs-picker';
+import hasAnsi from 'has-ansi';
 // import walkSync from 'walk-sync';
 import scrape from 'website-scraper';
 import { spawn } from 'child_process';
 import shellCommand from '../shell-command';
 import { v4 as makeUuid  } from 'node-uuid';
+
+const chalk = new chalkLib.constructor({level: 3});
+function capitalizeFirstLetter(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+function formatLog(color, heading, ...args) {
+  const bg = colorPairsPicker(color, {contrast: 8}).bg.split('(')[1].split(')')[0].split(',').map((item) => {
+    return +item;
+  });
+  const fg = colorPairsPicker(color, {contrast: 8}).fg.split('(')[1].split(')')[0].split(',').map((item) => {
+    return +item;
+  });
+  console.log(chalk.rgb(...fg).bgRgb(...bg)(heading));
+
+  if ( typeof args.find((item) => { return hasAnsi(item); }) === 'undefined' ) {
+    console.log(chalk[color](...args));
+  } else {
+    console.log(...args);
+  }
+}
+
 
 function duringTest({onAsset = () => {}, onData = () => {}, onStderr = () => {}, assetsToGenerate, testPathPattern}) {
   before(function (done) {
@@ -30,33 +54,19 @@ function duringTest({onAsset = () => {}, onData = () => {}, onStderr = () => {},
       if (finished) {
         return;
       }
-      console.log('FINISHED');
+      formatLog('green', 'FINISHED', 'code');
       finished = true;
       
       assetsToGenerate.forEach((assetInfo) => {
         const dir = path.dirname(assetInfo.path);
         fs.removeSync(dir);
       });
-
-      // terminate(devEnvProcess.pid,function (err) {
-      //   if (err) { // you will get an error if you did not supply a valid process.pid
-      //     console.log("Oopsy during terminate: ", err); // handle errors in your preferred way.
-      //   }
-      //   else {
-      //     console.log('done for terminate'); // terminating the Processes succeeded.
-      //   }
-      // });
-
-      // setTimeout(() => { 
-        done();
-      // }, 1000);
-
-      
+      done();      
     }
     var once = false;
     devEnvProcess.stdout.on('data', (data) => {
       const dataString = data.toString();
-      console.log('devEnvProcess.stdout\n', dataString);
+      formatLog('blue', 'devEnvProcess.stdout:', dataString);
       onData(dataString);
     });
     devEnvProcess.stderr.on('data', function (data) {
@@ -64,10 +74,10 @@ function duringTest({onAsset = () => {}, onData = () => {}, onStderr = () => {},
         data = data.toString();
         onStderr(data);
       }
-      console.log('stderr: ', data);
+      formatLog('cyan', 'devEnvProcess.stderr:', data);
     });
     devEnvProcess.on('exit', function (code) {
-      console.log('child process exited with code:',code);
+      formatLog('yellow', 'child process exited with code:', code);
       finish();
     });
   });
@@ -95,7 +105,7 @@ function duringServer({onAsset = () => {}, onData = () => {}, onStderr = () => {
       if (finished) {
         return;
       }
-      console.log('FINISHED');
+      formatLog('green', 'FINISHED', 'code');
       finished = true;
       
       fs.removeSync(scrapeDir);
@@ -106,10 +116,10 @@ function duringServer({onAsset = () => {}, onData = () => {}, onStderr = () => {
 
       terminate(devEnvProcess.pid,function (err) {
         if (err) { // you will get an error if you did not supply a valid process.pid
-          console.log("Oopsy during terminate: ", err); // handle errors in your preferred way.
+          formatLog('red', 'Oopsy during terminate:', err);
         }
         else {
-          console.log('done for terminate'); // terminating the Processes succeeded.
+          formatLog('green', 'done for terminate', '');
         }
       });
 
@@ -123,7 +133,7 @@ function duringServer({onAsset = () => {}, onData = () => {}, onStderr = () => {
     devEnvProcess.stdout.on('data', (data) => {
       const dataString = data.toString();
       onData(dataString);
-      console.log('devEnvProcess.stdout\n', dataString);
+      formatLog('blue', 'devEnvProcess.stdout:', dataString);
       if (dataString.indexOf('webpack: Failed to compile.') !== -1 && !once) {
         once = true;
         finish();
@@ -139,7 +149,7 @@ function duringServer({onAsset = () => {}, onData = () => {}, onStderr = () => {
               onAsset(resource);
             }
             errorCleanup (err) {
-              console.log('resource error', err);
+              formatLog('pink', 'scrape resource error:', err);
             }
           }
         }).then(() => {
@@ -152,10 +162,10 @@ function duringServer({onAsset = () => {}, onData = () => {}, onStderr = () => {
         data = data.toString();
         onStderr(data);
       }
-      console.log('stderr: ', data);
+      formatLog('cyan', 'devEnvProcess.stderr:', data);
     });
     devEnvProcess.on('exit', function (code) {
-      console.log('child process exited with code:',code);
+      formatLog('yellow', 'child process exited with code:', code);
       finish();
     });
   });
@@ -200,7 +210,6 @@ describe('testdevenv', function() {
         }
       ],
       onStderr: (data) => {
-        console.log('onData',data);
         notFoundError = notFoundError || data.indexOf(`Module not found: Error: Can't resolve '${importToAttempt}'`) !== -1;
       }
     });

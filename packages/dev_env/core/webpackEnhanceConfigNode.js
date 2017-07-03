@@ -22,8 +22,7 @@ function enhance(originalConfig) {
   if (__dirname.indexOf('/packages/') > __dirname.indexOf('/node_modules/')) {
     modulesDir = `${__dirname.split('/packages/')[0]}/node_modules`;
   }
-  console.log('a',modulesDir);
-  console.log('b','/Users/brianephraim/Sites/monorepo/node_modules');
+
   const config = {
     ...originalConfig,
     // devtool: 'cheap-module-eval-source-map',

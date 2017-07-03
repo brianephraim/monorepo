@@ -17,7 +17,7 @@ export default (testdevenv, watch = true, testPathPattern) => {
   if (testdevenv) {
     // commandBody = `CI=true ${process.cwd()}/node_modules/.bin/jest -t testdevenv --config=${configBasePath}`;
     // commandBody = `CI=true ${process.cwd()}/node_modules/.bin/jest ${__dirname}/testdevenv.js  --config=${configBasePath}`;
-    commandBody = `CI=true ${process.cwd()}/node_modules/.bin/mocha-webpack --require babel-core/register --webpack-config ${path.resolve(__dirname,'../core/webpackConfigMocha.js')} \"${path.resolve(__dirname,'./testdevenv2.js')}\"`
+    commandBody = `CI=true ${process.cwd()}/node_modules/.bin/mocha-webpack --colors --require babel-core/register --webpack-config ${path.resolve(__dirname,'../core/webpackConfigMocha.js')} \"${path.resolve(__dirname,'./testdevenv2.js')}\" --require source-map-support/register`
   }
   console.log('commandBody',commandBody);
   const args = [
