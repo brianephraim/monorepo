@@ -18,10 +18,13 @@
   },
   "resolve": {
     "modules": [
+      "/Users/brianephraim/Sites/monorepo/node_modules",
       "/Users/brianephraim/Sites/monorepo/src/library",
       "/Users/brianephraim/Sites/monorepo/packages",
       "/Users/brianephraim/packages",
-      "node_modules"
+      "node_modules",
+      "/Users/brianephraim/Sites/monorepo/node_modules",
+      "../monorepo/node_modules"
     ],
     "extensions": [
       ".js",

@@ -9,6 +9,8 @@ const isWithinMonoRepo = require('./isWithinMonoRepo');
 const getDevEnvRoot = require('./getDevEnvRoot');
 const getNodePathShVar = require('./getNodePathShVar');
 
+console.log('xxxxxx', getNodePathShVar({}));
+
 const os = require('os');
 
 const toCompile = path.resolve(process.cwd(), process.argv[2]);
@@ -52,6 +54,8 @@ if (isWithinMonoRepo(__dirname)) {
     // ' && echo "$NODE_PATH"',
     '\n',
   ].join('');
+
+  console.log('cmd', cmd);
 
   // VARIATION WITHOUT SYSTEM TEMP FILE
   // const cmd = [

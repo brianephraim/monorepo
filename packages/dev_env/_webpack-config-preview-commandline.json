@@ -18,10 +18,13 @@
   },
   "resolve": {
     "modules": [
+      "/Users/brianephraim/Sites/monorepo/node_modules",
       "/Users/brianephraim/Sites/monorepo/packages/dev_env/src/library",
       "/Users/brianephraim/Sites/monorepo/packages/dev_env/packages",
       "/Users/brianephraim/Sites/monorepo/packages",
-      "node_modules"
+      "node_modules",
+      "/Users/brianephraim/Sites/monorepo/packages/monorepo/node_modules",
+      "../monorepo/node_modules"
     ],
     "extensions": [
       ".js",
@@ -36,7 +39,7 @@
     "main": "/Users/brianephraim/Sites/monorepo/packages/dev_env/dev_env.js"
   },
   "output": {
-    "filename": "9ed8d491-c499-44c6-96c4-13aa268a4ae6XXX.js",
+    "filename": "95ecd7c6-8ff5-44a2-8ade-21669cdeda2eXXX.js",
     "path": "/var/folders/t0/dms578js4lg8x73s9jzmvcp40000gn/T"
   },
   "devtool": "inline-source-map",

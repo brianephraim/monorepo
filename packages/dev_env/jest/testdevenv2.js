@@ -200,16 +200,52 @@ describe('testdevenv', () => {
     const contentToBundle = makeUuid();
     let bundleHasContent = false;
     const testProjectPath = path.resolve(monorepoDir, '../test-project-for-dev-env');
-    fs.ensureDirSync(path.resolve(testProjectPath, './node_modules'));
-    // fs.copySync(devEnvRoot,)
+    fs.ensureDirSync(testProjectPath);
+    const nodeModulesOriginalPath = path.resolve(monorepoDir, './node_modules');
+    const nodeModulesCopyPath = path.resolve(testProjectPath, './node_modules');
+    fs.symlinkSync(nodeModulesOriginalPath, nodeModulesCopyPath);
+    // fs.copySync(nodeModulesOriginalPath, nodeModulesCopyPath);
+
+    // fs.ensureDirSync(nodeModulesCopyPath);
+    // const devEnvCopy = path.resolve(nodeModulesCopyPath, 'dev_env');
+    fs.copySync(devEnvRoot, path.resolve(testProjectPath, 'dev_env'));
+
+    // fs.removeSync(path.resolve(devEnvCopy, './node_modules'));
+    // fs.symlinkSync(path.resolve(devEnvRoot, './node_modules'), path.resolve(devEnvCopy, './node_modules'));
+    // fs.symlinkSync(path.resolve(devEnvCopy, './bin'),  path.resolve(testProjectPath, './node_modules/.bin'));
+    const pathToMain = path.resolve(testProjectPath, './testdevenv-main.js');
+    // const nodePathVar = getNodePathShVar({ cwd: devEnvRoot, before: [nodeModulesCopyPath] });
+    const cmd = `(cd ${testProjectPath} && node ./dev_env/dist/dev_env --demo-entry='${pathToMain}')`;
+    console.log('cmd', cmd);
     duringServer({
-      nodePath: getNodePathShVar({ cwd: devEnvRoot, before: ['asdfasdf'] }),
-      makeShellCmdStr: () => { return 'pwd'; },
+      // nodePath: nodePathVar,
+      makeShellCmdStr: () => {console.log('FIND ME DO STUFF'); return cmd; },
       assetsToGenerate: [
         {
-          path: path.resolve(testProjectPath, './testdevenv-main.js'),
+          path: pathToMain,
           text: `document.body.append('${contentToBundle}');`,
           isDemoEntry: true,
+        },
+        {
+          path: path.resolve(testProjectPath, './package.json'),
+          text: `{
+            "name": "test-project-for-dev-env",
+            "version": "0.0.2",
+            "publishConfig": {
+              "access": "public"
+            },
+            "scripts": {
+              "start": "devenv",
+              "thing": "devenv --env=build --dirroot=$(pwd)"
+            },
+            "devDependencies": {
+              "@defualt/dev_env": "^0.0.14"
+            },
+            "repository": {
+              "type": "git",
+              "url": "https://github.com/defualt/test-project-for-dev-env.git"
+            }
+          }`,
         },
       ],
       onAsset: (resource) => {
