@@ -8,6 +8,10 @@ import { v4 as makeUuid } from 'node-uuid';
 import { it, describe, before } from 'mocha';
 import shellCommand from '../core/shellCommand';
 import fancyLog from '../core/fancyLog';
+import getDevEnvRoot from '../core/getDevEnvRoot';
+import getNodePathShVar from '../core/getNodePathShVar';
+
+const devEnvRoot = getDevEnvRoot(__dirname);
 
 function duringProcess({
   onData = () => {},
@@ -27,7 +31,8 @@ function duringProcess({
         pathToDemoEntry = assetInfo.path;
       }
     });
-    const devEnvProcess = shellCommand(makeShellCmdStr(pathToDemoEntry), null, false);
+    const cmd = makeShellCmdStr(pathToDemoEntry);
+    const devEnvProcess = shellCommand(cmd, null, false);
     let finished = false;
     function finish() {
       if (finished) {
@@ -63,14 +68,29 @@ function duringProcess({
 }
 
 function duringServer({
+  useDist,
   onAsset = () => {},
   onData = () => {},
   onStderr = () => {},
+  cleanup = () => {},
+  makeShellCmdStr,
   assetsToGenerate,
+  nodePath,
 }) {
   const scrapeDir = path.resolve(__dirname, './scrape');
   let once = false;
   duringProcess({
+    makeShellCmdStr: (pathToDemoEntry) => {
+      const nodePathShVar = nodePath ? `${nodePath} ` : '';
+      console.log('nodePath', nodePathShVar);
+      if (makeShellCmdStr) {
+        return makeShellCmdStr(pathToDemoEntry);
+      }
+      const prepublish = useDist ? `(cd ${devEnvRoot} && npm run prepublish) && ` : '';
+      return `(
+        ${prepublish}npm run dev -- --demo-entry='${pathToDemoEntry}'${useDist ? ' --use-dist' : ''} 
+      )`;
+    },
     onData: (dataString, finish) => {
       onData(dataString, finish);
       if (dataString.indexOf('webpack: Failed to compile.') !== -1 && !once) {
@@ -98,12 +118,8 @@ function duringServer({
     },
     onStderr,
     assetsToGenerate,
-    makeShellCmdStr: (pathToDemoEntry) => {
-      return `(
-        npm run dev -- --demo-entry='${pathToDemoEntry}'
-      )`;
-    },
     cleanup: (devEnvProcess) => {
+      cleanup(devEnvProcess);
       fs.removeSync(scrapeDir);
       terminate(devEnvProcess.pid, (err) => {
         if (err) {
@@ -120,12 +136,14 @@ function duringTest({
   testPathPattern,
   onStderr = () => {},
   onData = () => {},
+  cleanup = () => {},
   assetsToGenerate,
 }) {
   duringProcess({
     onStderr,
     onData,
     assetsToGenerate,
+    cleanup,
     makeShellCmdStr: () => {
       return `(
         npm run testpackages -- --watch=false --testPathPattern='${testPathPattern}'
@@ -136,7 +154,7 @@ function duringTest({
 
 const monorepoDir = path.resolve(__dirname, '../../../');
 describe('testdevenv', () => {
-  describe('localhost dev environment', () => {
+  describe('localhost dev environment via on demand compiled script', () => {
     const contentToBundle = makeUuid();
     let bundleHasContent = false;
 
@@ -150,6 +168,55 @@ describe('testdevenv', () => {
       ],
       onAsset: (resource) => {
         bundleHasContent = bundleHasContent || resource.text.indexOf(contentToBundle) !== -1;
+      },
+    });
+    it('basic bundleHasContent', () => {
+      assert.equal(bundleHasContent, true);
+    });
+  });
+
+  describe('localhost dev environment via pre-compiled script', () => {
+    const contentToBundle = makeUuid();
+    let bundleHasContent = false;
+    duringServer({
+      useDist: true,
+      assetsToGenerate: [
+        {
+          path: path.resolve(monorepoDir, './packages/testdevenv-main/testdevenv-main.js'),
+          text: `document.body.append('${contentToBundle}');`,
+          isDemoEntry: true,
+        },
+      ],
+      onAsset: (resource) => {
+        bundleHasContent = bundleHasContent || resource.text.indexOf(contentToBundle) !== -1;
+      },
+    });
+    it('basic bundleHasContent', () => {
+      assert.equal(bundleHasContent, true);
+    });
+  });
+
+  describe.only('localhost dev environment similar to npm usage', () => {
+    const contentToBundle = makeUuid();
+    let bundleHasContent = false;
+    const testProjectPath = path.resolve(monorepoDir, '../test-project-for-dev-env');
+    fs.ensureDirSync(path.resolve(testProjectPath, './node_modules'));
+    // fs.copySync(devEnvRoot,)
+    duringServer({
+      nodePath: getNodePathShVar({ cwd: devEnvRoot, before: ['asdfasdf'] }),
+      makeShellCmdStr: () => { return 'pwd'; },
+      assetsToGenerate: [
+        {
+          path: path.resolve(testProjectPath, './testdevenv-main.js'),
+          text: `document.body.append('${contentToBundle}');`,
+          isDemoEntry: true,
+        },
+      ],
+      onAsset: (resource) => {
+        bundleHasContent = bundleHasContent || resource.text.indexOf(contentToBundle) !== -1;
+      },
+      cleanup: (/* devEnvProcess */) => {
+        fs.removeSync(testProjectPath);
       },
     });
     it('basic bundleHasContent', () => {

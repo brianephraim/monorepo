@@ -3,10 +3,11 @@
 // So webpack-ify some file, then run it with node.
 
 const path = require('path');
-const findNodeModules = require('find-node-modules');
 const makeUuid = require('node-uuid').v4;
 const shellCommand = require('./shellCommand');
 const isWithinMonoRepo = require('./isWithinMonoRepo');
+const getDevEnvRoot = require('./getDevEnvRoot');
+const getNodePathShVar = require('./getNodePathShVar');
 
 const os = require('os');
 
@@ -16,24 +17,13 @@ const fileName = toCompileSplit.pop();
 const tempFileName = fileName.replace('.js', '.temp.js');
 const toCompileFolder = toCompileSplit.join('/');
 
-function ensureTrailingSlash(str) {
-  return str.replace(/\/?$/, '/');
-}
-
 if (isWithinMonoRepo(__dirname)) {
   // Determine some paths, with logic that is resilient to
   // unlikely situation of nested /dev_env/ instances is __dirname
-  let devEnvRoot = ensureTrailingSlash(__dirname).split('/dev_env/');
-  devEnvRoot[devEnvRoot.length - 1] = '';
-  devEnvRoot = devEnvRoot.join('/dev_env/');
+  const devEnvRoot = getDevEnvRoot(__dirname);
+
   const babelNodePath = path.resolve(devEnvRoot, './node_modules/.bin/babel-node');
   const devEnvCommandLinePath = path.resolve(devEnvRoot, './core/devEnvCommandLine.js');
-
-  // for NODE_PATH, on windows, seperator is ; instead of :.  What fun.
-  // seperator is bash array argument seperator syntax.
-  const nodePathSeparator = /^win/.test(process.platform) ? ';' : ':';
-  // Find all directories of node_modules that apply to the file we are compiling.
-  const nodePaths = findNodeModules({ relative: false }).join(nodePathSeparator);
 
   const tempFilePath = path.resolve(os.tmpdir(), `./${makeUuid()}XXX.js`);
   const cmd = [
@@ -52,7 +42,7 @@ if (isWithinMonoRepo(__dirname)) {
     // we are running the file we just compiled with node from the temp directory,
     // and that directory is outside this project's directroy,
     // so it doesn't know where to file node_modules
-    `NODE_PATH='${nodePaths}' `,
+    `${getNodePathShVar({})} `,
     // Ok, now run the compiled script with node.
     // Passthrough arguments from the parent process.
     `node $TMPFILE ${process.argv.slice(3).join(' ')}`,
