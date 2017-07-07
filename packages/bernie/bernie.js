@@ -99,7 +99,7 @@ class BernieContributeBanner extends Component {
     return (
       <div className="topBanner">
         <a className="topBanner_link" href="http://www.berniesanders.com/">
-          Contribute to Bernie at BernieSanders.com&nbsp;>>
+          Contribute to Bernie at BernieSanders.comx&nbsp;>>
         </a>
       </div>
     );

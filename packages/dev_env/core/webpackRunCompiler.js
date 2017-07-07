@@ -1,5 +1,6 @@
 export default (webpackMakeCompiler) => {
   webpackMakeCompiler().run((err, stats) => {
+    console.log('RUN COMPILER');
     if (err) {
       console.error(err.stack || err);
       if (err.details) {

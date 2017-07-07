@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 var argv = require('yargs').argv;
-const isWithinMonoRepo = require('../core/isWithinMonoRepo');
+const isWithinMonoRepo = (dirname) => {
+  return dirname.indexOf('/packages/') > dirname.indexOf('/node_modules/');
+};
 console.log('!!!!!!!');
 console.log(argv);
 
@@ -13,3 +15,5 @@ if (isWithinMonoRepo(__dirname) && !argv.useDist) {
   // when dev_env is an installed package
   require('../dist/dev_env');
 }
+
+

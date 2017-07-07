@@ -33,7 +33,8 @@
     "test2": "node ./packages/dev_env/babelXXXX.start.js --env=test",
     "devold": "node ./packages/dev_env/babelXXXX.start.js",
     "item2": "npm_run_item(){ (cd ./packages/$1 && npm run start) };npm_run_item",
-    "item3": "./packages/dev_env/bin/devenv.js --item=study"
+    "item3": "./packages/dev_env/bin/devenv.js --item=study",
+    "dd": "(cd /Users/brianephraim/Sites/test-project-for-dev-env/ && npm run dev)"
   },
   "publishConfig": {
     "access": "public"

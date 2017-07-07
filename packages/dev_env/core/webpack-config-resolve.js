@@ -21,7 +21,7 @@ module.exports = {
     ],
     plugins: [
       parseRequestResolvePlugin((requestStr) => {
-        console.log('requestStr', requestStr);
+        // console.log('requestStr', requestStr);
         if (requestStr.indexOf('@') === 0 && requestStr.indexOf('/') !== -1) {
           return requestStr.split('/')[1];
         }

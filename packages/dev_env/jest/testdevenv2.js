@@ -11,59 +11,79 @@ import fancyLog from '../core/fancyLog';
 import getDevEnvRoot from '../core/getDevEnvRoot';
 import getNodePathShVar from '../core/getNodePathShVar';
 
+
+
+// fancyLog('orange', 'start terminate', 'asdf');
 const devEnvRoot = getDevEnvRoot(__dirname);
 
 function duringProcess({
   onData = () => {},
   onStderr = () => {},
+  makeShellCmdStrX = () => { return 'pwd'; },
   makeShellCmdStr = () => {},
-  cleanup = () => {},
+  cleanup = () => { return Promise.resolve(); },
+  early = () => { return Promise.resolve(); },
   assetsToGenerate,
 }) {
-  before(function duringServerBefore(done) {
+  before(function duringProcessBefore(done) {
     this.timeout(60000);
-    let pathToDemoEntry;
-    assetsToGenerate.forEach((assetInfo) => {
-      const dir = path.dirname(assetInfo.path);
-      fs.ensureDirSync(dir);
-      fs.writeFileSync(assetInfo.path, assetInfo.text);
-      if (assetInfo.isDemoEntry) {
-        pathToDemoEntry = assetInfo.path;
-      }
-    });
-    const cmd = makeShellCmdStr(pathToDemoEntry);
-    const devEnvProcess = shellCommand(cmd, null, false);
-    let finished = false;
-    function finish() {
-      if (finished) {
-        return;
-      }
-      fancyLog('green', 'FINISHED', 'code');
-      finished = true;
-
-      assetsToGenerate.forEach((assetInfo) => {
-        const dir = path.dirname(assetInfo.path);
-        fs.removeSync(dir);
+    setTimeout(() => {
+      early().then(() => {
+        setTimeout(() => {
+          let pathToDemoEntry;
+          assetsToGenerate.forEach((assetInfo) => {
+            fancyLog('green', 'GENERATING', assetInfo.path);
+            const dir = path.dirname(assetInfo.path);
+            fs.ensureDirSync(dir);
+            fs.writeFileSync(assetInfo.path, assetInfo.text);
+            if (assetInfo.isDemoEntry) {
+              pathToDemoEntry = assetInfo.path;
+            }
+          });
+          setTimeout(() => {
+            // const cmd = makeShellCmdStrX(pathToDemoEntry);
+            const cmd = makeShellCmdStr(pathToDemoEntry);
+            console.log('shell command',cmd);
+            const devEnvProcess = shellCommand(cmd, null, false);
+            let finished = false;
+            function finish() {
+              console.log('FINISHED???',finished);
+              if (finished) {
+                return;
+              }
+              fancyLog('green', 'FINISHED', 'code');
+              finished = true;
+              console.log('asdf duringProcess cleanup');
+              cleanup(devEnvProcess).then(() => {
+                fancyLog('orange', 'remove assets', '');
+                assetsToGenerate.forEach((assetInfo) => {
+                  const dir = path.dirname(assetInfo.path);
+                  fs.removeSync(dir);
+                });
+                fancyLog('orange', 'before\'s done() called', '');
+                done();
+              });
+            }
+            devEnvProcess.stdout.on('data', (data) => {
+              const dataString = data.toString();
+              fancyLog('blue', 'devEnvProcess.stdout:', dataString);
+              onData(dataString, finish);
+            });
+            devEnvProcess.stderr.on('data', (data) => {
+              if (data && data.toString) {
+                data = data.toString();
+                onStderr(data);
+              }
+              fancyLog('cyan', 'devEnvProcess.stderr:', data);
+            });
+            devEnvProcess.on('exit', (code) => {
+              fancyLog('yellow', 'child process exited with code:', code);
+              finish();
+            });
+          }, 0);
+        }, 0);
       });
-      cleanup(devEnvProcess);
-      done();
-    }
-    devEnvProcess.stdout.on('data', (data) => {
-      const dataString = data.toString();
-      fancyLog('blue', 'devEnvProcess.stdout:', dataString);
-      onData(dataString, finish);
-    });
-    devEnvProcess.stderr.on('data', (data) => {
-      if (data && data.toString) {
-        data = data.toString();
-        onStderr(data);
-      }
-      fancyLog('cyan', 'devEnvProcess.stderr:', data);
-    });
-    devEnvProcess.on('exit', (code) => {
-      fancyLog('yellow', 'child process exited with code:', code);
-      finish();
-    });
+    }, 0);
   });
 }
 
@@ -72,14 +92,18 @@ function duringServer({
   onAsset = () => {},
   onData = () => {},
   onStderr = () => {},
-  cleanup = () => {},
+  cleanup = () => { return Promise.resolve(); },
   makeShellCmdStr,
   assetsToGenerate,
   nodePath,
+  makeShellCmdStrX,
+  early,
 }) {
   const scrapeDir = path.resolve(__dirname, './scrape');
   let once = false;
   duringProcess({
+    early,
+    makeShellCmdStrX,
     makeShellCmdStr: (pathToDemoEntry) => {
       const nodePathShVar = nodePath ? `${nodePath} ` : '';
       console.log('nodePath', nodePathShVar);
@@ -87,6 +111,14 @@ function duringServer({
         return makeShellCmdStr(pathToDemoEntry);
       }
       const prepublish = useDist ? `(cd ${devEnvRoot} && npm run prepublish) && ` : '';
+      console.log('XXXXX');
+      console.log('XXXXX');
+      console.log('XXXXX');
+      console.log('XXXXX');
+      console.log('XXXXX');
+      console.log('XXXXX');
+      console.log('XXXXX');
+      console.log('XXXXX');
       return `(
         ${prepublish}npm run dev -- --demo-entry='${pathToDemoEntry}'${useDist ? ' --use-dist' : ''} 
       )`;
@@ -99,34 +131,42 @@ function duringServer({
       }
       if (dataString.indexOf('webpack: Compiled successfully.') !== -1 && !once) {
         once = true;
-
-        scrape({
-          urls: ['http://localhost:3000/'],
-          directory: scrapeDir,
-          resourceSaver: class MyResourceSaver {
-            saveResource(resource) {
-              onAsset(resource);
-            }
-            errorCleanup(err) {
-              fancyLog('pink', 'scrape resource error:', err);
-            }
-          },
-        }).then(() => {
-          finish();
-        });
+        // setTimeout(() => {
+          // scrape({
+          //   urls: ['http://localhost:3000/'],
+          //   directory: scrapeDir,
+          //   resourceSaver: class MyResourceSaver {
+          //     saveResource(resource) {
+          //       onAsset(resource);
+          //     }
+          //     errorCleanup(err) {
+          //       fancyLog('pink', 'scrape resource error:', err);
+          //     }
+          //   },
+          // }).then(() => {
+          //   finish();
+          // });
+        // }, 1000);
+        // finish();
       }
     },
     onStderr,
     assetsToGenerate,
     cleanup: (devEnvProcess) => {
-      cleanup(devEnvProcess);
-      fs.removeSync(scrapeDir);
-      terminate(devEnvProcess.pid, (err) => {
-        if (err) {
-          fancyLog('red', 'Oopsy during terminate:', err);
-        } else {
-          fancyLog('green', 'done for terminate', '');
-        }
+      return new Promise((resolve, reject) => {
+        fancyLog('orange', 'terminate start', '');
+        terminate(devEnvProcess.pid, (err) => {
+          fancyLog('orange', 'terminate end', '');
+          if (err) {
+            fancyLog('red', 'Oopsy during terminate:', err);
+            reject();
+          } else {
+            fancyLog('green', 'done for terminate', '');
+            cleanup(devEnvProcess);
+            fs.removeSync(scrapeDir);
+            resolve();
+          }
+        });
       });
     },
   });
@@ -200,58 +240,134 @@ describe('testdevenv', () => {
     const contentToBundle = makeUuid();
     let bundleHasContent = false;
     const testProjectPath = path.resolve(monorepoDir, '../test-project-for-dev-env');
-    fs.ensureDirSync(testProjectPath);
+    
     const nodeModulesOriginalPath = path.resolve(monorepoDir, './node_modules');
     const nodeModulesCopyPath = path.resolve(testProjectPath, './node_modules');
-    fs.symlinkSync(nodeModulesOriginalPath, nodeModulesCopyPath);
-    // fs.copySync(nodeModulesOriginalPath, nodeModulesCopyPath);
+    const devEnvCopyPath = path.resolve(nodeModulesCopyPath, './dev_env');
+    const binOriginalPath = path.resolve(nodeModulesOriginalPath, './.bin');
+    const binCopyPath = path.resolve(nodeModulesCopyPath, './.bin');
+    const devEnvCopyPackageDotJsonPath = path.resolve(devEnvCopyPath, './package.json');
+    
+        
 
-    // fs.ensureDirSync(nodeModulesCopyPath);
-    // const devEnvCopy = path.resolve(nodeModulesCopyPath, 'dev_env');
-    fs.copySync(devEnvRoot, path.resolve(testProjectPath, 'dev_env'));
-
-    // fs.removeSync(path.resolve(devEnvCopy, './node_modules'));
-    // fs.symlinkSync(path.resolve(devEnvRoot, './node_modules'), path.resolve(devEnvCopy, './node_modules'));
-    // fs.symlinkSync(path.resolve(devEnvCopy, './bin'),  path.resolve(testProjectPath, './node_modules/.bin'));
-    const pathToMain = path.resolve(testProjectPath, './testdevenv-main.js');
-    // const nodePathVar = getNodePathShVar({ cwd: devEnvRoot, before: [nodeModulesCopyPath] });
-    const cmd = `(cd ${testProjectPath} && node ./dev_env/dist/dev_env --demo-entry='${pathToMain}')`;
+    const pathToMain = path.resolve(testProjectPath, './testdevenv-main.demo.js');
+    // const cmdx = `(cd ${testProjectPath} && node ./node_modules/dev_env/dist/dev_env --demo-entry='${pathToMain}')`;
+    const cmdX = `(cd ${testProjectPath} && ls)`;
+    const cmdY = `(cd ${testProjectPath} && echo "document.body.append('${contentToBundle}');" > ${pathToMain} && npm run dev)`;
+    const cmdZ = `(cd ${testProjectPath} && echo "document.body.append('${contentToBundle}');" > ${pathToMain} && node ./node_modules/dev_env/dist/dev_env)`;
+    const cmd = `(cd ${testProjectPath}  && node ./node_modules/dev_env/dist/dev_env)`;
+    // const cmd = `(cd ${devEnvRoot} && npm run prepublish)`;
     console.log('cmd', cmd);
     duringServer({
+      // useDist,
+      early: () => {
+
+        fancyLog('orange', 'EARLY', '');
+        // return Promise.resolve();
+        const prepublish = new Promise((resolve) => {
+          console.log('aaa');
+          const aProcess = shellCommand(`(cd ${devEnvRoot} && npm run prepublish)`, undefined, false);
+          aProcess.on('exit', () => {
+            console.log('bbb');
+            resolve();
+          });
+        });
+
+        return prepublish.then(() => {
+          const promises = [
+            fs.removeSync(testProjectPath),
+            fs.ensureDirSync(testProjectPath),
+            fs.ensureDirSync(nodeModulesCopyPath),
+            fs.ensureDirSync(devEnvCopyPath),
+            fs.copySync(path.resolve(devEnvRoot, './dist'), path.resolve(devEnvCopyPath, './dist')),
+            fs.copySync(path.resolve(devEnvRoot, './package.json'), path.resolve(devEnvCopyPath, './package.json')),
+            fs.copySync(path.resolve(devEnvRoot, './bin'), path.resolve(devEnvCopyPath, './bin')),
+            fs.copySync(binOriginalPath, binCopyPath),
+            fs.writeFile(pathToMain, `document.body.append('${contentToBundle}');`),
+            fs.writeFileSync(path.resolve(testProjectPath, './package.json'), `{
+              "name": "test-project-for-dev-env",
+              "version": "0.0.2",
+              "publishConfig": {
+                "access": "public"
+              },
+              "scripts": {
+                "dev": "devenv",
+                "devx": "devenv --demo-entry='${pathToMain}'",
+                "start": "devenv",
+                "thing": "devenv --env=build --dirroot=$(pwd)"
+              },
+              "devDependencies": {
+                "@defualt/dev_env": "^0.0.14"
+              },
+              "repository": {
+                "type": "git",
+                "url": "https://github.com/defualt/test-project-for-dev-env.git"
+              }
+            }`),
+          ];
+
+          var i = 0;
+          fs.readdirSync(nodeModulesOriginalPath).forEach((file) => {
+            if (i++ < 20) {
+              console.log('EARLY3')
+              console.log(file);
+            }
+            if (file !== '.bin') {
+              promises.push(
+                fs.symlinkSync(path.resolve(nodeModulesOriginalPath, file), path.resolve(nodeModulesCopyPath, file))
+              );
+            }
+          });
+
+          // const devEnvCopyPackageDotJson = fs.readJsonSync(devEnvCopyPackageDotJsonPath);
+          // const devEnvBinDict = devEnvCopyPackageDotJson.bin;
+          // Object.keys(devEnvBinDict).forEach((key) => {
+          //   const val = devEnvBinDict[key];
+          //   promises.push(
+          //     fs.symlinkSync(path.resolve(devEnvCopyPath, val), path.resolve(binCopyPath, `./${key}`))
+          //   );
+          // });
+          return Promise.all(promises);
+        });        
+      },
       // nodePath: nodePathVar,
+      makeShellCmdStrX: () => {console.log('FIND ME DO STUFF'); return cmdX; },
       makeShellCmdStr: () => {console.log('FIND ME DO STUFF'); return cmd; },
       assetsToGenerate: [
-        {
-          path: pathToMain,
-          text: `document.body.append('${contentToBundle}');`,
-          isDemoEntry: true,
-        },
-        {
-          path: path.resolve(testProjectPath, './package.json'),
-          text: `{
-            "name": "test-project-for-dev-env",
-            "version": "0.0.2",
-            "publishConfig": {
-              "access": "public"
-            },
-            "scripts": {
-              "start": "devenv",
-              "thing": "devenv --env=build --dirroot=$(pwd)"
-            },
-            "devDependencies": {
-              "@defualt/dev_env": "^0.0.14"
-            },
-            "repository": {
-              "type": "git",
-              "url": "https://github.com/defualt/test-project-for-dev-env.git"
-            }
-          }`,
-        },
+        // {
+        //   path: pathToMain,
+        //   text: `document.body.append('${contentToBundle}');`,
+        //   isDemoEntry: true,
+        // },
+        // {
+        //   path: path.resolve(testProjectPath, './package.json'),
+        //   text: `{
+        //     "name": "test-project-for-dev-env",
+        //     "version": "0.0.2",
+        //     "publishConfig": {
+        //       "access": "public"
+        //     },
+        //     "scripts": {
+        //       "dev": "devenv",
+        //       "devx": "devenv --demo-entry='${pathToMain}'",
+        //       "start": "devenv",
+        //       "thing": "devenv --env=build --dirroot=$(pwd)"
+        //     },
+        //     "devDependencies": {
+        //       "@defualt/dev_env": "^0.0.14"
+        //     },
+        //     "repository": {
+        //       "type": "git",
+        //       "url": "https://github.com/defualt/test-project-for-dev-env.git"
+        //     }
+        //   }`,
+        // },
       ],
       onAsset: (resource) => {
         bundleHasContent = bundleHasContent || resource.text.indexOf(contentToBundle) !== -1;
       },
       cleanup: (/* devEnvProcess */) => {
+        fancyLog('orange', 'remove testProjectPath', '');
         fs.removeSync(testProjectPath);
       },
     });

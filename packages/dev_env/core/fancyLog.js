@@ -15,7 +15,7 @@ function formatLog(color, heading, ...args) {
   console.log(chalk.rgb(...fg).bgRgb(...bg)(heading));
 
   if (typeof args.find((item) => { return hasAnsi(item); }) === 'undefined') {
-    console.log(chalk[color](...args));
+    console.log(chalk.keyword(color)(...args));
   } else {
     console.log(...args);
   }
