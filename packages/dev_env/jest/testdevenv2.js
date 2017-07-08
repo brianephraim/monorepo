@@ -250,6 +250,10 @@ describe('testdevenv', () => {
 
     let bundleHasContent = false;
     duringServer({
+      cleanup: (/* devEnvProcess */) => {
+        fancyLog('orange', 'remove testProjectPath', '');
+        fs.removeSync(testProjectPath);
+      },
       early: () => {
         fancyLog('orange', 'EARLY', '');
 
@@ -295,9 +299,7 @@ describe('testdevenv', () => {
           devEnvCopyPath,
           binCopyPath,
         ));
-        
 
-        
         return Promise.all(promises);
       },
       // useDist: true,
@@ -306,33 +308,6 @@ describe('testdevenv', () => {
         // return `(cd ${devEnvOriginalPath} && npm run prepublish) && (cd ${testProjectPath} && node ${path.resolve(devEnvOriginalPath, './dist/dev_env.js')} --demo-entry='${path.resolve(testProjectPath, './testdevenv-main.demo.js')}' --use-dist)`;
         // return `(cd /Users/brianephraim/Sites/monorepo/packages/dev_env/ && npm run prepublish) && npm run dev -- --demo-entry='/Users/brianephraim/Sites/monorepo/testdevenv-main/asdf/testdevenv-main.demo.js' --use-dist`;
       },
-      assetsToGenerate: [
-        // {
-        //   path: path.resolve(monorepoDir, './testdevenv-main/asdf/testdevenv-main.demo.js'),
-        //   text: `document.body.append('${contentToBundle}');`,
-        //   isDemoEntry: true,
-        // },
-        // {
-        //   path: path.resolve(monorepoDir, './testdevenv-main/asdf/package.json'),
-        //   text: `{
-        //     "name": "test-project-for-dev-env",
-        //     "version": "0.0.2",
-        //     "publishConfig": {
-        //       "access": "public"
-        //     },
-        //     "scripts": {
-        //       "dev": "devenv"
-        //     },
-        //     "devDependencies": {
-        //       "@defualt/dev_env": "^0.0.14"
-        //     },
-        //     "repository": {
-        //       "type": "git",
-        //       "url": "https://github.com/defualt/test-project-for-dev-env.git"
-        //     }
-        //   }`,
-        // },
-      ],
       onAsset: (resource) => {
         bundleHasContent = bundleHasContent || resource.text.indexOf(contentToBundle) !== -1;
       },
