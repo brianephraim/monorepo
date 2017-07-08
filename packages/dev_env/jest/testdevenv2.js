@@ -9,83 +9,96 @@ import { it, describe, before } from 'mocha';
 import shellCommand from '../core/shellCommand';
 import fancyLog from '../core/fancyLog';
 import getDevEnvRoot from '../core/getDevEnvRoot';
-import getNodePathShVar from '../core/getNodePathShVar';
 
-import { exec } from 'child_process';
-
-
-
-// fancyLog('orange', 'start terminate', 'asdf');
 const devEnvRoot = getDevEnvRoot(__dirname);
+
+const symlinkNodeModulesContents = (nodeModulesOriginalPath, nodeModulesCopyPath) => {
+  const promises = [];
+  fs.readdirSync(nodeModulesOriginalPath).forEach((file, i) => {
+    if (i < 20) {
+      console.log('symlinking node_modules content', file);
+    }
+    if (file !== '.bin') {
+      promises.push(
+        fs.symlinkSync(
+          path.resolve(nodeModulesOriginalPath, file),
+          path.resolve(nodeModulesCopyPath, file)),
+      );
+    }
+  });
+  return Promise.all(promises);
+};
+
+const binPromises = (devEnvCopyPackageDotJsonPath, devEnvCopyPath, binCopyPath) => {
+  const promises = [];
+  const devEnvCopyPackageDotJson = fs.readJsonSync(devEnvCopyPackageDotJsonPath);
+  const devEnvBinDict = devEnvCopyPackageDotJson.bin;
+  Object.keys(devEnvBinDict).forEach((key) => {
+    const val = devEnvBinDict[key];
+    promises.push(
+      fs.symlinkSync(path.resolve(devEnvCopyPath, val), path.resolve(binCopyPath, `./${key}`)),
+    );
+  });
+  return Promise.all(promises);
+};
 
 function duringProcess({
   onData = () => {},
   onStderr = () => {},
-  makeShellCmdStrX = () => { return 'pwd'; },
   makeShellCmdStr = () => {},
   cleanup = () => { return Promise.resolve(); },
   early = () => { return Promise.resolve(); },
-  assetsToGenerate,
+  assetsToGenerate = [],
 }) {
   before(function duringProcessBefore(done) {
     this.timeout(60000);
-    setTimeout(() => {
-      early().then(() => {
-        setTimeout(() => {
-          let pathToDemoEntry;
-          assetsToGenerate.forEach((assetInfo) => {
-            fancyLog('green', 'GENERATING', assetInfo.path);
-            const dir = path.dirname(assetInfo.path);
-            fs.ensureDirSync(dir);
-            fs.writeFileSync(assetInfo.path, assetInfo.text);
-            if (assetInfo.isDemoEntry) {
-              pathToDemoEntry = assetInfo.path;
-            }
-          });
-          setTimeout(() => {
-            // const cmd = makeShellCmdStrX(pathToDemoEntry);
-            const cmd = makeShellCmdStr(pathToDemoEntry);
-            console.log('shell command',cmd);
-            const devEnvProcess = shellCommand(cmd, null, false);
-            let finished = false;
-            function finish() {
-              console.log('FINISHED???',finished);
-              if (finished) {
-                return;
-              }
-              fancyLog('green', 'FINISHED', 'code');
-              finished = true;
-              console.log('asdf duringProcess cleanup');
-              cleanup(devEnvProcess).then(() => {
-                fancyLog('orange', 'remove assets', '');
-                assetsToGenerate.forEach((assetInfo) => {
-                  const dir = path.dirname(assetInfo.path);
-                  fs.removeSync(dir);
-                });
-                fancyLog('orange', 'before\'s done() called', '');
-                done();
-              });
-            }
-            devEnvProcess.stdout.on('data', (data) => {
-              const dataString = data.toString();
-              fancyLog('blue', 'devEnvProcess.stdout:', dataString);
-              onData(dataString, finish);
-            });
-            devEnvProcess.stderr.on('data', (data) => {
-              if (data && data.toString) {
-                data = data.toString();
-                onStderr(data);
-              }
-              fancyLog('cyan', 'devEnvProcess.stderr:', data);
-            });
-            devEnvProcess.on('exit', (code) => {
-              fancyLog('yellow', 'child process exited with code:', code);
-              finish();
-            });
-          }, 0);
-        }, 0);
+    early().then(() => {
+      let pathToDemoEntry;
+      assetsToGenerate.forEach((assetInfo) => {
+        fancyLog('green', 'GENERATING', assetInfo.path);
+        const dir = path.dirname(assetInfo.path);
+        fs.ensureDirSync(dir);
+        fs.writeFileSync(assetInfo.path, assetInfo.text);
+        if (assetInfo.isDemoEntry) {
+          pathToDemoEntry = assetInfo.path;
+        }
       });
-    }, 0);
+      const cmd = makeShellCmdStr(pathToDemoEntry);
+      const devEnvProcess = shellCommand(cmd, null, false);
+      let finished = false;
+      function finish() {
+        if (finished) {
+          return;
+        }
+        fancyLog('green', 'FINISHED', '');
+        finished = true;
+        cleanup(devEnvProcess).then(() => {
+          fancyLog('orange', 'remove assets', '');
+          assetsToGenerate.forEach((assetInfo) => {
+            const dir = path.dirname(assetInfo.path);
+            fs.removeSync(dir);
+          });
+          fancyLog('orange', 'before\'s done() called', '');
+          done();
+        });
+      }
+      devEnvProcess.stdout.on('data', (data) => {
+        const dataString = data.toString();
+        fancyLog('blue', 'devEnvProcess.stdout:', dataString);
+        onData(dataString, finish);
+      });
+      devEnvProcess.stderr.on('data', (data) => {
+        if (data && data.toString) {
+          data = data.toString();
+          onStderr(data);
+        }
+        fancyLog('cyan', 'devEnvProcess.stderr:', data);
+      });
+      devEnvProcess.on('exit', (code) => {
+        fancyLog('yellow', 'child process exited with code:', code);
+        finish();
+      });
+    });
   });
 }
 
@@ -97,30 +110,17 @@ function duringServer({
   cleanup = () => { return Promise.resolve(); },
   makeShellCmdStr,
   assetsToGenerate,
-  nodePath,
-  makeShellCmdStrX,
   early,
 }) {
   const scrapeDir = path.resolve(__dirname, './scrape');
   let once = false;
   duringProcess({
     early,
-    makeShellCmdStrX,
     makeShellCmdStr: (pathToDemoEntry) => {
-      const nodePathShVar = nodePath ? `${nodePath} ` : '';
-      console.log('nodePath', nodePathShVar);
       if (makeShellCmdStr) {
         return makeShellCmdStr(pathToDemoEntry);
       }
       const prepublish = useDist ? `(cd ${devEnvRoot} && npm run prepublish) && ` : '';
-      console.log('XXXXX');
-      console.log('XXXXX');
-      console.log('XXXXX');
-      console.log('XXXXX');
-      console.log('XXXXX');
-      console.log('XXXXX');
-      console.log('XXXXX');
-      console.log('XXXXX');
       return `(
         ${prepublish}npm run dev -- --demo-entry='${pathToDemoEntry}'${useDist ? ' --use-dist' : ''} 
       )`;
@@ -133,23 +133,20 @@ function duringServer({
       }
       if (dataString.indexOf('webpack: Compiled successfully.') !== -1 && !once) {
         once = true;
-        setTimeout(() => {
-          scrape({
-            urls: ['http://localhost:3000/'],
-            directory: scrapeDir,
-            resourceSaver: class MyResourceSaver {
-              saveResource(resource) {
-                onAsset(resource);
-              }
-              errorCleanup(err) {
-                fancyLog('pink', 'scrape resource error:', err);
-              }
-            },
-          }).then(() => {
-            finish();
-          });
-        }, 0);
-        // finish();
+        scrape({
+          urls: ['http://localhost:3000/'],
+          directory: scrapeDir,
+          resourceSaver: class MyResourceSaver {
+            saveResource(resource) {
+              onAsset(resource);
+            }
+            errorCleanup(err) {
+              fancyLog('pink', 'scrape resource error:', err);
+            }
+          },
+        }).then(() => {
+          finish();
+        });
       }
     },
     onStderr,
@@ -196,7 +193,7 @@ function duringTest({
 
 const monorepoDir = path.resolve(__dirname, '../../../');
 describe('testdevenv', () => {
-  describe('localhost dev environment via on demand compiled script', () => {
+  describe('localhost dev environment of monorepo via on demand compiled script', () => {
     const contentToBundle = makeUuid();
     let bundleHasContent = false;
 
@@ -217,7 +214,7 @@ describe('testdevenv', () => {
     });
   });
 
-  describe('localhost dev environment via pre-compiled script', () => {
+  describe('localhost dev environment of monorepo via pre-compiled script', () => {
     const contentToBundle = makeUuid();
     let bundleHasContent = false;
     duringServer({
@@ -238,18 +235,18 @@ describe('testdevenv', () => {
     });
   });
 
-  describe.only('localhost dev environment via pre-compiled script', () => {
+  describe.only('localhost dev environment of scattered package repo via pre-compiled script, similar to npm usage', () => {
     const contentToBundle = makeUuid();
     const testProjectPath = path.resolve(monorepoDir, '../testdevenv-main/asdf');
     const devEnvOriginalPath = path.resolve(monorepoDir, './packages/dev_env');
     const nodeModulesOriginalPath = path.resolve(monorepoDir, './node_modules');
     const nodeModulesCopyPath = path.resolve(testProjectPath, './node_modules');
-    const devEnvCopyPath = path.resolve(nodeModulesCopyPath, './dev_env');
-    const binOriginalPath = path.resolve(nodeModulesOriginalPath, './.bin');
-    const binCopyPath = path.resolve(nodeModulesCopyPath, './.bin');
-    const devEnvCopyPackageDotJsonPath = path.resolve(devEnvCopyPath, './package.json');
     const pathToMain = path.resolve(testProjectPath, './testdevenv-main.demo.js');
+    const devEnvCopyPath = path.resolve(nodeModulesCopyPath, './dev_env');
+    const devEnvCopyPackageDotJsonPath = path.resolve(devEnvCopyPath, './package.json');
     const devEnvCopyDistPath = path.resolve(devEnvCopyPath, './dist');
+    const binCopyPath = path.resolve(nodeModulesCopyPath, './.bin');
+    const binOriginalPath = path.resolve(nodeModulesOriginalPath, './.bin');
 
     let bundleHasContent = false;
     duringServer({
@@ -287,27 +284,20 @@ describe('testdevenv', () => {
           }`),
         ];
 
-        fs.readdirSync(nodeModulesOriginalPath).forEach((file, i) => {
-          if (i < 20) {
-            console.log('symlinking node_modules content', file);
-          }
-          if (file !== '.bin') {
-            promises.push(
-              fs.symlinkSync(
-                path.resolve(nodeModulesOriginalPath, file),
-                path.resolve(nodeModulesCopyPath, file)),
-            );
-          }
-        });
 
-        const devEnvCopyPackageDotJson = fs.readJsonSync(devEnvCopyPackageDotJsonPath);
-        const devEnvBinDict = devEnvCopyPackageDotJson.bin;
-        Object.keys(devEnvBinDict).forEach((key) => {
-          const val = devEnvBinDict[key];
-          promises.push(
-            fs.symlinkSync(path.resolve(devEnvCopyPath, val), path.resolve(binCopyPath, `./${key}`)),
-          );
-        });
+        promises.push(symlinkNodeModulesContents(
+          nodeModulesOriginalPath,
+          nodeModulesCopyPath,
+        ));
+
+        promises.push(binPromises(
+          devEnvCopyPackageDotJsonPath,
+          devEnvCopyPath,
+          binCopyPath,
+        ));
+        
+
+        
         return Promise.all(promises);
       },
       // useDist: true,
