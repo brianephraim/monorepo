@@ -5,7 +5,7 @@ function printProgress(progress) {
   if (!process || !process.stdout || !process.stdout.clearLine) {
     return;
   }
-  // singleLineLog(`Resolving: ${progress}\n`);
+  singleLineLog(`Resolving: ${progress}\n`);
   // process.stdout.clearLine();
   // process.stdout.cursorTo(0);
   // process.stdout.write(progress + `-xxxxxx`);

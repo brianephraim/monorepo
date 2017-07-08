@@ -4,13 +4,13 @@ const path = require('path');
 module.exports = {
   resolve: {
     modules: [
-      '/Users/brianephraim/Sites/monorepo/node_modules',
+      // '/Users/brianephraim/Sites/monorepo/node_modules',
       path.resolve('./src/library'),
       path.resolve(process.cwd(), 'packages'),
       path.resolve(process.cwd(), '../../packages'),
       'node_modules',
-      path.resolve(process.cwd(), '../monorepo/node_modules'),
-      '../monorepo/node_modules',
+      // path.resolve(process.cwd(), '../monorepo/node_modules'),
+      // '../monorepo/node_modules',
     ],
     extensions: [
       '.js',
