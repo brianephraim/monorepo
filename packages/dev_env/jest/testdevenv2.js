@@ -11,6 +11,8 @@ import fancyLog from '../core/fancyLog';
 import getDevEnvRoot from '../core/getDevEnvRoot';
 import getNodePathShVar from '../core/getNodePathShVar';
 
+import { exec } from 'child_process';
+
 
 
 // fancyLog('orange', 'start terminate', 'asdf');
@@ -131,22 +133,22 @@ function duringServer({
       }
       if (dataString.indexOf('webpack: Compiled successfully.') !== -1 && !once) {
         once = true;
-        // setTimeout(() => {
-          // scrape({
-          //   urls: ['http://localhost:3000/'],
-          //   directory: scrapeDir,
-          //   resourceSaver: class MyResourceSaver {
-          //     saveResource(resource) {
-          //       onAsset(resource);
-          //     }
-          //     errorCleanup(err) {
-          //       fancyLog('pink', 'scrape resource error:', err);
-          //     }
-          //   },
-          // }).then(() => {
-          //   finish();
-          // });
-        // }, 1000);
+        setTimeout(() => {
+          scrape({
+            urls: ['http://localhost:3000/'],
+            directory: scrapeDir,
+            resourceSaver: class MyResourceSaver {
+              saveResource(resource) {
+                onAsset(resource);
+              }
+              errorCleanup(err) {
+                fancyLog('pink', 'scrape resource error:', err);
+              }
+            },
+          }).then(() => {
+            finish();
+          });
+        }, 0);
         // finish();
       }
     },
@@ -236,10 +238,127 @@ describe('testdevenv', () => {
     });
   });
 
-  describe.only('localhost dev environment similar to npm usage', () => {
+  describe.only('localhost dev environment via pre-compiled script', () => {
+    const contentToBundle = makeUuid();
+    const testProjectPath = path.resolve(monorepoDir, '../testdevenv-main/asdf');
+    const devEnvOriginalPath = path.resolve(monorepoDir, './packages/dev_env');
+    const nodeModulesOriginalPath = path.resolve(monorepoDir, './node_modules');
+    const nodeModulesCopyPath = path.resolve(testProjectPath, './node_modules');
+    const devEnvCopyPath = path.resolve(nodeModulesCopyPath, './dev_env');
+    const binOriginalPath = path.resolve(nodeModulesOriginalPath, './.bin');
+    const binCopyPath = path.resolve(nodeModulesCopyPath, './.bin');
+    const devEnvCopyPackageDotJsonPath = path.resolve(devEnvCopyPath, './package.json');
+    const pathToMain = path.resolve(testProjectPath, './testdevenv-main.demo.js');
+    const devEnvCopyDistPath = path.resolve(devEnvCopyPath, './dist');
+    
+    let bundleHasContent = false;
+    duringServer({
+      early: () => {
+
+        fancyLog('orange', 'EARLY', '');
+
+        const promises = [
+          fs.removeSync(testProjectPath),
+          fs.ensureDirSync(testProjectPath),
+          fs.ensureDirSync(nodeModulesCopyPath),
+          fs.ensureDirSync(devEnvCopyPath),
+          // fs.copySync(path.resolve(devEnvRoot, './dist'), path.resolve(devEnvCopyPath, './dist')),
+          fs.copySync(path.resolve(devEnvRoot, './package.json'), path.resolve(devEnvCopyPath, './package.json')),
+          fs.copySync(path.resolve(devEnvRoot, './bin'), path.resolve(devEnvCopyPath, './bin')),
+          fs.copySync(binOriginalPath, binCopyPath),
+          fs.writeFile(pathToMain, `document.body.append('${contentToBundle}');`),
+          fs.writeFileSync(path.resolve(testProjectPath, './package.json'), `{
+            "name": "test-project-for-dev-env",
+            "version": "0.0.2",
+            "publishConfig": {
+              "access": "public"
+            },
+            "scripts": {
+              "dev": "devenv",
+              "devx": "devenv --demo-entry='${pathToMain}'",
+              "start": "devenv",
+              "thing": "devenv --env=build --dirroot=$(pwd)"
+            },
+            "devDependencies": {
+              "@defualt/dev_env": "^0.0.14"
+            },
+            "repository": {
+              "type": "git",
+              "url": "https://github.com/defualt/test-project-for-dev-env.git"
+            }
+          }`),
+        ];
+
+        var i = 0;
+        fs.readdirSync(nodeModulesOriginalPath).forEach((file) => {
+          if (i++ < 20) {
+            console.log('EARLY3')
+            console.log(file);
+          }
+          if (file !== '.bin') {
+            promises.push(
+              fs.symlinkSync(path.resolve(nodeModulesOriginalPath, file), path.resolve(nodeModulesCopyPath, file))
+            );
+          }
+        });
+
+        const devEnvCopyPackageDotJson = fs.readJsonSync(devEnvCopyPackageDotJsonPath);
+        const devEnvBinDict = devEnvCopyPackageDotJson.bin;
+        Object.keys(devEnvBinDict).forEach((key) => {
+          const val = devEnvBinDict[key];
+          promises.push(
+            fs.symlinkSync(path.resolve(devEnvCopyPath, val), path.resolve(binCopyPath, `./${key}`))
+          );
+        });
+        return Promise.all(promises);
+      },
+      // useDist: true,
+      makeShellCmdStr: () => {
+        return `(cd ${devEnvOriginalPath} && npm run prepublish) && cp -rf ${path.resolve(devEnvRoot, './dist')} ${devEnvCopyDistPath} && (cd ${testProjectPath} && npm run dev)`;
+        // return `(cd ${devEnvOriginalPath} && npm run prepublish) && (cd ${testProjectPath} && node ${path.resolve(devEnvOriginalPath, './dist/dev_env.js')} --demo-entry='${path.resolve(testProjectPath, './testdevenv-main.demo.js')}' --use-dist)`;
+        // return `(cd /Users/brianephraim/Sites/monorepo/packages/dev_env/ && npm run prepublish) && npm run dev -- --demo-entry='/Users/brianephraim/Sites/monorepo/testdevenv-main/asdf/testdevenv-main.demo.js' --use-dist`;
+      },
+      assetsToGenerate: [
+        // {
+        //   path: path.resolve(monorepoDir, './testdevenv-main/asdf/testdevenv-main.demo.js'),
+        //   text: `document.body.append('${contentToBundle}');`,
+        //   isDemoEntry: true,
+        // },
+        // {
+        //   path: path.resolve(monorepoDir, './testdevenv-main/asdf/package.json'),
+        //   text: `{
+        //     "name": "test-project-for-dev-env",
+        //     "version": "0.0.2",
+        //     "publishConfig": {
+        //       "access": "public"
+        //     },
+        //     "scripts": {
+        //       "dev": "devenv"
+        //     },
+        //     "devDependencies": {
+        //       "@defualt/dev_env": "^0.0.14"
+        //     },
+        //     "repository": {
+        //       "type": "git",
+        //       "url": "https://github.com/defualt/test-project-for-dev-env.git"
+        //     }
+        //   }`,
+        // },
+      ],
+      onAsset: (resource) => {
+        bundleHasContent = bundleHasContent || resource.text.indexOf(contentToBundle) !== -1;
+      },
+    });
+    it('basic bundleHasContent', () => {
+      assert.equal(bundleHasContent, true);
+    });
+  });
+
+
+  describe('localhost dev environment similar to npm usage', () => {
     const contentToBundle = makeUuid();
     let bundleHasContent = false;
-    const testProjectPath = path.resolve(monorepoDir, '../test-project-for-dev-env');
+    const testProjectPath = path.resolve(monorepoDir, './test-project-for-dev-env');
     
     const nodeModulesOriginalPath = path.resolve(monorepoDir, './node_modules');
     const nodeModulesCopyPath = path.resolve(testProjectPath, './node_modules');
@@ -255,12 +374,23 @@ describe('testdevenv', () => {
     const cmdX = `(cd ${testProjectPath} && ls)`;
     const cmdY = `(cd ${testProjectPath} && echo "document.body.append('${contentToBundle}');" > ${pathToMain} && npm run dev)`;
     const cmdZ = `(cd ${testProjectPath} && echo "document.body.append('${contentToBundle}');" > ${pathToMain} && node ./node_modules/dev_env/dist/dev_env)`;
-    const cmd = `(cd ${testProjectPath}  && node ./node_modules/dev_env/dist/dev_env)`;
+    const cmd = `
+      (cd ${devEnvRoot} && npm run prepublish) && 
+      rm -rf ${testProjectPath} &&
+      mkdir ${testProjectPath} &&
+      mkdir ${nodeModulesCopyPath} &&
+      mkdir ${devEnvCopyPath} &&
+      cp ${path.resolve(devEnvRoot, './package.json')} ${path.resolve(devEnvCopyPath, './package.json')} &&
+      echo "document.body.append('${contentToBundle}');" > ${pathToMain} &&
+      echo '{"name": "test-project-for-dev-env","scripts": {"dev": "devenv"}}' > ${path.resolve(testProjectPath, './package.json')} &&
+      (cd ${testProjectPath}  && node ../packages/dev_env/dist/dev_env)
+    `;
+    // const cmd = `(cd ${testProjectPath}  && node ../packages/dev_env/dist/dev_env)`;
     // const cmd = `(cd ${devEnvRoot} && npm run prepublish)`;
     console.log('cmd', cmd);
     duringServer({
       // useDist,
-      early: () => {
+      earlyx: () => {
 
         fancyLog('orange', 'EARLY', '');
         // return Promise.resolve();
@@ -307,17 +437,17 @@ describe('testdevenv', () => {
           ];
 
           var i = 0;
-          fs.readdirSync(nodeModulesOriginalPath).forEach((file) => {
-            if (i++ < 20) {
-              console.log('EARLY3')
-              console.log(file);
-            }
-            if (file !== '.bin') {
-              promises.push(
-                fs.symlinkSync(path.resolve(nodeModulesOriginalPath, file), path.resolve(nodeModulesCopyPath, file))
-              );
-            }
-          });
+          // fs.readdirSync(nodeModulesOriginalPath).forEach((file) => {
+          //   if (i++ < 20) {
+          //     console.log('EARLY3')
+          //     console.log(file);
+          //   }
+          //   if (file !== '.bin') {
+          //     promises.push(
+          //       fs.symlinkSync(path.resolve(nodeModulesOriginalPath, file), path.resolve(nodeModulesCopyPath, file))
+          //     );
+          //   }
+          // });
 
           // const devEnvCopyPackageDotJson = fs.readJsonSync(devEnvCopyPackageDotJsonPath);
           // const devEnvBinDict = devEnvCopyPackageDotJson.bin;
@@ -331,7 +461,6 @@ describe('testdevenv', () => {
         });        
       },
       // nodePath: nodePathVar,
-      makeShellCmdStrX: () => {console.log('FIND ME DO STUFF'); return cmdX; },
       makeShellCmdStr: () => {console.log('FIND ME DO STUFF'); return cmd; },
       assetsToGenerate: [
         // {

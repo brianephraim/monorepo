@@ -104,6 +104,7 @@ function webpackParseStatsForDepProblems(stats, shouldShowProblemsInConsole = tr
 
   const packageDotJsonCache = {};
   const problems = {};
+  console.log('GGGGGG');
   stats.compilation.modules.forEach((module) => {
     // only concerned with module entries from /packages/ folder (not node_modules)
     if (
@@ -115,6 +116,7 @@ function webpackParseStatsForDepProblems(stats, shouldShowProblemsInConsole = tr
         let packagesDir = `${process.cwd()}/packages`;
         packagesDir = ensureTrailingSlash(packagesDir);
         // get substring from first trailing slash after whatever packagesDir is
+        console.log(module.resource);
         const packageFolderName = module.resource.split(packagesDir)[1].split('/')[0];
         packageDotJsonPath = `${packagesDir}${packageFolderName}/package.json`;
       } else {
