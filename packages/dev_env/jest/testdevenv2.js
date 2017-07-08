@@ -250,11 +250,10 @@ describe('testdevenv', () => {
     const devEnvCopyPackageDotJsonPath = path.resolve(devEnvCopyPath, './package.json');
     const pathToMain = path.resolve(testProjectPath, './testdevenv-main.demo.js');
     const devEnvCopyDistPath = path.resolve(devEnvCopyPath, './dist');
-    
+
     let bundleHasContent = false;
     duringServer({
       early: () => {
-
         fancyLog('orange', 'EARLY', '');
 
         const promises = [
@@ -262,8 +261,7 @@ describe('testdevenv', () => {
           fs.ensureDirSync(testProjectPath),
           fs.ensureDirSync(nodeModulesCopyPath),
           fs.ensureDirSync(devEnvCopyPath),
-          // fs.copySync(path.resolve(devEnvRoot, './dist'), path.resolve(devEnvCopyPath, './dist')),
-          fs.copySync(path.resolve(devEnvRoot, './package.json'), path.resolve(devEnvCopyPath, './package.json')),
+          fs.copySync(path.resolve(devEnvRoot, './package.json'), devEnvCopyPackageDotJsonPath),
           fs.copySync(path.resolve(devEnvRoot, './bin'), path.resolve(devEnvCopyPath, './bin')),
           fs.copySync(binOriginalPath, binCopyPath),
           fs.writeFile(pathToMain, `document.body.append('${contentToBundle}');`),
@@ -289,15 +287,15 @@ describe('testdevenv', () => {
           }`),
         ];
 
-        var i = 0;
-        fs.readdirSync(nodeModulesOriginalPath).forEach((file) => {
-          if (i++ < 20) {
-            console.log('EARLY3')
-            console.log(file);
+        fs.readdirSync(nodeModulesOriginalPath).forEach((file, i) => {
+          if (i < 20) {
+            console.log('symlinking node_modules content', file);
           }
           if (file !== '.bin') {
             promises.push(
-              fs.symlinkSync(path.resolve(nodeModulesOriginalPath, file), path.resolve(nodeModulesCopyPath, file))
+              fs.symlinkSync(
+                path.resolve(nodeModulesOriginalPath, file),
+                path.resolve(nodeModulesCopyPath, file)),
             );
           }
         });
@@ -307,7 +305,7 @@ describe('testdevenv', () => {
         Object.keys(devEnvBinDict).forEach((key) => {
           const val = devEnvBinDict[key];
           promises.push(
-            fs.symlinkSync(path.resolve(devEnvCopyPath, val), path.resolve(binCopyPath, `./${key}`))
+            fs.symlinkSync(path.resolve(devEnvCopyPath, val), path.resolve(binCopyPath, `./${key}`)),
           );
         });
         return Promise.all(promises);
