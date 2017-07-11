@@ -13,11 +13,12 @@ function formatLog(color, heading, ...args) {
     return +item;
   });
   console.log(chalk.rgb(...fg).bgRgb(...bg)(heading));
-
-  if (typeof args.find((item) => { return hasAnsi(item); }) === 'undefined') {
-    console.log(chalk.keyword(color)(...args));
-  } else {
-    console.log(...args);
+  if (args && args.length) {
+    if (typeof args.find((item) => { return hasAnsi(item); }) === 'undefined') {
+      console.log(chalk.keyword(color)(...args));
+    } else {
+      console.log(...args);
+    }
   }
 }
 module.exports = formatLog;
