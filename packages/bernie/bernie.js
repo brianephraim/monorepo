@@ -19,27 +19,39 @@ class Asdf extends Component {
 }
 Asdf.propTypes = {};
 
-// This component exists because its el had a class of 'bodyInner'
-// and this was affected by:
-//  >> var modalManager = bs.setupNewModalManager($('.bodyInner'));
-class BernieHome extends Component {
+class Modal extends Component {
   constructor() {
     super();
     this.state = {
     };
   }
   render() {
-    return (<div>{this.props.children}</div>);
+    return (<div className="modal">{this.props.children}</div>);
   }
 }
-BernieHome.propTypes = {};
+Modal.propTypes = {};
+
+// This component exists because its el had a class of 'bodyInner'
+// and this was affected by:
+//  >> var modalManager = bs.setupNewModalManager($('.bodyInner'));
+class BernieHomeScreen extends Component {
+  constructor() {
+    super();
+    this.state = {
+    };
+  }
+  render() {
+    return (<div className="homeScreen">{this.props.children}</div>);
+  }
+}
+BernieHomeScreen.propTypes = {};
 
 // This component exists as a container to distingsh from the modals outside this container.
 // THis was used for descendant selectors.
 // FOr instance, .someButton within .homeLayout was styled differently than within .modal 
 // (modal was outside .homeLayout)
 // It was also used to display:none the home screen when modal appears.
-// This can be merged into BernieHome probably.
+// This can be merged into BernieHomeScreen probably.
 class BernieHomeLayout extends Component {
   constructor() {
     super();
@@ -364,7 +376,7 @@ class Bernie extends Component {
   render() {
     return (
       <ResponsiveMaster name="bernie">
-        <BernieHome>
+        <BernieHomeScreen>
           <BernieHomeLayout>
             <BernieApp>
               <BernieContributeBanner />
@@ -458,7 +470,11 @@ class Bernie extends Component {
             </BernieApp>
             <BernieDisclaimer />
           </BernieHomeLayout>
-        </BernieHome>
+          <Modal>
+            <p>asdfadsf</p>
+          </Modal>
+        </BernieHomeScreen>
+
       </ResponsiveMaster>
     );
   }

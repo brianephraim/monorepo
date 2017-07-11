@@ -36,6 +36,16 @@ const fakeDatabase = JSON.parse(storage.getItem('fakeDatabase')) || {
       name: 'Mr. Z',
     },
   ],
+  bernie: [
+    {
+      id: v4(),
+      name: 'Boomer',
+    },
+    {
+      id: v4(),
+      name: 'Mr. Z',
+    },
+  ],
 };
 
 const updateFakeDatabaseStorage = () => {
@@ -61,6 +71,12 @@ const delay = (ms) => {
 const fetchUsers = () => {
   return delay(500).then(() => {
     return makeUnique(fakeDatabase.users);
+  });
+};
+
+const fetchBernie = () => {
+  return delay(500).then(() => {
+    return makeUnique(fakeDatabase.bernie);
   });
 };
 
@@ -118,6 +134,8 @@ export const fakePost = (endpoint, params = {}) => {
   switch (endpoint) {
     case 'fetchUsers':
       return fetchUsers(params.filter);
+    case 'fetchBernie':
+      return fetchBernie(params.filter);
     case 'fetchToDos':
       return fetchToDos(params.filter);
     case 'addToDo':

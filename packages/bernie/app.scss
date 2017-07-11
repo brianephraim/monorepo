@@ -750,3 +750,12 @@ $headerTopHeight:$appPad*5;
 		padding-bottom:10px;
 	}
 }
+
+.modal {
+	position: absolute;
+	top: 0;
+	background: red;
+	height: 100%;
+	width: 100%;
+	z-index: 3;
+}
