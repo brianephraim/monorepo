@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router';
+import { withRouter } from 'react-router-dom';
 import * as actions from '../state/actions';
 import * as getters from '../state/getters';
 import ToDoList from './ToDoList';
@@ -55,8 +55,8 @@ VisibleToDoList.propTypes = {
   onToDoClick: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state, { params }) => {
-  const filter = params.filter || 'all';
+const mapStateToProps = (state, { match }) => {
+  const filter = match.params.filter || 'all';
   return {
     isFetching: getters.getIsFetching(state, filter),
     errorMessage: getters.getErrorMessage(state, filter),

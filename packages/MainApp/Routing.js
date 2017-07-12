@@ -1,13 +1,26 @@
-import React from 'react';
+// import React from 'react';
 import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
-import { Router, Route, browserHistory, Link } from 'react-router';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import ToDoUserAssignmentScreen from 'todo_app';
 import Bernie from 'bernie';
 import Battleship from 'battleship';
 
+import React, { Component } from 'react';
+// import PropTypes from 'prop-types';
 
 
+class ToDoUserAssignmentScreenx extends Component {
+  constructor() {
+    super();
+    this.state = {
+    };
+  }
+  render() {
+    return (<div>xxx</div>);
+  }
+}
+ToDoUserAssignmentScreenx.propTypes = {};
 /*
 
 */
@@ -15,7 +28,7 @@ import Battleship from 'battleship';
 const routes = [
   {
     description: 'Todos',
-    path: '/todos/(:filter)',
+    path: '/todos/:filter',
     demoPath: '/todos/all',
     component: ToDoUserAssignmentScreen,
   },
@@ -47,21 +60,24 @@ const LandingScreen = ({ dispatch }) => {
     </div>
   );
 };
+//   <Router history={browserHistory}>
 
 const Routes = (
-  <Router history={browserHistory}>
-    {
-      [
-        ...routes,
-        ...[{
-          description: 'Landing',
-          path: '/',
-          component: LandingScreen,
-        }],
-      ].map((details) => {
-        return <Route key={details.path} path={details.path} component={details.component} />;
-      })
-    }
+  <Router>
+    <div>
+      {
+        [
+          ...routes,
+          ...[{
+            description: 'Landing',
+            path: '/',
+            component: LandingScreen,
+          }],
+        ].map((details) => {
+          return <Route key={details.path} path={details.path} component={details.component} />;
+        })
+      }
+    </div>
   </Router>
 );
 

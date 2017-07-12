@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router';
 import { fakePost as post } from 'todo_app/src/api';
 import { normalize, Schema, arrayOf } from 'normalizr';
 import { combineReducers } from 'redux';

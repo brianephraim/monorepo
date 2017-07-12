@@ -3,20 +3,21 @@ import PropTypes from 'prop-types';
 import ToDos from './toDos/Component';
 import { Users } from './users';
 // <Users filter={params.filter} />
-const ToDoUserAssignmentScreen = ({ params }) => {
-  console.log('TTT');
+const ToDoUserAssignmentScreen = ({ match }) => {
   return (
     <div>
-      <ToDos filter={params.filter} />
-      <Users filter={params.filter} />
-      <Users filter={params.filter} />
+      <ToDos filter={match.params.filter} />
+      <Users filter={match.params.filter} />
+      <Users filter={match.params.filter} />
     </div>
   );
 };
 
 ToDoUserAssignmentScreen.propTypes = {
-  params: PropTypes.shape({
-    filter: PropTypes.string,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      filter: PropTypes.string,
+    }),
   }),
 };
 

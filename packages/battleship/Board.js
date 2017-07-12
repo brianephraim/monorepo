@@ -23,7 +23,6 @@ class Board {
     }
   }
   place(placements) {
-    asdf();
     try {
       const gridModification = placeSegmentsOnGridArray({
         gridAsArray: this.gridAsArray,

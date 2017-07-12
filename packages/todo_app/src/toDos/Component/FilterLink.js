@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router';
+import { NavLink } from 'react-router-dom';
 import './FilterLink.scss';
 
 const FilterLink = ({ filter, children }) => (
-  <Link
+  <NavLink
     className="aaaa"
     to={`/todos/${filter}`}
     activeClassName="activex"
@@ -14,7 +14,7 @@ const FilterLink = ({ filter, children }) => (
     }}
   >
     {children}
-  </Link>
+  </NavLink>
 );
 
 FilterLink.propTypes = {
