@@ -9,18 +9,37 @@ import Battleship from 'battleship';
 import React, { Component } from 'react';
 // import PropTypes from 'prop-types';
 
-
-class ToDoUserAssignmentScreenx extends Component {
+class Tacos extends Component {
   constructor() {
     super();
     this.state = {
     };
   }
   render() {
-    return (<div>xxx</div>);
+    return (
+      <div>
+        <p>tacos</p>
+        <Route
+          path={this.props.match.url + '/carnitas'}
+          component={Carnitas}
+        />
+      </div>
+    );
   }
 }
-ToDoUserAssignmentScreenx.propTypes = {};
+Tacos.propTypes = {};
+
+class Carnitas extends Component {
+  constructor() {
+    super();
+    this.state = {
+    };
+  }
+  render() {
+    return (<div>carnitas</div>);
+  }
+}
+Carnitas.propTypes = {};
 /*
 
 */
@@ -41,6 +60,11 @@ const routes = [
     description: 'Battleship',
     path: '/battleship',
     component: Battleship,
+  },
+  {
+    description: 'Tacos',
+    path: '/tacos',
+    component: Tacos,
   },
 ];
 

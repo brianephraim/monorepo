@@ -2,6 +2,8 @@ import './app.scss';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ResponsiveHOC, { ResponsiveMaster, generateGiantSquareDetails } from 'responsive';
+import { Route, Link } from 'react-router-dom';
+
 // import { withRouter } from 'react-router-dom';
 // import { connect } from 'react-redux';
 // import styled from 'styled-components';
@@ -19,6 +21,55 @@ class Asdf extends Component {
 }
 Asdf.propTypes = {};
 
+const buttonGroups = {};
+function makeButtonGroupComponent(/*{
+  headline, shortHeadline, icon, buttons
+}*/) {
+  class ButtonGroup extends Component {
+    constructor() {
+      super();
+      this.state = {
+      };
+    }
+    render() {
+      return (
+        <BernieAppButtonGroup
+          match={this.props.match}
+          headline="Photo from:"
+          shortHeadline="import"
+          icon="photo_camera"
+          buttons={[
+            {
+              className: 'importFbPhotoButton',
+              text: 'Facebook',
+            },
+            {
+              className: 'cameraUploadizer',
+              text: 'Camera',
+            },
+            {
+              className: 'urlUploadizer',
+              text: 'URL',
+            },
+            {
+              className: 'storageUploadizer',
+              text: 'Storage',
+            },
+          ]}
+        />
+      );
+    }
+  }
+  ButtonGroup.propTypes = {};
+  return ButtonGroup;
+}
+
+const ImportButtonGroup = makeButtonGroupComponent();
+
+buttonGroups.import = ImportButtonGroup;
+
+
+
 class Modal extends Component {
   constructor() {
     super();
@@ -30,6 +81,18 @@ class Modal extends Component {
   }
 }
 Modal.propTypes = {};
+
+class ImportModal extends Component {
+  constructor() {
+    super();
+    this.state = {
+    };
+  }
+  render() {
+    return (<Modal><ImportButtonGroup /></Modal>);
+  }
+}
+ImportModal.propTypes = {};
 
 // This component exists because its el had a class of 'bodyInner'
 // and this was affected by:
@@ -295,15 +358,19 @@ class BernieAppButtonGroup extends Component {
         })}
       </div>
     );
-
-    return (
+    const match = this.props.match;
+    const linkUrl = match && match.url ? `${match.url}/${this.props.shortHeadline}` : '/bernie';
+    console.log(this.props.shortHeadline || this.props);
+    return (      
       <div className={`app_body_rightPillar_section_subsection ${this.props.className}`}>
         <div className="buttonGroup">
-          <div className="section_header">
-            {shortHeadline}
-            {icon}
-            {headline}
-          </div>
+          <Link to={linkUrl} className="section_header">
+            <div >
+              {shortHeadline}
+              {icon}
+              {headline}
+            </div>
+          </Link>
           {buttons}
         </div>
       </div>
@@ -365,7 +432,17 @@ BernieAppPod.propTypes = {
 
 
 
-
+class Carnitas extends Component {
+  constructor() {
+    super();
+    this.state = {
+    };
+  }
+  render() {
+    return (<div>carnitas</div>);
+  }
+}
+Carnitas.propTypes = {};
 
 class Bernie extends Component {
   constructor() {
@@ -407,28 +484,8 @@ class Bernie extends Component {
                     />
                   </BernieAppPod>
                   <BernieAppPod className="section_photo featured">
-                    <BernieAppButtonGroup
-                      headline="Photo from:"
-                      shortHeadline="import"
-                      icon="photo_camera"
-                      buttons={[
-                        {
-                          className: 'importFbPhotoButton',
-                          text: 'Facebook',
-                        },
-                        {
-                          className: 'cameraUploadizer',
-                          text: 'Camera',
-                        },
-                        {
-                          className: 'urlUploadizer',
-                          text: 'URL',
-                        },
-                        {
-                          className: 'storageUploadizer',
-                          text: 'Storage',
-                        },
-                      ]}
+                    <ImportButtonGroup
+                      match={this.props.match}
                     />
                   </BernieAppPod>
                   <BernieAppPod className="section_design">
@@ -439,6 +496,7 @@ class Bernie extends Component {
                     />
                     <BernieAppButtonGroup
                       className="editSubsection"
+                      shortHeadline="edit"
                       headline="Edit:"
                       icon="transform"
                       buttons={[
@@ -470,9 +528,11 @@ class Bernie extends Component {
             </BernieApp>
             <BernieDisclaimer />
           </BernieHomeLayout>
-          <Modal>
-            <p>asdfadsf</p>
-          </Modal>
+
+          <Route
+            path={this.props.match.url + '/import'}
+            component={ImportModal}
+          />
         </BernieHomeScreen>
 
       </ResponsiveMaster>

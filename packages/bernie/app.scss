@@ -666,6 +666,8 @@ $headerTopHeight:$appPad*5;
 }
 .section{
 	&_header{
+		display: block;
+		text-decoration: none;
 		line-height:$appPad*2;
 		color:$white;
 		padding-bottom: $appPad/2;
