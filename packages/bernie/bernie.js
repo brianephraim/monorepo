@@ -21,9 +21,9 @@ class Asdf extends Component {
 }
 Asdf.propTypes = {};
 
-const buttonGroups = {};
-function makeButtonGroupComponent(/*{
-  headline, shortHeadline, icon, buttons
+const buttonGroupComponents = {};
+function makeButtonGroupComponent( options/*{
+  headline,// shortHeadline, icon, buttons
 }*/) {
   class ButtonGroup extends Component {
     constructor() {
@@ -32,67 +32,125 @@ function makeButtonGroupComponent(/*{
       };
     }
     render() {
-      return (
+      const ButtonGroup = (
         <BernieAppButtonGroup
           match={this.props.match}
-          headline="Photo from:"
-          shortHeadline="import"
-          icon="photo_camera"
-          buttons={[
-            {
-              className: 'importFbPhotoButton',
-              text: 'Facebook',
-            },
-            {
-              className: 'cameraUploadizer',
-              text: 'Camera',
-            },
-            {
-              className: 'urlUploadizer',
-              text: 'URL',
-            },
-            {
-              className: 'storageUploadizer',
-              text: 'Storage',
-            },
-          ]}
+          {...options}
         />
       );
+
+      if (this.props.isModal) {
+        return (
+          <div className="modal">
+            {ButtonGroup}
+          </div>
+        );
+      }
+      return ButtonGroup;
     }
   }
   ButtonGroup.propTypes = {};
   return ButtonGroup;
 }
 
-const ImportButtonGroup = makeButtonGroupComponent();
+const ImportButtonGroup = makeButtonGroupComponent({
+  urlFragment: 'import',
+  headline: 'Photo from:',
+  shortHeadline: 'import',
+  icon: 'photo_camera',
+  buttons: [
+    {
+      className: 'importFbPhotoButton',
+      text: 'Facebook',
+    },
+    {
+      className: 'cameraUploadizer',
+      text: 'Camera',
+    },
+    {
+      className: 'urlUploadizer',
+      text: 'URL',
+    },
+    {
+      className: 'storageUploadizer',
+      text: 'Storage',
+    },
+  ]
+});
+buttonGroupComponents.import = ImportButtonGroup;
 
-buttonGroups.import = ImportButtonGroup;
+const ShareButtonGroup = makeButtonGroupComponent({
+  urlFragment: 'share',
+  headline: 'Share this via:',
+  shortHeadline: 'share',
+  icon: 'share',
+  buttons: [
+    {
+      className: 'shareFbPhotoButton',
+      text: 'Facebook photo',
+    },
+    {
+      className: 'shareFbWallButton',
+      text: 'Facebook post',
+    },
+    {
+      className: 'twitterBigButton mainButton',
+      text: 'Tweet',
+      aHref: 'https://twitter.com/intent/tweet?url=xXxXxXxXxXxXxXxXxXxXxXxX&via=bernieselfie&hashtags=BernieSanders%2Cfeelthebern%2Cbernieselfie&related=BernieSander',
+    },
+  ]
+});
+buttonGroupComponents.share = ShareButtonGroup;
 
+const EditBrushButtonGroup = makeButtonGroupComponent({
+  urlFragment: 'editBrush',
+  className: 'editMicroSubsection microSubsection',
+  shortHeadline: 'edit',
+  icon: 'brush'
+});
+buttonGroupComponents.editBrush = EditBrushButtonGroup;
 
+const EditSizeButtonGroup = makeButtonGroupComponent({
+  urlFragment: 'editSize',
+  className: 'editSubsection',
+  shortHeadline: 'edit',
+  headline: 'Edit:',
+  icon: 'transform',
+  buttons: [
+    {
+      className: 'editSizeAndPositionButton',
+      text: 'Size and position',
+    },
+  ]
+});
+buttonGroupComponents.editSize = EditSizeButtonGroup;
 
-class Modal extends Component {
-  constructor() {
-    super();
-    this.state = {
-    };
+const EditDesignButtonGroup = makeButtonGroupComponent({
+  urlFragment: 'editDesign',
+  className: 'designSubsection',
+  shortHeadline: 'edit',
+  headline: 'Change design:',
+  icon: 'brush',
+  buttons: [
+    {
+      className: 'moreimageOptionsHome',
+      text: 'more options',
+    },
+    {
+      className: 'templateModalButton',
+      text: 'upload a template',
+    }
+  ]
+});
+buttonGroupComponents.editDesign = EditDesignButtonGroup;
+const objectKeysButtonGroupComponents = Object.keys(buttonGroupComponents);
+const buttonGroupComponentsRegexArrayString = objectKeysButtonGroupComponents.reduce((regexArray, componentKey, i) => {
+  regexArray.push(componentKey);
+  if(i === objectKeysButtonGroupComponents.length - 1) {
+    return regexArray.join('|');
   }
-  render() {
-    return (<div className="modal">{this.props.children}</div>);
-  }
-}
-Modal.propTypes = {};
-
-class ImportModal extends Component {
-  constructor() {
-    super();
-    this.state = {
-    };
-  }
-  render() {
-    return (<Modal><ImportButtonGroup /></Modal>);
-  }
-}
-ImportModal.propTypes = {};
+  return regexArray;
+}, []);
 
 // This component exists because its el had a class of 'bodyInner'
 // and this was affected by:
@@ -122,12 +180,45 @@ class BernieHomeLayout extends Component {
     };
   }
   render() {
-    return (<div className="homeLayout">{this.props.children}</div>);
+    return (
+      <div className="homeLayout">
+        <BernieApp>
+          <BernieContributeBanner />
+          <BernieAppHeader />
+          <BernieAppBody>
+            <BernieAppHero />
+            <BernieAppBusiness>
+              <BernieAppPod className="section_share">
+                <ShareButtonGroup
+                  match={this.props.match}
+                />
+              </BernieAppPod>
+              <BernieAppPod className="section_photo featured">
+                <ImportButtonGroup
+                  match={this.props.match}
+                />
+              </BernieAppPod>
+              <BernieAppPod className="section_design">
+                <EditBrushButtonGroup
+                  match={this.props.match}
+                />
+                <EditSizeButtonGroup
+                  match={this.props.match}
+                />
+                <EditDesignButtonGroup
+                  match={this.props.match}
+                />
+              </BernieAppPod>
+            </BernieAppBusiness>
+          </BernieAppBody>
+        </BernieApp>
+        <BernieDisclaimer />
+      </div>);
   }
 }
 BernieHomeLayout.propTypes = {};
 
-// This component distinguishes the photo-plus-buttongroups from disclaimer.
+// This component distinguishes the photo-plus-buttonGroupComponents from disclaimer.
 
 class BernieApp extends Component {
   constructor() {
@@ -306,6 +397,10 @@ class BernieAppHero extends Component {
 }
 BernieContributeBanner.propTypes = {};
 
+const Div = (props) => {
+  return (<div {...props} >{props.children}</div>);
+};
+
 class BernieAppButtonGroup extends Component {
   constructor() {
     super();
@@ -359,18 +454,19 @@ class BernieAppButtonGroup extends Component {
       </div>
     );
     const match = this.props.match;
-    const linkUrl = match && match.url ? `${match.url}/${this.props.shortHeadline}` : '/bernie';
-    console.log(this.props.shortHeadline || this.props);
+
+    const splitted = match.url.split('/');
+    const LinkOrDiv = match.url.split('/').reverse()[0] === this.props.urlFragment ? Div : Link;
+    const linkUrl = match && match.url ? `${match.url}/${this.props.urlFragment}` : '/bernie';
+    console.log(linkUrl.indexOf(``))
     return (      
       <div className={`app_body_rightPillar_section_subsection ${this.props.className}`}>
         <div className="buttonGroup">
-          <Link to={linkUrl} className="section_header">
-            <div >
-              {shortHeadline}
-              {icon}
-              {headline}
-            </div>
-          </Link>
+          <LinkOrDiv to={linkUrl} className="section_header">
+            {shortHeadline}
+            {icon}
+            {headline}
+          </LinkOrDiv>
           {buttons}
         </div>
       </div>
@@ -430,20 +526,6 @@ BernieAppPod.propTypes = {
 
 };
 
-
-
-class Carnitas extends Component {
-  constructor() {
-    super();
-    this.state = {
-    };
-  }
-  render() {
-    return (<div>carnitas</div>);
-  }
-}
-Carnitas.propTypes = {};
-
 class Bernie extends Component {
   constructor() {
     super();
@@ -454,84 +536,28 @@ class Bernie extends Component {
     return (
       <ResponsiveMaster name="bernie">
         <BernieHomeScreen>
-          <BernieHomeLayout>
-            <BernieApp>
-              <BernieContributeBanner />
-              <BernieAppHeader />
-              <BernieAppBody>
-                <BernieAppHero />
-                <BernieAppBusiness>
-                  <BernieAppPod className="section_share">
-                    <BernieAppButtonGroup
-                      headline="Share this via:"
-                      shortHeadline="share"
-                      icon="share"
-                      buttons={[
-                        {
-                          className: 'shareFbPhotoButton',
-                          text: 'Facebook photo',
-                        },
-                        {
-                          className: 'shareFbWallButton',
-                          text: 'Facebook post',
-                        },
-                        {
-                          className: 'twitterBigButton mainButton',
-                          text: 'Tweet',
-                          aHref: 'https://twitter.com/intent/tweet?url=xXxXxXxXxXxXxXxXxXxXxXxX&via=bernieselfie&hashtags=BernieSanders%2Cfeelthebern%2Cbernieselfie&related=BernieSander',
-                        },
-                      ]}
-                    />
-                  </BernieAppPod>
-                  <BernieAppPod className="section_photo featured">
-                    <ImportButtonGroup
-                      match={this.props.match}
-                    />
-                  </BernieAppPod>
-                  <BernieAppPod className="section_design">
-                    <BernieAppButtonGroup
-                      className="editMicroSubsection microSubsection"
-                      shortHeadline="edit"
-                      icon="brush"
-                    />
-                    <BernieAppButtonGroup
-                      className="editSubsection"
-                      shortHeadline="edit"
-                      headline="Edit:"
-                      icon="transform"
-                      buttons={[
-                        {
-                          className: 'editSizeAndPositionButton',
-                          text: 'Size and position',
-                        },
-                      ]}
-                    />
-                    <BernieAppButtonGroup
-                      className="designSubsection"
-                      headline="Change design:"
-                      shortHeadline="edit"
-                      icon="brush"
-                      buttons={[
-                        {
-                          className: 'moreimageOptionsHome',
-                          text: 'more options',
-                        },
-                        {
-                          className: 'templateModalButton',
-                          text: 'upload a template',
-                        },
-                      ]}
-                    />
-                  </BernieAppPod>
-                </BernieAppBusiness>
-              </BernieAppBody>
-            </BernieApp>
-            <BernieDisclaimer />
-          </BernieHomeLayout>
-
+          
           <Route
-            path={this.props.match.url + '/import'}
-            component={ImportModal}
+            path={ this.props.match.url}
+            exact
+            render={(props) => {
+              const Comp = buttonGroupComponents[props.match.params.foo];
+              return (
+                <BernieHomeLayout {...this.props}/>
+              );
+            }}
+          />           
+          <Route
+            path={ `${this.props.match.url}/:foo(${buttonGroupComponentsRegexArrayString})`}
+            render={(props) => {
+              const Comp = buttonGroupComponents[props.match.params.foo];
+              return (
+                <Comp
+                  isModal={true}
+                  {...props}
+                />
+              );
+            }}
           />
         </BernieHomeScreen>
 

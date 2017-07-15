@@ -1,5 +1,5 @@
-import aaa8 from '@defualt/aaa8';
-console.log('asdfx',aaa8);
+// import aaa8 from '@defualt/aaa8';
+// console.log('asdfx',aaa8);
 
 const {
   createNumberIncrementArray,
