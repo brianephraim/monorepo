@@ -9,6 +9,8 @@
     "testpackages": "./packages/dev_env/bin/devenv.js --env=test",
     "test": "./packages/dev_env/bin/devenv.js --env=test --testdevenv",
     "dev": "./packages/dev_env/bin/devenv.js",
+    "bern2": "npm run dev -- --server='/Users/brianephraim/Sites/monorepo/packages/bernieserver/bernieserver'",
+    "bern": "npm run devenvnode /Users/brianephraim/Sites/monorepo/packages/bernieserver/bernieserver.js",
     "devusedist": "npm run dev -- --use-dist",
     "item": "npm_run_item(){ (./packages/dev_env/bin/devenv.js --item=$1) };npm_run_item",
     "devenvnode": "./packages/dev_env/bin/devenv-node.js",

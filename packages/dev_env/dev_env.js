@@ -18,5 +18,18 @@ if (item) {
 } else if (env === 'build') {
   webpackRunCompiler(webpackMakeCompiler);
 } else {
+  // if (argv.server) {
+  //   const p = '/Users/brianephraim/Sites/monorepo/packages/bernieserver/bernieserver';
+  //   System.import(p).then((someServer) => {
+  //   // System.import(argv.server + '.express.js').then((someServer) => {
+  //     console.log('someServersomeServersomeServersomeServer',someServer);
+  //     serve(serv);
+  //   });
+  // }
+  // else {
+  //   serve();
+  // }
   serve();
 }
+
+export { serve };
