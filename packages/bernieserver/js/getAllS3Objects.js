@@ -1,6 +1,6 @@
 var aws = require('aws-sdk');
 var jD = require('jquery-deferred');
-var getS3ObjectData = require('./getS3ObjectData')();
+var getS3ObjectData = require('./getS3ObjectData');
 module.exports = function(s){
   var dfdMain = jD.Deferred();
   var promises = [];

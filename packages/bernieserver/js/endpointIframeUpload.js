@@ -1,5 +1,6 @@
-module.exports = function(c){
-  c.app.post('/uploadsimple', function(req, res, next) {
+import ensureLeadingSlash from '@defualt/ensure-leading-slash';
+export default ({app,accessKeyId,secretAccessKey,Bucket, urlPattern}) => {
+  app.post(urlPattern, function(req, res, next) {
     var parseUrl = require('url').parse;
     var normalizeImageFileData = require('./normalizeImageFileData')({
       prepareModuleWithDefaults: true,
@@ -19,16 +20,16 @@ module.exports = function(c){
     });
     var uploadToS3 = require('./uploadToS3')({
       prepareModuleWithDefaults: true,
-      accessKeyId:c.accessKeyId,
-      secretAccessKey:c.secretAccessKey,
-      Bucket: c.Bucket
+      accessKeyId:accessKeyId,
+      secretAccessKey:secretAccessKey,
+      Bucket: Bucket
     });
     var apiRequestIntoBufferData = require('./apiRequestIntoBufferData');
     apiRequestIntoBufferData(req).then(normalizeImageFileData).then(uploadToS3).then(function(r){
       var details = {
         url:r.url
       };
-      c.app.render('iframeuploadbutton.html',{
+      app.render('iframeuploadbutton.html',{
         lastData:{
             width: r.width,
             height: r.height,

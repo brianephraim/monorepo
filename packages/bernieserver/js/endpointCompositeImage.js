@@ -1,9 +1,9 @@
-var aws = require('aws-sdk');
-var generateUrlRegexNamespace = require('./generateUrlRegexNamespace');
-var getAllS3Objects = require('./getAllS3Objects');
-var getS3ObjectData = require('./getS3ObjectData')();
-var createCompositeBuffer = require('./createCompositeBuffer');
-var parseUrl = require('url').parse;
+import aws from 'aws-sdk';
+import {parse as parseUrl} from 'url';
+import ensureLeadingSlash from '@defualt/ensure-leading-slash';
+import getAllS3Objects from './getAllS3Objects';
+import getS3ObjectData from './getS3ObjectData';
+import createCompositeBuffer from './createCompositeBuffer';
 
 var parseClientCompositeImageUrl = function(url){
   var pathnameSplit = parseUrl(url).pathname.split('/').splice(2,2);
@@ -30,16 +30,16 @@ var parseClientCompositeImageUrl = function(url){
     compositeS3Key:compositeS3Key
   };
 };
-module.exports = function(c){
-  c.app.get(generateUrlRegexNamespace('image\/'), function(req, res) {
+export default ({app,accessKeyId,secretAccessKey,Bucket,urlPattern}) => {
+  app.get(urlPattern, function(req, res) {
     var compositeImageInstructions = parseClientCompositeImageUrl(req.url);
     var s = compositeImageInstructions;
     getS3ObjectData({
       Key:s.compositeS3Key,
       resolveNullOn404:true,
-      accessKeyId:c.accessKeyId,
-      secretAccessKey:c.secretAccessKey,
-      Bucket: c.Bucket
+      accessKeyId:accessKeyId,
+      secretAccessKey:secretAccessKey,
+      Bucket: Bucket
     }).then(function(data){
       if(!data){
         console.log('COMPOSITE IMAGE DOES NOT EXIST');
@@ -57,9 +57,9 @@ module.exports = function(c){
               }
             }
           },
-          Bucket:c.Bucket,
-          accessKeyId: c.accessKeyId,
-          secretAccessKey: c.secretAccessKey
+          Bucket:Bucket,
+          accessKeyId: accessKeyId,
+          secretAccessKey: secretAccessKey
         })
         .then(createCompositeBuffer.bind(null,s.overlaySettings))
         .then(function(bufferData){
@@ -67,11 +67,11 @@ module.exports = function(c){
           res.write(bufferData.Body,'binary');
           res.end(null, 'binary');
 
-          aws.config.update({accessKeyId: c.accessKeyId , secretAccessKey: c.secretAccessKey });
+          aws.config.update({accessKeyId: accessKeyId , secretAccessKey: secretAccessKey });
           var s3 = new aws.S3(); 
           s3.putObject(
             {
-                Bucket: c.Bucket,
+                Bucket: Bucket,
                 Key: s.compositeS3Key,
                 Body: bufferData.Body,
                 ContentType: 'image/jpeg',

@@ -7,6 +7,10 @@
       },
       {
         "test": {},
+        "use": "imports-loader?define=>false"
+      },
+      {
+        "test": {},
         "loader": "babel-loader",
         "exclude": {}
       }
@@ -32,10 +36,10 @@
     "main": "/Users/brianephraim/Sites/monorepo/packages/mono-to-multirepo/mono-to-multirepo.js"
   },
   "output": {
-    "filename": "D6522943-F371-4AFC-8698-3C9D6922E2E8.js",
+    "filename": "75f99b94-9a3f-4d21-9848-1cd90b7c6ba9XXX.js",
     "path": "/var/folders/t0/dms578js4lg8x73s9jzmvcp40000gn/T"
   },
-  "devtool": "source-map",
+  "devtool": "inline-source-map",
   "target": "node",
   "node": {
     "__dirname": false,

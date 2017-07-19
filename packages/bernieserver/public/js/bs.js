@@ -758,7 +758,7 @@ window.bs.setupNewModalManager = function($parentToInject){
         var self = this;
         bs.loader.load();
         if(!offline){
-            Webcam.upload(data_uri, '/uploadsimple', function(code, result) {
+            Webcam.upload(data_uri, '/bernieBackend/uploadsimple', function(code, result) {
                 if(code === 200){
                     result = JSON.parse(result);
                     var formattedResponse = self.formatUrlAndResponseForCropModal({result:result});
@@ -1292,16 +1292,17 @@ window.bs.s3Stuff = (function(){
         request.
     */
     function get_signed_request(file,folder,mustBeSquare){
-        console.log(2,"/get_s3_signed_upload_url?file_name="+filename+"&file_type="+file.type);
+        console.log(2,"/bernieBackend/get_s3_signed_upload_url?file_name="+filename+"&file_type="+file.type);
         folder = !!folder ? folder : 'selfies';
         var dfd = jQuery.Deferred();
         var xhr = new XMLHttpRequest();
         var filename = file.name;
         filename = folder + '/' + filename;
-        xhr.open("GET", "/get_s3_signed_upload_url?file_name="+filename+"&file_type="+file.type);
+        xhr.open("GET", "/bernieBackend/get_s3_signed_upload_url?file_name="+filename+"&file_type="+file.type);
         xhr.onreadystatechange = function(){
             if(xhr.readyState === 4){
                 if(xhr.status === 200){
+                    console.log(xhr.responseText);
                     var response = JSON.parse(xhr.responseText);
                     console.log('responseresponseresponse',response);
                     upload_file(file, response.signed_request, response.url, response).then(getNormalizedImageInfo(mustBeSquare)).then(dfd.resolve);
@@ -1325,7 +1326,7 @@ window.bs.s3Stuff = (function(){
             console.log(3,"/get_normalized_image_info?image_url="+encodeURIComponent(image_url)+"&must_be_square="+mustBeSquare);
             var dfd = jQuery.Deferred();
             var xhr = new XMLHttpRequest();
-            xhr.open("GET", "/get_normalized_image_info?image_url="+encodeURIComponent(image_url)+"&must_be_square="+mustBeSquare);
+            xhr.open("GET", "/bernieBackend/get_normalized_image_info?image_url="+encodeURIComponent(image_url)+"&must_be_square="+mustBeSquare);
             xhr.onreadystatechange = function(){
                 if(xhr.readyState === 4){
                     if(xhr.status === 200){

@@ -4,16 +4,17 @@
  * also rotates exif
  * responds with a new image url
 */
-var aws = require('aws-sdk');
-var jD = require('jquery-deferred');
-var mongooseStuff = require('./mongooseStuff').x;
-module.exports = function(c){
+import aws from 'aws-sdk';
+import jD from 'jquery-deferred';
+import { x as mongooseStuff } from './mongooseStuff';
+
+export default ({accessKeyId,secretAccessKey,Bucket,app,userTemplates, urlPattern}) => {
   var urlToFileData = require('./urlToFileData');
   var uploadToS3 = require('./uploadToS3')({
     prepareModuleWithDefaults: true,
-    accessKeyId:c.accessKeyId,
-    secretAccessKey:c.secretAccessKey,
-    Bucket:c.Bucket
+    accessKeyId:accessKeyId,
+    secretAccessKey:secretAccessKey,
+    Bucket:Bucket
   });
 
   var parseUrl = require('url').parse;
@@ -58,12 +59,12 @@ module.exports = function(c){
       s.Key = deep(s,'originalFilename');
       return s;
     },
-    accessKeyId: c.accessKeyId,
-    secretAccessKey: c.secretAccessKey,
-    Bucket: c.Bucket
+    accessKeyId: accessKeyId,
+    secretAccessKey: secretAccessKey,
+    Bucket: Bucket
   });
 
-  c.app.get('/get_normalized_image_info', function(req, res){  
+  app.get(urlPattern, function(req, res){  
     var originalUrl = decodeURIComponent(req.query.image_url);
     var mustBeSquare = req.query.must_be_square === 'true';
 
@@ -98,7 +99,7 @@ module.exports = function(c){
                 templateHeight: fileData.height,
                 templateWidth: fileData.width
               };
-              c.userTemplates.push(userTemplateModel);
+              userTemplates.push(userTemplateModel);
               mongooseStuff.MakeUserTemplate(userTemplateModel);
             }
           });

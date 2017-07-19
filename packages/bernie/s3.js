@@ -30,7 +30,7 @@ function get_signed_request(file,folder,mustBeSquare){
     var xhr = new XMLHttpRequest();
     var filename = file.name;
     filename = folder + '/' + filename;
-    xhr.open("GET", "/get_s3_signed_upload_url?file_name="+filename+"&file_type="+file.type);
+    xhr.open("GET", "/bernieBackend/get_s3_signed_upload_url?file_name="+filename+"&file_type="+file.type);
     xhr.onreadystatechange = function(){
       if(xhr.readyState === 4){
         if(xhr.status === 200){
@@ -55,7 +55,7 @@ function makeGetNormalizedImageInfo(mustBeSquare){
   return function(image_url){
     return new Promise(function(resolve, reject) {
       var xhr = new XMLHttpRequest();
-      xhr.open("GET", "/get_normalized_image_info?image_url="+encodeURIComponent(image_url)+"&must_be_square="+mustBeSquare);
+      xhr.open("GET", "/bernieBackend/get_normalized_image_info?image_url="+encodeURIComponent(image_url)+"&must_be_square="+mustBeSquare);
       xhr.onreadystatechange = function(){
         if(xhr.readyState === 4){
           if(xhr.status === 200){

@@ -1,0 +1,13 @@
+{
+  "name": "@defualt/ensure-leading-slash",
+  "version": "0.0.1",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "start": "devenv"
+  },
+  "devDependencies": {
+    "@defualt/dev_env": "^0.0.14"
+  }
+}

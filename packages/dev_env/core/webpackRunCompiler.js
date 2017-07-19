@@ -6,7 +6,6 @@ export default (webpackMakeCompiler) => {
       if (err.details) {
         console.error(err.details);
       }
-      return;
     }
 
     const info = stats.toJson();
