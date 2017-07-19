@@ -1,2 +1,5 @@
 console.log('BERNIE SERVER EXPRESS HERE!!!');
-export 'bernieserver.express here!';
+
+import serve from './bernieExpressServer';
+
+export default serve;

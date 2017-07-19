@@ -59,15 +59,17 @@ var isNode= (function(){
 		}
 	];
 	exports.standardModes = standardModes;
-	exports.standardModesRegex = (function(){
+	exports.getStandardModesRegex = function(nameSpace){
 		var pipedString = ''
 		for(var i =0,l=exports.standardModes.length;i<l;i++){
 			var mode = exports.standardModes[i].mode;
-			pipedString += i > 0 ? '|' + mode : mode;
+			mode = nameSpace ? (nameSpace + '\/' + mode) : mode;
+			console.log('mode',mode);
+			pipedString += i > 0 ? ('|' + mode) : mode;
 
 		}
 		return new RegExp('^[/]('+pipedString+')[/](.+)');
-	})();
+	};
 
 	exports.oldModes = (function(){
 		var a = []
@@ -102,15 +104,23 @@ var isNode= (function(){
 
 	
 
-	var DeriveUrlInfo = function(pathname,offline){
-		this.init(pathname,offline)
+	var DeriveUrlInfo = function({pathname,offline,nameSpace}){
+		this.init({pathname,offline,nameSpace})
 		
 		
 	};
-	DeriveUrlInfo.prototype.init = function(pathname,offline){
+	DeriveUrlInfo.prototype.init = function({pathname,offline,nameSpace}){
+		this.nameSpace = nameSpace;
+		this.nameSpaceWithLeadingSlash = nameSpace ? `/${nameSpace}` : '';
+		var nameSpaceWithLeadingSlash = this.nameSpaceWithLeadingSlash;
 		this.offline = offline;
 		var defaultPathname = '/h3/zephyr1476401787491/180_3_218_218_553_553/';
-		pathname = !!pathname ? pathname : defaultPathname;
+		pathname = !!pathname !== 0 ? pathname : defaultPathname;
+		pathname = pathname === nameSpaceWithLeadingSlash || pathname === nameSpaceWithLeadingSlash + '/' ? defaultPathname : pathname;
+		if (pathname && pathname.indexOf(this.nameSpaceWithLeadingSlash) === 0) {
+			pathname = pathname.replace(this.nameSpaceWithLeadingSlash, '');
+		}
+		pathname = pathname ? pathname : defaultPathname;
 
 		this.slashSplit = pathname.split('/');
 		if(pathname.indexOf('/f/') === 0){
@@ -135,7 +145,8 @@ var isNode= (function(){
 			this.customTemplate = 'hairglasses';
 		}
 
-		this.pathname = pathname;
+		this.pathname = this.nameSpaceWithLeadingSlash + pathname;
+		console.log('this.slashSplit',this.slashSplit);
 		this.coords = this.slashSplit[3].split('_');
 
 		for(var i=0,l=this.coords.length;i<l;i++){
@@ -313,8 +324,8 @@ var isNode= (function(){
         }
         return imgsHtml;
 	};
-	exports.deriveUrlInfo = function(pathname,offline){
-		return new DeriveUrlInfo(pathname,offline);
+	exports.deriveUrlInfo = function({pathname,offline,nameSpace}){
+		return new DeriveUrlInfo({pathname,offline,nameSpace});
 	};
 
 })(typeof exports === 'undefined'? this[mymoduleName]={}: exports);

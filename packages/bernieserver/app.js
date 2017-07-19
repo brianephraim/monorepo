@@ -214,3 +214,5 @@ mongooseStuff.GetUserTemplatesAll().always(function(data){
  * Start the server to handle incoming requests.
 */
 app.listen(app.get('port'));
+
+module.exports = app;

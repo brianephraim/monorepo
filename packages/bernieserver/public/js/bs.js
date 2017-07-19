@@ -424,7 +424,7 @@ window.bs.setupNewModalManager = function($parentToInject){
         var crop = data.crop;
         var mode = typeof data.mode !== 'undefined' ? data.mode : urlInfo.mode;
 
-        var urlInfoDeriver = mymodule.deriveUrlInfo(urlInfo.pathname);
+        var urlInfoDeriver = mymodule.deriveUrlInfo({pathname: urlInfo.pathname, nameSpace: 'bernieBackend'} );
         var settings = {
             x:crop.x,
             y:crop.y,
@@ -533,7 +533,7 @@ window.bs.setupNewModalManager = function($parentToInject){
                         //     templateHeight: result.height,
                         //     templateWidth: result.width
                         // };
-                        var urlInfoDeriver = mymodule.deriveUrlInfo(urlInfo.pathname);
+                        var urlInfoDeriver = mymodule.deriveUrlInfo({pathname: urlInfo.pathname, nameSpace: 'bernieBackend'});
                         urlInfoDeriver.makeCustomUrl({
                             mode:'ut',
                             customTemplate: response.Key.replace('.png','').replace('decorations/','')
@@ -1266,6 +1266,7 @@ window.bs.uploadizer = (function(){
 //=============
 window.bs.s3Stuff = (function(){
     function upload_file(file, signed_request, url, response){
+        console.log(1,file,signed_request);
         var dfd = jQuery.Deferred();
         var xhr = new XMLHttpRequest();
         xhr.open("PUT", signed_request);
@@ -1291,6 +1292,7 @@ window.bs.s3Stuff = (function(){
         request.
     */
     function get_signed_request(file,folder,mustBeSquare){
+        console.log(2,"/get_s3_signed_upload_url?file_name="+filename+"&file_type="+file.type);
         folder = !!folder ? folder : 'selfies';
         var dfd = jQuery.Deferred();
         var xhr = new XMLHttpRequest();
@@ -1301,6 +1303,7 @@ window.bs.s3Stuff = (function(){
             if(xhr.readyState === 4){
                 if(xhr.status === 200){
                     var response = JSON.parse(xhr.responseText);
+                    console.log('responseresponseresponse',response);
                     upload_file(file, response.signed_request, response.url, response).then(getNormalizedImageInfo(mustBeSquare)).then(dfd.resolve);
                 }
                 else{
@@ -1319,6 +1322,7 @@ window.bs.s3Stuff = (function(){
 
     function getNormalizedImageInfo(mustBeSquare){
         return function(image_url){
+            console.log(3,"/get_normalized_image_info?image_url="+encodeURIComponent(image_url)+"&must_be_square="+mustBeSquare);
             var dfd = jQuery.Deferred();
             var xhr = new XMLHttpRequest();
             xhr.open("GET", "/get_normalized_image_info?image_url="+encodeURIComponent(image_url)+"&must_be_square="+mustBeSquare);

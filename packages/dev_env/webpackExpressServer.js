@@ -4,7 +4,7 @@ import express from 'express';
 import url from 'url';
 import webpackMakeCompiler from './webpackMakeCompiler';
 
-export default (app, port = 3000) => {
+export default ({app, port = 3000}) => {
   // This module either extends an existing express app
   // or creates a new express app
   let appIsBrandNew = false;
