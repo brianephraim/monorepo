@@ -153,7 +153,8 @@ function enhance(originalConfig, libraryName, isBuild, dirRoot, username, output
 
   const config = {
     ...originalConfig,
-    devtool: isBuild ? 'source-map' : 'cheap-module-eval-source-map',
+    // devtool: isBuild ? 'source-map' : 'cheap-module-eval-source-map',
+    devtool: 'source-map',
     module,
     plugins,
   };

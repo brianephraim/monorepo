@@ -44,11 +44,11 @@ class BernieAppButtonGroup extends Component {
           let btnInner;
           let className = 'buttonGroup_button button';
           if (btnDetails.component) {
-            const Comp = btnDetails.component
+            const Comp = btnDetails.component;
             btnInner = (
               <Comp
                 className={btnDetails.className}
-                onSuccess={btnDetails.onSuccess}
+                onSuccess={btnDetails.onSuccess.bind(this)}
               >
                 {btnDetails.text}
               </Comp>
@@ -150,8 +150,18 @@ const ImportButtonGroup = makeButtonGroupComponent({
       className: 'cameraUploadizer',
       text: 'Camera',
       component: Upload,
-      onSuccess: () => {
-        console.log('WE DID IT');
+      onSuccess: function(imgData) {
+        console.log(this);
+        /*
+          Key: "selfies/a-brian14744733088711500480799004.png",
+          failingSquare: undefined,
+          height: 1280,
+          public_id:"a-brian14744733088711500480799004.png",
+          url:"https://bernieapp.s3.amazonaws.com/selfies/a-brian14744733088711500480799004.png",
+          width:
+          960
+        */
+        console.log('WE DID IT',imgData);
       }
     },
     {

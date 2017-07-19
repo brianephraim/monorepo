@@ -3,6 +3,7 @@ import React from 'react';
 import { render } from 'react-dom';
 import Routing from './Routing';
 import configureStore from './configureStore';
+import './reset.css';
 
 // import '#./asdf';
 

@@ -4,6 +4,14 @@ import PropTypes from 'prop-types';
 import bind_here from 'bind_here';
 import { initUpload } from './s3';
 
+const bs = {
+    loader: {
+        load: () => {},
+        unload: () => {},
+    }
+};
+const offline = false;
+
 var uploadizerId = 0;
 class Upload extends Component {
   constructor() {
@@ -16,7 +24,7 @@ class Upload extends Component {
     Object.assign(this, this.methodsBoundHere);
   }
   handleChange(e) {
-    console.log('asdfasdf', e.target.files);
+    console.log('asdfasdf', e.target.files,);
     const file = e && e.target && e.target.files && e.target.files[0];
     console.log(file);
     /*
@@ -40,23 +48,23 @@ class Upload extends Component {
       ""
     */
     // e.target.value ----- C:\fakepath\dude-with-hat.JPG
-    this.props.onSuccess();
-    return;
+    // this.props.onSuccess();
+    // return;
     bs.loader.load();
     var myAjax;
     if(!offline){
-        myAjax = initUpload(self.$input,self.folder,self.mustBeSquare);
-        if(self.ajaxOptions.success){
+        myAjax = initUpload(file,self.folder,self.mustBeSquare);
+        if(this.props.onSuccess){
             myAjax.then(this.props.onSuccess);
         }
-        if(self.ajaxOptions.error){
+        if(this.props.onError){
             myAjax.catch(this.props.onError);
         }
     } else {
       myAjax = {
         then:(cb) => {
             setTimeout(() => {
-                if(!!self.ajaxOptions && !!self.ajaxOptions.success){
+                if(this.props.onSuccess){
                     this.props.onSuccess();
                 }
                 cb();
@@ -65,20 +73,20 @@ class Upload extends Component {
         catch:(cb) => { cb(); }
       };
     }
-    myAjax.then(function(){
+    myAjax.then(() => {
         bs.loader.unload();
     });
-    myAjax.catch(function(){
+    myAjax.catch(() => {
         bs.loader.unload();
     });
   }
   handleChangeFallback(e) {
     var self = this;
-    this.$iframe.on('load',function(){
+    this.$iframe.on('load',() => {
         var lastData = self.$iframe.contents().find(".lastData").html();
         lastData = !!lastData ? JSON.parse(lastData) : null;
         if(!!lastData){
-            !!self.ajaxOptions.success ? self.ajaxOptions.success(lastData) : null;
+            !!this.props.onSuccess ? this.props.onSuccess(lastData) : null;
         }
     })
   }

@@ -73,9 +73,15 @@ class ResponsiveElRecords {
     return this.cache[masterName];
   }
   purge(masterName) {
-    this.cache[masterName].prioritySorted.forEach((prioritySortedItem) => {
-      prioritySortedItem.responsibilities.nukeStatus();
-    });
+    if (!this.cache[masterName]) {
+      console.warn('why am i trying to purge ', masterName, 'from', this.cache);
+    } else {
+      this.cache[masterName].prioritySorted.forEach((prioritySortedItem) => {
+        prioritySortedItem.responsibilities.nukeStatus();
+      });
+    }
+    
+    
   }
   registerResponsiveAssessment(
     masterName, priority, assessmentFunction, nukeStatus
@@ -165,22 +171,27 @@ class ResizeRegistry {
     };
   }
   recurseAssessmentFunctions(masterName, cb) {
-    const prioritySorted = responsiveElRecords.cache[masterName].prioritySorted;
-    let i = 0;
-    const l = prioritySorted.length;
-    const r = () => {
-      this.assessAndStyleDeb().then(() => {
-        prioritySorted[i].responsibilities.assessmentFunction(() => {
-          i++;
-          if (i < l) {
-            r();
-          } else {
-            cb && cb();
-          }
+    if (!responsiveElRecords.cache[masterName]) {
+      console.warn('why am i trying to recurseAssessmentFunctions ', masterName, 'from', responsiveElRecords.cache,'.seems occur on "modals" but not the base bernie page.');
+
+    } else {
+      const prioritySorted = responsiveElRecords.cache[masterName].prioritySorted;
+      let i = 0;
+      const l = prioritySorted.length;
+      const r = () => {
+        this.assessAndStyleDeb().then(() => {
+          prioritySorted[i].responsibilities.assessmentFunction(() => {
+            i++;
+            if (i < l) {
+              r();
+            } else {
+              cb && cb();
+            }
+          });
         });
-      });
-    };
-    r();
+      };
+      r();
+    }
   }
 }
 const resizeRegistry = new ResizeRegistry();

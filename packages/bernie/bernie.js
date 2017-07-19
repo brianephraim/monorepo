@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import ResponsiveHOC, { ResponsiveMaster, generateGiantSquareDetails } from 'responsive';
 import { Route, Link } from 'react-router-dom';
 import { buttonGroupComponents, buttonGroupComponentsRegexArrayString, EditDesignButtonGroup, EditSizeButtonGroup, EditBrushButtonGroup, ShareButtonGroup, ImportButtonGroup } from './buttonGroups';
-
+import Cropper from './Cropper';
 // import { withRouter } from 'react-router-dom';
 // import { connect } from 'react-redux';
 // import styled from 'styled-components';
@@ -21,8 +21,6 @@ class Asdf extends Component {
   }
 }
 Asdf.propTypes = {};
-
-
 
 // This component exists because its el had a class of 'bodyInner'
 // and this was affected by:
@@ -333,7 +331,24 @@ class Bernie extends Component {
                 <BernieHomeLayout {...this.props}/>
               );
             }}
-          />           
+          />
+          {[`${this.props.match.url}/crop/:src`,`${this.props.match.url}/crop/:src/:geo`].map((path, i) => 
+            <Route
+              key={i}
+              path={path}
+              render={(props) => {
+                return (
+                  <Cropper
+                    src={props.match.params.src}
+                    geo={props.match.params.geo}
+                    foo={props.match.params.src}
+                    {...props}
+                  />
+                );
+              }}
+            />  
+          )}
+                     
           <Route
             path={ `${this.props.match.url}/:foo(${buttonGroupComponentsRegexArrayString})`}
             render={(props) => {

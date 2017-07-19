@@ -1,5 +1,6 @@
 
 function upload_file(file, signed_request, url, response){
+  console.log('upload_file');
   return new Promise(function(resolve, reject) {
     var xhr = new XMLHttpRequest();
     xhr.open("PUT", signed_request);
@@ -25,6 +26,7 @@ function upload_file(file, signed_request, url, response){
     request.
 */
 function get_signed_request(file,folder,mustBeSquare){
+  console.log('get_signed_request');
   folder = !!folder ? folder : 'selfies';
   return new Promise(function(resolve, reject) {
     var xhr = new XMLHttpRequest();
@@ -52,7 +54,9 @@ function get_signed_request(file,folder,mustBeSquare){
 }
 
 function makeGetNormalizedImageInfo(mustBeSquare){
+  console.log('makeGetNormalizedImageInfo1');
   return function(image_url){
+    console.log('makeGetNormalizedImageInfo2');
     return new Promise(function(resolve, reject) {
       var xhr = new XMLHttpRequest();
       xhr.open("GET", "/bernieBackend/get_normalized_image_info?image_url="+encodeURIComponent(image_url)+"&must_be_square="+mustBeSquare);
@@ -94,13 +98,12 @@ function makeGetNormalizedImageInfo(mustBeSquare){
    start upload procedure by asking for a signed request from the app.
 */
 function initUpload(file,folder,mustBeSquare){
-    if(!file){
-        alert("No file selected.");
-        return;
-    }
-    var promise = get_signed_request(file,folder,mustBeSquare);
-
-    return get_signed_request(file,folder,mustBeSquare);
+  console.log('initUpload');
+  if(!file){
+      alert("No file selected.");
+      return;
+  }
+  return get_signed_request(file,folder,mustBeSquare);
 }
 const getNormalizedImageInfo = makeGetNormalizedImageInfo(false);
 export { initUpload, getNormalizedImageInfo };

@@ -36,10 +36,10 @@
     "main": "/Users/brianephraim/Sites/monorepo/packages/dev_env/dev_env.js"
   },
   "output": {
-    "filename": "6e271733-9964-4c70-b5c1-5c37accd3477XXX.js",
+    "filename": "acd24534-a175-466e-b3bc-f3b7416d8e2cXXX.js",
     "path": "/var/folders/t0/dms578js4lg8x73s9jzmvcp40000gn/T"
   },
-  "devtool": "inline-source-map",
+  "devtool": "sourcemap",
   "target": "node",
   "node": {
     "__dirname": false,

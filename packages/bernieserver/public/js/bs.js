@@ -991,7 +991,7 @@ window.bs.setupNewModalManager = function($parentToInject){
 
                 var doCssOnSample;
                 var $cropperViewBox = $();
-
+                
                 if(isTemplateMode){
                     !!$sample ? $sample.remove() : null;
                     $sample = $('<img style="width:100px;height:100px;position:absolute;top:0;left:0;z-index:4" src="' + templateBaseUrl +displayId+'.png">');                
@@ -1192,6 +1192,7 @@ window.bs.uploadizer = (function(){
             // });
             var myAjax;
             if(!offline){
+                console.log('!!!',self.$input,self.folder,self.mustBeSquare)
                 myAjax = window.bs.s3Stuff.initUpload(self.$input,self.folder,self.mustBeSquare);
                 if(self.ajaxOptions.success){
                     myAjax.success(self.ajaxOptions.success);
