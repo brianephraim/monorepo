@@ -25,6 +25,15 @@ var getOffset = function(elem) {
   }
 };
 
+function prepend(parent, toPrepend) {
+  console.log('parent',parent);
+  if (parent.firstChild) {
+    return parent.insertBefore(toPrepend, parent.firstChild);
+  } else {
+    return parent.appendChild(toPrepend);
+  }
+}
+
 
 
 const vanilla = {
@@ -34,5 +43,6 @@ const vanilla = {
   getWinHeight,
   getDocumentHeight,
   getOffset,
+  prepend,
 };
 export default vanilla;

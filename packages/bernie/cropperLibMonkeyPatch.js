@@ -11,6 +11,7 @@
 
 
 import cropperLib from 'cropperjs/dist/cropper';
+console.log('cropperLib',{x:cropperLib});
 
 
 var ACTION_EAST = 'e';

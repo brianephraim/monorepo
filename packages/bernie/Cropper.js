@@ -4,6 +4,7 @@ import ReactCropper from 'react-cropper';
 import windowSizer from 'windowSizer';
 import 'cropperjs/dist/cropper.css';
 import './cropperLibMonkeyPatch';
+import vanilla from 'vanilla';
 
 class Cropper extends Component {
   constructor(props) {
@@ -17,6 +18,7 @@ class Cropper extends Component {
       cropperExists: true,
     };
     this._cropBound = this._crop.bind(this);
+    this._readyBound = this._ready.bind(this);
   }
 
   // react-cropper needs a little help because its props don't want to change
@@ -48,6 +50,18 @@ class Cropper extends Component {
     console.log(result)
     // image in dataUrl 
     // console.log(this.refs.cropper);
+  }
+  _ready(e){
+    
+    console.log('e',e)
+    // nextSibling
+    // image in dataUrl 
+    console.log('this.refs.cropper',this.refs.cropper);
+    console.log('this.refs.cropper.cropper.cropBox',this.refs.cropper.cropper.cropBox);
+    const sampleImg = document.createElement('img');
+    sampleImg.setAttribute('src', 'http://s3-us-west-1.amazonaws.com/bernieapp/decorations/h3.png');
+    sampleImg.setAttribute('style', 'position: absolute; width: 100%; height: 100%;');
+    vanilla.prepend(this.refs.cropper.cropper.cropBox, sampleImg);
   }
   render() {
     const styles = {
@@ -123,6 +137,7 @@ class Cropper extends Component {
                 src={`http://s3-us-west-1.amazonaws.com/bernieapp/selfies/${this.state.src}.png`}
                 // Cropper.js options 
                 crop={this._cropBound}
+                ready={this._readyBound}
                 {...reactCropperOptions}
               />
             }
