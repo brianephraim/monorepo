@@ -231,7 +231,6 @@ class BernieAppHero extends Component {
     this.state = {
     };
     this.onChange = (a,b,c) => {
-      console.log('onCHange',a,b,c);
       this.setState({
         measurement: c.measurement,
       })
@@ -332,16 +331,18 @@ class Bernie extends Component {
               );
             }}
           />
-          {[`${this.props.match.url}/crop/:src`,`${this.props.match.url}/crop/:src/:geo`].map((path, i) => 
+          {[`${this.props.match.url}/crop/:backgroundSrc`,`${this.props.match.url}/crop/:backgroundSrc/:geo`].map((path, i) => 
             <Route
               key={i}
               path={path}
               render={(props) => {
+                const background = {
+                  src: props.match.params.backgroundSrc,
+                };
                 return (
                   <Cropper
-                    src={props.match.params.src}
+                    background={{ src: props.match.params.backgroundSrc }}
                     geo={props.match.params.geo}
-                    foo={props.match.params.src}
                     {...props}
                   />
                 );

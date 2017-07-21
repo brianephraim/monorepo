@@ -7,7 +7,34 @@
   See "//TWEAK" comments below to see what was changed.
 
 */
-
+var $ = {
+  getOffset: (element) => {
+    var doc = document.documentElement;
+    var box = element.getBoundingClientRect();
+  
+    return {
+      left: box.left + ((window.scrollX || doc && doc.scrollLeft || 0) - (doc && doc.clientLeft || 0)),
+      top: box.top + ((window.scrollY || doc && doc.scrollTop || 0) - (doc && doc.clientTop || 0))
+    };
+  },
+  removeClass: (element, value) => {
+    if (isNumber(element.length)) {
+      each(element, function (elem) {
+        removeClass(elem, value);
+      });
+      return;
+    }
+  
+    if (element.classList) {
+      element.classList.remove(value);
+      return;
+    }
+  
+    if (element.className.indexOf(value) >= 0) {
+      element.className = element.className.replace(value, '');
+    }
+  }
+};
 
 
 import cropperLib from 'cropperjs/dist/cropper';

@@ -2,6 +2,11 @@ import debounce from 'debounce';
 import vanilla from 'vanilla';
 const { docEl, docBody, getWinWidth, getWinHeight, getDocumentHeight, getOffset, domEfficiencyCache } = vanilla;
 
+let resizing = false;
+function isResizing() {
+  return resizing;
+}
+
 const dimensions = {
   height: getWinHeight(),
   width: getWinWidth(),
@@ -27,6 +32,7 @@ function addCb(fun) {
   }
 }
 window.addEventListener('resize', () => {
+  resizing = true;
   const lastDimensions = {
     ...dimensions,
   };
@@ -41,6 +47,7 @@ window.addEventListener('resize', () => {
   var threshTest = Math.abs((lastDimensions.height - heightTweak) - newWindowHeight) > 70;
   if(threshTest || lastDimensions.width !== newWindowWidth){
     resizeDeb().then(function(){
+      resizing = false;
       cbs.forEach((cb) => {
         cb();
       });
@@ -53,4 +60,5 @@ export default {
   addCb,
   removeCb,
   dimensions,
+  isResizing,
 };

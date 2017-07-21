@@ -1,68 +1,45 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import ReactCropper from 'react-cropper';
 import windowSizer from 'windowSizer';
-import 'cropperjs/dist/cropper.css';
-import './cropperLibMonkeyPatch';
-import vanilla from 'vanilla';
+import ReactCropperEnhanced from './ReactCropperEnhanced';
 
 class Cropper extends Component {
   constructor(props) {
     super();
     this.state = {
-      x:0,
-      y:0,
-      cropWidth:400,
-      cropHeight:400,
-      src: props.src,
-      cropperExists: true,
+      foreground: {
+        x:0,
+        y:0,
+        width:400,
+        height:400,
+        ...props.foreground
+      },
+      background: {
+        ...props.background
+      },
     };
     this._cropBound = this._crop.bind(this);
-    this._readyBound = this._ready.bind(this);
   }
 
-  // react-cropper needs a little help because its props don't want to change
-  // so lifecycle stuff below
-  componentDidMount() {
-    this.windowSizerCb = windowSizer.addCb(() => {
-      this.setState({cropperExists: false}, () => {
-        this.setState({cropperExists: true});
-      });
-    });
-  }
-  componentWillUnmount() {
-    if (this.windowSizerCb) {
-      windowSizer.removeCb();
-      delete this.windowSizerCb;
-    }
-  }
+  
 
   _crop(cropData){
     var data = cropData.detail;
-    var result = {
-        x:data.x,
-        y:data.y,
-        cropWidth:data.width,
-        cropHeight:data.height
-    };
+
     // this.setState(result);
-    this.setState({asdf:'zxcv'})
-    console.log(result)
+    this.setState({
+      foreground: {
+        ...this.state.foreground,
+        x:cropData.detail.x,
+        y:cropData.detail.y,
+        width:cropData.detail.width,
+        height:cropData.detail.height,
+      },
+    });
     // image in dataUrl 
     // console.log(this.refs.cropper);
   }
-  _ready(e){
-    
-    console.log('e',e)
-    // nextSibling
-    // image in dataUrl 
-    console.log('this.refs.cropper',this.refs.cropper);
-    console.log('this.refs.cropper.cropper.cropBox',this.refs.cropper.cropper.cropBox);
-    const sampleImg = document.createElement('img');
-    sampleImg.setAttribute('src', 'http://s3-us-west-1.amazonaws.com/bernieapp/decorations/h3.png');
-    sampleImg.setAttribute('style', 'position: absolute; width: 100%; height: 100%;');
-    vanilla.prepend(this.refs.cropper.cropper.cropBox, sampleImg);
-  }
+  
   render() {
     const styles = {
       cropModal:{height: '799px'},
@@ -70,12 +47,21 @@ class Cropper extends Component {
     };
 
     var reactCropperOptions = {
+      // data: {
+      //   x:0,
+      //   y:0,
+      //   width: 100,
+      //   height: 100,
+      // },
       zoomOnWheel:false,
       aspectRatio: 1/1,
       responsive:true,
       guides:false,
       autoCropArea:.9,
       rotatable:false,
+      crop: this._cropBound,
+      src: `http://s3-us-west-1.amazonaws.com/bernieapp/selfies/${this.state.background.src}.png`,
+      cropSrc: 'http://s3-us-west-1.amazonaws.com/bernieapp/decorations/h3.png',
       // crop: function(data) {
       //   console.log('crop data', data);
       //   // var result = {
@@ -131,17 +117,10 @@ class Cropper extends Component {
         </div>
         <div className="cropOuterContainer">
           <div className="cropContainer" style={styles.cropContainer}>
-            {this.state.cropperExists &&
-              <ReactCropper
-                ref='cropper'
-                src={`http://s3-us-west-1.amazonaws.com/bernieapp/selfies/${this.state.src}.png`}
-                // Cropper.js options 
-                crop={this._cropBound}
-                ready={this._readyBound}
-                {...reactCropperOptions}
-              />
-            }
-            
+            <ReactCropperEnhanced
+              ref='cropper'
+              {...reactCropperOptions}
+            />
             <img src="http://s3-us-west-1.amazonaws.com/bernieapp/selfies/zephyr1476401787491.png" className="cropper-hidden" />
             <div className="cropper-container cropper-bg" stylex="width: 766px; height: 543px;" style={{display: 'none'}}>
               <img stylex="width: 301.967px; height: 301.967px; position: absolute; top: 20.0913px; left: 249.331px; z-index: 4;" src="http://s3-us-west-1.amazonaws.com/bernieapp/decorations/wg.png" />
