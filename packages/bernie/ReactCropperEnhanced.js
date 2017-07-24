@@ -42,9 +42,9 @@ class ReactCropperEnhanced extends Component {
     this.windowSizerCb = windowSizer.addCb(() => {
       
       this.setState({cropperExists: false}, () => {
-        setTimeout(() => {
+        // setTimeout(() => {
           this.setState({cropperExists: true});
-        },2000);
+        // },2000);
       });
       
     });
