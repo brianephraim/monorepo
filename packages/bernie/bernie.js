@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import ResponsiveHOC, { ResponsiveMaster, generateGiantSquareDetails } from 'responsive';
 import { Route, Link } from 'react-router-dom';
 import { buttonGroupComponents, buttonGroupComponentsRegexArrayString, EditDesignButtonGroup, EditSizeButtonGroup, EditBrushButtonGroup, ShareButtonGroup, ImportButtonGroup } from './buttonGroups';
-import Cropper from './Cropper';
+import CropperScreen from './CropperScreen';
 // import { withRouter } from 'react-router-dom';
 // import { connect } from 'react-redux';
 // import styled from 'styled-components';
@@ -318,6 +318,7 @@ class Bernie extends Component {
     };
   }
   render() {
+    console.log(this.props);
     return (
       <ResponsiveMaster name="bernie">
         <BernieHomeScreen>
@@ -340,10 +341,17 @@ class Bernie extends Component {
                   src: props.match.params.backgroundSrc,
                 };
                 return (
-                  <Cropper
-                    background={{ src: props.match.params.backgroundSrc }}
-                    geo={props.match.params.geo}
-                    {...props}
+                  <CropperScreen
+                    foreground={{
+                      x:0,
+                      y:0,
+                      width:400,
+                      height:400,
+                      src: 'http://s3-us-west-1.amazonaws.com/bernieapp/decorations/h3.png'
+                    }}
+                    background={{
+                      src: `http://s3-us-west-1.amazonaws.com/bernieapp/selfies/${props.match.params.backgroundSrc}.png`
+                    }}
                   />
                 );
               }}
