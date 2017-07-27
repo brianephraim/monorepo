@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import windowSizer from 'windowSizer';
 import ReactCropperEnhanced from './ReactCropperEnhanced';
 import history from 'MainApp/history';
+import {formUrl} from './deriveUrlInfo';
 
 function whitelistFilterProps(obj, whitelist) {
   return Object.keys(obj).reduce((accum, key) => {
@@ -53,12 +54,15 @@ class CloseButton extends Component {
 
 class CompletionInterface extends Component {
   render() {
+    const url = `${this.props.rootUrl}/${formUrl(this.props.activeCompositeImageData)}`;
+    console.log('this.props.activeCompositeImageData',url);
+    // console.log('this.props.rootUrl', this.props.rootUrl);
     return (
       <div className="modalHeader clearfix">
         <div className="doneSection">
           <h2>Drag and resize the box to crop</h2>
           <div className="modal_buttonGroup">
-            <div className="button mainButton cropDoneButton"><span>Done</span></div>
+            <a href={url} className="button mainButton cropDoneButton"><span>Done</span></a>
           </div>
         </div>
       </div>
@@ -101,6 +105,7 @@ class CropInterface extends Component {
 class CropperScreen extends Component {
   constructor(props) {
     super();
+    console.log('props.foreground',props.foreground)
     this.state = {
       foreground: {
         ...props.foreground
@@ -121,10 +126,10 @@ class CropperScreen extends Component {
     this.setState({
       foreground: {
         ...this.state.foreground,
-        x:cropData.detail.x,
-        y:cropData.detail.y,
-        width:cropData.detail.width,
-        height:cropData.detail.height,
+        x:Math.round(cropData.detail.x),
+        y:Math.round(cropData.detail.y),
+        width:Math.round(cropData.detail.width),
+        height:Math.round(cropData.detail.height),
       },
     });
     // image in dataUrl 
@@ -183,7 +188,10 @@ class CropperScreen extends Component {
       });
     }
 
-
+    const activeCompositeImageData = {
+      foreground: this.state.foreground,
+      background: this.props.background,
+    };
     return (
       <div className="modal cropModal" style={styles.cropModal}>
         <CloseButton />
@@ -197,7 +205,7 @@ class CropperScreen extends Component {
             />
           </div>
         </div>
-        <CompletionInterface />
+        <CompletionInterface activeCompositeImageData={activeCompositeImageData} rootUrl={this.props.rootUrl} />
       </div>
     );
   }

@@ -5,6 +5,7 @@ import ResponsiveHOC, { ResponsiveMaster, generateGiantSquareDetails } from 'res
 import { Route, Link } from 'react-router-dom';
 import { buttonGroupComponents, buttonGroupComponentsRegexArrayString, EditDesignButtonGroup, EditSizeButtonGroup, EditBrushButtonGroup, ShareButtonGroup, ImportButtonGroup } from './buttonGroups';
 import CropperScreen from './CropperScreen';
+import {getStandardModesRegex, standardModesRegexArrayString} from './deriveUrlInfo';
 // import { withRouter } from 'react-router-dom';
 // import { connect } from 'react-redux';
 // import styled from 'styled-components';
@@ -56,26 +57,31 @@ class BernieHomeLayout extends Component {
           <BernieContributeBanner />
           <BernieAppHeader />
           <BernieAppBody>
-            <BernieAppHero />
+            <BernieAppHero compositeImageData={this.props.compositeImageData} />
             <BernieAppBusiness>
               <BernieAppPod className="section_share">
                 <ShareButtonGroup
+                  compositeImageData={this.props.compositeImageData}
                   match={this.props.match}
                 />
               </BernieAppPod>
               <BernieAppPod className="section_photo featured">
                 <ImportButtonGroup
+                  compositeImageData={this.props.compositeImageData}
                   match={this.props.match}
                 />
               </BernieAppPod>
               <BernieAppPod className="section_design">
                 <EditBrushButtonGroup
+                  compositeImageData={this.props.compositeImageData}
                   match={this.props.match}
                 />
                 <EditSizeButtonGroup
+                  compositeImageData={this.props.compositeImageData}
                   match={this.props.match}
                 />
                 <EditDesignButtonGroup
+                  compositeImageData={this.props.compositeImageData}
                   match={this.props.match}
                 />
               </BernieAppPod>
@@ -237,6 +243,7 @@ class BernieAppHero extends Component {
     };
   }
   render() {
+    console.log('!!!!!',this.props.compositeImageData);
     const turns = [
       {
         priority: 1,
@@ -250,6 +257,15 @@ class BernieAppHero extends Component {
         },
       }
     ];
+    // http://www.bernieselfie.com/image/h4/dude-with-hat1500922227089_1780_1780_-123_-555.jpg
+    // http://www.bernieselfie.com/image/fwilbqgsskzngv0cktwi/dude-with-hat1500922227089_1780_1780_-123_-555.jpg
+    // http://localhost:3000      /image/dude-with-hat1500922227089/qsuqge5jdqjfjhvg4r2z_1780_1780_446_-938.jpg
+    let imSrc = '/images/mock-selfie.png';
+    if (this.props.compositeImageData){
+      console.log('zzzzz',this.props.compositeImageData);
+      const imgData = this.props.compositeImageData;
+      imSrc = `/image/${imgData.foreground.srcKey}/${imgData.background.srcKey}_${imgData.foreground.width}_${imgData.foreground.height}_${imgData.foreground.x}_${imgData.foreground.y}.jpg`
+    }
     return (
       <div className="app_body_leftPillar">
         <BernieAppMainSelfieFrameResponsive
@@ -257,7 +273,7 @@ class BernieAppHero extends Component {
           masterName="bernie"
         >
           <div className="app_body_leftPillar_selfieFrame_instructions "><span className="selfieFrame_instructions_text">Right click to save{this.state.measurement}</span></div>
-          <img className="app_body_leftPillar_selfieFrame_selfie" src="/images/mock-selfie.png" />
+          <img className="app_body_leftPillar_selfieFrame_selfie" src={imSrc} />
         </BernieAppMainSelfieFrameResponsive>
       </div>
     );
@@ -319,57 +335,104 @@ class Bernie extends Component {
   }
   render() {
     console.log(this.props);
+    console.log(getStandardModesRegex('bernie'))
+    const geoRouting = ':fgX([^\/|^_]*)_:fgY([^\/|^_]*)_:fgW([^\/|^_]*)_:fgH([^\/|^_]*)_:bgW([^\/|^_]*)_:bgH([^\/]*)';
+    // let compositeImageData = {
+    //   foreground: {
+    //     x:0,
+    //     y:0,
+    //     width:400,
+    //     height:400,
+    //     src: 'http://s3-us-west-1.amazonaws.com/bernieapp/decorations/h3.png'
+    //   },
+    //   background: {
+    //     src: `http://s3-us-west-1.amazonaws.com/bernieapp/selfies/zephyr1476401787491.png`
+    //   }
+    // };
+    const parseCompositeImageDataFromRouteParams = (params, overrides) => {
+      const paramsToUse = {
+        ...params,
+        ...overrides,
+      };
+      console.log('paramsToUse',paramsToUse)
+      const compositeImageData = {
+        foreground: {
+          x: +paramsToUse.fgX,
+          y: +paramsToUse.fgY,
+          width: +paramsToUse.fgW,
+          height: +paramsToUse.fgH,
+          src: `http://s3-us-west-1.amazonaws.com/bernieapp/decorations/${paramsToUse.fgSrcKey}.png`,
+          srcKey: paramsToUse.fgSrcKey,
+        },
+        background: {
+          width: +paramsToUse.bgW,
+          height: +paramsToUse.bgH,
+          src: `http://s3-us-west-1.amazonaws.com/bernieapp/selfies/${paramsToUse.bgSrcKey}.png`,
+          srcKey: paramsToUse.bgSrcKey,
+        }
+      };
+      return compositeImageData;
+    };
+    console.log('this.props.match.url',this.props.match.url);
+    const rootUrl = this.props.match.url;
+    const homeLayoutPaths = [
+      this.props.match.url,
+      `${this.props.match.url}/ut/:bgSrcKey/${geoRouting}/:fgSrcKey`,
+      `${this.props.match.url}/:fgSrcKey(${standardModesRegexArrayString})/:bgSrcKey/${geoRouting}`,
+    ]; 
+
+    function statelessWrapper(props) {
+       return props.children;
+    }
+
     return (
       <ResponsiveMaster name="bernie">
         <BernieHomeScreen>
-          <Route
-            path={ this.props.match.url}
-            exact
-            render={(props) => {
-              const Comp = buttonGroupComponents[props.match.params.foo];
-              return (
-                <BernieHomeLayout {...this.props}/>
-              );
-            }}
-          />
-          {[`${this.props.match.url}/crop/:backgroundSrc`,`${this.props.match.url}/crop/:backgroundSrc/:geo`].map((path, i) => 
-            <Route
-              key={i}
-              path={path}
-              render={(props) => {
-                const background = {
-                  src: props.match.params.backgroundSrc,
-                };
-                return (
-                  <CropperScreen
-                    foreground={{
-                      x:0,
-                      y:0,
-                      width:400,
-                      height:400,
-                      src: 'http://s3-us-west-1.amazonaws.com/bernieapp/decorations/h3.png'
-                    }}
-                    background={{
-                      src: `http://s3-us-west-1.amazonaws.com/bernieapp/selfies/${props.match.params.backgroundSrc}.png`
-                    }}
-                  />
-                );
-              }}
-            />  
-          )}
-                     
-          <Route
-            path={ `${this.props.match.url}/:foo(${buttonGroupComponentsRegexArrayString})`}
-            render={(props) => {
-              const Comp = buttonGroupComponents[props.match.params.foo];
-              return (
-                <Comp
-                  isModal={true}
-                  {...props}
+          {homeLayoutPaths.map((path, i) => {
+            return (
+              <statelessWrapper key={`${i}a`}>
+                <Route
+                  path={path}
+                  exact
+                  render={(props) => {
+                    const compositeImageData = parseCompositeImageDataFromRouteParams(props.match.params);
+                    return (
+                      <BernieHomeLayout {...this.props} compositeImageData={compositeImageData} />
+                    );
+                  }}
                 />
-              );
-            }}
-          />
+                <Route
+                  path={`${path}/crop`}
+                  render={(props) => {
+
+                    const compositeImageData = parseCompositeImageDataFromRouteParams(props.match.params);
+                    return (
+                      <CropperScreen
+                        foreground={compositeImageData.foreground}
+                        background={compositeImageData.background}
+                        rootUrl={rootUrl}
+                      />
+                    );
+                  }}
+                />  
+                <Route
+                  path={ `${path}/:foo(${buttonGroupComponentsRegexArrayString})`}
+                  render={(props) => {
+                    const Comp = buttonGroupComponents[props.match.params.foo];
+                    const compositeImageData = parseCompositeImageDataFromRouteParams(props.match.params);
+                    return (
+                      <Comp
+                        isModal={true}
+                        {...props}
+                        compositeImageData={compositeImageData}
+                      />
+                    );
+                  }}
+                />
+              </statelessWrapper>
+            );
+          })}        
+                
         </BernieHomeScreen>
       </ResponsiveMaster>
     );

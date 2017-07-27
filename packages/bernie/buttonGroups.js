@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import ResponsiveHOC, { ResponsiveMaster, generateGiantSquareDetails } from 'responsive';
 import { Route, Link } from 'react-router-dom';
 import Upload from './Upload';
+import {formUrl} from './deriveUrlInfo';
 
 const Div = (props) => {
   return (<div {...props} >{props.children}</div>);
@@ -41,17 +42,17 @@ class BernieAppButtonGroup extends Component {
     const buttons = this.props.buttons && (
       <div className="buttonGroup_buttons">
         {this.props.buttons.map((btnDetails, i) => {
+          const LinkOrDiv = btnDetails.url ? Link : Div;
           let btnInner;
           let className = 'buttonGroup_button button';
-          if (btnDetails.component) {
-            const Comp = btnDetails.component;
+          if (btnDetails.onUploadSuccess) {
             btnInner = (
-              <Comp
+              <Upload
                 className={btnDetails.className}
-                onSuccess={btnDetails.onSuccess.bind(this)}
+                onSuccess={btnDetails.onUploadSuccess.bind(this)}
               >
                 {btnDetails.text}
-              </Comp>
+              </Upload>
             );
           } else if (btnDetails.aHref) {
             btnInner = (
@@ -61,6 +62,16 @@ class BernieAppButtonGroup extends Component {
               >
                 {btnDetails.text}
               </a>
+            );
+          } else if (btnDetails.routerLink) {
+            const routerLink = typeof btnDetails.routerLink === 'function' ? btnDetails.routerLink(this.props) : btnDetails.routerLink;
+            btnInner = (
+              <Link
+                className={btnDetails.className}
+                to={`${this.props.match.url}/${routerLink}`}
+              >
+                {btnDetails.text}
+              </Link>
             );
           } else {
             btnInner = (<span>{btnDetails.text}</span>);
@@ -79,8 +90,7 @@ class BernieAppButtonGroup extends Component {
 
     const splitted = match.url.split('/');
     const LinkOrDiv = match.url.split('/').reverse()[0] === this.props.urlFragment ? Div : Link;
-    const linkUrl = match && match.url ? `${match.url}/${this.props.urlFragment}` : '/bernie';
-    console.log(linkUrl.indexOf(``))
+    const linkUrl = match && match.url ? `${match.url}/${formUrl(this.props.compositeImageData)}/${this.props.urlFragment}` : '/bernie';
     return (      
       <div className={`app_body_rightPillar_section_subsection ${this.props.className}`}>
         <div className="buttonGroup">
@@ -96,12 +106,12 @@ class BernieAppButtonGroup extends Component {
   }
 }
 BernieAppButtonGroup.propTypes = {
-  className: PropTypes.string,
-  headline: PropTypes.string,
-  shortHeadline: PropTypes.string,
-  icon: PropTypes.string,
-  children: PropTypes.object,
-  buttons: PropTypes.array,
+  // className: PropTypes.string,
+  // headline: PropTypes.string,
+  // shortHeadline: PropTypes.string,
+  // icon: PropTypes.string,
+  // children: PropTypes.object,
+  // buttons: PropTypes.array,
 };
 
 const buttonGroupComponents = {};
@@ -118,6 +128,7 @@ function makeButtonGroupComponent( options/*{
       const ButtonGroup = (
         <BernieAppButtonGroup
           match={this.props.match}
+          compositeImageData={this.props.compositeImageData}
           {...options}
         />
       );
@@ -149,8 +160,7 @@ const ImportButtonGroup = makeButtonGroupComponent({
     {
       className: 'cameraUploadizer',
       text: 'Camera',
-      component: Upload,
-      onSuccess: function(imgData) {
+      onUploadSuccess: function(imgData) {
         console.log(this);
         /*
           Key: "selfies/a-brian14744733088711500480799004.png",
@@ -217,6 +227,16 @@ const EditSizeButtonGroup = makeButtonGroupComponent({
     {
       className: 'editSizeAndPositionButton',
       text: 'Size and position',
+      routerLink: (props) => {
+
+        const compositeImageData = props.compositeImageData;
+        console.log('compositeImageData',compositeImageData);
+        const fg = compositeImageData.foreground;
+        const bg = compositeImageData.background;
+        console.log('formUrl', formUrl(compositeImageData));
+        const routerLink = `${formUrl(compositeImageData)}/crop`;
+        return routerLink;
+      }
     },
   ]
 });
