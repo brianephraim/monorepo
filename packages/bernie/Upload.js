@@ -24,9 +24,7 @@ class Upload extends Component {
     Object.assign(this, this.methodsBoundHere);
   }
   handleChange(e) {
-    console.log('asdfasdf', e.target.files,);
     const file = e && e.target && e.target.files && e.target.files[0];
-    console.log(file);
     /*
       lastModified
       :
@@ -92,9 +90,7 @@ class Upload extends Component {
   }
   render() {
     const id = 'uploadizerId_' + (uploadizerId++);
-    console.log('zcxvzxcvzxcv1')
     if (window.FormData) {
-      console.log('zcxvzxcvzxcv')
       return (
         <form>
           <input id={id} className="fileInput" type="file" name="someInputUploadName" onChange={this.handleChange} />

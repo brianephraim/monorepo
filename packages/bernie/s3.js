@@ -69,10 +69,14 @@ function makeGetNormalizedImageInfo(mustBeSquare){
             } else {
               var public_id = response.url.split('/');
               public_id = public_id.pop();
+              let srcKey = public_id.split('.');
+              srcKey.pop();
+              srcKey = srcKey.join('');
               resolve({
                 width: response.width,
                 height: response.height,
-                public_id: public_id,
+                public_id,
+                srcKey,
                 url: response.url,
                 Key:response.Key,
                 failingSquare:response.failingSquare

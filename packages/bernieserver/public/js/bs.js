@@ -174,7 +174,8 @@ window.bs.fbManager = (function(){
     FbManager.prototype.uploadPhoto = function(response){
         return this.fbApi(
             "/" + response.id + "/photos",
-            "post", {
+            "post",
+            {
                 url: this.urlToExport
             }
         );
@@ -200,7 +201,13 @@ window.bs.fbManager = (function(){
         var toReturn;
         if(!offline){
             toReturn = this.fbApi(
-                 "/" + response.id + "/photos"
+                 "/" + response.id + "/photos",
+                 'get',
+                 {
+                    fields: 'images,id',
+                    type: 'uploaded',//tagged,uploaded
+                    limit: 30
+                 }
             );
         } else {
             var dfd = jQuery.Deferred();
@@ -638,6 +645,7 @@ window.bs.setupNewModalManager = function($parentToInject){
         var imgsHtml = ''; 
 
         var archive = fbImportResponse.data;
+        console.log(archive);
         for (var i = 0, l = archive.length; i < l; i++) {
             var url = archive[i].images[0].source;
             imgsHtml += '<img class="photoImg" src="' + url + '">';

@@ -44,6 +44,7 @@
   "license": "MIT",
   "devDependencies": {
     "lerna": "^2.0.0-rc.4",
-    "npm": "^4.6.1"
+    "npm": "^4.6.1",
+    "prettier": "^1.5.3"
   }
 }

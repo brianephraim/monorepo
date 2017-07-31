@@ -101,6 +101,7 @@ function generateConfigJson() {
           `${dirRoot}/**/*/demo.js`,
           `!${dirRoot}/packages/**/*`,
           `${dirRoot}/packages/MainApp/MainApp.js`,
+          `!${dirRoot}/node_modules/**/*`,
         ]),
       };
     }

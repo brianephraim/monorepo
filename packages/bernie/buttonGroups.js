@@ -73,6 +73,9 @@ class BernieAppButtonGroup extends Component {
                 {btnDetails.text}
               </Link>
             );
+          } else if (btnDetails.onClick) {
+            btnInner = (<span onClick={btnDetails.onClick}>{btnDetails.text}</span>);
+            className = `${className} ${btnDetails.className}`;
           } else {
             btnInner = (<span>{btnDetails.text}</span>);
             className = `${className} ${btnDetails.className}`;
@@ -156,6 +159,9 @@ const ImportButtonGroup = makeButtonGroupComponent({
     {
       className: 'importFbPhotoButton',
       text: 'Facebook',
+      onClick: () => {
+        console.log('CLICKED');
+      },
     },
     {
       className: 'cameraUploadizer',

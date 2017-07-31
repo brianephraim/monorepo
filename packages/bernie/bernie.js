@@ -5,7 +5,11 @@ import ResponsiveHOC, { ResponsiveMaster, generateGiantSquareDetails } from 'res
 import { Route, Link } from 'react-router-dom';
 import { buttonGroupComponents, buttonGroupComponentsRegexArrayString, EditDesignButtonGroup, EditSizeButtonGroup, EditBrushButtonGroup, ShareButtonGroup, ImportButtonGroup } from './buttonGroups';
 import CropperScreen from './CropperScreen';
+import ImagePickerFacebook from './ImagePickerFacebook';
 import {getStandardModesRegex, standardModesRegexArrayString} from './deriveUrlInfo';
+import fbManager from './fb';
+import {getNormalizedImageInfo} from './s3';
+import {formUrl} from './deriveUrlInfo';
 // import { withRouter } from 'react-router-dom';
 // import { connect } from 'react-redux';
 // import styled from 'styled-components';
@@ -17,11 +21,14 @@ class Asdf extends Component {
     this.state = {
     };
   }
+
   render() {
     return (<div>{this.props.children}</div>);
   }
 }
 Asdf.propTypes = {};
+
+
 
 // This component exists because its el had a class of 'bodyInner'
 // and this was affected by:
@@ -243,7 +250,6 @@ class BernieAppHero extends Component {
     };
   }
   render() {
-    console.log('!!!!!',this.props.compositeImageData);
     const turns = [
       {
         priority: 1,
@@ -262,7 +268,6 @@ class BernieAppHero extends Component {
     // http://localhost:3000      /image/dude-with-hat1500922227089/qsuqge5jdqjfjhvg4r2z_1780_1780_446_-938.jpg
     let imSrc = '/images/mock-selfie.png';
     if (this.props.compositeImageData){
-      console.log('zzzzz',this.props.compositeImageData);
       const imgData = this.props.compositeImageData;
       imSrc = `/image/${imgData.foreground.srcKey}/${imgData.background.srcKey}_${imgData.foreground.width}_${imgData.foreground.height}_${imgData.foreground.x}_${imgData.foreground.y}.jpg`
     }
@@ -327,15 +332,27 @@ BernieAppPod.propTypes = {
 
 };
 
+
+
+
 class Bernie extends Component {
   constructor() {
     super();
     this.state = {
     };
   }
+  handleBackroundImageSelection(compositeImageData, rootPath, imgSrc) {
+    // bs.loader.load
+    getNormalizedImageInfo(imgSrc).then((response) => {
+      const compositeImageDataToUse = {
+        foreground: compositeImageData.foreground,
+        background: { ...compositeImageData.background, srcKey: response.srcKey},
+      };
+      const url = `${rootPath}/${formUrl(compositeImageDataToUse)}/crop`;
+      this.props.history.push(url);
+    });
+  }
   render() {
-    console.log(this.props);
-    console.log(getStandardModesRegex('bernie'))
     const geoRouting = ':fgX([^\/|^_]*)_:fgY([^\/|^_]*)_:fgW([^\/|^_]*)_:fgH([^\/|^_]*)_:bgW([^\/|^_]*)_:bgH([^\/]*)';
     // let compositeImageData = {
     //   foreground: {
@@ -350,11 +367,21 @@ class Bernie extends Component {
     //   }
     // };
     const parseCompositeImageDataFromRouteParams = (params, overrides) => {
+      const placeholder = {
+        'fgX': 142,
+        'fgY': 98,
+        'fgW': 305,
+        'fgH': 305,
+        'bgW': 1200,
+        'bgH': 1200,
+        'bgSrcKey':'zephyr1476401787491',
+        'fgSrcKey':'h3',
+      };
       const paramsToUse = {
+        ...placeholder,
         ...params,
         ...overrides,
       };
-      console.log('paramsToUse',paramsToUse)
       const compositeImageData = {
         foreground: {
           x: +paramsToUse.fgX,
@@ -373,7 +400,6 @@ class Bernie extends Component {
       };
       return compositeImageData;
     };
-    console.log('this.props.match.url',this.props.match.url);
     const rootUrl = this.props.match.url;
     const homeLayoutPaths = [
       this.props.match.url,
@@ -412,6 +438,16 @@ class Bernie extends Component {
                         background={compositeImageData.background}
                         rootUrl={rootUrl}
                       />
+                    );
+                  }}
+                />  
+                <Route
+                  path={`${path}/import-photo-from-facebook`}
+                  render={(props) => {
+
+                    const compositeImageData = parseCompositeImageDataFromRouteParams(props.match.params);
+                    return (
+                      <ImagePickerFacebook onClick={this.handleBackroundImageSelection.bind(this, compositeImageData, path)}/>
                     );
                   }}
                 />  

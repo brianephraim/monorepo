@@ -109,7 +109,6 @@ module.exports.containsStardardMode = function(url){
 };
 
 module.exports.formUrl = (compositeImageData) => {
-  console.log('standardModesDict',standardModesDict)
   const fg = compositeImageData.foreground;
   const bg = compositeImageData.background;
   const mode = standardModesDict[fg.srcKey] ? fg.srcKey : 'ut';
