@@ -43,6 +43,7 @@
   },
   "license": "MIT",
   "devDependencies": {
+    "eslint-config-prettier": "^2.3.0",
     "lerna": "^2.0.0-rc.4",
     "npm": "^4.6.1",
     "prettier": "^1.5.3"
