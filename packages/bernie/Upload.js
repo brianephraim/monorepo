@@ -5,22 +5,19 @@ import bind_here from 'bind_here';
 import { initUpload } from './s3';
 
 const bs = {
-    loader: {
-        load: () => {},
-        unload: () => {},
-    }
+  loader: {
+    load: () => {},
+    unload: () => {},
+  },
 };
 const offline = false;
 
-var uploadizerId = 0;
+let uploadizerId = 0;
 class Upload extends Component {
   constructor() {
     super();
-    this.state = {
-    };
-    this.methodsBoundHere = bind_here(this, [
-      'handleChange',
-    ]);
+    this.state = {};
+    this.methodsBoundHere = bind_here(this, ['handleChange']);
     Object.assign(this, this.methodsBoundHere);
   }
   handleChange(e) {
@@ -49,64 +46,73 @@ class Upload extends Component {
     // this.props.onSuccess();
     // return;
     bs.loader.load();
-    var myAjax;
-    if(!offline){
-        myAjax = initUpload(file,self.folder,self.mustBeSquare);
-        if(this.props.onSuccess){
-            myAjax.then(this.props.onSuccess);
-        }
-        if(this.props.onError){
-            myAjax.catch(this.props.onError);
-        }
+    let myAjax;
+    if (!offline) {
+      myAjax = initUpload(file, self.folder, self.mustBeSquare);
+      if (this.props.onSuccess) {
+        myAjax.then(this.props.onSuccess);
+      }
+      if (this.props.onError) {
+        myAjax.catch(this.props.onError);
+      }
     } else {
       myAjax = {
-        then:(cb) => {
-            setTimeout(() => {
-                if(this.props.onSuccess){
-                    this.props.onSuccess();
-                }
-                cb();
-            },1000);
+        then: cb => {
+          setTimeout(() => {
+            if (this.props.onSuccess) {
+              this.props.onSuccess();
+            }
+            cb();
+          }, 1000);
         },
-        catch:(cb) => { cb(); }
+        catch: cb => {
+          cb();
+        },
       };
     }
     myAjax.then(() => {
-        bs.loader.unload();
+      bs.loader.unload();
     });
     myAjax.catch(() => {
-        bs.loader.unload();
+      bs.loader.unload();
     });
   }
   handleChangeFallback(e) {
-    var self = this;
-    this.$iframe.on('load',() => {
-        var lastData = self.$iframe.contents().find(".lastData").html();
-        lastData = !!lastData ? JSON.parse(lastData) : null;
-        if(!!lastData){
-            !!this.props.onSuccess ? this.props.onSuccess(lastData) : null;
-        }
-    })
+    const self = this;
+    this.$iframe.on('load', () => {
+      let lastData = self.$iframe.contents().find('.lastData').html();
+      lastData = lastData ? JSON.parse(lastData) : null;
+      if (lastData) {
+        this.props.onSuccess ? this.props.onSuccess(lastData) : null;
+      }
+    });
   }
   render() {
-    const id = 'uploadizerId_' + (uploadizerId++);
+    const id = `uploadizerId_${uploadizerId++}`;
     if (window.FormData) {
       return (
         <form>
-          <input id={id} className="fileInput" type="file" name="someInputUploadName" onChange={this.handleChange} />
-          <label htmlFor={id}>{this.props.children}</label>
+          <input
+            id={id}
+            className="fileInput"
+            type="file"
+            name="someInputUploadName"
+            onChange={this.handleChange}
+          />
+          <label htmlFor={id}>
+            {this.props.children}
+          </label>
         </form>
       );
     }
     // fallback
-    return (<div>asdf</div>);
+    return <div>asdf</div>;
     // return (
     //   <div>
     //     <div style="display:none;">{this.props.children}</div>
     //     <iframe class="uploadButtonIframe" src="/iframeuploadbutton?'+$.param({buttonText:this.text})+'" frameborder="0" allowfullscreen onLoad={}></iframe>
     //   </div>
     // );
-    
   }
 }
 Upload.propTypes = {};

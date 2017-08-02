@@ -7,22 +7,26 @@ let imagesFromFBPromise = null;
 class ImagePickerFacebook extends Component {
   constructor() {
     super();
-    
-    this.state = {
-    };
+
+    this.state = {};
   }
   componentWillMount() {
     imagesFromFBPromise = imagesFromFBPromise || fbManager.importStuff();
-    imagesFromFBPromise.then((response) => {
+    imagesFromFBPromise.then(response => {
       if (response && response.data && response.data.length) {
         const images = response.data.reduce((accum, imageObj) => {
-          if (imageObj && imageObj.images && imageObj.images[0] && imageObj.images[0].source) {
+          if (
+            imageObj &&
+            imageObj.images &&
+            imageObj.images[0] &&
+            imageObj.images[0].source
+          ) {
             return [...accum, imageObj.images[0].source];
           }
           return accum;
         }, []);
         this.setState({
-          images
+          images,
         });
       }
       // const r = JSON.stringify(response, null, 2);
@@ -77,13 +81,12 @@ class ImagePickerFacebook extends Component {
         }
       */
     });
-    imagesFromFBPromise.catch((response) => {
-
-    });
-    
+    imagesFromFBPromise.catch(response => {});
   }
   render() {
-    return (<ImagePicker images={this.state.images} onClick={this.props.onClick} />);
+    return (
+      <ImagePicker images={this.state.images} onClick={this.props.onClick} />
+    );
   }
 }
 ImagePickerFacebook.propTypes = {};

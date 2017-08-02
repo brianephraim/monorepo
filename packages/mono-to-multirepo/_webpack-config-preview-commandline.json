@@ -36,10 +36,10 @@
     "main": "/Users/brianephraim/Sites/monorepo/packages/mono-to-multirepo/mono-to-multirepo.js"
   },
   "output": {
-    "filename": "75f99b94-9a3f-4d21-9848-1cd90b7c6ba9XXX.js",
+    "filename": "c006c55a-dbd5-4b61-8dea-3a005ecec35aXXX.js",
     "path": "/var/folders/t0/dms578js4lg8x73s9jzmvcp40000gn/T"
   },
-  "devtool": "inline-source-map",
+  "devtool": "sourcemap",
   "target": "node",
   "node": {
     "__dirname": false,

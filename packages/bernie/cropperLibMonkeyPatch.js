@@ -7,74 +7,79 @@
   See "//TWEAK" comments below to see what was changed.
 
 */
-var $ = {
-  getOffset: (element) => {
-    var doc = document.documentElement;
-    var box = element.getBoundingClientRect();
-  
+const $ = {
+  getOffset: element => {
+    const doc = document.documentElement;
+    const box = element.getBoundingClientRect();
+
     return {
-      left: box.left + ((window.scrollX || doc && doc.scrollLeft || 0) - (doc && doc.clientLeft || 0)),
-      top: box.top + ((window.scrollY || doc && doc.scrollTop || 0) - (doc && doc.clientTop || 0))
+      left:
+        box.left +
+        ((window.scrollX || (doc && doc.scrollLeft) || 0) -
+          ((doc && doc.clientLeft) || 0)),
+      top:
+        box.top +
+        ((window.scrollY || (doc && doc.scrollTop) || 0) -
+          ((doc && doc.clientTop) || 0)),
     };
   },
   removeClass: (element, value) => {
     if (isNumber(element.length)) {
-      each(element, function (elem) {
+      each(element, elem => {
         removeClass(elem, value);
       });
       return;
     }
-  
+
     if (element.classList) {
       element.classList.remove(value);
       return;
     }
-  
+
     if (element.className.indexOf(value) >= 0) {
       element.className = element.className.replace(value, '');
     }
-  }
+  },
 };
 
-
 import cropperLib from 'cropperjs/dist/cropper';
-console.log('cropperLib',{x:cropperLib});
 
+console.log('cropperLib', { x: cropperLib });
 
-var ACTION_EAST = 'e';
-var ACTION_WEST = 'w';
-var ACTION_SOUTH = 's';
-var ACTION_NORTH = 'n';
-var ACTION_SOUTH_EAST = 'se';
-var ACTION_SOUTH_WEST = 'sw';
-var ACTION_NORTH_EAST = 'ne';
-var ACTION_NORTH_WEST = 'nw';
+const ACTION_EAST = 'e';
+const ACTION_WEST = 'w';
+const ACTION_SOUTH = 's';
+const ACTION_NORTH = 'n';
+const ACTION_SOUTH_EAST = 'se';
+const ACTION_SOUTH_WEST = 'sw';
+const ACTION_NORTH_EAST = 'ne';
+const ACTION_NORTH_WEST = 'nw';
 cropperLib.prototype.change = function change(shiftKey, originalEvent) {
-  var self = this;
-  var options = self.options;
-  var containerData = self.containerData;
-  var canvasData = self.canvasData;
-  var cropBoxData = self.cropBoxData;
-  var aspectRatio = options.aspectRatio;
-  var action = self.action;
-  var width = cropBoxData.width;
-  var height = cropBoxData.height;
-  var left = cropBoxData.left;
-  var top = cropBoxData.top;
-  var right = left + width;
-  var bottom = top + height;
-  //TWEAK
+  const self = this;
+  const options = self.options;
+  const containerData = self.containerData;
+  const canvasData = self.canvasData;
+  const cropBoxData = self.cropBoxData;
+  let aspectRatio = options.aspectRatio;
+  let action = self.action;
+  let width = cropBoxData.width;
+  let height = cropBoxData.height;
+  let left = cropBoxData.left;
+  let top = cropBoxData.top;
+  const right = left + width;
+  const bottom = top + height;
+  // TWEAK
   // var minLeft = 0;
   // var minTop = 0;
   // var maxWidth = containerData.width;
   // var maxHeight = containerData.height;
-  var minLeft = -9999999999999999;
-  var minTop = -99999999999999999;
-  var maxWidth = 9999999999999999;
-  var maxHeight = 9999999999999999;
-  //TWEAK
-  var renderable = true;
-  var offset = void 0;
+  let minLeft = -9999999999999999;
+  let minTop = -99999999999999999;
+  let maxWidth = 9999999999999999;
+  let maxHeight = 9999999999999999;
+  // TWEAK
+  let renderable = true;
+  let offset = void 0;
 
   // Locking aspect ratio in "free mode" by holding shift key
   if (!aspectRatio && shiftKey) {
@@ -84,17 +89,17 @@ cropperLib.prototype.change = function change(shiftKey, originalEvent) {
   if (self.limited) {
     minLeft = cropBoxData.minLeft;
     minTop = cropBoxData.minTop;
-    //TWEAK
+    // TWEAK
     // maxWidth = minLeft + Math.min(containerData.width, canvasData.width, canvasData.left + canvasData.width);
     // maxHeight = minTop + Math.min(containerData.height, canvasData.height, canvasData.top + canvasData.height);
     maxWidth = 9999999999999999;
     maxHeight = 9999999999999999;
-    //TWEAK
+    // TWEAK
   }
 
-  var range = {
+  const range = {
     x: self.endX - self.startX,
-    y: self.endY - self.startY
+    y: self.endY - self.startY,
   };
 
   if (aspectRatio) {
@@ -111,7 +116,11 @@ cropperLib.prototype.change = function change(shiftKey, originalEvent) {
 
     // Resize crop box
     case ACTION_EAST:
-      if (range.x >= 0 && (right >= maxWidth || aspectRatio && (top <= minTop || bottom >= maxHeight))) {
+      if (
+        range.x >= 0 &&
+        (right >= maxWidth ||
+          (aspectRatio && (top <= minTop || bottom >= maxHeight)))
+      ) {
         renderable = false;
         break;
       }
@@ -131,7 +140,11 @@ cropperLib.prototype.change = function change(shiftKey, originalEvent) {
       break;
 
     case ACTION_NORTH:
-      if (range.y <= 0 && (top <= minTop || aspectRatio && (left <= minLeft || right >= maxWidth))) {
+      if (
+        range.y <= 0 &&
+        (top <= minTop ||
+          (aspectRatio && (left <= minLeft || right >= maxWidth)))
+      ) {
         renderable = false;
         break;
       }
@@ -152,7 +165,11 @@ cropperLib.prototype.change = function change(shiftKey, originalEvent) {
       break;
 
     case ACTION_WEST:
-      if (range.x <= 0 && (left <= minLeft || aspectRatio && (top <= minTop || bottom >= maxHeight))) {
+      if (
+        range.x <= 0 &&
+        (left <= minLeft ||
+          (aspectRatio && (top <= minTop || bottom >= maxHeight)))
+      ) {
         renderable = false;
         break;
       }
@@ -173,7 +190,11 @@ cropperLib.prototype.change = function change(shiftKey, originalEvent) {
       break;
 
     case ACTION_SOUTH:
-      if (range.y >= 0 && (bottom >= maxHeight || aspectRatio && (left <= minLeft || right >= maxWidth))) {
+      if (
+        range.y >= 0 &&
+        (bottom >= maxHeight ||
+          (aspectRatio && (left <= minLeft || right >= maxWidth)))
+      ) {
         renderable = false;
         break;
       }
@@ -384,12 +405,20 @@ cropperLib.prototype.change = function change(shiftKey, originalEvent) {
 
     // Zoom canvas
     case 'zoom':
-      self.zoom(function (x1, y1, x2, y2) {
-        var z1 = Math.sqrt(x1 * x1 + y1 * y1);
-        var z2 = Math.sqrt(x2 * x2 + y2 * y2);
+      self.zoom(
+        (function(x1, y1, x2, y2) {
+          const z1 = Math.sqrt(x1 * x1 + y1 * y1);
+          const z2 = Math.sqrt(x2 * x2 + y2 * y2);
 
-        return (z2 - z1) / z1;
-      }(Math.abs(self.startX - self.startX2), Math.abs(self.startY - self.startY2), Math.abs(self.endX - self.endX2), Math.abs(self.endY - self.endY2)), originalEvent);
+          return (z2 - z1) / z1;
+        })(
+          Math.abs(self.startX - self.startX2),
+          Math.abs(self.startY - self.startY2),
+          Math.abs(self.endX - self.endX2),
+          Math.abs(self.endY - self.endY2)
+        ),
+        originalEvent
+      );
       self.startX2 = self.endX2;
       self.startY2 = self.endY2;
       renderable = false;
@@ -449,18 +478,21 @@ cropperLib.prototype.change = function change(shiftKey, originalEvent) {
   self.startY = self.endY;
 };
 
-cropperLib.prototype.limitCropBox = function limitCropBox(sizeLimited, positionLimited) {
-  var self = this;
-  var options = self.options;
-  var aspectRatio = options.aspectRatio;
-  var containerData = self.containerData;
-  var canvasData = self.canvasData;
-  var cropBoxData = self.cropBoxData;
-  var limited = self.limited;
-  var minCropBoxWidth = void 0;
-  var minCropBoxHeight = void 0;
-  var maxCropBoxWidth = void 0;
-  var maxCropBoxHeight = void 0;
+cropperLib.prototype.limitCropBox = function limitCropBox(
+  sizeLimited,
+  positionLimited
+) {
+  const self = this;
+  const options = self.options;
+  const aspectRatio = options.aspectRatio;
+  const containerData = self.containerData;
+  const canvasData = self.canvasData;
+  const cropBoxData = self.cropBoxData;
+  const limited = self.limited;
+  let minCropBoxWidth = void 0;
+  let minCropBoxHeight = void 0;
+  let maxCropBoxWidth = void 0;
+  let maxCropBoxHeight = void 0;
 
   if (sizeLimited) {
     minCropBoxWidth = Number(options.minCropBoxWidth) || 0;
@@ -469,10 +501,10 @@ cropperLib.prototype.limitCropBox = function limitCropBox(sizeLimited, positionL
     // The min/maxCropBoxWidth/Height must be less than containerWidth/Height
     minCropBoxWidth = Math.min(minCropBoxWidth, containerData.width);
     minCropBoxHeight = Math.min(minCropBoxHeight, containerData.height);
-    //TWEAK maxCropBoxWidth = Math.min(containerData.width, limited ? canvasData.width : containerData.width);
-    maxCropBoxWidth = 9999999999999999; //TWEAK
-    //TWEAK maxCropBoxHeight = Math.min(containerData.height, limited ? canvasData.height : containerData.height);
-    maxCropBoxHeight = 9999999999999999; //TWEAK
+    // TWEAK maxCropBoxWidth = Math.min(containerData.width, limited ? canvasData.width : containerData.width);
+    maxCropBoxWidth = 9999999999999999; // TWEAK
+    // TWEAK maxCropBoxHeight = Math.min(containerData.height, limited ? canvasData.height : containerData.height);
+    maxCropBoxHeight = 9999999999999999; // TWEAK
 
     if (aspectRatio) {
       if (minCropBoxWidth && minCropBoxHeight) {
@@ -497,22 +529,26 @@ cropperLib.prototype.limitCropBox = function limitCropBox(sizeLimited, positionL
     // The minWidth/Height must be less than maxWidth/Height
     cropBoxData.minWidth = Math.min(minCropBoxWidth, maxCropBoxWidth);
     cropBoxData.minHeight = Math.min(minCropBoxHeight, maxCropBoxHeight);
-    //TWEAK
+    // TWEAK
     // cropBoxData.maxWidth = maxCropBoxWidth;
     // cropBoxData.maxHeight = maxCropBoxHeight;
     cropBoxData.maxWidth = 9999999999999999;
     cropBoxData.maxHeight = 9999999999999999;
-    //TWEAK 
+    // TWEAK
   }
 
   if (positionLimited) {
     if (limited) {
       cropBoxData.minLeft = Math.max(0, canvasData.left);
       cropBoxData.minTop = Math.max(0, canvasData.top);
-      cropBoxData.maxLeft = Math.min(containerData.width, canvasData.left + canvasData.width) - cropBoxData.width;
-      cropBoxData.maxTop = Math.min(containerData.height, canvasData.top + canvasData.height) - cropBoxData.height;
+      cropBoxData.maxLeft =
+        Math.min(containerData.width, canvasData.left + canvasData.width) -
+        cropBoxData.width;
+      cropBoxData.maxTop =
+        Math.min(containerData.height, canvasData.top + canvasData.height) -
+        cropBoxData.height;
     } else {
-      //TWEAK
+      // TWEAK
       // cropBoxData.minLeft = 0;
       // cropBoxData.minTop = 0;
       // cropBoxData.maxLeft = containerData.width - cropBoxData.width;
@@ -521,8 +557,7 @@ cropperLib.prototype.limitCropBox = function limitCropBox(sizeLimited, positionL
       cropBoxData.minTop = -cropBoxData.height;
       cropBoxData.maxLeft = containerData.width;
       cropBoxData.maxTop = containerData.height;
-      //TWEAK
-
+      // TWEAK
     }
   }
 };

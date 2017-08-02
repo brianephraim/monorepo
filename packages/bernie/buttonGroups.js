@@ -1,45 +1,62 @@
 import './app.scss';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import ResponsiveHOC, { ResponsiveMaster, generateGiantSquareDetails } from 'responsive';
+import ResponsiveHOC, {
+  ResponsiveMaster,
+  generateGiantSquareDetails,
+} from 'responsive';
 import { Route, Link } from 'react-router-dom';
 import Upload from './Upload';
-import {formUrl} from './deriveUrlInfo';
+import { formUrl } from './deriveUrlInfo';
 
-const Div = (props) => {
-  return (<div {...props} >{props.children}</div>);
+const Div = props => {
+  return (
+    <div {...props}>
+      {props.children}
+    </div>
+  );
 };
 
-const A = (props) => {
-  return (<a {...props} >{props.children}</a>);
+const A = props => {
+  return (
+    <a {...props}>
+      {props.children}
+    </a>
+  );
 };
 
 class BernieAppButtonGroup extends Component {
   constructor() {
     super();
-    this.state = {
-    };
+    this.state = {};
   }
   render() {
-    const icon = this.props.icon && (
+    const icon =
+      this.props.icon &&
       <div className="section_header_icon">
-        <i className="material-icons">{this.props.icon}</i>
-      </div>
-    );
+        <i className="material-icons">
+          {this.props.icon}
+        </i>
+      </div>;
 
-    const shortHeadline = this.props.shortHeadline && (
+    const shortHeadline =
+      this.props.shortHeadline &&
       <div className="section_header_microText">
-        <span>{this.props.shortHeadline}</span>
-      </div>
-    );
+        <span>
+          {this.props.shortHeadline}
+        </span>
+      </div>;
 
-    const headline = this.props.headline && (
+    const headline =
+      this.props.headline &&
       <div className="section_header_text">
-        <span>{this.props.headline}</span>
-      </div>
-    );
+        <span>
+          {this.props.headline}
+        </span>
+      </div>;
 
-    const buttons = this.props.buttons && (
+    const buttons =
+      this.props.buttons &&
       <div className="buttonGroup_buttons">
         {this.props.buttons.map((btnDetails, i) => {
           const LinkOrDiv = btnDetails.url ? Link : Div;
@@ -56,15 +73,15 @@ class BernieAppButtonGroup extends Component {
             );
           } else if (btnDetails.aHref) {
             btnInner = (
-              <a
-                className={btnDetails.className}
-                href={btnDetails.aHref}
-              >
+              <a className={btnDetails.className} href={btnDetails.aHref}>
                 {btnDetails.text}
               </a>
             );
           } else if (btnDetails.routerLink) {
-            const routerLink = typeof btnDetails.routerLink === 'function' ? btnDetails.routerLink(this.props) : btnDetails.routerLink;
+            const routerLink =
+              typeof btnDetails.routerLink === 'function'
+                ? btnDetails.routerLink(this.props)
+                : btnDetails.routerLink;
             btnInner = (
               <Link
                 className={btnDetails.className}
@@ -74,10 +91,18 @@ class BernieAppButtonGroup extends Component {
               </Link>
             );
           } else if (btnDetails.onClick) {
-            btnInner = (<span onClick={btnDetails.onClick}>{btnDetails.text}</span>);
+            btnInner = (
+              <span onClick={btnDetails.onClick}>
+                {btnDetails.text}
+              </span>
+            );
             className = `${className} ${btnDetails.className}`;
           } else {
-            btnInner = (<span>{btnDetails.text}</span>);
+            btnInner = (
+              <span>
+                {btnDetails.text}
+              </span>
+            );
             className = `${className} ${btnDetails.className}`;
           }
 
@@ -87,15 +112,22 @@ class BernieAppButtonGroup extends Component {
             </div>
           );
         })}
-      </div>
-    );
+      </div>;
     const match = this.props.match;
 
     const splitted = match.url.split('/');
-    const LinkOrDiv = match.url.split('/').reverse()[0] === this.props.urlFragment ? Div : Link;
-    const linkUrl = match && match.url ? `${match.url}/${formUrl(this.props.compositeImageData)}/${this.props.urlFragment}` : '/bernie';
-    return (      
-      <div className={`app_body_rightPillar_section_subsection ${this.props.className}`}>
+    const LinkOrDiv =
+      match.url.split('/').reverse()[0] === this.props.urlFragment ? Div : Link;
+    const linkUrl =
+      match && match.url
+        ? `${match.url}/${formUrl(this.props.compositeImageData)}/${this.props
+            .urlFragment}`
+        : '/bernie';
+    return (
+      <div
+        className={`app_body_rightPillar_section_subsection ${this.props
+          .className}`}
+      >
         <div className="buttonGroup">
           <LinkOrDiv to={linkUrl} className="section_header">
             {shortHeadline}
@@ -118,21 +150,21 @@ BernieAppButtonGroup.propTypes = {
 };
 
 const buttonGroupComponents = {};
-function makeButtonGroupComponent( options/*{
+function makeButtonGroupComponent(
+  options /* {
   headline,// shortHeadline, icon, buttons
-}*/) {
+}*/
+) {
   class ButtonGroup extends Component {
     constructor() {
       super();
-      this.state = {
-      };
+      this.state = {};
     }
     render() {
       const ButtonGroup = (
         <BernieAppButtonGroup
-          match={this.props.match}
-          compositeImageData={this.props.compositeImageData}
-          {...options}
+          { ...this.props }
+          { ...options }
         />
       );
 
@@ -159,14 +191,17 @@ const ImportButtonGroup = makeButtonGroupComponent({
     {
       className: 'importFbPhotoButton',
       text: 'Facebook',
-      onClick: () => {
-        console.log('CLICKED');
+      routerLink: props => {
+        return `${formUrl(
+          props.compositeImageData
+        )}/import-photo-from-facebook`;
       },
     },
     {
       className: 'cameraUploadizer',
       text: 'Camera',
-      onUploadSuccess: function(imgData) {
+      onUploadSuccess(imgData) {
+        
         console.log(this);
         /*
           Key: "selfies/a-brian14744733088711500480799004.png",
@@ -177,8 +212,10 @@ const ImportButtonGroup = makeButtonGroupComponent({
           width:
           960
         */
-        console.log('WE DID IT',imgData);
-      }
+        
+        console.log('WE DID IT', imgData);
+        this.props.onUploadSuccess(imgData.url);
+      },
     },
     {
       className: 'urlUploadizer',
@@ -188,7 +225,7 @@ const ImportButtonGroup = makeButtonGroupComponent({
       className: 'storageUploadizer',
       text: 'Storage',
     },
-  ]
+  ],
 });
 buttonGroupComponents.import = ImportButtonGroup;
 
@@ -209,9 +246,10 @@ const ShareButtonGroup = makeButtonGroupComponent({
     {
       className: 'twitterBigButton mainButton',
       text: 'Tweet',
-      aHref: 'https://twitter.com/intent/tweet?url=xXxXxXxXxXxXxXxXxXxXxXxX&via=bernieselfie&hashtags=BernieSanders%2Cfeelthebern%2Cbernieselfie&related=BernieSander',
+      aHref:
+        'https://twitter.com/intent/tweet?url=xXxXxXxXxXxXxXxXxXxXxXxX&via=bernieselfie&hashtags=BernieSanders%2Cfeelthebern%2Cbernieselfie&related=BernieSander',
     },
-  ]
+  ],
 });
 buttonGroupComponents.share = ShareButtonGroup;
 
@@ -219,7 +257,7 @@ const EditBrushButtonGroup = makeButtonGroupComponent({
   urlFragment: 'editBrush',
   className: 'editMicroSubsection microSubsection',
   shortHeadline: 'edit',
-  icon: 'brush'
+  icon: 'brush',
 });
 buttonGroupComponents.editBrush = EditBrushButtonGroup;
 
@@ -233,18 +271,17 @@ const EditSizeButtonGroup = makeButtonGroupComponent({
     {
       className: 'editSizeAndPositionButton',
       text: 'Size and position',
-      routerLink: (props) => {
-
+      routerLink: props => {
         const compositeImageData = props.compositeImageData;
-        console.log('compositeImageData',compositeImageData);
+        console.log('compositeImageData', compositeImageData);
         const fg = compositeImageData.foreground;
         const bg = compositeImageData.background;
         console.log('formUrl', formUrl(compositeImageData));
         const routerLink = `${formUrl(compositeImageData)}/crop`;
         return routerLink;
-      }
+      },
     },
-  ]
+  ],
 });
 buttonGroupComponents.editSize = EditSizeButtonGroup;
 
@@ -262,18 +299,28 @@ const EditDesignButtonGroup = makeButtonGroupComponent({
     {
       className: 'templateModalButton',
       text: 'upload a template',
-    }
-  ]
+    },
+  ],
 });
 buttonGroupComponents.editDesign = EditDesignButtonGroup;
 const objectKeysButtonGroupComponents = Object.keys(buttonGroupComponents);
-const buttonGroupComponentsRegexArrayString = objectKeysButtonGroupComponents.reduce((regexArray, componentKey, i) => {
-  regexArray.push(componentKey);
-  if(i === objectKeysButtonGroupComponents.length - 1) {
-    return regexArray.join('|');
-  }
-  return regexArray;
-}, []);
+const buttonGroupComponentsRegexArrayString = objectKeysButtonGroupComponents.reduce(
+  (regexArray, componentKey, i) => {
+    regexArray.push(componentKey);
+    if (i === objectKeysButtonGroupComponents.length - 1) {
+      return regexArray.join('|');
+    }
+    return regexArray;
+  },
+  []
+);
 
-
-export { buttonGroupComponents, buttonGroupComponentsRegexArrayString, EditDesignButtonGroup, EditSizeButtonGroup, EditBrushButtonGroup, ShareButtonGroup, ImportButtonGroup };
+export {
+  buttonGroupComponents,
+  buttonGroupComponentsRegexArrayString,
+  EditDesignButtonGroup,
+  EditSizeButtonGroup,
+  EditBrushButtonGroup,
+  ShareButtonGroup,
+  ImportButtonGroup,
+};

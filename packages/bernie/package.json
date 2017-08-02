@@ -1,5 +1,13 @@
 {
+  "name": "bernie",
+  "version": "0.0.1",
+  "private": true,
+  "privateFromGithub": true,
   "dependencies": {
-    "react-cropper": "^0.12.0"
+    "@defualt/responsive": "^0.0.1",
+    "prop-types": "^15.5.8",
+    "react": "^15.0.2",
+    "react-cropper": "^0.12.0",
+    "react-router-dom": "^4.1.1"
   }
 }

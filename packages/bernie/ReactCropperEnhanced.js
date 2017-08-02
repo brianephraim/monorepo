@@ -40,13 +40,11 @@ class ReactCropperEnhanced extends Component {
     // So <ReactCropper> will unmount then mount another instance.
     // This lets us reset the cropper for each resize.
     this.windowSizerCb = windowSizer.addCb(() => {
-      
-      this.setState({cropperExists: false}, () => {
+      this.setState({ cropperExists: false }, () => {
         // setTimeout(() => {
-          this.setState({cropperExists: true});
+        this.setState({ cropperExists: true });
         // },2000);
       });
-      
     });
   }
   componentWillUnmount() {
@@ -55,7 +53,7 @@ class ReactCropperEnhanced extends Component {
       delete this.windowSizerCb;
     }
   }
-  _ready(...args){
+  _ready(...args) {
     if (
       this.props.cropSrc &&
       this.refs &&
@@ -65,10 +63,13 @@ class ReactCropperEnhanced extends Component {
     ) {
       // cropOverlayImg implementation
       // DOM manipulation because core cropperjs lib is DOM based
-      //'http://s3-us-west-1.amazonaws.com/bernieapp/decorations/h3.png'
+      // 'http://s3-us-west-1.amazonaws.com/bernieapp/decorations/h3.png'
       const sampleImg = document.createElement('img');
       sampleImg.setAttribute('src', this.props.cropSrc);
-      sampleImg.setAttribute('style', 'position: absolute; width: 100%; height: 100%;');
+      sampleImg.setAttribute(
+        'style',
+        'position: absolute; width: 100%; height: 100%;'
+      );
       vanilla.prepend(this.refs.cropper.cropper.cropBox, sampleImg);
 
       // because we are resetting the cropper for the sake of resizing
@@ -80,7 +81,7 @@ class ReactCropperEnhanced extends Component {
 
     this.props.ready && this.props.ready(...args);
   }
-  _crop(cropData, ...args){
+  _crop(cropData, ...args) {
     if (this.state.moving) {
       this.setState({
         lastCropData: cropData.detail,
@@ -89,24 +90,24 @@ class ReactCropperEnhanced extends Component {
     this.props.crop && this.props.crop(cropData, ...args);
   }
 
-  _cropend(...args){
-    this.setState({moving: false});
+  _cropend(...args) {
+    this.setState({ moving: false });
     this.props.cropend && this.props.cropend(...args);
   }
-  _cropmove(...args){
-    this.setState({moving: true});
+  _cropmove(...args) {
+    this.setState({ moving: true });
     this.props.cropmove && this.props.cropmove(...args);
   }
   render() {
     // The `data` prop below cancels `this.props.data` if present
     // It was breaking cropBox dragging.
     // this.props.data will have an effect on initial crobBox sizing
-    // and find that implementation starting in the contructor 
+    // and find that implementation starting in the contructor
     if (this.state.cropperExists) {
       return (
         <ReactCropper
-          style={{height: '100%'}}
-          ref='cropper'
+          style={{ height: '100%' }}
+          ref="cropper"
           {...this.props}
           data={null}
           ready={this._readyBound}
@@ -115,9 +116,8 @@ class ReactCropperEnhanced extends Component {
           cropend={this._cropendBound}
         />
       );
-    } else {
-      return (null);
     }
+    return null;
   }
 }
 
