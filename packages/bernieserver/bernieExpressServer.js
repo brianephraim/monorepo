@@ -11,6 +11,7 @@ import endpointGetNormalizedImageInfo from './js/endpointGetNormalizedImageInfo'
 import endpointGetS3SignedUploadUrl from './js/endpointGetS3SignedUploadUrl';
 import endpointIframeUpload from './js/endpointIframeUpload';
 import generateUrlRegexNamespace from './js/generateUrlRegexNamespace';
+import respondWithJson from './js/respondWithJson';
 import ensureLeadingSlash from '@defualt/ensure-leading-slash';
 // var mymodule = require('./public/js/mymodule');
 // var express = require('express');
@@ -157,6 +158,15 @@ export default ({app, port = 3000, nameSpace = ''}) => {
     secretAccessKey:AWS_SECRET_KEY,
     Bucket: S3_BUCKET,
     urlPattern: ensureLeadingSlash(`${nameSpace}/uploadsimple`)
+  });
+
+  app.get(ensureLeadingSlash(`${nameSpace}/get_template_list`), (req, res) => {
+    console.log('req',req)
+    console.log('get_template_list',userTemplates)
+    respondWithJson({
+      res,
+      userTemplates,
+    });
   });
 
 

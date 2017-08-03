@@ -21,7 +21,9 @@ class ImagePickerFacebook extends Component {
             imageObj.images[0] &&
             imageObj.images[0].source
           ) {
-            return [...accum, imageObj.images[0].source];
+            return [...accum, {
+              src: imageObj.images[0].source
+            }];
           }
           return accum;
         }, []);

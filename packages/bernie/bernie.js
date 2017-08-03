@@ -1,4 +1,5 @@
 /* eslint-disable react/no-multi-comp */
+/* eslint-disable class-methods-use-this */
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
@@ -18,6 +19,7 @@ import {
 } from './buttonGroups';
 import CropperScreen from './CropperScreen';
 import ImagePickerFacebook from './ImagePickerFacebook';
+import ImagePickerTemplate from './ImagePickerTemplate';
 import { standardModesRegexArrayString, formUrl } from './deriveUrlInfo';
 import { getNormalizedImageInfo } from './s3';
 import './app.scss';
@@ -400,24 +402,101 @@ BernieAppPod.defaultProps = {
   className: '',
 };
 
+
+
+class CompositeImage {
+  constructor({params, data}){
+    if (params) {
+      this.data = this.parseCompositeImageDataFromRouteParams(params);
+    } else if (data) {
+      this.data = data;
+    }
+  }
+  refresh(pathAssignments ) {
+    if (!Array.isArray(pathAssignments)) {
+      pathAssignments = [pathAssignments];
+    }
+    const compositeImageData = pathAssignments.reduce((accum, assignment) => {
+      const path = assignment.path;
+      const pathSplit = path.split('.');
+      const val = assignment.val;
+      accum.background = accum.background || { ...this.data.background };
+      accum.foreground = accum.foreground || { ...this.data.foreground };
+      accum[pathSplit[0]][pathSplit[1]] = val;
+      return accum;
+    }, {});
+    return new CompositeImage({data: compositeImageData});
+  };
+  generateUrl({rootPath, urlAppend}) {
+    const url = `${rootPath}/${formUrl(this.data)}${urlAppend}`;
+    return url;
+  }
+  parseCompositeImageDataFromRouteParams(params, overrides) {
+    const placeholder = {
+      fgX: 142,
+      fgY: 98,
+      fgW: 305,
+      fgH: 305,
+      bgW: 1200,
+      bgH: 1200,
+      bgSrcKey: 'zephyr1476401787491',
+      fgSrcKey: 'h3',
+    };
+    const paramsToUse = {
+      ...placeholder,
+      ...params,
+      ...overrides,
+    };
+    const compositeImageData = {
+      foreground: {
+        x: +paramsToUse.fgX,
+        y: +paramsToUse.fgY,
+        width: +paramsToUse.fgW,
+        height: +paramsToUse.fgH,
+        src: `http://s3-us-west-1.amazonaws.com/bernieapp/decorations/${paramsToUse.fgSrcKey}.png`,
+        srcKey: paramsToUse.fgSrcKey,
+      },
+      background: {
+        width: +paramsToUse.bgW,
+        height: +paramsToUse.bgH,
+        src: `http://s3-us-west-1.amazonaws.com/bernieapp/selfies/${paramsToUse.bgSrcKey}.png`,
+        srcKey: paramsToUse.bgSrcKey,
+      },
+    };
+    return compositeImageData;
+  };
+} 
+
 class Bernie extends Component {
   constructor() {
     super();
     this.state = {};
   }
-  handleBackroundImageSelection(compositeImageData, rootPath, imgSrc) {
+  handleBackroundImageSelection(compositeImage, rootPath, imgSrcObj) {
     // bs.loader.load
+    const imgSrc = imgSrcObj.src;
     getNormalizedImageInfo(imgSrc).then(response => {
-      const compositeImageDataToUse = {
-        foreground: compositeImageData.foreground,
-        background: {
-          ...compositeImageData.background,
-          srcKey: response.srcKey,
-        },
-      };
-      const url = `${rootPath}/${formUrl(compositeImageDataToUse)}/crop`;
-      this.props.history.push(url);
+      this.props.history.push(
+        compositeImage.refresh({
+          path:'background.srcKey',
+          val: response.srcKey
+        }).generateUrl({
+          rootPath,
+          urlAppend:'/crop'
+        })
+      );
     });
+  }
+  handleForegroundImageSelection(compositeImage, rootPath, imgSrcObj) {
+    this.props.history.push(
+      compositeImage.refresh({
+        path:'foreground.srcKey',
+        val: imgSrcObj.srcKey
+      }).generateUrl({
+        rootPath,
+        urlAppend:'/crop'
+      })
+    );
   }
   render() {
     const geoRouting =
@@ -434,40 +513,7 @@ class Bernie extends Component {
     //     src: `http://s3-us-west-1.amazonaws.com/bernieapp/selfies/zephyr1476401787491.png`
     //   }
     // };
-    const parseCompositeImageDataFromRouteParams = (params, overrides) => {
-      const placeholder = {
-        fgX: 142,
-        fgY: 98,
-        fgW: 305,
-        fgH: 305,
-        bgW: 1200,
-        bgH: 1200,
-        bgSrcKey: 'zephyr1476401787491',
-        fgSrcKey: 'h3',
-      };
-      const paramsToUse = {
-        ...placeholder,
-        ...params,
-        ...overrides,
-      };
-      const compositeImageData = {
-        foreground: {
-          x: +paramsToUse.fgX,
-          y: +paramsToUse.fgY,
-          width: +paramsToUse.fgW,
-          height: +paramsToUse.fgH,
-          src: `http://s3-us-west-1.amazonaws.com/bernieapp/decorations/${paramsToUse.fgSrcKey}.png`,
-          srcKey: paramsToUse.fgSrcKey,
-        },
-        background: {
-          width: +paramsToUse.bgW,
-          height: +paramsToUse.bgH,
-          src: `http://s3-us-west-1.amazonaws.com/bernieapp/selfies/${paramsToUse.bgSrcKey}.png`,
-          srcKey: paramsToUse.bgSrcKey,
-        },
-      };
-      return compositeImageData;
-    };
+
     const rootUrl = this.props.match.url;
     const homeLayoutPaths = [
       this.props.match.url,
@@ -484,7 +530,6 @@ class Bernie extends Component {
       <ResponsiveMaster name="bernie">
         <BernieHomeScreen>
           {homeLayoutPaths.map((path, i) => {
-            console.log('path!', path);
             const key = `${i}-statelessWrapper`;
             return (
               <statelessWrapper key={key}>
@@ -492,16 +537,15 @@ class Bernie extends Component {
                   path={path}
                   exact
                   render={props => {
-                    const compositeImageData = parseCompositeImageDataFromRouteParams(
-                      props.match.params
-                    );
+                    const compositeImage = new CompositeImage({params: props.match.params});
+                    const compositeImageData = compositeImage.data;
                     return (
                       <BernieHomeLayout
                         {...this.props}
                         compositeImageData={compositeImageData}
                         onUploadSuccess={this.handleBackroundImageSelection.bind(
                           this,
-                          compositeImageData,
+                          compositeImage,
                           this.props.match.url
                         )}
                       />
@@ -511,9 +555,8 @@ class Bernie extends Component {
                 <Route
                   path={`${path}/crop`}
                   render={props => {
-                    const compositeImageData = parseCompositeImageDataFromRouteParams(
-                      props.match.params
-                    );
+                    const compositeImage = new CompositeImage({params: props.match.params});
+                    const compositeImageData = compositeImage.data;
                     return (
                       <CropperScreen
                         foreground={compositeImageData.foreground}
@@ -526,16 +569,32 @@ class Bernie extends Component {
                 <Route
                   path={`${path}/import-photo-from-facebook`}
                   render={props => {
-                    const compositeImageData = parseCompositeImageDataFromRouteParams(
-                      props.match.params
-                    );
+                    const compositeImage = new CompositeImage({params: props.match.params});
+                    const compositeImageData = compositeImage.data;
                     return (
                       <ImagePickerFacebook
                         onClick={this.handleBackroundImageSelection.bind(
                           this,
-                          compositeImageData,
+                          compositeImage,
                           this.props.match.url
                         )}
+                      />
+                    );
+                  }}
+                />
+                <Route
+                  path={`${path}/select-template`}
+                  render={props => {
+                    const compositeImage = new CompositeImage({params: props.match.params});
+                    const compositeImageData = compositeImage.data;
+                    return (
+                      <ImagePickerTemplate
+                        onClick={this.handleForegroundImageSelection.bind(
+                          this,
+                          compositeImage,
+                          this.props.match.url
+                        )}
+                        {...this.props}
                       />
                     );
                   }}
@@ -544,9 +603,8 @@ class Bernie extends Component {
                   path={`${path}/:foo(${buttonGroupComponentsRegexArrayString})`}
                   render={props => {
                     const Comp = buttonGroupComponents[props.match.params.foo];
-                    const compositeImageData = parseCompositeImageDataFromRouteParams(
-                      props.match.params
-                    );
+                    const compositeImage = new CompositeImage({params: props.match.params});
+                    const compositeImageData = compositeImage.data;
                     return (
                       <Comp
                         isModal

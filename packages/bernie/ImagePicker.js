@@ -30,13 +30,13 @@ class ImagePicker extends Component {
         <div className="imageOptions">
           {!this.props.images
             ? null
-            : this.props.images.map((imgSrc, i) => {
+            : this.props.images.map((imgSrcObj, i) => {
                 return (
                   <img
                     className="photoImg"
-                    src={imgSrc}
+                    src={imgSrcObj.src}
                     key={i}
-                    onClick={this.imgOnClick(imgSrc)}
+                    onClick={this.imgOnClick(imgSrcObj)}
                   />
                 );
               })}

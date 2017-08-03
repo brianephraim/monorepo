@@ -295,6 +295,11 @@ const EditDesignButtonGroup = makeButtonGroupComponent({
     {
       className: 'moreimageOptionsHome',
       text: 'more options',
+      routerLink: props => {
+        return `${formUrl(
+          props.compositeImageData
+        )}/select-template`;
+      },
     },
     {
       className: 'templateModalButton',
