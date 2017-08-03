@@ -50,59 +50,45 @@ BernieHomeScreen.propTypes = {
 // (modal was outside .homeLayout)
 // It was also used to display:none the home screen when modal appears.
 // This can be merged into BernieHomeScreen probably.
-class BernieHomeLayout extends Component {
-  constructor() {
-    super();
-    this.state = {};
-  }
-  render() {
-    console.log(this.props);
-    return (
-      <div className="homeLayout">
-        <BernieApp>
-          <BernieContributeBanner />
-          <BernieAppHeader />
-          <BernieAppBody>
-            <BernieAppHero 
-              {...this.props}
-            />
-            <BernieAppBusiness>
-              <BernieAppPod className="section_share">
-                <ShareButtonGroup
-                  {...this.props}
-                />
-              </BernieAppPod>
-              <BernieAppPod className="section_photo featured">
-                <ImportButtonGroup
-                  {...this.props}
-                />
-              </BernieAppPod>
-              <BernieAppPod className="section_design">
-                <EditBrushButtonGroup
-                  {...this.props}
-                />
-                <EditSizeButtonGroup
-                  {...this.props}
-                />
-                <EditDesignButtonGroup
-                  {...this.props}
-                />
-              </BernieAppPod>
-            </BernieAppBusiness>
-          </BernieAppBody>
-        </BernieApp>
-        <BernieDisclaimer />
-      </div>
-    );
-  }
+function BernieHomeLayout(props){
+  return (
+    <div className="homeLayout">
+      <BernieApp>
+        <BernieContributeBanner />
+        <BernieAppHeader />
+        <BernieAppBody>
+          <BernieAppHero 
+            {...props}
+          />
+          <BernieAppBusiness>
+            <BernieAppPod className="section_share">
+              <ShareButtonGroup
+                {...props}
+              />
+            </BernieAppPod>
+            <BernieAppPod className="section_photo featured">
+              <ImportButtonGroup
+                {...props}
+              />
+            </BernieAppPod>
+            <BernieAppPod className="section_design">
+              <EditBrushButtonGroup
+                {...props}
+              />
+              <EditSizeButtonGroup
+                {...props}
+              />
+              <EditDesignButtonGroup
+                {...props}
+              />
+            </BernieAppPod>
+          </BernieAppBusiness>
+        </BernieAppBody>
+      </BernieApp>
+      <BernieDisclaimer />
+    </div>
+  );
 }
-BernieHomeLayout.propTypes = {
-  compositeImageData: PropTypes.object,
-  match: PropTypes.object.isRequired,
-};
-BernieHomeLayout.defaultProps = {
-  compositeImageData: null,
-};
 
 // This component distinguishes the photo-plus-buttonGroupComponents from disclaimer.
 class BernieApp extends Component {
@@ -467,10 +453,18 @@ class CompositeImage {
   };
 } 
 
+function makeBinder(context, methodName){
+  const functionCache = context[methodName];
+  context[methodName] = (...args) => { return functionCache.bind(context, ...args); };
+}
+
+
 class Bernie extends Component {
   constructor() {
     super();
     this.state = {};
+    makeBinder(this, 'handleBackroundImageSelection');
+    makeBinder(this, 'handleForegroundImageSelection');
   }
   handleBackroundImageSelection(compositeImage, rootPath, imgSrcObj) {
     // bs.loader.load
@@ -543,11 +537,7 @@ class Bernie extends Component {
                       <BernieHomeLayout
                         {...this.props}
                         compositeImageData={compositeImageData}
-                        onUploadSuccess={this.handleBackroundImageSelection.bind(
-                          this,
-                          compositeImage,
-                          this.props.match.url
-                        )}
+                        onUploadSuccess={this.handleBackroundImageSelection(compositeImage, this.props.match.url)}
                       />
                     );
                   }}
@@ -570,14 +560,9 @@ class Bernie extends Component {
                   path={`${path}/import-photo-from-facebook`}
                   render={props => {
                     const compositeImage = new CompositeImage({params: props.match.params});
-                    const compositeImageData = compositeImage.data;
                     return (
                       <ImagePickerFacebook
-                        onClick={this.handleBackroundImageSelection.bind(
-                          this,
-                          compositeImage,
-                          this.props.match.url
-                        )}
+                        onClick={this.handleBackroundImageSelection(compositeImage, this.props.match.url)}
                       />
                     );
                   }}
@@ -586,14 +571,9 @@ class Bernie extends Component {
                   path={`${path}/select-template`}
                   render={props => {
                     const compositeImage = new CompositeImage({params: props.match.params});
-                    const compositeImageData = compositeImage.data;
                     return (
                       <ImagePickerTemplate
-                        onClick={this.handleForegroundImageSelection.bind(
-                          this,
-                          compositeImage,
-                          this.props.match.url
-                        )}
+                        onClick={this.handleForegroundImageSelection(compositeImage, this.props.match.url)}
                         {...this.props}
                       />
                     );
