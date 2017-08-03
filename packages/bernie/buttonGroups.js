@@ -161,12 +161,7 @@ function makeButtonGroupComponent(
       this.state = {};
     }
     render() {
-      const ButtonGroup = (
-        <BernieAppButtonGroup
-          { ...this.props }
-          { ...options }
-        />
-      );
+      const ButtonGroup = <BernieAppButtonGroup {...this.props} {...options} />;
 
       if (this.props.isModal) {
         return (
@@ -201,7 +196,6 @@ const ImportButtonGroup = makeButtonGroupComponent({
       className: 'cameraUploadizer',
       text: 'Camera',
       onUploadSuccess(imgData) {
-        
         console.log(this);
         /*
           Key: "selfies/a-brian14744733088711500480799004.png",
@@ -212,7 +206,7 @@ const ImportButtonGroup = makeButtonGroupComponent({
           width:
           960
         */
-        
+
         console.log('WE DID IT', imgData);
         this.props.onUploadSuccess(imgData.url);
       },
@@ -296,9 +290,7 @@ const EditDesignButtonGroup = makeButtonGroupComponent({
       className: 'moreimageOptionsHome',
       text: 'more options',
       routerLink: props => {
-        return `${formUrl(
-          props.compositeImageData
-        )}/select-template`;
+        return `${formUrl(props.compositeImageData)}/select-template`;
       },
     },
     {

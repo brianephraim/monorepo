@@ -24,115 +24,59 @@ import { standardModesRegexArrayString, formUrl } from './deriveUrlInfo';
 import { getNormalizedImageInfo } from './s3';
 import './app.scss';
 
-// This component exists because its el had a class of 'bodyInner'
-// and this was affected by:
-//  >> var modalManager = bs.setupNewModalManager($('.bodyInner'));
-class BernieHomeScreen extends Component {
-  constructor() {
-    super();
-    this.state = {};
-  }
-  render() {
-    return (
-      <div className="homeScreen">
-        {this.props.children}
-      </div>
-    );
-  }
-}
-BernieHomeScreen.propTypes = {
-  children: PropTypes.node.isRequired,
-};
-
 // This component exists as a container to distingsh from the modals outside this container.
 // This was used for descendant selectors.
 // For instance, .someButton within .homeLayout was styled differently than within .modal
 // (modal was outside .homeLayout)
 // It was also used to display:none the home screen when modal appears.
-// This can be merged into BernieHomeScreen probably.
-function BernieHomeLayout(props){
+function BernieHomeLayout(props) {
   return (
     <div className="homeLayout">
-      <BernieApp>
+      {/*The wrapping element below distinguishes the photo-plus-buttonGroupComponents from disclaimer.*/}
+      <div className="app">
         <BernieContributeBanner />
         <BernieAppHeader />
-        <BernieAppBody>
-          <BernieAppHero 
-            {...props}
-          />
+        <div className="app_body">
+          <BernieAppHero {...props} />
           <BernieAppBusiness>
             <BernieAppPod className="section_share">
-              <ShareButtonGroup
-                {...props}
-              />
+              <ShareButtonGroup {...props} />
             </BernieAppPod>
             <BernieAppPod className="section_photo featured">
-              <ImportButtonGroup
-                {...props}
-              />
+              <ImportButtonGroup {...props} />
             </BernieAppPod>
             <BernieAppPod className="section_design">
-              <EditBrushButtonGroup
-                {...props}
-              />
-              <EditSizeButtonGroup
-                {...props}
-              />
-              <EditDesignButtonGroup
-                {...props}
-              />
+              <EditBrushButtonGroup {...props} />
+              <EditSizeButtonGroup {...props} />
+              <EditDesignButtonGroup {...props} />
             </BernieAppPod>
           </BernieAppBusiness>
-        </BernieAppBody>
-      </BernieApp>
+        </div>
+      </div>
       <BernieDisclaimer />
     </div>
   );
 }
 
-// This component distinguishes the photo-plus-buttonGroupComponents from disclaimer.
-class BernieApp extends Component {
-  constructor() {
-    super();
-    this.state = {};
-  }
-  render() {
-    return (
-      <div className="app">
-        {this.props.children}
-      </div>
-    );
-  }
-}
-BernieApp.propTypes = {
-  children: PropTypes.node.isRequired,
-};
-
 // This adds padding to the bottom and serves as disclaimer.
 // Disclaimer can probably be nested inside BernieApp.
-class BernieDisclaimer extends Component {
-  constructor() {
-    super();
-    this.state = {};
-  }
-  render() {
-    return (
-      <div className="disclaimer">
-        <p>
-          contact: admin@bernieselfie.com <br />
-          <a href="/terms">Terms&nbsp;and&nbsp;Conditions</a>
-          {' -- '}
-          <a href="/privacy">Privacy&nbsp;Policy</a>
-          <br />
-          bernieselfie.com is not affiliated with any political party,
-          candidate, or interest group.
-        </p>
-      </div>
-    );
-  }
+function BernieDisclaimer() {
+  return (
+    <div className="disclaimer">
+      <p>
+        contact: admin@bernieselfie.com <br />
+        <a href="/terms">Terms&nbsp;and&nbsp;Conditions</a>
+        {' -- '}
+        <a href="/privacy">Privacy&nbsp;Policy</a>
+        <br />
+        bernieselfie.com is not affiliated with any political party, candidate,
+        or interest group.
+      </p>
+    </div>
+  );
 }
-BernieDisclaimer.propTypes = {};
-const BernieContributeBanner = () => {
+
+function BernieContributeBanner() {
   return (
     <div className="topBanner">
       <a className="topBanner_link" href="http://www.berniesanders.com/">
@@ -140,122 +84,92 @@ const BernieContributeBanner = () => {
       </a>
     </div>
   );
-};
+}
 
-class BernieAppHeader extends Component {
-  constructor() {
-    super();
-    this.state = {};
-  }
-  render() {
-    return (
-      <div className="app_header header">
-        <div className="app_header_leftPillar leftPillar">
-          <div className="app_header_leftPillar_branding branding">
-            <div className="app_header_leftPillar_branding_title branding_title">
-              BernieSelfie.com
-            </div>
-            <div className="app_header_leftPillar_branding_subtitle branding_subtitle">
-              Support Bernie with your picture
-            </div>
+function BernieAppHeader() {
+  return (
+    <div className="app_header header">
+      <div className="app_header_leftPillar leftPillar">
+        <div className="app_header_leftPillar_branding branding">
+          <div className="app_header_leftPillar_branding_title branding_title">
+            BernieSelfie.com
           </div>
-          <div className="app_header_leftPillar_socialRow socialRow">
-            <div className="app_header_leftPillar_socialRow_socialWidget socialWidget">
-              <a
-                className="twitter-share-button"
-                href="https://twitter.com/intent/tweet?url=xXxXxXxXxXxXxXxXxXxXxXxX&via=bernieselfie&hashtags=BernieSanders%2Cfeelthebern%2Cbernieselfie&related=BernieSanders"
-              >
-                Tweet
-              </a>
-            </div>
-            <div
-              className="fb-like app_header_leftPillar_socialRow_socialWidget socialWidget"
-              data-share="true"
-              data-width="450"
-              data-layout="button_count"
-              data-show-faces="true"
-            />
-
-            <div className="app_header_leftPillar_socialRow_socialWidget socialWidget">
-              <a
-                href="//www.pinterest.com/pin/create/button/?url=xXxXxXxXxXxXxXxXxX&description=xXxXxXxXxXxXxXxXxXxXxXxXxXxXxX"
-                data-pin-do="buttonPin"
-                data-pin-config="beside"
-                data-pin-color="red"
-              >
-                <img
-                  src="//assets.pinterest.com/images/pidgets/pinit_fg_en_rect_red_20.png"
-                  alt="Pintrest Pinit badge"
-                />
-              </a>
-            </div>
+          <div className="app_header_leftPillar_branding_subtitle branding_subtitle">
+            Support Bernie with your picture
           </div>
         </div>
-        <div className="app_header_rightPillar rightPillar">
-          <div className="app_header_rightPillar_fbLikePageWrap">
-            <img
-              className="app_header_rightPillar_fbLikePageWrap_socialWidget socialWidget"
-              src="/images/mock-fb-page.png"
-              alt="Facebook Like badge"
-            />
+        <div className="app_header_leftPillar_socialRow socialRow">
+          <div className="app_header_leftPillar_socialRow_socialWidget socialWidget">
+            <a
+              className="twitter-share-button"
+              href="https://twitter.com/intent/tweet?url=xXxXxXxXxXxXxXxXxXxXxXxX&via=bernieselfie&hashtags=BernieSanders%2Cfeelthebern%2Cbernieselfie&related=BernieSanders"
+            >
+              Tweet
+            </a>
           </div>
-          <div className="app_header_rightPillar_socialRow socialRow">
-            <img
-              className="app_header_rightPillar_socialRow_socialWidget socialWidget"
-              src="/images/mock-fb-like.png"
-              alt="Facebook Like badge"
-            />
-            <img
-              className="app_header_rightPillar_socialRow_socialWidget socialWidget"
-              src="/images/mock-tweet.png"
-              alt="Twitter tweet badge"
-            />
-            <img
-              className="app_header_rightPillar_socialRow_socialWidget socialWidget"
-              src="/images/mock-pintrest.png"
-              alt="Pintrest Pinit badge"
-            />
+          <div
+            className="fb-like app_header_leftPillar_socialRow_socialWidget socialWidget"
+            data-share="true"
+            data-width="450"
+            data-layout="button_count"
+            data-show-faces="true"
+          />
+
+          <div className="app_header_leftPillar_socialRow_socialWidget socialWidget">
+            <a
+              href="//www.pinterest.com/pin/create/button/?url=xXxXxXxXxXxXxXxXxX&description=xXxXxXxXxXxXxXxXxXxXxXxXxXxXxX"
+              data-pin-do="buttonPin"
+              data-pin-config="beside"
+              data-pin-color="red"
+            >
+              <img
+                src="//assets.pinterest.com/images/pidgets/pinit_fg_en_rect_red_20.png"
+                alt="Pintrest Pinit badge"
+              />
+            </a>
           </div>
         </div>
       </div>
-    );
-  }
-}
-BernieAppHeader.propTypes = {};
-
-class BernieAppBody extends Component {
-  constructor() {
-    super();
-    this.state = {};
-  }
-  render() {
-    return (
-      <div className="app_body">
-        {this.props.children}
+      <div className="app_header_rightPillar rightPillar">
+        <div className="app_header_rightPillar_fbLikePageWrap">
+          <img
+            className="app_header_rightPillar_fbLikePageWrap_socialWidget socialWidget"
+            src="/images/mock-fb-page.png"
+            alt="Facebook Like badge"
+          />
+        </div>
+        <div className="app_header_rightPillar_socialRow socialRow">
+          <img
+            className="app_header_rightPillar_socialRow_socialWidget socialWidget"
+            src="/images/mock-fb-like.png"
+            alt="Facebook Like badge"
+          />
+          <img
+            className="app_header_rightPillar_socialRow_socialWidget socialWidget"
+            src="/images/mock-tweet.png"
+            alt="Twitter tweet badge"
+          />
+          <img
+            className="app_header_rightPillar_socialRow_socialWidget socialWidget"
+            src="/images/mock-pintrest.png"
+            alt="Pintrest Pinit badge"
+          />
+        </div>
       </div>
-    );
-  }
+    </div>
+  );
 }
-BernieAppBody.propTypes = {
-  children: PropTypes.node.isRequired,
-};
 
-class BernieAppMainSelfieFrame extends Component {
-  constructor() {
-    super();
-    this.state = {};
-  }
-  render() {
-    return (
-      <div
-        style={this.props.style}
-        className="app_body_leftPillar_selfieFrame js_mainSelfieFrame"
-        ref={this.props.responsiveRef}
-      >
-        {this.props.children}
-      </div>
-    );
-  }
+function BernieAppMainSelfieFrame(props) {
+  return (
+    <div
+      style={props.style}
+      className="app_body_leftPillar_selfieFrame js_mainSelfieFrame"
+      ref={props.responsiveRef}
+    >
+      {props.children}
+    </div>
+  );
 }
 BernieAppMainSelfieFrame.propTypes = {
   children: PropTypes.node.isRequired,
@@ -388,17 +302,15 @@ BernieAppPod.defaultProps = {
   className: '',
 };
 
-
-
 class CompositeImage {
-  constructor({params, data}){
+  constructor({ params, data }) {
     if (params) {
       this.data = this.parseCompositeImageDataFromRouteParams(params);
     } else if (data) {
       this.data = data;
     }
   }
-  refresh(pathAssignments ) {
+  refresh(pathAssignments) {
     if (!Array.isArray(pathAssignments)) {
       pathAssignments = [pathAssignments];
     }
@@ -411,9 +323,9 @@ class CompositeImage {
       accum[pathSplit[0]][pathSplit[1]] = val;
       return accum;
     }, {});
-    return new CompositeImage({data: compositeImageData});
-  };
-  generateUrl({rootPath, urlAppend}) {
+    return new CompositeImage({ data: compositeImageData });
+  }
+  generateUrl({ rootPath, urlAppend }) {
     const url = `${rootPath}/${formUrl(this.data)}${urlAppend}`;
     return url;
   }
@@ -450,14 +362,15 @@ class CompositeImage {
       },
     };
     return compositeImageData;
-  };
-} 
-
-function makeBinder(context, methodName){
-  const functionCache = context[methodName];
-  context[methodName] = (...args) => { return functionCache.bind(context, ...args); };
+  }
 }
 
+function makeBinder(context, methodName) {
+  const functionCache = context[methodName];
+  context[methodName] = (...args) => {
+    return functionCache.bind(context, ...args);
+  };
+}
 
 class Bernie extends Component {
   constructor() {
@@ -471,25 +384,29 @@ class Bernie extends Component {
     const imgSrc = imgSrcObj.src;
     getNormalizedImageInfo(imgSrc).then(response => {
       this.props.history.push(
-        compositeImage.refresh({
-          path:'background.srcKey',
-          val: response.srcKey
-        }).generateUrl({
-          rootPath,
-          urlAppend:'/crop'
-        })
+        compositeImage
+          .refresh({
+            path: 'background.srcKey',
+            val: response.srcKey,
+          })
+          .generateUrl({
+            rootPath,
+            urlAppend: '/crop',
+          })
       );
     });
   }
   handleForegroundImageSelection(compositeImage, rootPath, imgSrcObj) {
     this.props.history.push(
-      compositeImage.refresh({
-        path:'foreground.srcKey',
-        val: imgSrcObj.srcKey
-      }).generateUrl({
-        rootPath,
-        urlAppend:'/crop'
-      })
+      compositeImage
+        .refresh({
+          path: 'foreground.srcKey',
+          val: imgSrcObj.srcKey,
+        })
+        .generateUrl({
+          rootPath,
+          urlAppend: '/crop',
+        })
     );
   }
   render() {
@@ -522,7 +439,13 @@ class Bernie extends Component {
 
     return (
       <ResponsiveMaster name="bernie">
-        <BernieHomeScreen>
+        {/*
+          The wrapping element below exists because its el had a class of 'bodyInner'
+          and this was affected by:
+          `var modalManager = bs.setupNewModalManager($('.bodyInner'));``
+          This is a refactor remnant and we should consider removing.
+        */}
+        <div className="homeScreen">
           {homeLayoutPaths.map((path, i) => {
             const key = `${i}-statelessWrapper`;
             return (
@@ -531,13 +454,18 @@ class Bernie extends Component {
                   path={path}
                   exact
                   render={props => {
-                    const compositeImage = new CompositeImage({params: props.match.params});
+                    const compositeImage = new CompositeImage({
+                      params: props.match.params,
+                    });
                     const compositeImageData = compositeImage.data;
                     return (
                       <BernieHomeLayout
                         {...this.props}
                         compositeImageData={compositeImageData}
-                        onUploadSuccess={this.handleBackroundImageSelection(compositeImage, this.props.match.url)}
+                        onUploadSuccess={this.handleBackroundImageSelection(
+                          compositeImage,
+                          this.props.match.url
+                        )}
                       />
                     );
                   }}
@@ -545,7 +473,9 @@ class Bernie extends Component {
                 <Route
                   path={`${path}/crop`}
                   render={props => {
-                    const compositeImage = new CompositeImage({params: props.match.params});
+                    const compositeImage = new CompositeImage({
+                      params: props.match.params,
+                    });
                     const compositeImageData = compositeImage.data;
                     return (
                       <CropperScreen
@@ -559,10 +489,15 @@ class Bernie extends Component {
                 <Route
                   path={`${path}/import-photo-from-facebook`}
                   render={props => {
-                    const compositeImage = new CompositeImage({params: props.match.params});
+                    const compositeImage = new CompositeImage({
+                      params: props.match.params,
+                    });
                     return (
                       <ImagePickerFacebook
-                        onClick={this.handleBackroundImageSelection(compositeImage, this.props.match.url)}
+                        onClick={this.handleBackroundImageSelection(
+                          compositeImage,
+                          this.props.match.url
+                        )}
                       />
                     );
                   }}
@@ -570,10 +505,15 @@ class Bernie extends Component {
                 <Route
                   path={`${path}/select-template`}
                   render={props => {
-                    const compositeImage = new CompositeImage({params: props.match.params});
+                    const compositeImage = new CompositeImage({
+                      params: props.match.params,
+                    });
                     return (
                       <ImagePickerTemplate
-                        onClick={this.handleForegroundImageSelection(compositeImage, this.props.match.url)}
+                        onClick={this.handleForegroundImageSelection(
+                          compositeImage,
+                          this.props.match.url
+                        )}
                         {...this.props}
                       />
                     );
@@ -583,7 +523,9 @@ class Bernie extends Component {
                   path={`${path}/:foo(${buttonGroupComponentsRegexArrayString})`}
                   render={props => {
                     const Comp = buttonGroupComponents[props.match.params.foo];
-                    const compositeImage = new CompositeImage({params: props.match.params});
+                    const compositeImage = new CompositeImage({
+                      params: props.match.params,
+                    });
                     const compositeImageData = compositeImage.data;
                     return (
                       <Comp
@@ -597,7 +539,7 @@ class Bernie extends Component {
               </statelessWrapper>
             );
           })}
-        </BernieHomeScreen>
+        </div>
       </ResponsiveMaster>
     );
   }
