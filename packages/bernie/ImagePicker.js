@@ -19,8 +19,8 @@ class ImagePicker extends Component {
     };
   }
   render() {
-    const imgSrc =
-      'https://scontent.xx.fbcdn.net/v/t1.0-9/14729128_10157953620800725_5026720440547477533_n.jpg?oh=ac158b7c520d1310164aabb3c18fa3ff&amp;oe=59F6F820';
+    // const imgSrc =
+    //   'https://scontent.xx.fbcdn.net/v/t1.0-9/14729128_10157953620800725_5026720440547477533_n.jpg?oh=ac158b7c520d1310164aabb3c18fa3ff&amp;oe=59F6F820';
     return (
       <div className="modal designModal">
         <div className="closeButton button">
@@ -28,23 +28,29 @@ class ImagePicker extends Component {
         </div>
         <h2>Pick a photo</h2>
         <div className="imageOptions">
-          {!this.props.images
-            ? null
-            : this.props.images.map((imgSrcObj, i) => {
-                return (
-                  <img
-                    className="photoImg"
-                    src={imgSrcObj.src}
-                    key={i}
-                    onClick={this.imgOnClick(imgSrcObj)}
-                  />
-                );
-              })}
+          {this.props.images.map((imgSrcObj, i) => {
+            return (
+              <img
+                className="photoImg"
+                src={imgSrcObj.src}
+                key={imgSrcObj.src}
+                alt={`item number ${i}`}
+                onClick={this.imgOnClick(imgSrcObj)}
+              />
+            );
+          })}
         </div>
       </div>
     );
   }
 }
-ImagePicker.propTypes = {};
+ImagePicker.propTypes = {
+  onClick: PropTypes.func,
+  images: PropTypes.array,
+};
+ImagePicker.defaultProps = {
+  onClick: () => {},
+  images: [],
+};
 
 export default ImagePicker;

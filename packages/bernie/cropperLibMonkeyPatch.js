@@ -1,3 +1,7 @@
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable no-plusplus */
+/* eslint-disable default-case */
+
 /*
   MONKEY PATCHING Cropper.js v0.8.1 - https://github.com/fengyuanchen/cropperjs
   Cropper.js is a dependency of react-cropper.
@@ -7,6 +11,78 @@
   See "//TWEAK" comments below to see what was changed.
 
 */
+
+import cropperLib from 'cropperjs/dist/cropper';
+
+function isNumber(n) {
+  return typeof n === 'number' && !isNaN(n);
+}
+
+function typeOf(obj) {
+  return toString.call(obj).slice(8, -1).toLowerCase();
+}
+
+function isArray(arr) {
+  return Array.isArray ? Array.isArray(arr) : typeOf(arr) === 'array';
+}
+
+function isFunction(fn) {
+  return typeOf(fn) === 'function';
+}
+
+const _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? (obj) => {
+  return typeof obj;
+} : (obj) => {
+  return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+};
+
+function isObject(obj) {
+  return (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) === 'object' && obj !== null;
+}
+
+function each(obj, callback) {
+  if (obj && isFunction(callback)) {
+    let i;
+
+    if (isArray(obj) || isNumber(obj.length) /* array-like */) {
+        const length = obj.length;
+
+        for (i = 0; i < length; i++) {
+          if (callback.call(obj, obj[i], i, obj) === false) {
+            break;
+          }
+        }
+      } else if (isObject(obj)) {
+      Object.keys(obj).forEach((key) => {
+        callback.call(obj, obj[key], key, obj);
+      });
+    }
+  }
+
+  return obj;
+}
+
+function removeClass(element, value) {
+  if (!value) {
+    return;
+  }
+
+  if (isNumber(element.length)) {
+    each(element, (elem) => {
+      removeClass(elem, value);
+    });
+    return;
+  }
+
+  if (element.classList) {
+    element.classList.remove(value);
+    return;
+  }
+
+  if (element.className.indexOf(value) >= 0) {
+    element.className = element.className.replace(value, '');
+  }
+}
 const $ = {
   getOffset: element => {
     const doc = document.documentElement;
@@ -42,10 +118,6 @@ const $ = {
   },
 };
 
-import cropperLib from 'cropperjs/dist/cropper';
-
-console.log('cropperLib', { x: cropperLib });
-
 const ACTION_EAST = 'e';
 const ACTION_WEST = 'w';
 const ACTION_SOUTH = 's';
@@ -57,8 +129,6 @@ const ACTION_NORTH_WEST = 'nw';
 cropperLib.prototype.change = function change(shiftKey, originalEvent) {
   const self = this;
   const options = self.options;
-  const containerData = self.containerData;
-  const canvasData = self.canvasData;
   const cropBoxData = self.cropBoxData;
   let aspectRatio = options.aspectRatio;
   let action = self.action;
@@ -79,7 +149,7 @@ cropperLib.prototype.change = function change(shiftKey, originalEvent) {
   let maxHeight = 9999999999999999;
   // TWEAK
   let renderable = true;
-  let offset = void 0;
+  let offset;
 
   // Locking aspect ratio in "free mode" by holding shift key
   if (!aspectRatio && shiftKey) {
@@ -406,7 +476,7 @@ cropperLib.prototype.change = function change(shiftKey, originalEvent) {
     // Zoom canvas
     case 'zoom':
       self.zoom(
-        (function(x1, y1, x2, y2) {
+        (function zoomVariableHelper(x1, y1, x2, y2) {
           const z1 = Math.sqrt(x1 * x1 + y1 * y1);
           const z2 = Math.sqrt(x2 * x2 + y2 * y2);
 
@@ -489,10 +559,10 @@ cropperLib.prototype.limitCropBox = function limitCropBox(
   const canvasData = self.canvasData;
   const cropBoxData = self.cropBoxData;
   const limited = self.limited;
-  let minCropBoxWidth = void 0;
-  let minCropBoxHeight = void 0;
-  let maxCropBoxWidth = void 0;
-  let maxCropBoxHeight = void 0;
+  let minCropBoxWidth;
+  let minCropBoxHeight;
+  let maxCropBoxWidth;
+  let maxCropBoxHeight;
 
   if (sizeLimited) {
     minCropBoxWidth = Number(options.minCropBoxWidth) || 0;

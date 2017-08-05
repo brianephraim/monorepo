@@ -4,8 +4,11 @@
   "private": true,
   "privateFromGithub": true,
   "dependencies": {
+    "@defualt/bind_here": "^0.0.19",
     "@defualt/make-binder": "^0.0.1",
     "@defualt/responsive": "^0.0.1",
+    "@defualt/window-sizer": "^0.0.1",
+    "cropperjs": "^0.8.1",
     "prop-types": "^15.5.8",
     "react": "^15.0.2",
     "react-cropper": "^0.12.0",

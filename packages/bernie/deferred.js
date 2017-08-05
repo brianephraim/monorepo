@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+
 function Deferred() {
   // update 062115 for typeof
   if (typeof Promise !== 'undefined' && Promise.defer) {

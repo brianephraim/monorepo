@@ -372,14 +372,14 @@ class Bernie extends Component {
     const imgSrc = imgSrcObj.src;
     getNormalizedImageInfo(imgSrc).then(response => {
       const url = compositeImage
-      .refresh({
-        path: 'background.srcKey',
-        val: response.srcKey,
-      })
-      .generateUrl({
-        rootPath,
-        urlAppend: '/crop',
-      });
+        .refresh({
+          path: 'background.srcKey',
+          val: response.srcKey,
+        })
+        .generateUrl({
+          rootPath,
+          urlAppend: '/crop',
+        });
       this.props.history.push(url);
     });
   }

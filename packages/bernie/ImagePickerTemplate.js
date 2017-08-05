@@ -16,8 +16,6 @@ class ImagePickerTemplate extends Component {
         return r.json();
       });
     imagesFromFetchPromise.then(response => {
-      window.xx = response;
-      console.log(response);
       if (response && response.userTemplates && response.userTemplates.length) {
         const images = response.userTemplates.reduce((accum, imageObj) => {
           if (imageObj && imageObj.customTemplate) {
@@ -36,7 +34,7 @@ class ImagePickerTemplate extends Component {
         });
       }
     });
-    imagesFromFetchPromise.catch(response => {});
+    // imagesFromFetchPromise.catch(response => {});
   }
   render() {
     return (
@@ -44,5 +42,10 @@ class ImagePickerTemplate extends Component {
     );
   }
 }
-ImagePickerTemplate.propTypes = {};
+ImagePickerTemplate.propTypes = {
+  onClick: PropTypes.func
+};
+ImagePickerTemplate.defaultProps = {
+  onClick: () => {}
+};
 export default ImagePickerTemplate;

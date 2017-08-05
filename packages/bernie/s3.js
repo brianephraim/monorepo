@@ -1,94 +1,52 @@
-function upload_file(file, signed_request, url, response) {
-  console.log('upload_file');
+function uploadFile(file, signedRequest, url) {
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
-    xhr.open('PUT', signed_request);
+    xhr.open('PUT', signedRequest);
     xhr.setRequestHeader('x-amz-acl', 'public-read');
-    xhr.onload = function() {
+    xhr.onload = () => {
       if (xhr.status === 200) {
         resolve(url);
       } else {
-        reject('upload_file failed');
+        reject('uploadFile failed');
       }
     };
-    xhr.onerror = function() {
-      reject('upload_file failed - error');
+    xhr.onerror = () => {
+      reject(new Error('uploadFile failed - error'));
       // alert("Could not upload file.");
     };
     xhr.send(file);
   });
 }
 
-/*
-    Function to get the temporary signed request from the app.
-    If request successful, continue to upload the file using this signed
-    request.
-*/
-function get_signed_request(file, folder, mustBeSquare) {
-  console.log('get_signed_request');
-  folder = folder || 'selfies';
-  return new Promise((resolve, reject) => {
-    const xhr = new XMLHttpRequest();
-    let filename = file.name;
-    filename = `${folder}/${filename}`;
-    xhr.open(
-      'GET',
-      `/bernieBackend/get_s3_signed_upload_url?file_name=${filename}&file_type=${file.type}`
-    );
-    xhr.onreadystatechange = function() {
-      if (xhr.readyState === 4) {
-        if (xhr.status === 200) {
-          var response = JSON.parse(xhr.responseText);
-          upload_file(file, response.signed_request, response.url, response)
-            .then(makeGetNormalizedImageInfo(mustBeSquare))
-            .then(resolve);
-        } else {
-          var response = JSON.parse(xhr.responseText);
-          let message = 'There was a problem.  Try again.';
-          message = response.message ? response.message : message;
-          message = `Error.: ${message}`;
-          reject(message);
-          alert(message);
-        }
-      }
-    };
-    xhr.send();
-  });
-}
-
 function makeGetNormalizedImageInfo(mustBeSquare) {
-  console.log('makeGetNormalizedImageInfo1');
-  return function(image_url) {
+  return (imageUrl) => {
     return new Promise((resolve, reject) => {
-      console.log('image_url',image_url);
-      console.trace()
-      console.log('makeGetNormalizedImageInfo2');
-      if (!image_url){
-        return true;
+      if (!imageUrl) {
+        reject(new Error('No image url passed.'));
       }
       const xhr = new XMLHttpRequest();
       xhr.open(
         'GET',
         `/bernieBackend/get_normalized_image_info?image_url=${encodeURIComponent(
-          image_url
+          imageUrl
         )}&must_be_square=${mustBeSquare}`
       );
-      xhr.onreadystatechange = function() {
+      xhr.onreadystatechange = () => {
         if (xhr.readyState === 4) {
           if (xhr.status === 200) {
-            var response = JSON.parse(xhr.responseText);
+            const response = JSON.parse(xhr.responseText);
             if (response.failingSquare) {
               resolve(response);
             } else {
-              let public_id = response.url.split('/');
-              public_id = public_id.pop();
-              let srcKey = public_id.split('.');
+              let publicId = response.url.split('/');
+              publicId = publicId.pop();
+              let srcKey = publicId.split('.');
               srcKey.pop();
               srcKey = srcKey.join('');
               resolve({
                 width: response.width,
                 height: response.height,
-                public_id,
+                public_id: publicId,
                 srcKey,
                 src: response.url,
                 Key: response.Key,
@@ -96,12 +54,11 @@ function makeGetNormalizedImageInfo(mustBeSquare) {
               });
             }
           } else {
-            var response = JSON.parse(xhr.responseText);
+            const response = JSON.parse(xhr.responseText);
             let message = 'There was a problem.  Try again.';
             message = response.message ? response.message : message;
             message = `Error: ${message}`;
-            reject(message);
-            alert(message);
+            reject(new Error(message));
           }
         }
       };
@@ -111,16 +68,51 @@ function makeGetNormalizedImageInfo(mustBeSquare) {
 }
 
 /*
+    Function to get the temporary signed request from the app.
+    If request successful, continue to upload the file using this signed
+    request.
+*/
+function getSignedRequest(file, folder, mustBeSquare) {
+  folder = folder || 'selfies';
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    let filename = file.name;
+    filename = `${folder}/${filename}`;
+    xhr.open(
+      'GET',
+      `/bernieBackend/get_s3_signed_upload_url?file_name=${filename}&file_type=${file.type}`
+    );
+    xhr.onreadystatechange = () => {
+      if (xhr.readyState === 4) {
+        if (xhr.status === 200) {
+          const response = JSON.parse(xhr.responseText);
+          uploadFile(file, response.signed_request, response.url, response)
+            .then(makeGetNormalizedImageInfo(mustBeSquare))
+            .then(resolve);
+        } else {
+          const response = JSON.parse(xhr.responseText);
+          let message = 'There was a problem.  Try again.';
+          message = response.message ? response.message : message;
+          message = `Error.: ${message}`;
+          reject(new Error(message));
+        }
+      }
+    };
+    xhr.send();
+  });
+}
+
+
+
+/*
    Function called when file input updated. If there is a file selected, then
    start upload procedure by asking for a signed request from the app.
 */
 function initUpload(file, folder, mustBeSquare) {
-  console.log('initUpload');
   if (!file) {
-    alert('No file selected.');
-    return;
+    return Promise.reject(new Error('No file selected.'));
   }
-  return get_signed_request(file, folder, mustBeSquare);
+  return getSignedRequest(file, folder, mustBeSquare);
 }
 const getNormalizedImageInfo = makeGetNormalizedImageInfo(false);
 export { initUpload, getNormalizedImageInfo };

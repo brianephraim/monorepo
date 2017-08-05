@@ -1,8 +1,9 @@
-import './app.scss';
+
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import bind_here from 'bind_here';
+import bindHere from '@defualt/bind_here';
 import { initUpload } from './s3';
+import './app.scss';
 
 const bs = {
   loader: {
@@ -17,7 +18,7 @@ class Upload extends Component {
   constructor() {
     super();
     this.state = {};
-    this.methodsBoundHere = bind_here(this, ['handleChange']);
+    this.methodsBoundHere = bindHere(this, ['handleChange']);
     Object.assign(this, this.methodsBoundHere);
   }
   handleChange(e) {
@@ -52,9 +53,7 @@ class Upload extends Component {
       if (this.props.onSuccess) {
         myAjax.then(this.props.onSuccess);
       }
-      if (this.props.onError) {
-        myAjax.catch(this.props.onError);
-      }
+      myAjax.catch(this.props.onError);
     } else {
       myAjax = {
         then: cb => {
@@ -77,13 +76,13 @@ class Upload extends Component {
       bs.loader.unload();
     });
   }
-  handleChangeFallback(e) {
+  handleChangeFallback() {
     const self = this;
     this.$iframe.on('load', () => {
       let lastData = self.$iframe.contents().find('.lastData').html();
       lastData = lastData ? JSON.parse(lastData) : null;
       if (lastData) {
-        this.props.onSuccess ? this.props.onSuccess(lastData) : null;
+        this.props.onSuccess(lastData)
       }
     });
   }
@@ -115,7 +114,15 @@ class Upload extends Component {
     // );
   }
 }
-Upload.propTypes = {};
+Upload.propTypes = {
+  children: PropTypes.node.isRequired,
+  onSuccess: PropTypes.func,
+  onError: PropTypes.func,
+};
+Upload.defaultProps = {
+  onSuccess: () => {},
+  onError: () => {}
+};
 export default Upload;
 /*
 var makeCameraUploadizer = function($button){

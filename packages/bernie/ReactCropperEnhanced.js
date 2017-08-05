@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ReactCropper from 'react-cropper';
-import windowSizer from 'windowSizer';
+import windowSizer from '@defualt/window-sizer';
 import 'cropperjs/dist/cropper.css';
 import './cropperLibMonkeyPatch';
 import vanilla from 'vanilla';

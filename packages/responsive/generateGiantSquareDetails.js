@@ -15,7 +15,7 @@
 */
 
 import vanilla from 'vanilla';
-import windowSizer, { heightTweak } from 'windowSizer';
+import windowSizer, { heightTweak } from '@defualt/window-sizer';
 
 const { docEl, docBody, getWinWidth, getWinHeight, getDocumentHeight, getOffset, domEfficiencyCache } = vanilla;
 

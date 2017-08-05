@@ -1,4 +1,4 @@
-import windowSizer from 'windowSizer';
+import windowSizer from '@defualt/window-sizer';
 import debounce from 'debounce';
 import priorityDictIntoSortedArray from 'priorityDictIntoSortedArray';
 

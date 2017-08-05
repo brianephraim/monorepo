@@ -1,8 +1,10 @@
+/* eslint-disable react/no-multi-comp */
+
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import windowSizer from 'windowSizer';
-import ReactCropperEnhanced from './ReactCropperEnhanced';
+import windowSizer from '@defualt/window-sizer';
 import history from 'MainApp/history';
+import ReactCropperEnhanced from './ReactCropperEnhanced';
 import { formUrl } from './deriveUrlInfo';
 
 function whitelistFilterProps(obj, whitelist) {
@@ -17,6 +19,8 @@ function whitelistFilterProps(obj, whitelist) {
     return accum;
   }, {});
 }
+
+const isTouchDevice = 'ontouchstart' in document.documentElement;
 
 class DesignPicker extends Component {
   render() {
@@ -68,82 +72,38 @@ class DesignPicker extends Component {
   }
 }
 
-class CloseButton extends Component {
-  render() {
-    return (
-      <div className="closeButton button" onClick={history.goBack}>
-        <span>X</span>
-      </div>
-    );
-  }
+function CloseButton() {
+  return (
+    <div className="closeButton button" onClick={history.goBack} role="button" tabIndex={0}>
+      <span>X</span>
+    </div>
+  );
 }
 
-class CompletionInterface extends Component {
-  render() {
-    const url = `${this.props.rootUrl}/${formUrl(
-      this.props.activeCompositeImageData
-    )}`;
-    return (
-      <div className="modalHeader clearfix">
-        <div className="doneSection">
-          <h2>Drag and resize the box to crop</h2>
-          <div className="modal_buttonGroup">
-            <a href={url} className="button mainButton cropDoneButton">
-              <span>Done</span>
-            </a>
-          </div>
+function CompletionInterface(props) {
+  const url = `${props.rootUrl}/${formUrl(
+    props.activeCompositeImageData
+  )}`;
+  return (
+    <div className="modalHeader clearfix">
+      <div className="doneSection">
+        <h2>Drag and resize the box to crop</h2>
+        <div className="modal_buttonGroup">
+          <a href={url} className="button mainButton cropDoneButton">
+            <span>Done</span>
+          </a>
         </div>
       </div>
-    );
-  }
+    </div>
+  );
 }
-
-class CropInterface extends Component {
-  render() {
-    return (
-      <div className="modalFooter clearfix">
-        <div className="footer_section footer_imageOptions">
-          <h3>Change design</h3>
-          <div className="designFrame">
-            <div className="designFrame_innerWrap">
-              <img
-                className="designFrame_design standardTemplate"
-                src="http://s3-us-west-1.amazonaws.com/bernieapp/decorations/h3.png"
-              />
-            </div>
-          </div>
-          <div className="designFrame">
-            <div className="designFrame_innerWrap">
-              <img
-                className="designFrame_design standardTemplate"
-                src="http://s3-us-west-1.amazonaws.com/bernieapp/decorations/h4.png"
-              />
-            </div>
-          </div>
-          <div className="designFrame">
-            <div className="designFrame_innerWrap">
-              <img
-                className="designFrame_design standardTemplate"
-                src="http://s3-us-west-1.amazonaws.com/bernieapp/decorations/wg.png"
-              />
-            </div>
-          </div>
-          <div className="moreimageOptions button">
-            <span className="macro">more options</span>
-            <span className="micro">change design</span>
-          </div>
-        </div>
-        <div className="footer_section">
-          <h3>&nbsp;</h3>
-          <div className="designFrame designFrame-empty" />
-          <div className="getPhotoButton button">
-            <span>get photo</span>
-          </div>
-        </div>
-      </div>
-    );
-  }
-}
+CompletionInterface.propTypes = {
+  rootUrl: PropTypes.string,
+  activeCompositeImageData: PropTypes.object.isRequired,
+};
+CompletionInterface.defaultProps = {
+  rootUrl: '',
+};
 
 class CropperScreen extends Component {
   constructor(props) {
@@ -159,22 +119,9 @@ class CropperScreen extends Component {
     this.crop = this.crop.bind(this);
   }
 
-  crop(cropData) {
-    // this.setState(result);
-    this.setState({
-      foreground: {
-        ...this.state.foreground,
-        x: Math.round(cropData.detail.x),
-        y: Math.round(cropData.detail.y),
-        width: Math.round(cropData.detail.width),
-        height: Math.round(cropData.detail.height),
-      },
-    });
-    // image in dataUrl
-    // console.log(this.refs.cropper);
-  }
+  
 
-  componentDidMount() {
+  componentWillMount() {
     // When window resizes, flicker cropperExists.
     // cropperExists determines whether or not <ReactCropper> renders.
     // So <ReactCropper> will unmount then mount another instance.
@@ -189,6 +136,19 @@ class CropperScreen extends Component {
       windowSizer.removeCb(this.windowSizerCb);
       delete this.windowSizerCb;
     }
+  }
+
+  crop(cropData) {
+    // this.setState(result);
+    this.setState({
+      foreground: {
+        ...this.state.foreground,
+        x: Math.round(cropData.detail.x),
+        y: Math.round(cropData.detail.y),
+        width: Math.round(cropData.detail.width),
+        height: Math.round(cropData.detail.height),
+      },
+    });
   }
 
   render() {
@@ -222,7 +182,7 @@ class CropperScreen extends Component {
     };
     reactCropperOptions.strict = false;
 
-    if (false /* bs.featureDetection.is_touch_device*/) {
+    if (isTouchDevice) {
       Object.assign(reactCropperOptions, {
         mouseWheelZoom: false,
         cropBoxMovable: false,
@@ -244,7 +204,6 @@ class CropperScreen extends Component {
         <div className="cropOuterContainer">
           <div className="cropContainer" style={styles.cropContainer}>
             <ReactCropperEnhanced
-              ref="cropper"
               onResize={this.state.onResize}
               {...reactCropperOptions}
             />
@@ -258,6 +217,13 @@ class CropperScreen extends Component {
     );
   }
 }
-CropperScreen.propTypes = {};
+CropperScreen.propTypes = {
+  rootUrl: PropTypes.string,
+  background: PropTypes.object.isRequired,
+  foreground: PropTypes.object.isRequired,
+};
+CropperScreen.defaultProps = {
+  rootUrl: '',
+};
 
 export default CropperScreen;

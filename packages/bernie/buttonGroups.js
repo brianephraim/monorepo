@@ -31,7 +31,6 @@ class BernieAppButtonGroup extends Component {
   constructor() {
     super();
     this.state = {};
-
   }
   render() {
     const icon =
@@ -61,7 +60,7 @@ class BernieAppButtonGroup extends Component {
     const buttons =
       this.props.buttons &&
       <div className="buttonGroup_buttons">
-        {this.props.buttons.map((btnDetails) => {
+        {this.props.buttons.map(btnDetails => {
           let btnInner;
           let className = 'buttonGroup_button button';
           if (btnDetails.onUploadSuccess) {
@@ -150,10 +149,7 @@ BernieAppButtonGroup.propTypes = {
   match: PropTypes.object.isRequired,
   urlFragment: PropTypes.string,
   compositeImageData: PropTypes.object,
-  onUploadSuccess: PropTypes.oneOfType([
-    PropTypes.func,
-    PropTypes.object,
-  ]),
+  onUploadSuccess: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
 };
 BernieAppButtonGroup.defaultProps = {
   icon: '',
@@ -172,7 +168,7 @@ function makeButtonGroupComponent(
   headline,// shortHeadline, icon, buttons
 }*/
 ) {
-  function ButtonGroup (props) {
+  function ButtonGroup(props) {
     const ButtonGroup = <BernieAppButtonGroup {...props} {...options} />;
     if (props.isModal) {
       return (

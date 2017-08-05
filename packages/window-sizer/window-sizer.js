@@ -1,6 +1,6 @@
 import debounce from 'debounce';
 import vanilla from 'vanilla';
-const { docEl, docBody, getWinWidth, getWinHeight, getDocumentHeight, getOffset, domEfficiencyCache } = vanilla;
+const { getWinWidth, getWinHeight } = vanilla;
 
 let resizing = false;
 function isResizing() {
@@ -17,9 +17,8 @@ const dimensions = {
 const heightTweak = 'ontouchstart' in document.documentElement ? 75  : 0;
 export { heightTweak };
 
-var resizeDeb = debounce(300,null);
+const resizeDeb = debounce(300,null);
 let cbs = [];
-let dims = {};
 function removeCb(fun) {
   cbs = cbs.filter((cb) => {
     return cb !== fun;
@@ -40,13 +39,13 @@ window.addEventListener('resize', () => {
     height: getWinHeight(),
     width: getWinWidth(),
   });
-  //scrolling triggers resize on some mobile browsers (minimizing url when not scrolled to top)
-  //don't refresh under these conditions
-  var newWindowHeight = dimensions.height - heightTweak;
-  var newWindowWidth = dimensions;
-  var threshTest = Math.abs((lastDimensions.height - heightTweak) - newWindowHeight) > 70;
+  // scrolling triggers resize on some mobile browsers (minimizing url when not scrolled to top)
+  // don't refresh under these conditions
+  const newWindowHeight = dimensions.height - heightTweak;
+  const newWindowWidth = dimensions;
+  const threshTest = Math.abs((lastDimensions.height - heightTweak) - newWindowHeight) > 70;
   if(threshTest || lastDimensions.width !== newWindowWidth){
-    resizeDeb().then(function(){
+    resizeDeb().then(() => {
       resizing = false;
       cbs.forEach((cb) => {
         cb();

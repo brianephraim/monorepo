@@ -1,19 +1,19 @@
-const templateBaseUrl =
-  'http://s3-us-west-1.amazonaws.com/bernieapp/decorations/';
+// const templateBaseUrl =
+//   'http://s3-us-west-1.amazonaws.com/bernieapp/decorations/';
 
-const rawImagePrefix = 'http://s3-us-west-1.amazonaws.com/bernieapp/selfies/';
+// const rawImagePrefix = 'http://s3-us-west-1.amazonaws.com/bernieapp/selfies/';
 
-const isNode = (function() {
-  let isNode = false;
-  if (typeof process === 'object') {
-    if (typeof process.versions === 'object') {
-      if (typeof process.versions.node !== 'undefined') {
-        isNode = true;
-      }
-    }
-  }
-  return isNode;
-})();
+// const isNode = (function() {
+//   let isNode = false;
+//   if (typeof process === 'object') {
+//     if (typeof process.versions === 'object') {
+//       if (typeof process.versions.node !== 'undefined') {
+//         isNode = true;
+//       }
+//     }
+//   }
+//   return isNode;
+// })();
 
 const standardModes = [
   {
@@ -54,16 +54,16 @@ const standardModes = [
   },
 ];
 module.exports.standardModes = standardModes;
-module.exports.getStandardModesRegex = function(nameSpace) {
-  let pipedString = '';
-  for (let i = 0, l = module.exports.standardModes.length; i < l; i++) {
-    let mode = module.exports.standardModes[i].mode;
-    mode = nameSpace ? `${nameSpace}/${mode}` : mode;
-    console.log('mode', mode);
-    pipedString += i > 0 ? `|${mode}` : mode;
-  }
-  return new RegExp(`^[/](${pipedString})[/](.+)`);
-};
+// module.exports.getStandardModesRegex = function(nameSpace) {
+//   let pipedString = '';
+//   for (let i = 0, l = module.exports.standardModes.length; i < l; i++) {
+//     let mode = module.exports.standardModes[i].mode;
+//     mode = nameSpace ? `${nameSpace}/${mode}` : mode;
+//     console.log('mode', mode);
+//     pipedString += i > 0 ? `|${mode}` : mode;
+//   }
+//   return new RegExp(`^[/](${pipedString})[/](.+)`);
+// };
 const standardModesRegexArrayString = module.exports.standardModes
   .map(item => {
     return item.mode;
@@ -75,36 +75,36 @@ const standardModesDict = module.exports.standardModes.reduce((accum, item) => {
   return accum;
 }, {});
 
-module.exports.oldModes = (function() {
-  const a = [];
-  for (let i = 0, l = module.exports.standardModes.length; i < l; i++) {
-    if (module.exports.standardModes[i].old) {
-      a.push(module.exports.standardModes[i]);
-    }
-  }
-  return a;
-})();
+// module.exports.oldModes = (function() {
+//   const a = [];
+//   for (let i = 0, l = module.exports.standardModes.length; i < l; i++) {
+//     if (module.exports.standardModes[i].old) {
+//       a.push(module.exports.standardModes[i]);
+//     }
+//   }
+//   return a;
+// })();
 
-module.exports.isOldMode = function(toCompare) {
-  let is = false;
-  for (let i = 0, l = module.exports.oldModes.length; i < l; i++) {
-    is = is || toCompare === module.exports.oldModes[i].mode;
-  }
-  return is;
-};
+// module.exports.isOldMode = function(toCompare) {
+//   let is = false;
+//   for (let i = 0, l = module.exports.oldModes.length; i < l; i++) {
+//     is = is || toCompare === module.exports.oldModes[i].mode;
+//   }
+//   return is;
+// };
 
-const containsStardardModeCache = {};
-module.exports.containsStardardMode = function(url) {
-  let contains = false;
-  if (typeof containsStardardModeCache[url] === 'undefined') {
-    for (let i = 0, l = module.exports.standardModes.length; i < l; i++) {
-      const mode = module.exports.standardModes[i].mode;
-      contains = contains || url.indexOf(mode) !== -1;
-    }
-    containsStardardModeCache[url] = contains;
-  }
-  return containsStardardModeCache[url];
-};
+// const containsStardardModeCache = {};
+// module.exports.containsStardardMode = function(url) {
+//   let contains = false;
+//   if (typeof containsStardardModeCache[url] === 'undefined') {
+//     for (let i = 0, l = module.exports.standardModes.length; i < l; i++) {
+//       const mode = module.exports.standardModes[i].mode;
+//       contains = contains || url.indexOf(mode) !== -1;
+//     }
+//     containsStardardModeCache[url] = contains;
+//   }
+//   return containsStardardModeCache[url];
+// };
 
 module.exports.formUrl = compositeImageData => {
   const fg = compositeImageData.foreground;

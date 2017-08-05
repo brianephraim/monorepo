@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import fbManager from './fb';
 import ImagePicker from './ImagePicker';
 
@@ -86,13 +85,10 @@ class ImagePickerFacebook extends Component {
         }
       */
     });
-    imagesFromFBPromise.catch(response => {});
+    // imagesFromFBPromise.catch(response => {});
   }
   render() {
-    return (
-      <ImagePicker images={this.state.images} {...this.props} />
-    );
+    return <ImagePicker images={this.state.images} {...this.props} />;
   }
 }
-ImagePickerFacebook.propTypes = {};
 export default ImagePickerFacebook;
