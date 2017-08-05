@@ -7,6 +7,7 @@ import ResponsiveHOC, {
   ResponsiveMaster,
   generateGiantSquareDetails,
 } from '@defualt/responsive';
+import makeBinder from '@defualt/make-binder';
 import { Route } from 'react-router-dom';
 import {
   buttonGroupComponents,
@@ -32,7 +33,7 @@ import './app.scss';
 function BernieHomeLayout(props) {
   return (
     <div className="homeLayout">
-      {/*The wrapping element below distinguishes the photo-plus-buttonGroupComponents from disclaimer.*/}
+      {/* The wrapping element below distinguishes the photo-plus-buttonGroupComponents from disclaimer.*/}
       <div className="app">
         <BernieContributeBanner />
         <BernieAppHeader />
@@ -243,18 +244,12 @@ BernieAppHero.defaultProps = {
   compositeImageData: null,
 };
 
-let BernieAppBusiness = class extends Component {
-  constructor() {
-    super();
-    this.state = {};
-  }
-  render() {
-    return (
-      <div className="app_body_rightPillar" ref={this.props.responsiveRef}>
-        {this.props.children}
-      </div>
-    );
-  }
+let BernieAppBusiness = props => {
+  return (
+    <div className="app_body_rightPillar" ref={props.responsiveRef}>
+      {props.children}
+    </div>
+  );
 };
 BernieAppBusiness.propTypes = {
   responsiveRef: PropTypes.func.isRequired,
@@ -365,13 +360,6 @@ class CompositeImage {
   }
 }
 
-function makeBinder(context, methodName) {
-  const functionCache = context[methodName];
-  context[methodName] = (...args) => {
-    return functionCache.bind(context, ...args);
-  };
-}
-
 class Bernie extends Component {
   constructor() {
     super();
@@ -381,19 +369,18 @@ class Bernie extends Component {
   }
   handleBackroundImageSelection(compositeImage, rootPath, imgSrcObj) {
     // bs.loader.load
-    const imgSrc = imgSrcObj.src;
+    const imgSrc = imgSrcObj.url || imgSrcObj.src;
     getNormalizedImageInfo(imgSrc).then(response => {
-      this.props.history.push(
-        compositeImage
-          .refresh({
-            path: 'background.srcKey',
-            val: response.srcKey,
-          })
-          .generateUrl({
-            rootPath,
-            urlAppend: '/crop',
-          })
-      );
+      const url = compositeImage
+      .refresh({
+        path: 'background.srcKey',
+        val: response.srcKey,
+      })
+      .generateUrl({
+        rootPath,
+        urlAppend: '/crop',
+      });
+      this.props.history.push(url);
     });
   }
   handleForegroundImageSelection(compositeImage, rootPath, imgSrcObj) {

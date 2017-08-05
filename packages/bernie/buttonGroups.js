@@ -1,13 +1,9 @@
-import './app.scss';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import ResponsiveHOC, {
-  ResponsiveMaster,
-  generateGiantSquareDetails,
-} from 'responsive';
-import { Route, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Upload from './Upload';
 import { formUrl } from './deriveUrlInfo';
+import './app.scss';
 
 const Div = props => {
   return (
@@ -15,6 +11,9 @@ const Div = props => {
       {props.children}
     </div>
   );
+};
+Div.propTypes = {
+  children: PropTypes.node.isRequired,
 };
 
 const A = props => {
@@ -24,11 +23,15 @@ const A = props => {
     </a>
   );
 };
+A.propTypes = {
+  children: PropTypes.node.isRequired,
+};
 
 class BernieAppButtonGroup extends Component {
   constructor() {
     super();
     this.state = {};
+
   }
   render() {
     const icon =
@@ -58,15 +61,14 @@ class BernieAppButtonGroup extends Component {
     const buttons =
       this.props.buttons &&
       <div className="buttonGroup_buttons">
-        {this.props.buttons.map((btnDetails, i) => {
-          const LinkOrDiv = btnDetails.url ? Link : Div;
+        {this.props.buttons.map((btnDetails) => {
           let btnInner;
           let className = 'buttonGroup_button button';
           if (btnDetails.onUploadSuccess) {
             btnInner = (
               <Upload
                 className={btnDetails.className}
-                onSuccess={btnDetails.onUploadSuccess.bind(this)}
+                onSuccess={this.props.onUploadSuccess}
               >
                 {btnDetails.text}
               </Upload>
@@ -92,7 +94,7 @@ class BernieAppButtonGroup extends Component {
             );
           } else if (btnDetails.onClick) {
             btnInner = (
-              <span onClick={btnDetails.onClick}>
+              <span onClick={btnDetails.onClick} role="button" tabIndex="0">
                 {btnDetails.text}
               </span>
             );
@@ -107,7 +109,7 @@ class BernieAppButtonGroup extends Component {
           }
 
           return (
-            <div key={i} className={className}>
+            <div key={btnDetails.text} className={className}>
               {btnInner}
             </div>
           );
@@ -115,7 +117,6 @@ class BernieAppButtonGroup extends Component {
       </div>;
     const match = this.props.match;
 
-    const splitted = match.url.split('/');
     const LinkOrDiv =
       match.url.split('/').reverse()[0] === this.props.urlFragment ? Div : Link;
     const linkUrl =
@@ -141,12 +142,28 @@ class BernieAppButtonGroup extends Component {
   }
 }
 BernieAppButtonGroup.propTypes = {
-  // className: PropTypes.string,
-  // headline: PropTypes.string,
-  // shortHeadline: PropTypes.string,
-  // icon: PropTypes.string,
-  // children: PropTypes.object,
-  // buttons: PropTypes.array,
+  icon: PropTypes.string,
+  shortHeadline: PropTypes.string,
+  className: PropTypes.string,
+  headline: PropTypes.string,
+  buttons: PropTypes.array,
+  match: PropTypes.object.isRequired,
+  urlFragment: PropTypes.string,
+  compositeImageData: PropTypes.object,
+  onUploadSuccess: PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.object,
+  ]),
+};
+BernieAppButtonGroup.defaultProps = {
+  icon: '',
+  shortHeadline: '',
+  className: '',
+  headline: '',
+  buttons: [],
+  urlFragment: '',
+  compositeImageData: null,
+  onUploadSuccess: null,
 };
 
 const buttonGroupComponents = {};
@@ -155,25 +172,23 @@ function makeButtonGroupComponent(
   headline,// shortHeadline, icon, buttons
 }*/
 ) {
-  class ButtonGroup extends Component {
-    constructor() {
-      super();
-      this.state = {};
+  function ButtonGroup (props) {
+    const ButtonGroup = <BernieAppButtonGroup {...props} {...options} />;
+    if (props.isModal) {
+      return (
+        <div className="modal">
+          {ButtonGroup}
+        </div>
+      );
     }
-    render() {
-      const ButtonGroup = <BernieAppButtonGroup {...this.props} {...options} />;
-
-      if (this.props.isModal) {
-        return (
-          <div className="modal">
-            {ButtonGroup}
-          </div>
-        );
-      }
-      return ButtonGroup;
-    }
+    return ButtonGroup;
   }
-  ButtonGroup.propTypes = {};
+  ButtonGroup.propTypes = {
+    isModal: PropTypes.bool,
+  };
+  ButtonGroup.defaultProps = {
+    isModal: false,
+  };
   return ButtonGroup;
 }
 
@@ -196,7 +211,6 @@ const ImportButtonGroup = makeButtonGroupComponent({
       className: 'cameraUploadizer',
       text: 'Camera',
       onUploadSuccess(imgData) {
-        console.log(this);
         /*
           Key: "selfies/a-brian14744733088711500480799004.png",
           failingSquare: undefined,
@@ -206,9 +220,7 @@ const ImportButtonGroup = makeButtonGroupComponent({
           width:
           960
         */
-
-        console.log('WE DID IT', imgData);
-        this.props.onUploadSuccess(imgData.url);
+        this.props.onUploadSuccess(imgData);
       },
     },
     {
@@ -267,10 +279,6 @@ const EditSizeButtonGroup = makeButtonGroupComponent({
       text: 'Size and position',
       routerLink: props => {
         const compositeImageData = props.compositeImageData;
-        console.log('compositeImageData', compositeImageData);
-        const fg = compositeImageData.foreground;
-        const bg = compositeImageData.background;
-        console.log('formUrl', formUrl(compositeImageData));
         const routerLink = `${formUrl(compositeImageData)}/crop`;
         return routerLink;
       },

@@ -90,7 +90,7 @@ class ImagePickerFacebook extends Component {
   }
   render() {
     return (
-      <ImagePicker images={this.state.images} onClick={this.props.onClick} />
+      <ImagePicker images={this.state.images} {...this.props} />
     );
   }
 }

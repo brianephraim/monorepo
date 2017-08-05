@@ -27,6 +27,7 @@ class DesignPicker extends Component {
           <div className="designFrame">
             <div className="designFrame_innerWrap">
               <img
+                alt="Basic Hair and Glasses Template"
                 className="designFrame_design standardTemplate"
                 src="http://s3-us-west-1.amazonaws.com/bernieapp/decorations/h3.png"
               />
@@ -35,6 +36,7 @@ class DesignPicker extends Component {
           <div className="designFrame">
             <div className="designFrame_innerWrap">
               <img
+                alt="Colorful Hair and Glasses Template"
                 className="designFrame_design standardTemplate"
                 src="http://s3-us-west-1.amazonaws.com/bernieapp/decorations/h4.png"
               />
@@ -43,6 +45,7 @@ class DesignPicker extends Component {
           <div className="designFrame">
             <div className="designFrame_innerWrap">
               <img
+                alt="Text and GradientTemplate Template"
                 className="designFrame_design standardTemplate"
                 src="http://s3-us-west-1.amazonaws.com/bernieapp/decorations/wg.png"
               />
@@ -80,8 +83,6 @@ class CompletionInterface extends Component {
     const url = `${this.props.rootUrl}/${formUrl(
       this.props.activeCompositeImageData
     )}`;
-    console.log('this.props.activeCompositeImageData', url);
-    // console.log('this.props.rootUrl', this.props.rootUrl);
     return (
       <div className="modalHeader clearfix">
         <div className="doneSection">
@@ -147,7 +148,6 @@ class CropInterface extends Component {
 class CropperScreen extends Component {
   constructor(props) {
     super();
-    console.log('props.foreground', props.foreground);
     this.state = {
       foreground: {
         ...props.foreground,

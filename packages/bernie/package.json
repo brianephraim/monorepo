@@ -4,6 +4,7 @@
   "private": true,
   "privateFromGithub": true,
   "dependencies": {
+    "@defualt/make-binder": "^0.0.1",
     "@defualt/responsive": "^0.0.1",
     "prop-types": "^15.5.8",
     "react": "^15.0.2",

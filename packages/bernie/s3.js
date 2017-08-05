@@ -59,8 +59,13 @@ function get_signed_request(file, folder, mustBeSquare) {
 function makeGetNormalizedImageInfo(mustBeSquare) {
   console.log('makeGetNormalizedImageInfo1');
   return function(image_url) {
-    console.log('makeGetNormalizedImageInfo2');
     return new Promise((resolve, reject) => {
+      console.log('image_url',image_url);
+      console.trace()
+      console.log('makeGetNormalizedImageInfo2');
+      if (!image_url){
+        return true;
+      }
       const xhr = new XMLHttpRequest();
       xhr.open(
         'GET',
