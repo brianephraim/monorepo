@@ -90,7 +90,7 @@ function makeGetNormalizedImageInfo(mustBeSquare) {
                 height: response.height,
                 public_id,
                 srcKey,
-                url: response.url,
+                src: response.url,
                 Key: response.Key,
                 failingSquare: response.failingSquare,
               });

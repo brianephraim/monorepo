@@ -156,12 +156,10 @@ class CropperScreen extends Component {
         ...props.background,
       },
     };
-    this._cropBound = this._crop.bind(this);
+    this.crop = this.crop.bind(this);
   }
 
-  _crop(cropData) {
-    const data = cropData.detail;
-
+  crop(cropData) {
     // this.setState(result);
     this.setState({
       foreground: {
@@ -209,7 +207,7 @@ class CropperScreen extends Component {
       guides: false,
       autoCropArea: 0.9,
       rotatable: false,
-      crop: this._cropBound,
+      crop: this.crop,
       src: this.state.background.src,
       cropSrc: this.state.foreground.src,
       data: this.state.foreground

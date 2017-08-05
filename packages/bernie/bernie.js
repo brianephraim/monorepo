@@ -369,7 +369,7 @@ class Bernie extends Component {
   }
   handleBackroundImageSelection(compositeImage, rootPath, imgSrcObj) {
     // bs.loader.load
-    const imgSrc = imgSrcObj.url || imgSrcObj.src;
+    const imgSrc = imgSrcObj.src;
     getNormalizedImageInfo(imgSrc).then(response => {
       const url = compositeImage
       .refresh({
