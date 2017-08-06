@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import ToDoUserAssignmentScreen from 'todo_app';
 import Bernie from 'bernie';
 import Battleship from 'battleship';
-import history from './history';
+import history from '@defualt-shared/history';
 
 import React, { Component } from 'react';
 // import PropTypes from 'prop-types';

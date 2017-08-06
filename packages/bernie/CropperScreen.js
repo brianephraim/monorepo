@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import windowSizer from '@defualt/window-sizer';
-import history from 'MainApp/history';
+import history from '@defualt/shared-history';
 import ReactCropperEnhanced from './ReactCropperEnhanced';
 import { formUrl } from './deriveUrlInfo';
 
@@ -74,16 +74,19 @@ class DesignPicker extends Component {
 
 function CloseButton() {
   return (
-    <div className="closeButton button" onClick={history.goBack} role="button" tabIndex={0}>
+    <div
+      className="closeButton button"
+      onClick={history.goBack}
+      role="button"
+      tabIndex={0}
+    >
       <span>X</span>
     </div>
   );
 }
 
 function CompletionInterface(props) {
-  const url = `${props.rootUrl}/${formUrl(
-    props.activeCompositeImageData
-  )}`;
+  const url = `${props.rootUrl}/${formUrl(props.activeCompositeImageData)}`;
   return (
     <div className="modalHeader clearfix">
       <div className="doneSection">
@@ -118,8 +121,6 @@ class CropperScreen extends Component {
     };
     this.crop = this.crop.bind(this);
   }
-
-  
 
   componentWillMount() {
     // When window resizes, flicker cropperExists.

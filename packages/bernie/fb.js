@@ -1,4 +1,12 @@
+/* eslint-disable no-console */
+/* eslint-disable no-alert */
 import deferred from './deferred';
+
+// window.FB is initially undefined, because lazy-loaded facebook SDK defines FB.
+// So references to FB are via this getter.
+function FB() {
+  return window.FB;
+}
 
 const offline = false;
 const bs = {
@@ -13,31 +21,24 @@ const bs = {
     },
   },
 };
-const FbManager = function() {
-  const self = this;
-  this.attemptedAuth = false;
-  self.urlToExport = null;
-  this.asyncInitPromise = this.asyncInit();
-};
 
-FbManager.prototype.loadSdk = function() {
-  (function(d, s, id) {
-    let js,
-      fjs = d.getElementsByTagName(s)[0];
-    if (d.getElementById(id)) return;
-    js = d.createElement(s);
-    js.id = id;
-    js.src = '//connect.facebook.net/en_US/sdk.js';
-    fjs.parentNode.insertBefore(js, fjs);
-  })(document, 'script', 'facebook-jssdk');
-};
+function loadSdk() {
+  const d = document;
+  const s = 'script';
+  const id = 'facebook-jssdk';
+  const fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  const js = d.createElement(s);
+  js.id = id;
+  js.src = '//connect.facebook.net/en_US/sdk.js';
+  fjs.parentNode.insertBefore(js, fjs);
+}
 
-FbManager.prototype.asyncInit = function() {
-  const self = this;
-  return new Promise((resolve, reject) => {
+function asyncInit() {
+  return new Promise((resolve /* , reject*/) => {
     if (!offline) {
-      window.fbAsyncInit = function() {
-        FB.init({
+      window.fbAsyncInit = () => {
+        FB().init({
           appId: '1633460223596071',
           cookie: true, // enable cookies to allow the server to access
           // the session
@@ -48,7 +49,7 @@ FbManager.prototype.asyncInit = function() {
         resolve();
       };
       // window.laterScripts.push(function() {
-      self.loadSdk();
+      loadSdk();
       // });
     } else {
       setTimeout(() => {
@@ -56,11 +57,11 @@ FbManager.prototype.asyncInit = function() {
       }, 300);
     }
   });
-};
+}
 
-FbManager.prototype.fbApi = function(...args) {
+function fbApi(...args) {
   return new Promise((resolve, reject) => {
-    FB.api(...args, response => {
+    FB().api(...args, response => {
       if (!response || response.error) {
         reject(response);
       } else {
@@ -68,18 +69,11 @@ FbManager.prototype.fbApi = function(...args) {
       }
     });
   });
-};
+}
 
-FbManager.prototype.uploadPhoto = function(response) {
-  return this.fbApi(`/${response.id}/photos`, 'post', {
-    url: this.urlToExport,
-  });
-};
-
-FbManager.prototype.getMyInfo = function() {
-  let toReturn;
+function getMyInfo() {
   if (!offline) {
-    const promise = this.fbApi('/me');
+    const promise = fbApi('/me');
     // promise.then((response) => {
     //   console.log('getMyInfo', response)
     // }).catch((response) => {
@@ -87,23 +81,23 @@ FbManager.prototype.getMyInfo = function() {
     // });
     return promise;
   }
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve /* , reject*/) => {
     setTimeout(() => {
       resolve({});
     }, 500);
   });
-};
+}
 
-FbManager.prototype.getPhotos = function(response) {
+function getPhotos(response) {
   if (!offline) {
-    return this.fbApi(`/${response.id}/photos`, 'get', {
+    return fbApi(`/${response.id}/photos`, 'get', {
       fields: 'images,id',
       type: 'uploaded', // tagged,uploaded
       limit: 2,
       order: 'reverse_chronological',
     });
   }
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve /* , reject*/) => {
     const fakeData = [];
     for (let i = 1, l = 6; i < l; i++) {
       fakeData.push({
@@ -116,18 +110,17 @@ FbManager.prototype.getPhotos = function(response) {
       });
     }, 500);
   });
-};
+}
 
-FbManager.prototype.login = function(response) {
+function login() {
   return new Promise((resolve, reject) => {
     if (!offline) {
-      FB.login(
-        function(response) {
-          console.log('login', response);
+      FB().login(
+        (response, ...args) => {
           if (response.status === 'connected') {
-            resolve(...arguments);
+            resolve(response, ...args);
           } else {
-            reject(...arguments);
+            reject(response, ...args);
           }
         },
         {
@@ -138,24 +131,24 @@ FbManager.prototype.login = function(response) {
       resolve();
     }
   });
-};
+}
 
-FbManager.prototype.statusChangeCallback = function(response) {
+function statusChangeCallback(response) {
   const self = this;
   return new Promise((resolve, reject) => {
     if (response.status === 'connected') {
       // Logged into your app and Facebook.
-      resolve(...arguments);
+      resolve(response);
     } else if (!self.attemptedAuth) {
       self.attemptedAuth = true;
-      FB.login(
-        function(response) {
+      FB().login(
+        response => {
           if (response.status === 'connected') {
             console.log('fb connected');
-            resolve(...arguments);
+            resolve(response);
           } else {
             console.log('fb not connected');
-            reject(...arguments);
+            reject(response);
           }
         },
         {
@@ -163,97 +156,99 @@ FbManager.prototype.statusChangeCallback = function(response) {
         }
       );
     } else {
-      reject(...arguments);
+      reject(response);
     }
   });
-};
-// .then(function(){self.photosJunk();});
-FbManager.prototype.fbGetLoginStatus = function(dfd) {
-  // return new Promise((resolve, reject) => {
-  dfd = !!dfd && !!dfd.then ? dfd : new deferred();
-  const self = this;
-  FB.getLoginStatus(response => {
-    self
-      .statusChangeCallback(response)
-      .then(response => {
-        dfd.resolve();
-      })
-      .fail(function(response) {
-        if (response.status === 'not_authorized') {
-          // The person is logged into Facebook, but not your app.
-          // document.getElementById('status').innerHTML = 'Please log into this app.';
-          console.log('Please log into this app.');
-          if (!self.attemptedAuth) {
-            self.fbGetLoginStatus(dfd);
+}
+
+class FbManager {
+  constructor() {
+    this.attemptedAuth = false;
+    this.urlToExport = null;
+    this.asyncInitPromise = asyncInit();
+  }
+  fbGetLoginStatus(dfd) {
+    // return new Promise((resolve, reject) => {
+    dfd = !!dfd && !!dfd.then ? dfd : new deferred();
+    const self = this;
+    FB().getLoginStatus(response => {
+      statusChangeCallback(response)
+        .then(() => {
+          dfd.resolve();
+        })
+        .fail(response => {
+          if (response.status === 'not_authorized') {
+            // The person is logged into Facebook, but not your app.
+            // document.getElementById('status').innerHTML = 'Please log into this app.';
+            console.log('Please log into this app.');
+            if (!self.attemptedAuth) {
+              self.fbGetLoginStatus(dfd);
+            } else {
+              dfd.reject(response);
+            }
           } else {
-            dfd.reject.apply(null, arguments);
+            // The person is not logged into Facebook, so we're not sure if
+            // they are logged into this app or not.
+            // document.getElementById('status').innerHTML = 'Please log into Facebook.';
+            console.log('Please log into Facebook.');
+            dfd.reject(response);
           }
-        } else {
-          // The person is not logged into Facebook, so we're not sure if
-          // they are logged into this app or not.
-          // document.getElementById('status').innerHTML = 'Please log into Facebook.';
-          console.log('Please log into Facebook.');
-          dfd.reject.apply(null, arguments);
-        }
-      });
-  });
-  return dfd.promise;
-};
-
-FbManager.prototype.postToWall = function() {
-  bs.loader.load();
-  const self = this;
-  return this.asyncInitPromise
-    .then(() => {
-      FB.ui(
-        {
-          method: 'share',
-          href: bs.util.getPageUrl(),
-        },
-        response => {
-          console.log('DONE');
-        }
-      );
-    })
-    .always(() => {
-      bs.loader.unload();
+        });
     });
-};
-
-FbManager.prototype.importStuff = function() {
-  bs.loader.load();
-  const self = this;
-  this.attemptedAuth = false;
-  return this.asyncInitPromise
-    .then(self.login.bind(self))
-    .then(self.getMyInfo.bind(self))
-    .then(self.getPhotos.bind(self));
-  // .always(function() {
-  //   bs.loader.unload();
-  // })
-};
-
-FbManager.prototype.exportStuff = function(url) {
-  bs.loader.load();
-  const self = this;
-  this.attemptedAuth = false;
-  self.urlToExport = url;
-  return (
-    this.asyncInitPromise
-      .then(self.login.bind(self))
-      .then(self.getMyInfo.bind(self))
-      .then(self.uploadPhoto.bind(self))
-      // .fail(self.statusChangeCallback.bind(self))
-      .then(self.getMyInfo.bind(self))
-      .then(self.uploadPhoto.bind(self))
-      .fail(() => {
-        alert('sorry, that did not work');
+    return dfd.promise;
+  }
+  importStuff() {
+    bs.loader.load();
+    this.attemptedAuth = false;
+    return this.asyncInitPromise.then(login).then(getMyInfo).then(getPhotos);
+    // .always(function() {
+    //   bs.loader.unload();
+    // })
+  }
+  postToWall() {
+    bs.loader.load();
+    return this.asyncInitPromise
+      .then(() => {
+        FB().ui(
+          {
+            method: 'share',
+            href: bs.util.getPageUrl(),
+          },
+          () => {
+            console.log('DONE');
+          }
+        );
       })
       .always(() => {
-        self.urlToExport = null;
         bs.loader.unload();
-      })
-  );
-};
+      });
+  }
+  exportStuff(url) {
+    bs.loader.load();
+    this.attemptedAuth = false;
+    this.urlToExport = url;
+    return (
+      this.asyncInitPromise
+        .then(login)
+        .then(getMyInfo)
+        .then(this.uploadPhoto)
+        // .fail(statusChangeCallback)
+        .then(getMyInfo)
+        .then(this.uploadPhoto)
+        .catch(() => {
+          alert('sorry, that did not work');
+        })
+        .always(() => {
+          this.urlToExport = null;
+          bs.loader.unload();
+        })
+    );
+  }
+  uploadPhoto(response) {
+    return fbApi(`/${response.id}/photos`, 'post', {
+      url: this.urlToExport,
+    });
+  }
+}
 
 export default new FbManager();

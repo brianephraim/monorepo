@@ -2,11 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ReactCropper from 'react-cropper';
 import windowSizer from '@defualt/window-sizer';
-import vanilla from 'vanilla';
+import vanilla from '@defualt/vanilla';
 import bindHere from '@defualt/bind_here';
 import 'cropperjs/dist/cropper.css';
 import './cropperLibMonkeyPatch';
-
 
 // React-Cropper is a react wrapper around cropperjs.
 // cropperjs is DOM based.
@@ -31,7 +30,12 @@ class ReactCropperEnhanced extends Component {
       moving: false,
       lastCropData: props.data,
     };
-    this.methodsBoundHere = bindHere(this, ['ready','crop','cropmove','cropend']);
+    this.methodsBoundHere = bindHere(this, [
+      'ready',
+      'crop',
+      'cropmove',
+      'cropend',
+    ]);
     Object.assign(this, this.methodsBoundHere);
   }
   componentDidMount() {
@@ -106,7 +110,9 @@ class ReactCropperEnhanced extends Component {
       return (
         <ReactCropper
           style={{ height: '100%' }}
-          ref={(cropper) => { this.cropper = cropper; }}
+          ref={cropper => {
+            this.cropper = cropper;
+          }}
           {...this.props}
           data={null}
           ready={this.ready}

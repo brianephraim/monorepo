@@ -30,14 +30,25 @@ function isFunction(fn) {
   return typeOf(fn) === 'function';
 }
 
-const _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? (obj) => {
-  return typeof obj;
-} : (obj) => {
-  return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-};
+const _typeof =
+  typeof Symbol === 'function' && typeof Symbol.iterator === 'symbol'
+    ? obj => {
+        return typeof obj;
+      }
+    : obj => {
+        return obj &&
+        typeof Symbol === 'function' &&
+        obj.constructor === Symbol &&
+        obj !== Symbol.prototype
+          ? 'symbol'
+          : typeof obj;
+      };
 
 function isObject(obj) {
-  return (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) === 'object' && obj !== null;
+  return (
+    (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) === 'object' &&
+    obj !== null
+  );
 }
 
 function each(obj, callback) {
@@ -45,15 +56,15 @@ function each(obj, callback) {
     let i;
 
     if (isArray(obj) || isNumber(obj.length) /* array-like */) {
-        const length = obj.length;
+      const length = obj.length;
 
-        for (i = 0; i < length; i++) {
-          if (callback.call(obj, obj[i], i, obj) === false) {
-            break;
-          }
+      for (i = 0; i < length; i++) {
+        if (callback.call(obj, obj[i], i, obj) === false) {
+          break;
         }
-      } else if (isObject(obj)) {
-      Object.keys(obj).forEach((key) => {
+      }
+    } else if (isObject(obj)) {
+      Object.keys(obj).forEach(key => {
         callback.call(obj, obj[key], key, obj);
       });
     }
@@ -68,7 +79,7 @@ function removeClass(element, value) {
   }
 
   if (isNumber(element.length)) {
-    each(element, (elem) => {
+    each(element, elem => {
       removeClass(elem, value);
     });
     return;

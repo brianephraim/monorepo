@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import bindHere from '@defualt/bind_here';
@@ -82,7 +81,7 @@ class Upload extends Component {
       let lastData = self.$iframe.contents().find('.lastData').html();
       lastData = lastData ? JSON.parse(lastData) : null;
       if (lastData) {
-        this.props.onSuccess(lastData)
+        this.props.onSuccess(lastData);
       }
     });
   }
@@ -121,7 +120,7 @@ Upload.propTypes = {
 };
 Upload.defaultProps = {
   onSuccess: () => {},
-  onError: () => {}
+  onError: () => {},
 };
 export default Upload;
 /*

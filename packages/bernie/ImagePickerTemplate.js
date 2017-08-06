@@ -43,9 +43,9 @@ class ImagePickerTemplate extends Component {
   }
 }
 ImagePickerTemplate.propTypes = {
-  onClick: PropTypes.func
+  onClick: PropTypes.func,
 };
 ImagePickerTemplate.defaultProps = {
-  onClick: () => {}
+  onClick: () => {},
 };
 export default ImagePickerTemplate;

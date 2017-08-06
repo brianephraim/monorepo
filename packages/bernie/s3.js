@@ -19,7 +19,7 @@ function uploadFile(file, signedRequest, url) {
 }
 
 function makeGetNormalizedImageInfo(mustBeSquare) {
-  return (imageUrl) => {
+  return imageUrl => {
     return new Promise((resolve, reject) => {
       if (!imageUrl) {
         reject(new Error('No image url passed.'));
@@ -101,8 +101,6 @@ function getSignedRequest(file, folder, mustBeSquare) {
     xhr.send();
   });
 }
-
-
 
 /*
    Function called when file input updated. If there is a file selected, then
