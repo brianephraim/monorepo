@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ReactCropper from 'react-cropper';
 import windowSizer from '@defualt/window-sizer';
+import vanilla from 'vanilla';
+import bindHere from '@defualt/bind_here';
 import 'cropperjs/dist/cropper.css';
 import './cropperLibMonkeyPatch';
-import vanilla from 'vanilla';
+
 
 // React-Cropper is a react wrapper around cropperjs.
 // cropperjs is DOM based.
@@ -27,12 +29,10 @@ class ReactCropperEnhanced extends Component {
     this.state = {
       cropperExists: true,
       moving: false,
-      lastCropData: props.data || null,
+      lastCropData: props.data,
     };
-    this._readyBound = this._ready.bind(this);
-    this._cropBound = this._crop.bind(this);
-    this._cropmoveBound = this._cropmove.bind(this);
-    this._cropendBound = this._cropend.bind(this);
+    this.methodsBoundHere = bindHere(this, ['ready','crop','cropmove','cropend']);
+    Object.assign(this, this.methodsBoundHere);
   }
   componentDidMount() {
     // When window resizes, flicker cropperExists.
@@ -53,13 +53,12 @@ class ReactCropperEnhanced extends Component {
       delete this.windowSizerCb;
     }
   }
-  _ready(...args) {
+  ready(...args) {
     if (
       this.props.cropSrc &&
-      this.refs &&
-      this.refs.cropper &&
-      this.refs.cropper.cropper &&
-      this.refs.cropper.cropper.cropBox
+      this.cropper &&
+      this.cropper.cropper &&
+      this.cropper.cropper.cropBox
     ) {
       // cropOverlayImg implementation
       // DOM manipulation because core cropperjs lib is DOM based
@@ -70,33 +69,33 @@ class ReactCropperEnhanced extends Component {
         'style',
         'position: absolute; width: 100%; height: 100%;'
       );
-      vanilla.prepend(this.refs.cropper.cropper.cropBox, sampleImg);
+      vanilla.prepend(this.cropper.cropper.cropBox, sampleImg);
 
       // because we are resetting the cropper for the sake of resizing
       // we need to re-establish any cropping the user had done previously
       if (this.state.lastCropData) {
-        this.refs.cropper.cropper.setData(this.state.lastCropData);
+        this.cropper.cropper.setData(this.state.lastCropData);
       }
     }
 
-    this.props.ready && this.props.ready(...args);
+    this.props.ready(...args);
   }
-  _crop(cropData, ...args) {
+  crop(cropData, ...args) {
     if (this.state.moving) {
       this.setState({
         lastCropData: cropData.detail,
       });
     }
-    this.props.crop && this.props.crop(cropData, ...args);
+    this.props.crop(cropData, ...args);
   }
 
-  _cropend(...args) {
+  cropend(...args) {
     this.setState({ moving: false });
-    this.props.cropend && this.props.cropend(...args);
+    this.props.cropend(...args);
   }
-  _cropmove(...args) {
+  cropmove(...args) {
     this.setState({ moving: true });
-    this.props.cropmove && this.props.cropmove(...args);
+    this.props.cropmove(...args);
   }
   render() {
     // The `data` prop below cancels `this.props.data` if present
@@ -107,18 +106,33 @@ class ReactCropperEnhanced extends Component {
       return (
         <ReactCropper
           style={{ height: '100%' }}
-          ref="cropper"
+          ref={(cropper) => { this.cropper = cropper; }}
           {...this.props}
           data={null}
-          ready={this._readyBound}
-          crop={this._cropBound}
-          cropmove={this._cropmoveBound}
-          cropend={this._cropendBound}
+          ready={this.ready}
+          crop={this.crop}
+          cropmove={this.cropmove}
+          cropend={this.cropend}
         />
       );
     }
     return null;
   }
 }
+ReactCropperEnhanced.propTypes = {
+  cropend: PropTypes.func,
+  cropmove: PropTypes.func,
+  crop: PropTypes.func,
+  ready: PropTypes.func,
+  data: PropTypes.object,
+  cropSrc: PropTypes.string.isRequired,
+};
+ReactCropperEnhanced.defaultProps = {
+  cropend: () => {},
+  cropmove: () => {},
+  crop: () => {},
+  ready: () => {},
+  data: null,
+};
 
 export default ReactCropperEnhanced;
