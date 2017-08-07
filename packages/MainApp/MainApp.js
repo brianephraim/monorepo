@@ -22,6 +22,7 @@ function getRootEl() {
 }
 
 const store = configureStore();
+window.ss = store;
 render(
   <Routing store={store} />,
   getRootEl()

@@ -1,6 +1,6 @@
 /* eslint-disable react/no-multi-comp */
 /* eslint-disable class-methods-use-this */
-
+import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ResponsiveHOC, {
@@ -31,6 +31,7 @@ import './app.scss';
 // (modal was outside .homeLayout)
 // It was also used to display:none the home screen when modal appears.
 function BernieHomeLayout(props) {
+  props.setCompositeImageData(props.compositeImageData);
   return (
     <div className="homeLayout">
       {/* The wrapping element below distinguishes the photo-plus-buttonGroupComponents from disclaimer.*/}
@@ -464,6 +465,7 @@ class Bernie extends Component {
                       params: props.match.params,
                     });
                     const compositeImageData = compositeImage.data;
+                    this.props.setCompositeImageData(compositeImageData);
                     return (
                       <CropperScreen
                         foreground={compositeImageData.foreground}
@@ -545,4 +547,29 @@ Bernie.propTypes = {
 
 // ToDoItem = withRouter(connect(mapStateToProps)(ToDoItem));
 
-export default Bernie;
+const mapStateToProps = (state/* , { params }*/) => {
+  console.log(state);
+  return {
+    // users: state.users.list.map((id) => {
+    //   return state.users.idDict[id];
+    // }),
+    // toBeAssigned: getDetailsOfToBeAssigned(state),
+  };
+};
+
+const mapDispatchToProps = {
+  // fetchUsers: actions.fetchUsers,
+  setCompositeImageData(compositeImageData) {
+    return (dispatch/* , getState*/) => {
+      dispatch({
+        type: 'SET_COMPOSITE_IMAGE_DATA',
+        compositeImageData,
+      });
+    };
+  },
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Bernie);
