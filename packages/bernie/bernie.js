@@ -434,16 +434,16 @@ class Bernie extends Component {
     // bs.loader.load
     const imgSrc = imgSrcObj.src;
     getNormalizedImageInfo(imgSrc).then(response => {
-      // const url = compositeImage
-      //   .refresh({
-      //     path: 'background.srcKey',
-      //     val: response.srcKey,
-      //   })
-      //   .generateUrl({
-      //     rootPath,
-      //     urlAppend: '/crop',
-      //   });
-      // this.props.history.push(url);
+      const url = compositeImage
+        .refresh({
+          path: 'background.srcKey',
+          val: response.srcKey,
+        })
+        .generateUrl({
+          rootPath,
+          urlAppend: '/crop',
+        });
+      this.props.history.push(url);
 
       this.props.setCompositeImageData({
         background: {

@@ -1,4 +1,5 @@
 import { formUrl } from './deriveUrlInfo';
+import history from '@defualt/shared-history';
 
 export function refresh(oldData, pathAssignments) {
   if (!Array.isArray(pathAssignments)) {
@@ -45,6 +46,8 @@ export function setterActionCreator(newCompositeImageData) {
       type: 'SET_COMPOSITE_IMAGE_DATA',
       compositeImageData,
     });
+    console.log(compositeImageData.browserUrlBase);
+    // history.push(`/bernie/${compositeImageData.browserUrlBase}`);
   };
 }
 
