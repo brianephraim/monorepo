@@ -1,3 +1,5 @@
+import { formUrl } from './deriveUrlInfo';
+
 export function refresh(oldData, pathAssignments) {
   if (!Array.isArray(pathAssignments)) {
     pathAssignments = [pathAssignments];
@@ -23,22 +25,26 @@ function generateCompositeImgSrcUrl(compositeImageData) {
 }
 
 
-export function setterActionCreator(newCompositeImageData, state) {
-  const compositeImageData = {
-    ...state,
-    foreground: {
-      ...state.foreground,
-      ...newCompositeImageData.foreground,
-    },
-    background: {
-      ...state.background,
-      ...newCompositeImageData.background,
-    }          
-  };
-  compositeImageData.imgSrcUrl = generateCompositeImgSrcUrl(compositeImageData);
-  return {
-    type: 'SET_COMPOSITE_IMAGE_DATA',
-    compositeImageData,
+export function setterActionCreator(newCompositeImageData) {
+  return (dispatch, getState) => {
+    const state = getState().bernie.compositeImageData;
+    const compositeImageData = {
+      ...state,
+      foreground: {
+        ...state.foreground,
+        ...newCompositeImageData.foreground,
+      },
+      background: {
+        ...state.background,
+        ...newCompositeImageData.background,
+      }          
+    };
+    compositeImageData.imgSrcUrl = generateCompositeImgSrcUrl(compositeImageData);
+    compositeImageData.browserUrlBase = formUrl(compositeImageData);
+    dispatch({
+      type: 'SET_COMPOSITE_IMAGE_DATA',
+      compositeImageData,
+    });
   };
 }
 

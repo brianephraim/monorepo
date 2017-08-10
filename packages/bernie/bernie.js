@@ -413,12 +413,7 @@ const mapStateToProps = (/* state*//* , { params }*/) => {
 const mapDispatchToProps = {
   // fetchUsers: actions1.fetchUsers,
   // fetchUsers: actions1.fetchUsers,
-  setCompositeImageData: (compositeImageData) => {
-    return (dispatch , getState) => {
-      const state = getState();
-      dispatch(compositeImageSetterActionCreator(compositeImageData, state));
-    };
-  },
+  setCompositeImageData: compositeImageSetterActionCreator,
   // compositeImageUpdateActionCreator,
 };
 
@@ -435,19 +430,26 @@ class Bernie extends Component {
     makeBinder(this, 'handleForegroundImageSelection');
   }
   handleBackroundImageSelection(compositeImage, rootPath, imgSrcObj) {
+    console.log(compositeImage);
     // bs.loader.load
     const imgSrc = imgSrcObj.src;
     getNormalizedImageInfo(imgSrc).then(response => {
-      const url = compositeImage
-        .refresh({
-          path: 'background.srcKey',
-          val: response.srcKey,
-        })
-        .generateUrl({
-          rootPath,
-          urlAppend: '/crop',
-        });
-      this.props.history.push(url);
+      // const url = compositeImage
+      //   .refresh({
+      //     path: 'background.srcKey',
+      //     val: response.srcKey,
+      //   })
+      //   .generateUrl({
+      //     rootPath,
+      //     urlAppend: '/crop',
+      //   });
+      // this.props.history.push(url);
+
+      this.props.setCompositeImageData({
+        background: {
+          srcKey: response.srcKey,
+        }
+      });
     });
   }
   handleForegroundImageSelection(compositeImage, rootPath, imgSrcObj) {
@@ -590,5 +592,28 @@ Bernie.propTypes = {
   match: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
 };
+
+Bernie = connect(
+  ( state/* , { params }*/) => {
+    console.log(state.bernie.compositeImageData);
+    return {
+      // imSrc: (
+      //   state.bernie && state.bernie.compositeImageData
+      //   ?
+      //   state.bernie.compositeImageData.imgSrcUrl
+      //   :
+      //   '/images/mock-selfie.png'
+      // ),
+      // toBeAssigned: getDetailsOfToBeAssigned(state),
+    };
+  },
+  {
+    
+    // fetchUsers: actions1.fetchUsers,
+    // fetchUsers: actions1.fetchUsers,
+    setCompositeImageData: compositeImageSetterActionCreator,
+    // compositeImageUpdateActionCreator,
+  }
+)(Bernie);
 
 export default Bernie
