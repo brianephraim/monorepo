@@ -31,7 +31,7 @@ import './app.scss';
 // (modal was outside .homeLayout)
 // It was also used to display:none the home screen when modal appears.
 function BernieHomeLayout(props) {
-  props.setCompositeImageData(props.compositeImageData);
+  // props.setCompositeImageData(props.compositeImageData);
   return (
     <div className="homeLayout">
       {/* The wrapping element below distinguishes the photo-plus-buttonGroupComponents from disclaimer.*/}
@@ -210,16 +210,7 @@ class BernieAppHero extends Component {
         },
       },
     ];
-    // http://www.bernieselfie.com/image/h4/dude-with-hat1500922227089_1780_1780_-123_-555.jpg
-    // http://www.bernieselfie.com/image/fwilbqgsskzngv0cktwi/dude-with-hat1500922227089_1780_1780_-123_-555.jpg
-    // http://localhost:3000      /image/dude-with-hat1500922227089/qsuqge5jdqjfjhvg4r2z_1780_1780_446_-938.jpg
-    let imSrc = '/images/mock-selfie.png';
-    if (this.props.compositeImageData) {
-      const imgData = this.props.compositeImageData;
-      imSrc = `/image/${imgData.foreground.srcKey}/${imgData.background
-        .srcKey}_${imgData.foreground.width}_${imgData.foreground
-        .height}_${imgData.foreground.x}_${imgData.foreground.y}.jpg`;
-    }
+
     return (
       <div className="app_body_leftPillar">
         <BernieAppMainSelfieFrameResponsive turns={turns} masterName="bernie">
@@ -230,7 +221,7 @@ class BernieAppHero extends Component {
           </div>
           <img
             className="app_body_leftPillar_selfieFrame_selfie"
-            src={imSrc}
+            src={this.props.imSrc}
             alt="My BernieSelfie"
           />
         </BernieAppMainSelfieFrameResponsive>
@@ -244,6 +235,38 @@ BernieAppHero.propTypes = {
 BernieAppHero.defaultProps = {
   compositeImageData: null,
 };
+
+BernieAppHero = connect(
+  ( state/* , { params }*/) => {
+    console.log(state);
+    let imSrc = '/images/mock-selfie.png';
+    if (state.bernie && state.bernie.compositeImageData) {
+      const compositeImageData = state.bernie.compositeImageData;
+      imSrc = `/image/${compositeImageData.foreground.srcKey}/${compositeImageData.background
+        .srcKey}_${compositeImageData.foreground.width}_${compositeImageData.foreground
+        .height}_${compositeImageData.foreground.x}_${compositeImageData.foreground.y}.jpg`;
+      
+    }
+    return {
+      compositeImageDatax: state.bernie.compositeImageData,
+      imSrc: imSrc,
+      // toBeAssigned: getDetailsOfToBeAssigned(state),
+    };
+  },
+  {
+    // fetchUsers: actions1.fetchUsers,
+    // setCompositeImageData(compositeImageData) {
+    //   return (dispatch/* , getState*/) => {
+    //     dispatch({
+    //       type: 'SET_COMPOSITE_IMAGE_DATA',
+    //       compositeImageData,
+    //     });
+    //   };
+    // },
+  }
+)(BernieAppHero);
+
+
 
 let BernieAppBusiness = props => {
   return (
@@ -361,6 +384,52 @@ class CompositeImage {
   }
 }
 
+let BernieRoute = function BernieRoute(props){
+  return (
+    <Route
+      {...props}
+      render={(routeProps) => {
+        const compositeImage = new CompositeImage({
+          params: routeProps.match.params,
+        });
+        props.setCompositeImageData(compositeImage.data);
+        return props.render(routeProps, compositeImage);
+      }}
+      
+    />
+  );
+};
+BernieRoute.propTypes = {
+  setCompositeImageData: PropTypes.func.isRequired,
+  render: PropTypes.func.isRequired
+};
+
+const mapStateToProps = (/* state*//* , { params }*/) => {
+  return {
+    // users: state.users.list.map((id) => {
+    //   return state.users.idDict[id];
+    // }),
+    // toBeAssigned: getDetailsOfToBeAssigned(state),
+  };
+};
+
+const mapDispatchToProps = {
+  // fetchUsers: actions1.fetchUsers,
+  setCompositeImageData(compositeImageData) {
+    return (dispatch/* , getState*/) => {
+      dispatch({
+        type: 'SET_COMPOSITE_IMAGE_DATA',
+        compositeImageData,
+      });
+    };
+  },
+};
+
+BernieRoute = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(BernieRoute);
+
 class Bernie extends Component {
   constructor() {
     super();
@@ -438,18 +507,14 @@ class Bernie extends Component {
             const key = `${i}-statelessWrapper`;
             return (
               <statelessWrapper key={key}>
-                <Route
-                  path={path}
+                <BernieRoute
                   exact
-                  render={props => {
-                    const compositeImage = new CompositeImage({
-                      params: props.match.params,
-                    });
-                    const compositeImageData = compositeImage.data;
+                  path={`${path}`}
+                  render={(props, compositeImage) => {
                     return (
                       <BernieHomeLayout
                         {...this.props}
-                        compositeImageData={compositeImageData}
+                        compositeImageData={compositeImage.data}
                         onUploadSuccess={this.handleBackroundImageSelection(
                           compositeImage,
                           this.props.match.url
@@ -457,30 +522,24 @@ class Bernie extends Component {
                       />
                     );
                   }}
+                  {...this.props}
                 />
-                <Route
+                <BernieRoute
                   path={`${path}/crop`}
-                  render={props => {
-                    const compositeImage = new CompositeImage({
-                      params: props.match.params,
-                    });
-                    const compositeImageData = compositeImage.data;
-                    this.props.setCompositeImageData(compositeImageData);
+                  render={(props, compositeImage) => {
                     return (
                       <CropperScreen
-                        foreground={compositeImageData.foreground}
-                        background={compositeImageData.background}
+                        foreground={compositeImage.data.foreground}
+                        background={compositeImage.data.background}
                         rootUrl={rootUrl}
                       />
                     );
                   }}
+                  {...this.props}
                 />
-                <Route
+                <BernieRoute
                   path={`${path}/import-photo-from-facebook`}
-                  render={props => {
-                    const compositeImage = new CompositeImage({
-                      params: props.match.params,
-                    });
+                  render={(props, compositeImage) => {
                     return (
                       <ImagePickerFacebook
                         onClick={this.handleBackroundImageSelection(
@@ -490,13 +549,11 @@ class Bernie extends Component {
                       />
                     );
                   }}
+                  {...this.props}
                 />
-                <Route
+                <BernieRoute
                   path={`${path}/select-template`}
-                  render={props => {
-                    const compositeImage = new CompositeImage({
-                      params: props.match.params,
-                    });
+                  render={(props, compositeImage) => {
                     return (
                       <ImagePickerTemplate
                         onClick={this.handleForegroundImageSelection(
@@ -507,23 +564,21 @@ class Bernie extends Component {
                       />
                     );
                   }}
+                  {...this.props}
                 />
-                <Route
+                <BernieRoute
                   path={`${path}/:foo(${buttonGroupComponentsRegexArrayString})`}
-                  render={props => {
+                  render={(props, compositeImage) => {
                     const Comp = buttonGroupComponents[props.match.params.foo];
-                    const compositeImage = new CompositeImage({
-                      params: props.match.params,
-                    });
-                    const compositeImageData = compositeImage.data;
                     return (
                       <Comp
+                        {...this.props}
                         isModal
-                        {...props}
-                        compositeImageData={compositeImageData}
+                        compositeImageData={compositeImage.data}
                       />
                     );
                   }}
+                  {...this.props}
                 />
               </statelessWrapper>
             );
@@ -539,37 +594,4 @@ Bernie.propTypes = {
   history: PropTypes.object.isRequired,
 };
 
-// const mapStateToProps = (state, props) => {
-//   return {
-//     assignedUser: state.users.idDict[props.assignedUserId],
-//   };
-// };
-
-// ToDoItem = withRouter(connect(mapStateToProps)(ToDoItem));
-
-const mapStateToProps = (state/* , { params }*/) => {
-  console.log(state);
-  return {
-    // users: state.users.list.map((id) => {
-    //   return state.users.idDict[id];
-    // }),
-    // toBeAssigned: getDetailsOfToBeAssigned(state),
-  };
-};
-
-const mapDispatchToProps = {
-  // fetchUsers: actions.fetchUsers,
-  setCompositeImageData(compositeImageData) {
-    return (dispatch/* , getState*/) => {
-      dispatch({
-        type: 'SET_COMPOSITE_IMAGE_DATA',
-        compositeImageData,
-      });
-    };
-  },
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Bernie);
+export default Bernie
