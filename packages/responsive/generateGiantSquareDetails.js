@@ -21,28 +21,28 @@ const { docEl, docBody, getWinWidth, getWinHeight, getDocumentHeight, getOffset,
 
 const generateGiantSquareDetails = function($el,bottomGap = 0){
   
-  var getDims = function($el){
+  const getDims = function($el){
     return{
       windowHeight: windowSizer.dimensions.height - heightTweak,
       documentHeight: getDocumentHeight(),
       top: getOffset($el).top
     }
   };
-  var dims = getDims($el);
+  const dims = getDims($el);
 
-  var heightVal = (dims.windowHeight - dims.top);
+  const heightVal = (dims.windowHeight - dims.top);
   
-  var windowWidth = getWinWidth();
-  var measurement = windowWidth < heightVal ? windowWidth : heightVal;
+  const windowWidth = getWinWidth();
+  let measurement = windowWidth < heightVal ? windowWidth : heightVal;
 
   if(measurement <= windowWidth){
-    var gap = dims.windowHeight - (dims.top + measurement);
+    const gap = dims.windowHeight - (dims.top + measurement);
     if(gap < bottomGap){
       measurement -= (bottomGap - gap);
     }
   }
-  var min = 250;
-  var toReturn = {};
+  const min = 250;
+  const toReturn = {};
   if(measurement < min){
     if(windowWidth >= min){
       measurement = min;
@@ -57,8 +57,8 @@ const generateGiantSquareDetails = function($el,bottomGap = 0){
     measurement,
   };
   toReturn.style= {
-    height: measurement + 'px',
-    width: measurement + 'px',
+    height: `${measurement  }px`,
+    width: `${measurement  }px`,
   }
 
   return toReturn;

@@ -262,7 +262,7 @@ function makeResponsive(...args) {
         const breakpointNameJustBeyondWidth = (
           this.getBreakpointNameJustBeyondWidth(this.$el.offsetWidth)
         );
-        if (!!breakpointNameJustBeyondWidth) {
+        if (breakpointNameJustBeyondWidth) {
           this.updateActiveStatuses({
             [breakpointNameJustBeyondWidth]: true,
           });

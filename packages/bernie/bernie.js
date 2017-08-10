@@ -238,7 +238,6 @@ BernieAppHero.defaultProps = {
 
 BernieAppHero = connect(
   ( state/* , { params }*/) => {
-    console.log(state.bernie.compositeImageData);
     return {
       imSrc: (
         state.bernie && state.bernie.compositeImageData
@@ -381,21 +380,52 @@ class CompositeImage {
   }
 }
 
-let BernieRoute = function BernieRoute(props){
-  return (
-    <Route
-      {...props}
-      render={(routeProps) => {
-        const compositeImage = new CompositeImage({
-          params: routeProps.match.params,
-        });
-        props.setCompositeImageData(compositeImage.data);
-        return props.render(routeProps, compositeImage);
-      }}
-      
-    />
-  );
-};
+class CompositeImageConnectionSetter extends Component {
+  constructor() {
+    super();
+  }
+  componentWillMount() {
+    this.props.setCompositeImageData(this.props.compositeImageData);
+  }
+  render(){
+    return this.props.children;
+  }
+}
+CompositeImageConnectionSetter = connect(
+  (/* state*//* , { params }*/) => {
+    return {};
+  },
+  {
+    setCompositeImageData: compositeImageSetterActionCreator,
+  }
+)(CompositeImageConnectionSetter);
+
+class BernieRoute extends Component {
+  constructor() {
+    super();
+  }
+  render() {
+    const props = this.props;
+    let urlEnd = this.props.urlEnd && this.props.urlEnd.indexOf(':') === -1 ? `:screen(${this.props.urlEnd})` : this.props.urlEnd;
+    urlEnd = urlEnd ? `/${urlEnd}` : ''
+    const path = `${this.props.urlStart}${urlEnd}`
+    return (
+      <Route
+        {...props}
+        path={path}
+        render={(routeProps) => {
+          console.log(routeProps.match.params);
+          const compositeImage = new CompositeImage({
+            params: routeProps.match.params,
+          });
+          return (
+            <CompositeImageConnectionSetter compositeImageData={compositeImage.data}>{props.render(routeProps, compositeImage)}</CompositeImageConnectionSetter>
+          );
+        }}
+      />
+    );
+  }
+}
 BernieRoute.propTypes = {
   setCompositeImageData: PropTypes.func.isRequired,
   render: PropTypes.func.isRequired
@@ -503,12 +533,14 @@ class Bernie extends Component {
         */}
         <div className="homeScreen">
           {homeLayoutPaths.map((path, i) => {
+            console.log('buttonGroupComponentsRegexArrayString',buttonGroupComponentsRegexArrayString)
             const key = `${i}-statelessWrapper`;
             return (
               <statelessWrapper key={key}>
                 <BernieRoute
                   exact
-                  path={`${path}`}
+                  urlStart={path}
+                  urlEnd={''}
                   render={(props, compositeImage) => {
                     return (
                       <BernieHomeLayout
@@ -524,7 +556,8 @@ class Bernie extends Component {
                   {...this.props}
                 />
                 <BernieRoute
-                  path={`${path}/crop`}
+                  urlStart={path}
+                  urlEnd={'crop'}
                   render={(props, compositeImage) => {
                     return (
                       <CropperScreen
@@ -537,7 +570,8 @@ class Bernie extends Component {
                   {...this.props}
                 />
                 <BernieRoute
-                  path={`${path}/import-photo-from-facebook`}
+                  urlStart={path}
+                  urlEnd={'import-photo-from-facebook'}
                   render={(props, compositeImage) => {
                     return (
                       <ImagePickerFacebook
@@ -551,7 +585,8 @@ class Bernie extends Component {
                   {...this.props}
                 />
                 <BernieRoute
-                  path={`${path}/select-template`}
+                  urlStart={path}
+                  urlEnd={'select-template'}
                   render={(props, compositeImage) => {
                     return (
                       <ImagePickerTemplate
@@ -566,7 +601,8 @@ class Bernie extends Component {
                   {...this.props}
                 />
                 <BernieRoute
-                  path={`${path}/:foo(${buttonGroupComponentsRegexArrayString})`}
+                  urlStart={path}
+                  urlEnd={`:foo(${buttonGroupComponentsRegexArrayString})`}
                   render={(props, compositeImage) => {
                     const Comp = buttonGroupComponents[props.match.params.foo];
                     return (

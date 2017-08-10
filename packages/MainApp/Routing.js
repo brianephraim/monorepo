@@ -2,10 +2,11 @@
 import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import { ConnectedRouter, routerReducer, routerMiddleware, push } from 'react-router-redux'
 import ToDoUserAssignmentScreen from 'todo_app';
 import Bernie from 'bernie';
 import Battleship from 'battleship';
-import history from '@defualt-shared/history';
+import history from '@defualt/shared-history';
 
 import React, { Component } from 'react';
 // import PropTypes from 'prop-types';
@@ -86,9 +87,9 @@ const LandingScreen = ({ dispatch }) => {
   );
 };
 //   <Router history={browserHistory}>
-
+console.log('history',history)
 const Routes = (
-  <Router history={history}>
+  <ConnectedRouter history={history}>
     <div>
       {
         [
@@ -103,7 +104,7 @@ const Routes = (
         })
       }
     </div>
-  </Router>
+  </ConnectedRouter>
 );
 
 

@@ -1,5 +1,6 @@
 import { formUrl } from './deriveUrlInfo';
 import history from '@defualt/shared-history';
+import { push } from 'react-router-redux'
 
 export function refresh(oldData, pathAssignments) {
   if (!Array.isArray(pathAssignments)) {
@@ -47,6 +48,14 @@ export function setterActionCreator(newCompositeImageData) {
       compositeImageData,
     });
     console.log(compositeImageData.browserUrlBase);
+    if (
+      compositeImageData.browserUrlBase && state.browserUrlBase &&
+      compositeImageData.browserUrlBase !== state.browserUrlBase
+    ) {
+      dispatch(push(`/bernie/${compositeImageData.browserUrlBase}`));
+    }
+    // dispatch(push(`/bernie/${compositeImageData.browserUrlBase}`))
+    
     // history.push(`/bernie/${compositeImageData.browserUrlBase}`);
   };
 }

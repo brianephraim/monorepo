@@ -1,5 +1,6 @@
 // Passthrough
 import generateGiantSquareDetails from './generateGiantSquareDetails';
+
 export { generateGiantSquareDetails };
 
 // Module deps

@@ -1,5 +1,6 @@
 import debounce from 'debounce';
 import vanilla from '@defualt/vanilla';
+
 const { getWinWidth, getWinHeight } = vanilla;
 
 let resizing = false;

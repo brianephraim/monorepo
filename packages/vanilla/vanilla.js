@@ -1,5 +1,5 @@
-var docEl = document.documentElement;
-var docBody = document.body;
+const docEl = document.documentElement;
+const docBody = document.body;
 
 function getWinWidth() {
   return window.innerWidth || docEl.clientWidth || docBody.clientWidth
@@ -16,8 +16,8 @@ function getDocumentHeight() {
   );
 }
 
-var getOffset = function(elem) {
-  var rect = elem.getBoundingClientRect();
+const getOffset = function(elem) {
+  const rect = elem.getBoundingClientRect();
 
   return {
     top: rect.top + docBody.scrollTop,
@@ -28,9 +28,9 @@ var getOffset = function(elem) {
 function prepend(parent, toPrepend) {
   if (parent.firstChild) {
     return parent.insertBefore(toPrepend, parent.firstChild);
-  } else {
+  } 
     return parent.appendChild(toPrepend);
-  }
+  
 }
 
 
