@@ -236,20 +236,23 @@ BernieAppHero.defaultProps = {
   compositeImageData: null,
 };
 
+function generateCompositeImgSrcUrl(compositeImageData) {
+  return `/image/${compositeImageData.foreground.srcKey}/${compositeImageData.background
+    .srcKey}_${compositeImageData.foreground.width}_${compositeImageData.foreground
+    .height}_${compositeImageData.foreground.x}_${compositeImageData.foreground.y}.jpg`;
+}
+
 BernieAppHero = connect(
   ( state/* , { params }*/) => {
-    console.log(state);
-    let imSrc = '/images/mock-selfie.png';
-    if (state.bernie && state.bernie.compositeImageData) {
-      const compositeImageData = state.bernie.compositeImageData;
-      imSrc = `/image/${compositeImageData.foreground.srcKey}/${compositeImageData.background
-        .srcKey}_${compositeImageData.foreground.width}_${compositeImageData.foreground
-        .height}_${compositeImageData.foreground.x}_${compositeImageData.foreground.y}.jpg`;
-      
-    }
     return {
       compositeImageDatax: state.bernie.compositeImageData,
-      imSrc: imSrc,
+      imSrc: (
+        state.bernie && state.bernie.compositeImageData
+        ?
+        generateCompositeImgSrcUrl(state.bernie.compositeImageData)
+        :
+        '/images/mock-selfie.png'
+      ),
       // toBeAssigned: getDetailsOfToBeAssigned(state),
     };
   },
