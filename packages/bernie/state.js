@@ -11,20 +11,10 @@ import styled from 'styled-components';
 
 export const bernieReducers = combineReducers({
   compositeImageData: (state = {}, action) => {
-    console.log('state',state);
-    console.log('action',action);
     switch (action.type) {
       case 'SET_COMPOSITE_IMAGE_DATA':
         return {
-          ...state,
-          foreground: {
-            ...state.foreground,
-            ...action.compositeImageData.foreground,
-          },
-          background: {
-            ...state.background,
-            ...action.compositeImageData.background,
-          }          
+          ...action.compositeImageData      
         };
       default:
         return state;

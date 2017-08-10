@@ -23,6 +23,7 @@ import ImagePickerFacebook from './ImagePickerFacebook';
 import ImagePickerTemplate from './ImagePickerTemplate';
 import { standardModesRegexArrayString, formUrl } from './deriveUrlInfo';
 import { getNormalizedImageInfo } from './s3';
+import { setterActionCreator as compositeImageSetterActionCreator } from './compositeImage';
 import './app.scss';
 
 // This component exists as a container to distingsh from the modals outside this container.
@@ -31,7 +32,6 @@ import './app.scss';
 // (modal was outside .homeLayout)
 // It was also used to display:none the home screen when modal appears.
 function BernieHomeLayout(props) {
-  // props.setCompositeImageData(props.compositeImageData);
   return (
     <div className="homeLayout">
       {/* The wrapping element below distinguishes the photo-plus-buttonGroupComponents from disclaimer.*/}
@@ -236,20 +236,14 @@ BernieAppHero.defaultProps = {
   compositeImageData: null,
 };
 
-function generateCompositeImgSrcUrl(compositeImageData) {
-  return `/image/${compositeImageData.foreground.srcKey}/${compositeImageData.background
-    .srcKey}_${compositeImageData.foreground.width}_${compositeImageData.foreground
-    .height}_${compositeImageData.foreground.x}_${compositeImageData.foreground.y}.jpg`;
-}
-
 BernieAppHero = connect(
   ( state/* , { params }*/) => {
+    console.log(state.bernie.compositeImageData);
     return {
-      compositeImageDatax: state.bernie.compositeImageData,
       imSrc: (
         state.bernie && state.bernie.compositeImageData
         ?
-        generateCompositeImgSrcUrl(state.bernie.compositeImageData)
+        state.bernie.compositeImageData.imgSrcUrl
         :
         '/images/mock-selfie.png'
       ),
@@ -418,14 +412,14 @@ const mapStateToProps = (/* state*//* , { params }*/) => {
 
 const mapDispatchToProps = {
   // fetchUsers: actions1.fetchUsers,
-  setCompositeImageData(compositeImageData) {
-    return (dispatch/* , getState*/) => {
-      dispatch({
-        type: 'SET_COMPOSITE_IMAGE_DATA',
-        compositeImageData,
-      });
+  // fetchUsers: actions1.fetchUsers,
+  setCompositeImageData: (compositeImageData) => {
+    return (dispatch , getState) => {
+      const state = getState();
+      dispatch(compositeImageSetterActionCreator(compositeImageData, state));
     };
   },
+  // compositeImageUpdateActionCreator,
 };
 
 BernieRoute = connect(
