@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 import ResponsiveHOC, {
   generateGiantSquareDetails,
@@ -186,9 +187,6 @@ let BernieAppHero = class extends Component {
 BernieAppHero.propTypes = {
   imSrc: PropTypes.string.isRequired,
 };
-BernieAppHero.defaultProps = {
-  compositeImageData: null,
-};
 
 BernieAppHero = connect(
   ( state/* , { params }*/) => {
@@ -204,15 +202,6 @@ BernieAppHero = connect(
     };
   },
   {
-    // fetchUsers: actions1.fetchUsers,
-    // setCompositeImageData(compositeImageData) {
-    //   return (dispatch/* , getState*/) => {
-    //     dispatch({
-    //       type: 'SET_COMPOSITE_IMAGE_DATA',
-    //       compositeImageData,
-    //     });
-    //   };
-    // },
   }
 )(BernieAppHero);
 

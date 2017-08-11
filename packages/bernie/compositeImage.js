@@ -1,5 +1,4 @@
 import { formUrl } from './deriveUrlInfo';
-import history from '@defualt/shared-history';
 import { push } from 'react-router-redux'
 
 export function refresh(oldData, pathAssignments) {
@@ -26,43 +25,48 @@ function generateCompositeImgSrcUrl(compositeImageData) {
     .height}_${compositeImageData.foreground.x}_${compositeImageData.foreground.y}.jpg`;
 }
 
-
-export function setterActionCreator(newCompositeImageData) {
+// function ensureTrailingSlash (url) {
+//   return url.replace(/\/?$/, '/');
+// }
+export function setterActionCreator(newCompositeImageData, namespace) {
   return (dispatch, getState) => {
-    const state = getState().bernie.compositeImageData;
+    const state = getState();
+    const compositeImageDataState = state.bernie.compositeImageData;
+    const routerPathname = state.router.location.pathname;
+
     const compositeImageData = {
-      ...state,
+      ...compositeImageDataState,
       foreground: {
-        ...state.foreground,
+        ...compositeImageDataState.foreground,
         ...newCompositeImageData.foreground,
       },
       background: {
-        ...state.background,
+        ...compositeImageDataState.background,
         ...newCompositeImageData.background,
       },
-      screen: typeof newCompositeImageData.screen !== 'undefined' ? newCompositeImageData.screen : state.screen,
+      screen: typeof newCompositeImageData.screen !== 'undefined' ? newCompositeImageData.screen : compositeImageDataState.screen,
+      namespace: namespace || compositeImageDataState.namespace,
     };
+
     compositeImageData.imgSrcUrl = generateCompositeImgSrcUrl(compositeImageData);
-    compositeImageData.browserUrlBase = formUrl(compositeImageData);
-    compositeImageData.browserScreenUrl = `${compositeImageData.browserUrlBase}/${compositeImageData.screen}`
+    const browserUrlBase = formUrl(compositeImageData);
+    compositeImageData.browserUrlBaseWithPreceedingUrlFrag = `/${compositeImageData.namespace}/${browserUrlBase}`;
+    compositeImageData.desiredRoute = `${compositeImageData.browserUrlBaseWithPreceedingUrlFrag}/${compositeImageData.screen}`;
     dispatch({
       type: 'SET_COMPOSITE_IMAGE_DATA',
       compositeImageData,
     });
 
-    if (
-      compositeImageData.browserScreenUrl && state.browserScreenUrl &&
-      compositeImageData.browserScreenUrl !== state.browserScreenUrl
-    ) {
-      dispatch(push(`/bernie/${compositeImageData.browserScreenUrl}`));
-    }
-    // dispatch(push(`/bernie/${compositeImageData.browserUrlBase}`))
     
-    // history.push(`/bernie/${compositeImageData.browserUrlBase}`);
+    if (
+      compositeImageDataState.desiredRoute !== compositeImageData.desiredRoute &&
+      routerPathname !== compositeImageData.desiredRoute
+    ) {
+      dispatch(push(compositeImageData.desiredRoute));
+    }
   };
 }
-
-export function paramsIntoCompositeImage (params, overrides) {
+export function paramsIntoCompositeImage (params) {
   const placeholder = {
     fgX: 142,
     fgY: 98,
@@ -77,7 +81,6 @@ export function paramsIntoCompositeImage (params, overrides) {
   const paramsToUse = {
     ...placeholder,
     ...params,
-    ...overrides,
   };
   const compositeImageData = {
     foreground: {
@@ -96,7 +99,5 @@ export function paramsIntoCompositeImage (params, overrides) {
     },
     screen: paramsToUse.screen,
   };
-  return {
-    data: compositeImageData
-  }
+  return compositeImageData;
 }

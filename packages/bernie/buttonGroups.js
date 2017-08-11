@@ -1,8 +1,9 @@
+import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import Upload from './Upload';
-import { formUrl } from './deriveUrlInfo';
+
 import './app.scss';
 
 const Div = props => {
@@ -27,7 +28,7 @@ A.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
-class BernieAppButtonGroup extends Component {
+let BernieAppButtonGroup = class extends Component {
   constructor() {
     super();
     this.state = {};
@@ -56,7 +57,6 @@ class BernieAppButtonGroup extends Component {
           {this.props.headline}
         </span>
       </div>;
-
     const buttons =
       this.props.buttons &&
       <div className="buttonGroup_buttons">
@@ -78,15 +78,11 @@ class BernieAppButtonGroup extends Component {
                 {btnDetails.text}
               </a>
             );
-          } else if (btnDetails.routerLink) {
-            const routerLink =
-              typeof btnDetails.routerLink === 'function'
-                ? btnDetails.routerLink(this.props)
-                : btnDetails.routerLink;
+          } else if (btnDetails.routerLinkScreenName) {
             btnInner = (
               <Link
                 className={btnDetails.className}
-                to={`${this.props.match.url}/${routerLink}`}
+                to={`${this.props.compositeImageData.browserUrlBaseWithPreceedingUrlFrag}/${btnDetails.routerLinkScreenName}`}
               >
                 {btnDetails.text}
               </Link>
@@ -114,15 +110,9 @@ class BernieAppButtonGroup extends Component {
           );
         })}
       </div>;
-    const match = this.props.match;
 
-    const LinkOrDiv =
-      match.url.split('/').reverse()[0] === this.props.urlFragment ? Div : Link;
-    const linkUrl =
-      match && match.url
-        ? `${match.url}/${formUrl(this.props.compositeImageData)}/${this.props
-            .urlFragment}`
-        : '/bernie';
+    const LinkOrDiv = this.props.compositeImageData.screen === this.props.urlFragment ? Div : Link;
+    const linkUrl = `${this.props.compositeImageData.browserUrlBaseWithPreceedingUrlFrag}/${this.props.urlFragment}`;
     return (
       <div
         className={`app_body_rightPillar_section_subsection ${this.props
@@ -146,7 +136,6 @@ BernieAppButtonGroup.propTypes = {
   className: PropTypes.string,
   headline: PropTypes.string,
   buttons: PropTypes.array,
-  match: PropTypes.object.isRequired,
   urlFragment: PropTypes.string,
   compositeImageData: PropTypes.object,
   onUploadSuccess: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
@@ -161,6 +150,16 @@ BernieAppButtonGroup.defaultProps = {
   compositeImageData: null,
   onUploadSuccess: null,
 };
+
+BernieAppButtonGroup = withRouter(connect(
+  ( state /* , { params }*/) => {
+    return {
+      compositeImageData: state.bernie.compositeImageData,
+    };
+  },
+  {
+  }
+)(BernieAppButtonGroup));
 
 const buttonGroupComponents = {};
 function makeButtonGroupComponent(
@@ -197,11 +196,7 @@ const ImportButtonGroup = makeButtonGroupComponent({
     {
       className: 'importFbPhotoButton',
       text: 'Facebook',
-      routerLink: props => {
-        return `${formUrl(
-          props.compositeImageData
-        )}/import-photo-from-facebook`;
-      },
+      routerLinkScreenName: 'import-photo-from-facebook'
     },
     {
       className: 'cameraUploadizer',
@@ -273,11 +268,7 @@ const EditSizeButtonGroup = makeButtonGroupComponent({
     {
       className: 'editSizeAndPositionButton',
       text: 'Size and position',
-      routerLink: props => {
-        const compositeImageData = props.compositeImageData;
-        const routerLink = `${formUrl(compositeImageData)}/crop`;
-        return routerLink;
-      },
+      routerLinkScreenName: 'crop'
     },
   ],
 });
@@ -293,9 +284,7 @@ const EditDesignButtonGroup = makeButtonGroupComponent({
     {
       className: 'moreimageOptionsHome',
       text: 'more options',
-      routerLink: props => {
-        return `${formUrl(props.compositeImageData)}/select-template`;
-      },
+      routerLinkScreenName: 'select-template'
     },
     {
       className: 'templateModalButton',
@@ -315,6 +304,7 @@ const buttonGroupComponentsRegexArrayString = objectKeysButtonGroupComponents.re
   },
   []
 );
+
 
 export {
   buttonGroupComponents,

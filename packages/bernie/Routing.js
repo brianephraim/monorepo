@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import makeBinder from '@defualt/make-binder';
-import { Route } from 'react-router-dom';
+import { Route, withRouter } from 'react-router-dom';
 import {
   buttonGroupComponents,
   buttonGroupComponentsRegexArrayString,
@@ -16,13 +16,15 @@ import { standardModesRegexArrayString } from './deriveUrlInfo';
 import { getNormalizedImageInfo } from './s3';
 import { setterActionCreator as compositeImageSetterActionCreator, paramsIntoCompositeImage } from './compositeImage';
 import BernieHomeLayout from './HomeLayout'
+
 import './app.scss';
 
 
 
 let CompositeImageConnectionSetter = class extends Component {
   componentWillMount() {
-    this.props.setCompositeImageData(this.props.compositeImageData);
+    
+    this.props.setCompositeImageData(this.props.compositeImageData, 'bernie');
   }
   render(){
     return this.props.children;
@@ -43,18 +45,17 @@ CompositeImageConnectionSetter = connect(
 )(CompositeImageConnectionSetter);
 
 let BernieRoute = (props) => {
-
   let urlEnd = props.urlEnd && props.urlEnd.indexOf(':') === -1 ? `:screen(${props.urlEnd})` : props.urlEnd;
   urlEnd = urlEnd ? `/${urlEnd}` : ''
-  const path = `${props.urlStart}${urlEnd}`
+  const path = `${props.urlStart}${urlEnd}`;
   return (
     <Route
-      {...props}
+      exact={props.exact}
       path={path}
       render={(routeProps) => {
-        const compositeImage = paramsIntoCompositeImage(routeProps.match.params);
+        const compositeImageData = paramsIntoCompositeImage(routeProps.match.params, routeProps.match.url);
         return (
-          <CompositeImageConnectionSetter compositeImageData={compositeImage.data}>{props.render(routeProps, compositeImage)}</CompositeImageConnectionSetter>
+          <CompositeImageConnectionSetter compositeImageData={compositeImageData}>{props.render(routeProps, compositeImageData)}</CompositeImageConnectionSetter>
         );
       }}
     />
@@ -63,14 +64,16 @@ let BernieRoute = (props) => {
 BernieRoute.propTypes = {
   urlStart: PropTypes.string,
   urlEnd: PropTypes.string,
-  render: PropTypes.func.isRequired
+  render: PropTypes.func.isRequired,
+  exact: PropTypes.bool
 };
 BernieRoute.defaultProps = {
   urlStart: '',
-  urlEnd: ''
+  urlEnd: '',
+  exact: false,
 };
 
-BernieRoute = connect(
+BernieRoute = withRouter(connect(
   (/* state*//* , { params }*/) => {
     return {
       // users: state.users.list.map((id) => {
@@ -85,7 +88,7 @@ BernieRoute = connect(
     setCompositeImageData: compositeImageSetterActionCreator,
     // compositeImageUpdateActionCreator,
   }
-)(BernieRoute);
+)(BernieRoute));
 
 function statelessWrapper(props) {
   return props.children;
@@ -99,10 +102,11 @@ const Routing = class extends Component {
     makeBinder(this, 'handleBackroundImageSelection');
     makeBinder(this, 'handleForegroundImageSelection');
   }
-  handleBackroundImageSelection(rootPath, imgSrcObj) {
+  handleBackroundImageSelection(imgSrcObj) {
     // bs.loader.load
     const imgSrc = imgSrcObj.src;
     getNormalizedImageInfo(imgSrc).then(response => {
+      console.log('response.srcKey',response.srcKey);
       this.props.setCompositeImageData({
         background: {
           srcKey: response.srcKey,
@@ -111,7 +115,7 @@ const Routing = class extends Component {
       });
     });
   }
-  handleForegroundImageSelection(rootPath, imgSrcObj) {
+  handleForegroundImageSelection(imgSrcObj) {
     this.props.setCompositeImageData({
       foreground: {
         srcKey: imgSrcObj.srcKey,
@@ -153,32 +157,26 @@ const Routing = class extends Component {
                 exact
                 urlStart={path}
                 urlEnd={''}
-                render={(props, compositeImage) => {
+                render={() => {
                   return (
                     <BernieHomeLayout
-                      {...this.props}
-                      compositeImageData={compositeImage.data}
-                      onUploadSuccess={this.handleBackroundImageSelection(
-                        this.props.match.url
-                      )}
+                      onUploadSuccess={this.handleBackroundImageSelection()}
                     />
                   );
                 }}
-                {...this.props}
               />
               <BernieRoute
                 urlStart={path}
                 urlEnd={'crop'}
-                render={(props, compositeImage) => {
+                render={(props, compositeImageData) => {
                   return (
                     <CropperScreen
-                      foreground={compositeImage.data.foreground}
-                      background={compositeImage.data.background}
+                      foreground={compositeImageData.foreground}
+                      background={compositeImageData.background}
                       rootUrl={rootUrl}
                     />
                   );
                 }}
-                {...this.props}
               />
               <BernieRoute
                 urlStart={path}
@@ -186,44 +184,33 @@ const Routing = class extends Component {
                 render={() => {
                   return (
                     <ImagePickerFacebook
-                      onClick={this.handleBackroundImageSelection(
-                        this.props.match.url
-                      )}
+                      onClick={this.handleBackroundImageSelection()}
                     />
                   );
                 }}
-                {...this.props}
               />
               <BernieRoute
                 urlStart={path}
                 urlEnd={'select-template'}
-                render={(props, compositeImage) => {
+                render={() => {
                   return (
                     <ImagePickerTemplate
-                      onClick={this.handleForegroundImageSelection(
-                        compositeImage,
-                        this.props.match.url
-                      )}
-                      {...this.props}
+                      onClick={this.handleForegroundImageSelection()}
                     />
                   );
                 }}
-                {...this.props}
               />
               <BernieRoute
                 urlStart={path}
-                urlEnd={`:foo(${buttonGroupComponentsRegexArrayString})`}
-                render={(props, compositeImage) => {
-                  const Comp = buttonGroupComponents[props.match.params.foo];
+                urlEnd={`:screen(${buttonGroupComponentsRegexArrayString})`}
+                render={(props) => {
+                  const Comp = buttonGroupComponents[props.match.params.screen];
                   return (
                     <Comp
-                      {...this.props}
                       isModal
-                      compositeImageData={compositeImage.data}
                     />
                   );
                 }}
-                {...this.props}
               />
             </statelessWrapper>
           );
@@ -238,8 +225,9 @@ Routing.propTypes = {
 };
 
 export default connect(
-  ( /* state*//* , { params }*/) => {
+  ( state /* , { params }*/) => {
     return {
+      compositeImageData: state.bernie.compositeImageData,
     };
   },
   {
