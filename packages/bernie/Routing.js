@@ -12,7 +12,7 @@ import {
 import CropperScreen from './CropperScreen';
 import ImagePickerFacebook from './ImagePickerFacebook';
 import ImagePickerTemplate from './ImagePickerTemplate';
-import { standardModesRegexArrayString } from './deriveUrlInfo';
+import { standardModesRegexArrayString, formUrl } from './deriveUrlInfo';
 import { getNormalizedImageInfo } from './s3';
 import { setterActionCreator as compositeImageSetterActionCreator, paramsIntoCompositeImage } from './compositeImage';
 import BernieHomeLayout from './HomeLayout'
@@ -101,12 +101,12 @@ const Routing = class extends Component {
     this.state = {};
     makeBinder(this, 'handleBackroundImageSelection');
     makeBinder(this, 'handleForegroundImageSelection');
+    this.generateCompletionUrl = this.generateCompletionUrl.bind(this);
   }
   handleBackroundImageSelection(imgSrcObj) {
     // bs.loader.load
     const imgSrc = imgSrcObj.src;
     getNormalizedImageInfo(imgSrc).then(response => {
-      console.log('response.srcKey',response.srcKey);
       this.props.setCompositeImageData({
         background: {
           srcKey: response.srcKey,
@@ -122,6 +122,10 @@ const Routing = class extends Component {
       },
       screen: 'crop'
     });
+  }
+  generateCompletionUrl(activeCompositeImageData) {
+    const rootUrl = this.props.match.url;
+    return `${rootUrl}/${formUrl(activeCompositeImageData)}`;
   }
   render() {
     const geoRouting =
@@ -139,7 +143,6 @@ const Routing = class extends Component {
     //   }
     // };
 
-    const rootUrl = this.props.match.url;
     const homeLayoutPaths = [
       this.props.match.url,
       `${this.props.match.url}/ut/:bgSrcKey/${geoRouting}/:fgSrcKey`,
@@ -173,7 +176,7 @@ const Routing = class extends Component {
                     <CropperScreen
                       foreground={compositeImageData.foreground}
                       background={compositeImageData.background}
-                      rootUrl={rootUrl}
+                      generateCompletionUrl={this.generateCompletionUrl}
                     />
                   );
                 }}

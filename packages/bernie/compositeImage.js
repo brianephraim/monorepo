@@ -1,5 +1,6 @@
+import { push } from 'react-router-redux';
 import { formUrl } from './deriveUrlInfo';
-import { push } from 'react-router-redux'
+
 
 export function refresh(oldData, pathAssignments) {
   if (!Array.isArray(pathAssignments)) {

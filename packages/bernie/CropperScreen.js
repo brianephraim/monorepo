@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import windowSizer from '@defualt/window-sizer';
 import history from '@defualt/shared-history';
 import ReactCropperEnhanced from './ReactCropperEnhanced';
-import { formUrl } from './deriveUrlInfo';
 
 function whitelistFilterProps(obj, whitelist) {
   return Object.keys(obj).reduce((accum, key) => {
@@ -86,7 +85,7 @@ function CloseButton() {
 }
 
 function CompletionInterface(props) {
-  const url = `${props.rootUrl}/${formUrl(props.activeCompositeImageData)}`;
+  const url = props.generateCompletionUrl(props.activeCompositeImageData);
   return (
     <div className="modalHeader clearfix">
       <div className="doneSection">
@@ -101,11 +100,8 @@ function CompletionInterface(props) {
   );
 }
 CompletionInterface.propTypes = {
-  rootUrl: PropTypes.string,
   activeCompositeImageData: PropTypes.object.isRequired,
-};
-CompletionInterface.defaultProps = {
-  rootUrl: '',
+  generateCompletionUrl: PropTypes.func.isRequired,
 };
 
 class CropperScreen extends Component {
@@ -212,19 +208,16 @@ class CropperScreen extends Component {
         </div>
         <CompletionInterface
           activeCompositeImageData={activeCompositeImageData}
-          rootUrl={this.props.rootUrl}
+          generateCompletionUrl={this.props.generateCompletionUrl}
         />
       </div>
     );
   }
 }
 CropperScreen.propTypes = {
-  rootUrl: PropTypes.string,
   background: PropTypes.object.isRequired,
   foreground: PropTypes.object.isRequired,
-};
-CropperScreen.defaultProps = {
-  rootUrl: '',
+  generateCompletionUrl: PropTypes.func.isRequired
 };
 
 export default CropperScreen;
