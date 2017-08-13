@@ -119,6 +119,7 @@ class CropperScreen extends Component {
   }
 
   componentWillMount() {
+    console.log('xxxx');
     // When window resizes, flicker cropperExists.
     // cropperExists determines whether or not <ReactCropper> renders.
     // So <ReactCropper> will unmount then mount another instance.
@@ -194,6 +195,7 @@ class CropperScreen extends Component {
       foreground: this.state.foreground,
       background: this.props.background,
     };
+    console.log('yyy');
     return (
       <div className="modal cropModal" style={styles.cropModal}>
         <CloseButton />

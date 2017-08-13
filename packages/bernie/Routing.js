@@ -172,6 +172,8 @@ const Routing = class extends Component {
                 urlStart={path}
                 urlEnd={'crop'}
                 render={(props, compositeImageData) => {
+                  console.log('---',this.props.compositeImageData.background && this.props.compositeImageData.background.src);
+                  console.log('+++',compositeImageData.background.src);
                   return (
                     <CropperScreen
                       foreground={compositeImageData.foreground}
@@ -237,4 +239,3 @@ export default connect(
     setCompositeImageData: compositeImageSetterActionCreator,
   }
 )(Routing);
-
