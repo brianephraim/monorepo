@@ -16,7 +16,7 @@ import { standardModesRegexArrayString, formUrl } from './deriveUrlInfo';
 import { getNormalizedImageInfo } from './s3';
 import { setterActionCreator as compositeImageSetterActionCreator, paramsIntoCompositeImage } from './compositeImage';
 import BernieHomeLayout from './HomeLayout'
-
+import { bernieScreenComponentMap } from './state';
 import './app.scss';
 
 
@@ -48,6 +48,10 @@ let BernieRoute = (props) => {
   let urlEnd = props.urlEnd && props.urlEnd.indexOf(':') === -1 ? `:screen(${props.urlEnd})` : props.urlEnd;
   urlEnd = urlEnd ? `/${urlEnd}` : ''
   const path = `${props.urlStart}${urlEnd}`;
+
+  if (props.bernieRouteScreen === this.props.screen) {
+
+  }
   return (
     <Route
       exact={props.exact}
@@ -73,9 +77,10 @@ BernieRoute.defaultProps = {
   exact: false,
 };
 
-BernieRoute = withRouter(connect(
-  (/* state*//* , { params }*/) => {
+BernieRoute = connect(
+  (state) => {
     return {
+      bernieRouteScreen: state.bernieRoute.screen,
       // users: state.users.list.map((id) => {
       //   return state.users.idDict[id];
       // }),
@@ -88,13 +93,13 @@ BernieRoute = withRouter(connect(
     setCompositeImageData: compositeImageSetterActionCreator,
     // compositeImageUpdateActionCreator,
   }
-)(BernieRoute));
+)(BernieRoute);
 
 function statelessWrapper(props) {
   return props.children;
 }
 
-
+const nameSpace = '/bernie';
 const Routing = class extends Component {
   constructor() {
     super();
@@ -124,10 +129,13 @@ const Routing = class extends Component {
     });
   }
   generateCompletionUrl(activeCompositeImageData) {
-    const rootUrl = this.props.match.url;
-    return `${rootUrl}/${formUrl(activeCompositeImageData)}`;
+    return `${nameSpace}/${formUrl(activeCompositeImageData)}`;
   }
   render() {
+    console.log(this.props.bernieScreen);
+    console.log('llll',bernieScreenComponentMap[this.props.bernieScreen])
+    const Comp = bernieScreenComponentMap[this.props.bernieScreen];
+    return Comp;
     const geoRouting =
       ':fgX([^/|^_]*)_:fgY([^/|^_]*)_:fgW([^/|^_]*)_:fgH([^/|^_]*)_:bgW([^/|^_]*)_:bgH([^/]*)';
     // let compositeImageData = {
@@ -142,14 +150,14 @@ const Routing = class extends Component {
     //     src: `http://s3-us-west-1.amazonaws.com/bernieapp/selfies/zephyr1476401787491.png`
     //   }
     // };
-
+    
     const homeLayoutPaths = [
-      this.props.match.url,
-      `${this.props.match.url}/ut/:bgSrcKey/${geoRouting}/:fgSrcKey`,
+      nameSpace,
+      `${nameSpace}/ut/:bgSrcKey/${geoRouting}/:fgSrcKey`,
       `${this.props.match
         .url}/:fgSrcKey(${standardModesRegexArrayString})/:bgSrcKey/${geoRouting}`,
     ];
-
+    console.log('bernieScreen',bernieScreen)
     return (
       <statelessWrapper>
         {homeLayoutPaths.map((path, i) => {
@@ -157,6 +165,7 @@ const Routing = class extends Component {
           return (
             <statelessWrapper key={key}>
               <BernieRoute
+                screen="home"
                 exact
                 urlStart={path}
                 urlEnd={''}
@@ -169,6 +178,7 @@ const Routing = class extends Component {
                 }}
               />
               <BernieRoute
+                screen="cropper"
                 urlStart={path}
                 urlEnd={'crop'}
                 render={(props, compositeImageData) => {
@@ -184,6 +194,7 @@ const Routing = class extends Component {
                 }}
               />
               <BernieRoute
+                screen="importFacebook"
                 urlStart={path}
                 urlEnd={'import-photo-from-facebook'}
                 render={() => {
@@ -195,6 +206,7 @@ const Routing = class extends Component {
                 }}
               />
               <BernieRoute
+                screen="selectTemplate"
                 urlStart={path}
                 urlEnd={'select-template'}
                 render={() => {
@@ -206,6 +218,7 @@ const Routing = class extends Component {
                 }}
               />
               <BernieRoute
+                screen="xxxxx"
                 urlStart={path}
                 urlEnd={`:screen(${buttonGroupComponentsRegexArrayString})`}
                 render={(props) => {
@@ -225,7 +238,7 @@ const Routing = class extends Component {
   }
 }
 Routing.propTypes = {
-  match: PropTypes.object.isRequired,
+  // match: PropTypes.object.isRequired,
   setCompositeImageData: PropTypes.func.isRequired,
 };
 
@@ -233,9 +246,13 @@ export default connect(
   ( state /* , { params }*/) => {
     return {
       compositeImageData: state.bernie.compositeImageData,
+      bernieScreen: state.bernie.bernieScreen,
     };
   },
   {
     setCompositeImageData: compositeImageSetterActionCreator,
   }
 )(Routing);
+
+
+

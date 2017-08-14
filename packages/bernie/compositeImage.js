@@ -29,30 +29,35 @@ function generateCompositeImgSrcUrl(compositeImageData) {
 // function ensureTrailingSlash (url) {
 //   return url.replace(/\/?$/, '/');
 // }
+export function furtherRefineCompositeImageData(compositeImageDataState,newCompositeImageData,namespace) {
+  const compositeImageData = {
+    ...compositeImageDataState,
+    foreground: {
+      ...compositeImageDataState.foreground,
+      ...newCompositeImageData.foreground,
+    },
+    background: {
+      ...compositeImageDataState.background,
+      ...newCompositeImageData.background,
+    },
+    screen: typeof newCompositeImageData.screen !== 'undefined' ? newCompositeImageData.screen : compositeImageDataState.screen,
+    namespace: namespace || compositeImageDataState.namespace,
+  };
+
+  compositeImageData.imgSrcUrl = generateCompositeImgSrcUrl(compositeImageData);
+  const browserUrlBase = formUrl(compositeImageData);
+  compositeImageData.browserUrlBaseWithPreceedingUrlFrag = `/${compositeImageData.namespace}/${browserUrlBase}`;
+  compositeImageData.desiredRoute = `${compositeImageData.browserUrlBaseWithPreceedingUrlFrag}/${compositeImageData.screen}`;
+  return compositeImageData;
+}
 export function setterActionCreator(newCompositeImageData, namespace) {
   return (dispatch, getState) => {
     const state = getState();
     const compositeImageDataState = state.bernie.compositeImageData;
     const routerPathname = state.router.location.pathname;
 
-    const compositeImageData = {
-      ...compositeImageDataState,
-      foreground: {
-        ...compositeImageDataState.foreground,
-        ...newCompositeImageData.foreground,
-      },
-      background: {
-        ...compositeImageDataState.background,
-        ...newCompositeImageData.background,
-      },
-      screen: typeof newCompositeImageData.screen !== 'undefined' ? newCompositeImageData.screen : compositeImageDataState.screen,
-      namespace: namespace || compositeImageDataState.namespace,
-    };
-
-    compositeImageData.imgSrcUrl = generateCompositeImgSrcUrl(compositeImageData);
-    const browserUrlBase = formUrl(compositeImageData);
-    compositeImageData.browserUrlBaseWithPreceedingUrlFrag = `/${compositeImageData.namespace}/${browserUrlBase}`;
-    compositeImageData.desiredRoute = `${compositeImageData.browserUrlBaseWithPreceedingUrlFrag}/${compositeImageData.screen}`;
+    //
+    const compositeImageData = furtherRefineCompositeImageData(compositeImageDataState,newCompositeImageData,namespace);
     dispatch({
       type: 'SET_COMPOSITE_IMAGE_DATA',
       compositeImageData,

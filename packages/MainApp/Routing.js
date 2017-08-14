@@ -12,6 +12,7 @@ import Battleship from 'battleship';
 import history from '@defualt/shared-history';
 import { combineReducers } from 'redux';
 import React, { Component } from 'react';
+import { bernieRoutesMap } from 'bernie/state';
 // import PropTypes from 'prop-types';
 
 class Tacos extends Component {
@@ -76,10 +77,17 @@ const routes = [
     component: Tacos,
   },
 ];
-const actionTypeToScreenDict = routes.reduce((accum,route) => {
+
+let actionTypeToScreenDict = routes.reduce((accum,route) => {
   accum[route.action] = route.component;
   return accum;
 }, {});
+const bernieRoutesActionTypeToScreenDict = Object.keys(bernieRoutesMap).reduce((accum,routeKey) => {
+  console.log(routeKey)
+  accum[routeKey] = Bernie;
+  return accum;
+},{});
+actionTypeToScreenDict = {...actionTypeToScreenDict, ...bernieRoutesActionTypeToScreenDict};
 
 const LandingScreen = () => {
   return (
@@ -120,7 +128,14 @@ const routesMap = routes.reduce((accum,route) => {
   return accum;
 },{});
 
-const { reducer, middleware, enhancer } = connectRoutes(history, routesMap);
+export const bernieRouteReduceer = () => {
+  if(action.type[bernieRoutesMap]) {
+    console.log('!!!!');
+  }
+  
+};
+
+const { reducer, middleware, enhancer } = connectRoutes(history, {...routesMap,...bernieRoutesMap});
 const routingMiddleware = middleware;
 const routingEnhancer = enhancer;
 

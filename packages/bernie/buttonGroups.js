@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Link, withRouter } from 'react-router-dom';
+import Link from 'redux-first-router-link'
 import Upload from './Upload';
 
 import './app.scss';
@@ -151,7 +151,7 @@ BernieAppButtonGroup.defaultProps = {
   onUploadSuccess: null,
 };
 
-BernieAppButtonGroup = withRouter(connect(
+BernieAppButtonGroup = connect(
   ( state /* , { params }*/) => {
     return {
       compositeImageData: state.bernie.compositeImageData,
@@ -159,7 +159,7 @@ BernieAppButtonGroup = withRouter(connect(
   },
   {
   }
-)(BernieAppButtonGroup));
+)(BernieAppButtonGroup);
 
 const buttonGroupComponents = {};
 function makeButtonGroupComponent(
