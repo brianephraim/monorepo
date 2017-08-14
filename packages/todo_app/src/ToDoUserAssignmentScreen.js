@@ -1,24 +1,30 @@
+import { connect } from 'react-redux';
 import React from 'react';
 import PropTypes from 'prop-types';
 import ToDos from './toDos/Component';
 import { Users } from './users';
 // <Users filter={params.filter} />
-const ToDoUserAssignmentScreen = ({ match }) => {
+
+const ToDoUserAssignmentScreen = ({ filter }) => {
   return (
     <div>
-      <ToDos filter={match.params.filter} />
-      <Users filter={match.params.filter} />
-      <Users filter={match.params.filter} />
+      <ToDos filter={filter} />
+      <Users filter={filter} /> 
+      <Users filter={filter} />
     </div>
   );
 };
 
 ToDoUserAssignmentScreen.propTypes = {
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      filter: PropTypes.string,
-    }),
-  }),
+  filter: PropTypes.string.isRequired,
 };
 
-export default ToDoUserAssignmentScreen;
+export default connect(
+  ( state/* , { params }*/) => {
+    return {
+      filter: state.toDos.filter,
+    };
+  },
+  {
+  }
+)(ToDoUserAssignmentScreen);

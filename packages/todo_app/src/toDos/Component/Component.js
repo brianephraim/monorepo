@@ -7,8 +7,11 @@ const ToDos = () => {
   return (
     <div>
       <AddToDo />
+      
       <VisibleToDoList />
+      {/**/}
       <Footer />
+      
     </div>
   );
 };

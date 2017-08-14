@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { NavLink } from 'react-router-dom';
+import { NavLink } from 'redux-first-router-link';
 import './FilterLink.scss';
 
 const FilterLink = ({ filter, children }) => (
   <NavLink
     className="aaaa"
-    to={`/todos/${filter}`}
+    to={{ type: 'TODOS', payload: { filter } }}
     activeClassName="activex"
     activeStyle={{
       textDecoration: 'none',

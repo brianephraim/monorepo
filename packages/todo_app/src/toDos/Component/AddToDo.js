@@ -5,7 +5,6 @@ import { addToDo } from '../state/actions';
 import SingleInputForm from 'SingleInputForm';
 
 const AddToDo = ({ dispatch }) => {
-  console.log('G');
   return (
     <SingleInputForm
       buttonText="Add ToDo ....."

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import DragAndTossable from 'DragAndTossable';
 import styled from 'styled-components';
@@ -33,6 +32,7 @@ class ToDoItem extends Component {
   }
   render() {
     const { onClick, completed, text, assignedUser } = this.props;
+    // return (<Wrapper><div>zzzzz</div></Wrapper>);
     return (
       <Wrapper>
         <div className="b">
@@ -88,6 +88,6 @@ const mapStateToProps = (state, props) => {
   };
 };
 
-ToDoItem = withRouter(connect(mapStateToProps)(ToDoItem));
+ToDoItem = connect(mapStateToProps)(ToDoItem);
 
 export default ToDoItem;

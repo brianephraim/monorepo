@@ -1,5 +1,6 @@
-import { createStore, applyMiddleware, combineReducers } from 'redux';
-import { ConnectedRouter, routerReducer, routerMiddleware, push } from 'react-router-redux'
+import { createStore, applyMiddleware, combineReducers, compose } from 'redux';
+import {routingReducers, routingMiddleware, routingEnhancer} from './Routing';
+import { routerReducer, routerMiddleware } from 'react-router-redux'
 import createLogger from 'redux-logger';
 import thunk from 'redux-thunk';
 import ToDosReducers from 'todo_app/src/toDos/state/reducers';
@@ -11,20 +12,23 @@ import history from '@defualt/shared-history';
 const routerMiddlewareWithHistory = routerMiddleware(history);
 
 const configureStore = () => {
-  const middlewares = [thunk, routerMiddlewareWithHistory];
+  const middlewares = [thunk, routerMiddlewareWithHistory, routingMiddleware];
   if (process.env.NODE_ENV !== 'production') {
     // middlewares.push(createLogger());
   }
 
   return createStore(
     combineReducers({
+      ...routingReducers,
       toDos: ToDosReducers,
       users: usersReducers,
       appRoot: appRootReducers,
       bernie: bernieReducers,
       router: routerReducer,
     }),
-    applyMiddleware(...middlewares)
+    // middleware/* applyMiddleware(middleware)
+    // /* createStore(rootReducer, compose(routingEnhancer, middlewares))
+    compose(routingEnhancer, applyMiddleware(...middlewares))
   );
 };
 

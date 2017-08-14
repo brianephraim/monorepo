@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
 import * as actions from '../state/actions';
 import * as getters from '../state/getters';
 import ToDoList from './ToDoList';
@@ -36,7 +35,6 @@ class VisibleToDoList extends Component {
         />
       );
     }
-
     return (
       <ToDoList
         todos={todos}
@@ -55,8 +53,8 @@ VisibleToDoList.propTypes = {
   onToDoClick: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state, { match }) => {
-  const filter = match.params.filter || 'all';
+const mapStateToProps = (state) => {
+  const filter = state.toDos.filter;
   return {
     isFetching: getters.getIsFetching(state, filter),
     errorMessage: getters.getErrorMessage(state, filter),
@@ -88,10 +86,10 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
   };
 }
 
-VisibleToDoList = withRouter(connect(
+VisibleToDoList = connect(
   mapStateToProps,
   mapDispatchToProps,
   mergeProps
-)(VisibleToDoList));
+)(VisibleToDoList);
 
 export default VisibleToDoList;
