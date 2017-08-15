@@ -46,7 +46,7 @@ export function furtherRefineCompositeImageData(compositeImageDataState,newCompo
 
   compositeImageData.imgSrcUrl = generateCompositeImgSrcUrl(compositeImageData);
   const browserUrlBase = formUrl(compositeImageData);
-  compositeImageData.browserUrlBaseWithPreceedingUrlFrag = `/${compositeImageData.namespace}/${browserUrlBase}`;
+  compositeImageData.browserUrlBaseWithPreceedingUrlFrag = `${compositeImageData.namespace}/${browserUrlBase}`;
   compositeImageData.desiredRoute = `${compositeImageData.browserUrlBaseWithPreceedingUrlFrag}/${compositeImageData.screen}`;
   return compositeImageData;
 }
@@ -62,6 +62,9 @@ export function setterActionCreator(newCompositeImageData, namespace) {
       type: 'SET_COMPOSITE_IMAGE_DATA',
       compositeImageData,
     });
+
+
+    console.log('$$$$',compositeImageData.desiredRoute);
 
     
     if (

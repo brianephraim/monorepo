@@ -79,6 +79,16 @@ let BernieAppButtonGroup = class extends Component {
               </a>
             );
           } else if (btnDetails.routerLinkScreenName) {
+            console.log(this.props.location.payload);
+            /*
+              to={
+                  {
+                    type: 'BERNIE_CROP',
+                    payload: {...this.props.location.payload, screen:'crop'}
+                  }
+                }
+            */
+            //to={`${this.props.compositeImageData.browserUrlBaseWithPreceedingUrlFrag}/${btnDetails.routerLinkScreenName}`}
             btnInner = (
               <Link
                 className={btnDetails.className}
@@ -155,6 +165,7 @@ BernieAppButtonGroup = connect(
   ( state /* , { params }*/) => {
     return {
       compositeImageData: state.bernie.compositeImageData,
+      location: state.location,
     };
   },
   {

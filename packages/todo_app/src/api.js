@@ -74,12 +74,6 @@ const fetchUsers = () => {
   });
 };
 
-const fetchBernie = () => {
-  return delay(500).then(() => {
-    return makeUnique(fakeDatabase.bernie);
-  });
-};
-
 const fetchToDos = (filter) => {
   return delay(500).then(() => {
     switch (filter) {
@@ -134,8 +128,6 @@ export const fakePost = (endpoint, params = {}) => {
   switch (endpoint) {
     case 'fetchUsers':
       return fetchUsers(params.filter);
-    case 'fetchBernie':
-      return fetchBernie(params.filter);
     case 'fetchToDos':
       return fetchToDos(params.filter);
     case 'addToDo':

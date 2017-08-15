@@ -2,9 +2,9 @@
 /* eslint-disable class-methods-use-this */
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
+import { combineReducers } from 'redux';
 import PropTypes from 'prop-types';
 import makeBinder from '@defualt/make-binder';
-import { Route, withRouter } from 'react-router-dom';
 import {
   buttonGroupComponents,
   buttonGroupComponentsRegexArrayString,
@@ -14,10 +14,191 @@ import ImagePickerFacebook from './ImagePickerFacebook';
 import ImagePickerTemplate from './ImagePickerTemplate';
 import { standardModesRegexArrayString, formUrl } from './deriveUrlInfo';
 import { getNormalizedImageInfo } from './s3';
-import { setterActionCreator as compositeImageSetterActionCreator, paramsIntoCompositeImage } from './compositeImage';
+import { setterActionCreator as compositeImageSetterActionCreator, paramsIntoCompositeImage, furtherRefineCompositeImageData } from './compositeImage';
 import BernieHomeLayout from './HomeLayout'
-import { bernieScreenComponentMap } from './state';
 import './app.scss';
+
+// =================
+
+
+const nameSpace = '/bernie';
+const geoRouting =
+      ':fgX([^/|^_]*)_:fgY([^/|^_]*)_:fgW([^/|^_]*)_:fgH([^/|^_]*)_:bgW([^/|^_]*)_:bgH([^/]*)';
+const homeLayoutPaths = [
+      nameSpace,
+      `${nameSpace}/ut/:bgSrcKey/${geoRouting}/:fgSrcKey`,
+      `${nameSpace}/:fgSrcKey(${standardModesRegexArrayString})/:bgSrcKey/${geoRouting}`,
+    ];
+
+function BernieHomeLayoutWithUploadCallback(props){
+  return (
+    <BernieHomeLayout
+      onUploadSuccess={props.handleBackroundImageSelection()}
+    />
+  );
+};
+BernieHomeLayoutWithUploadCallback.propTypes = {
+  handleBackroundImageSelection: PropTypes.func.isRequired,
+};
+
+function ImagePickerFacebookWithOnClick(props){
+  return (
+    <ImagePickerFacebook
+      onClick={props.handleBackroundImageSelection()}
+    />
+  );
+};
+ImagePickerFacebookWithOnClick.propTypes = {
+  handleBackroundImageSelection: PropTypes.func.isRequired,
+};
+
+function ImagePickerTemplateWithOnClick(props){
+  return (
+    <ImagePickerTemplate
+      onClick={props.handleForegroundImageSelection()}
+    />
+  );
+};
+ImagePickerTemplateWithOnClick.propTypes = {
+  handleForegroundImageSelection: PropTypes.func.isRequired,
+};
+
+function CropperWithFgBgCompletion(props) {
+  return (
+    <CropperScreen
+      foreground={props.compositeImageData.foreground}
+      background={props.compositeImageData.background}
+      generateCompletionUrl={props.generateCompletionUrl}
+    />
+  );
+}
+CropperWithFgBgCompletion.propTypes = {
+  compositeImageData: PropTypes.object.isRequired,
+  generateCompletionUrl: PropTypes.func.isRequired,
+};
+
+function Dynamic(props) {
+  const Comp = buttonGroupComponents[props.dynamicScreen];
+  return (
+    <Comp
+      isModal
+    />
+  );
+}
+Dynamic.propTypes = {
+  dynamicScreen: PropTypes.string.isRequired,
+};
+
+const routes = [
+  {
+    action: 'BERNIE_HOME',
+    // urlStart: path,
+    urlEnd: '',
+    // path: '/bernie/:filter',
+    component: BernieHomeLayoutWithUploadCallback,
+  },
+  {
+    action: 'BERNIE_IMPORT_FACEBOOK',
+    // urlStart: path,
+    urlEnd: 'import-photo-from-facebook',
+    // path: '/bernie/:filter',
+    component: ImagePickerFacebookWithOnClick,
+  },
+  {
+    action: 'BERNIE_SELECT_TEMPLATE',
+    // urlStart: path,
+    urlEnd: 'select-template',
+    // path: '/bernie/:filter',
+    component: ImagePickerTemplateWithOnClick,
+  },
+  {
+    action: 'BERNIE_CROP',
+    // urlStart: path,
+    urlEnd: 'crop',
+    // path: '/bernie/:filter',
+    component: CropperWithFgBgCompletion,
+  },
+  {
+    action: 'BERNIE_DYNAMIC',
+    // urlStart: path,
+    urlEnd: `:bernieDynamicScreen(${buttonGroupComponentsRegexArrayString})`,
+    // path: '/bernie/:filter',
+    component: Dynamic,
+  },
+];
+  
+
+const bernieRoutesMap = {}; 
+const bernieScreenNameMap = {}
+const bernieScreenComponentMap = {};
+homeLayoutPaths.forEach((urlStart, i) => {
+  routes.forEach((route) => {
+    let urlEnd = route.urlEnd;
+    urlEnd = urlEnd && urlEnd.indexOf(':') === -1 ? `:screen(${urlEnd})` : urlEnd;
+    urlEnd = urlEnd ? `/${urlEnd}` : ''
+    const path = `${urlStart}${urlEnd}`;
+    const routesMapKey = `${route.action}${i > 0 ? i : ''}`
+
+    if (!bernieRoutesMap[route.action]) {
+      bernieRoutesMap[route.action] = [];
+    }
+    bernieRoutesMap[route.action].push(path);
+    // bernieRoutesMap[routesMapKey] = path;
+
+    // bernieScreenNameMap[routesMapKey] = route.action;
+    bernieScreenNameMap[route.action] = route.action;
+
+    bernieScreenComponentMap[route.action] = route.component;
+  });
+});
+
+
+export {bernieRoutesMap, bernieScreenComponentMap};
+
+
+
+export const bernieReducers = combineReducers({
+  compositeImageData: (state = {}, action) => {
+    if(bernieRoutesMap[action.type]) {
+      const newCompositeImageData = paramsIntoCompositeImage(action.payload);
+      const compositeImageData = furtherRefineCompositeImageData(state, newCompositeImageData, '/bernie');
+      return compositeImageData;
+    }
+    switch (action.type) {
+      case 'SET_COMPOSITE_IMAGE_DATA':
+        return {
+          ...action.compositeImageData      
+        };
+      default:
+        return state;
+    }
+  },
+  idDict: (state = {}, action) => {
+    switch (action.type) {
+      case 'FETCH_BERNIE_SUCCESS':
+        return {
+          ...state,
+          ...action.response.entities.bernie,
+        };
+      default:
+        return state;
+    }
+  },
+  list: (state = [], action) => {
+    switch (action.type) {
+      case 'FETCH_BERNIE_SUCCESS':
+        return action.response.result;
+      default:
+        return state;
+    }
+  },
+  bernieScreen: (state = 'BERNIE_HOME', action) => {
+    if(bernieRoutesMap[action.type]) {
+      return bernieScreenNameMap[action.type];
+    }
+    return state;
+  },
+});
 
 
 
@@ -44,62 +225,6 @@ CompositeImageConnectionSetter = connect(
   }
 )(CompositeImageConnectionSetter);
 
-let BernieRoute = (props) => {
-  let urlEnd = props.urlEnd && props.urlEnd.indexOf(':') === -1 ? `:screen(${props.urlEnd})` : props.urlEnd;
-  urlEnd = urlEnd ? `/${urlEnd}` : ''
-  const path = `${props.urlStart}${urlEnd}`;
-
-  if (props.bernieRouteScreen === this.props.screen) {
-
-  }
-  return (
-    <Route
-      exact={props.exact}
-      path={path}
-      render={(routeProps) => {
-        const compositeImageData = paramsIntoCompositeImage(routeProps.match.params, routeProps.match.url);
-        return (
-          <CompositeImageConnectionSetter compositeImageData={compositeImageData}>{props.render(routeProps, compositeImageData)}</CompositeImageConnectionSetter>
-        );
-      }}
-    />
-  );
-}
-BernieRoute.propTypes = {
-  urlStart: PropTypes.string,
-  urlEnd: PropTypes.string,
-  render: PropTypes.func.isRequired,
-  exact: PropTypes.bool
-};
-BernieRoute.defaultProps = {
-  urlStart: '',
-  urlEnd: '',
-  exact: false,
-};
-
-BernieRoute = connect(
-  (state) => {
-    return {
-      bernieRouteScreen: state.bernieRoute.screen,
-      // users: state.users.list.map((id) => {
-      //   return state.users.idDict[id];
-      // }),
-      // toBeAssigned: getDetailsOfToBeAssigned(state),
-    };
-  },
-  {
-    // fetchUsers: actions1.fetchUsers,
-    // fetchUsers: actions1.fetchUsers,
-    setCompositeImageData: compositeImageSetterActionCreator,
-    // compositeImageUpdateActionCreator,
-  }
-)(BernieRoute);
-
-function statelessWrapper(props) {
-  return props.children;
-}
-
-const nameSpace = '/bernie';
 const Routing = class extends Component {
   constructor() {
     super();
@@ -132,114 +257,27 @@ const Routing = class extends Component {
     return `${nameSpace}/${formUrl(activeCompositeImageData)}`;
   }
   render() {
-    console.log(this.props.bernieScreen);
-    console.log('llll',bernieScreenComponentMap[this.props.bernieScreen])
     const Comp = bernieScreenComponentMap[this.props.bernieScreen];
-    return Comp;
-    const geoRouting =
-      ':fgX([^/|^_]*)_:fgY([^/|^_]*)_:fgW([^/|^_]*)_:fgH([^/|^_]*)_:bgW([^/|^_]*)_:bgH([^/]*)';
-    // let compositeImageData = {
-    //   foreground: {
-    //     x:0,
-    //     y:0,
-    //     width:400,
-    //     height:400,
-    //     src: 'http://s3-us-west-1.amazonaws.com/bernieapp/decorations/h3.png'
-    //   },
-    //   background: {
-    //     src: `http://s3-us-west-1.amazonaws.com/bernieapp/selfies/zephyr1476401787491.png`
-    //   }
-    // };
-    
-    const homeLayoutPaths = [
-      nameSpace,
-      `${nameSpace}/ut/:bgSrcKey/${geoRouting}/:fgSrcKey`,
-      `${this.props.match
-        .url}/:fgSrcKey(${standardModesRegexArrayString})/:bgSrcKey/${geoRouting}`,
-    ];
-    console.log('bernieScreen',bernieScreen)
+
     return (
-      <statelessWrapper>
-        {homeLayoutPaths.map((path, i) => {
-          const key = `${i}-statelessWrapper`;
-          return (
-            <statelessWrapper key={key}>
-              <BernieRoute
-                screen="home"
-                exact
-                urlStart={path}
-                urlEnd={''}
-                render={() => {
-                  return (
-                    <BernieHomeLayout
-                      onUploadSuccess={this.handleBackroundImageSelection()}
-                    />
-                  );
-                }}
-              />
-              <BernieRoute
-                screen="cropper"
-                urlStart={path}
-                urlEnd={'crop'}
-                render={(props, compositeImageData) => {
-                  console.log('---',this.props.compositeImageData.background && this.props.compositeImageData.background.src);
-                  console.log('+++',compositeImageData.background.src);
-                  return (
-                    <CropperScreen
-                      foreground={compositeImageData.foreground}
-                      background={compositeImageData.background}
-                      generateCompletionUrl={this.generateCompletionUrl}
-                    />
-                  );
-                }}
-              />
-              <BernieRoute
-                screen="importFacebook"
-                urlStart={path}
-                urlEnd={'import-photo-from-facebook'}
-                render={() => {
-                  return (
-                    <ImagePickerFacebook
-                      onClick={this.handleBackroundImageSelection()}
-                    />
-                  );
-                }}
-              />
-              <BernieRoute
-                screen="selectTemplate"
-                urlStart={path}
-                urlEnd={'select-template'}
-                render={() => {
-                  return (
-                    <ImagePickerTemplate
-                      onClick={this.handleForegroundImageSelection()}
-                    />
-                  );
-                }}
-              />
-              <BernieRoute
-                screen="xxxxx"
-                urlStart={path}
-                urlEnd={`:screen(${buttonGroupComponentsRegexArrayString})`}
-                render={(props) => {
-                  const Comp = buttonGroupComponents[props.match.params.screen];
-                  return (
-                    <Comp
-                      isModal
-                    />
-                  );
-                }}
-              />
-            </statelessWrapper>
-          );
-        })}
-      </statelessWrapper>
+      <Comp
+        handleBackroundImageSelection={this.handleBackroundImageSelection}
+        handleForegroundImageSelection={this.handleForegroundImageSelection}
+        generateCompletionUrl={this.generateCompletionUrl}
+        compositeImageData={this.props.compositeImageData}
+        dynamicScreen={this.props.dynamicScreen}
+      />
     );
   }
 }
 Routing.propTypes = {
-  // match: PropTypes.object.isRequired,
+  bernieScreen: PropTypes.string.isRequired,
+  dynamicScreen: PropTypes.string,
+  compositeImageData: PropTypes.object.isRequired,
   setCompositeImageData: PropTypes.func.isRequired,
+};
+Routing.defaultProps = {
+  dynamicScreen: ''
 };
 
 export default connect(
@@ -247,6 +285,7 @@ export default connect(
     return {
       compositeImageData: state.bernie.compositeImageData,
       bernieScreen: state.bernie.bernieScreen,
+      dynamicScreen: state.location.payload.bernieDynamicScreen,
     };
   },
   {

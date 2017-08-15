@@ -4,48 +4,14 @@ import { connectRoutes, NOT_FOUND } from 'redux-first-router'
 import PropTypes from 'prop-types';
 import { Provider, connect } from 'react-redux';
 import Link from 'redux-first-router-link'
-import { BrowserRouter as Router, Route } from 'react-router-dom';
-import { ConnectedRouter, routerReducer, routerMiddleware, push } from 'react-router-redux'
 import ToDoUserAssignmentScreen from 'todo_app';
 import Bernie from 'bernie';
 import Battleship from 'battleship';
 import history from '@defualt/shared-history';
-import { combineReducers } from 'redux';
 import React, { Component } from 'react';
-import { bernieRoutesMap } from 'bernie/state';
+import { bernieRoutesMap } from 'bernie/Routing';
 // import PropTypes from 'prop-types';
 
-class Tacos extends Component {
-  constructor() {
-    super();
-    this.state = {
-    };
-  }
-  render() {
-    return (
-      <div>
-        <p>tacos</p>
-        <Route
-          path={this.props.match.url + '/carnitas'}
-          component={Carnitas}
-        />
-      </div>
-    );
-  }
-}
-Tacos.propTypes = {};
-
-class Carnitas extends Component {
-  constructor() {
-    super();
-    this.state = {
-    };
-  }
-  render() {
-    return (<div>carnitas</div>);
-  }
-}
-Carnitas.propTypes = {};
 /*
 
 */
@@ -70,24 +36,17 @@ const routes = [
     path: '/battleship',
     component: Battleship,
   },
-  {
-    action: 'TACOS',
-    description: 'Tacos',
-    path: '/tacos',
-    component: Tacos,
-  },
 ];
 
-let actionTypeToScreenDict = routes.reduce((accum,route) => {
+let actionTypeToComponentDict = routes.reduce((accum,route) => {
   accum[route.action] = route.component;
   return accum;
 }, {});
-const bernieRoutesActionTypeToScreenDict = Object.keys(bernieRoutesMap).reduce((accum,routeKey) => {
-  console.log(routeKey)
+const bernieRoutesActionTypeToComponentDict = Object.keys(bernieRoutesMap).reduce((accum,routeKey) => {
   accum[routeKey] = Bernie;
   return accum;
 },{});
-actionTypeToScreenDict = {...actionTypeToScreenDict, ...bernieRoutesActionTypeToScreenDict};
+actionTypeToComponentDict = {...actionTypeToComponentDict, ...bernieRoutesActionTypeToComponentDict};
 
 const LandingScreen = () => {
   return (
@@ -117,23 +76,11 @@ export const userIdReducer = (state = null, action = {}) => {
       return state
   }
 }
-export const todosRouteReducer = (state = null, action = {}) => {
-  if(action.type === 'TODOS') {
-    console.log('!!!!');
-  }
-  return state;
-}
+
 const routesMap = routes.reduce((accum,route) => {
   accum[route.action] = route.path
   return accum;
 },{});
-
-export const bernieRouteReduceer = () => {
-  if(action.type[bernieRoutesMap]) {
-    console.log('!!!!');
-  }
-  
-};
 
 const { reducer, middleware, enhancer } = connectRoutes(history, {...routesMap,...bernieRoutesMap});
 const routingMiddleware = middleware;
@@ -141,7 +88,6 @@ const routingEnhancer = enhancer;
 
 const routingReducers = {
   location: reducer,
-  todosRoute: todosRouteReducer,
   userId: userIdReducer
 };
 export { routingReducers/* combineReducers(routingReducer) */, routingMiddleware/* applyMiddleware(routingMiddleware) */, routingEnhancer/* createStore(rootReducer, compose(routingEnhancer, middlewares))*/ };
@@ -149,7 +95,7 @@ export { routingReducers/* combineReducers(routingReducer) */, routingMiddleware
 class RoutingApp extends Component {
   render() {
     // const Comp = this.props.routeScreenComponent;
-    const Comp = actionTypeToScreenDict[this.props.locationType] || LandingScreen;
+    const Comp = actionTypeToComponentDict[this.props.locationType] || LandingScreen;
     return (
       <Provider store={this.props.store}>
         <Comp />
