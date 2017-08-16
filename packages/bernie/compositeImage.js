@@ -1,4 +1,3 @@
-import { push } from 'react-router-redux';
 import { formUrl } from './deriveUrlInfo';
 
 
@@ -47,28 +46,20 @@ export function furtherRefineCompositeImageData(compositeImageDataState,newCompo
   compositeImageData.imgSrcUrl = generateCompositeImgSrcUrl(compositeImageData);
   const browserUrlBase = formUrl(compositeImageData);
   compositeImageData.browserUrlBaseWithPreceedingUrlFrag = `${compositeImageData.namespace}/${browserUrlBase}`;
-  compositeImageData.desiredRoute = `${compositeImageData.browserUrlBaseWithPreceedingUrlFrag}/${compositeImageData.screen}`;
+  // compositeImageData.desiredRoute = `${compositeImageData.browserUrlBaseWithPreceedingUrlFrag}/${compositeImageData.screen}`;
   return compositeImageData;
 }
-export function setterActionCreator(newCompositeImageData, namespace) {
-  return (dispatch, getState) => {
-    const state = getState();
-    const compositeImageDataState = state.bernie.compositeImageData;
-    const routerPathname = state.router.location.pathname;
 
-    //
-    const compositeImageData = furtherRefineCompositeImageData(compositeImageDataState,newCompositeImageData,namespace);
-    dispatch({
-      type: 'SET_COMPOSITE_IMAGE_DATA',
-      compositeImageData,
-    });
-    
-    if (
-      compositeImageDataState.desiredRoute !== compositeImageData.desiredRoute &&
-      routerPathname !== compositeImageData.desiredRoute
-    ) {
-      dispatch(push(compositeImageData.desiredRoute));
-    }
+export function compositeImageIntoParams (compositeImageData) {
+  return {
+    fgX: compositeImageData.foreground.x,
+    fgY: compositeImageData.foreground.y,
+    fgW: compositeImageData.foreground.width,
+    fgH: compositeImageData.foreground.height,
+    bgW: compositeImageData.background.width,
+    bgH: compositeImageData.background.height,
+    bgSrcKey: compositeImageData.background.srcKey,
+    fgSrcKey: compositeImageData.foreground.srcKey,
   };
 }
 export function paramsIntoCompositeImage (params) {

@@ -5,6 +5,8 @@ import Link from 'redux-first-router-link'
 import Upload from './Upload';
 import {BernieLink} from './routingComponents';
 
+
+
 import './app.scss';
 
 const Div = props => {
@@ -80,25 +82,13 @@ let BernieAppButtonGroup = class extends Component {
               </a>
             );
           } else if (btnDetails.actionType) {
-            // console.log(this.props.location.payload);
-            // console.log('btnDetails.routerLinkScreenName',btnDetails.routerLinkScreenName)
-            /*
-              to={
-                  {
-                    type: 'BERNIE_CROP',
-                    payload: {...this.props.location.payload, screen:'crop'}
-                  }
-                }
-            */
-            //
-            // to={`${this.props.compositeImageData.browserUrlBaseWithPreceedingUrlFrag}/${btnDetails.routerLinkScreenName}`}
             btnInner = (
               <BernieLink
                 className={btnDetails.className}
                 to={
                   {
                     type: `BERNIE_${btnDetails.actionType}`,
-                    payload: {...this.props.location.payload}
+                    compositeImageData: this.props.compositeImageData,
                   }
                 }
               >
@@ -129,15 +119,21 @@ let BernieAppButtonGroup = class extends Component {
         })}
       </div>;
 
-    const LinkOrDiv = this.props.compositeImageData.screen === this.props.urlFragment ? Div : Link;
-    const linkUrl = `${this.props.compositeImageData.browserUrlBaseWithPreceedingUrlFrag}/${this.props.urlFragment}`;
+    const LinkOrDiv = this.props.compositeImageData.screen === this.props.urlFragment ? Div : BernieLink;
+    // const linkUrl = `${this.props.compositeImageData.browserUrlBaseWithPreceedingUrlFrag}/${this.props.urlFragment}`;
+    const to = {
+      type: `BERNIE_DYNAMIC`,
+      compositeImageData: this.props.compositeImageData,
+      bernieDynamicScreen: this.props.urlFragment,
+    };
+    // console.log('linkUrl',linkUrl)
     return (
       <div
         className={`app_body_rightPillar_section_subsection ${this.props
           .className}`}
       >
         <div className="buttonGroup">
-          <LinkOrDiv to={linkUrl} className="section_header">
+          <LinkOrDiv to={to} className="section_header">
             {shortHeadline}
             {icon}
             {headline}

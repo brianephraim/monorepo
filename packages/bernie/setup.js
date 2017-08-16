@@ -20,7 +20,7 @@ const routeModes = [
     key: 'H3LIKE',
     urlStart: `${nameSpace}/:fgSrcKey(${standardModesRegexArrayString})/:bgSrcKey/${geoPathFrag}`,
     match:(payload) => {
-      return payload.fgSrcKey.match(new RegExp(`^(${standardModesRegexArrayString})$`));
+      return payload.fgSrcKey && payload.fgSrcKey.match(new RegExp(`^(${standardModesRegexArrayString})$`));
     },
   },
   {
@@ -30,23 +30,26 @@ const routeModes = [
       return payload.fgSrcKey;
     },
   },
-  {
-    key: 'BASE',
-    urlStart: nameSpace,
-    match:() => {
-      return true;
-    },
-  },  
+//   {
+//     key: 'BASE',
+//     urlStart: nameSpace,
+//     match:() => {
+//       return true;
+//     },
+//   },  
 ];
-
 function payloadRefineAction({type, payload}){
   let found = false;
   let i = 0;
-  while(!found) {
+  while(!found && i < routeModes.length) {
     const homeLayoutObject = routeModes[i++];
     if (homeLayoutObject.match(payload)) {
       found = `${type}_${homeLayoutObject.key}`;
     }
+  }
+
+  if (!found) {
+    found = `${type}_${'UT'}`;
   }
   return {
     type: found,
@@ -102,7 +105,7 @@ routeModes.forEach((homeLayoutPath) => {
 
 const bernieReducers = combineReducers({
   compositeImageData: (state = {}, action) => {
-    if(bernieRoutesMap[action.type]) {
+    if(bernieRoutesMap[action.type] || action.type === 'BERNIE') {
       const newCompositeImageData = paramsIntoCompositeImage(action.payload);
       const compositeImageData = furtherRefineCompositeImageData(state, newCompositeImageData, '/bernie');
       return compositeImageData;
@@ -120,7 +123,9 @@ const bernieReducers = combineReducers({
     if(bernieRoutesMap[action.type]) {
       return bernieScreenNameMap[action.type];
     }
-    return state;
+    // always revery to 'BERNIE_HOME' if not matching
+    // this covers the case of a route consisting entirely of '/bernie'
+    return 'BERNIE_HOME';
   },
 });
 export {nameSpace,bernieScreenComponentMap,payloadRefineAction,bernieReducers,bernieRoutesMap};

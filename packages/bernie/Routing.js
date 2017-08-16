@@ -4,10 +4,10 @@ import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import makeBinder from '@defualt/make-binder';
-import {nameSpace,bernieScreenComponentMap} from './setup';
 import { formUrl } from './deriveUrlInfo';
 import { getNormalizedImageInfo } from './s3';
-import { setterActionCreator as compositeImageSetterActionCreator } from './compositeImage';
+import { compositeImageIntoParams } from './compositeImage';
+import {payloadRefineAction,nameSpace,bernieScreenComponentMap} from './setup';
 import './app.scss';
 
 const Routing = class extends Component {
@@ -22,21 +22,27 @@ const Routing = class extends Component {
     // bs.loader.load
     const imgSrc = imgSrcObj.src;
     getNormalizedImageInfo(imgSrc).then(response => {
-      this.props.setCompositeImageData({
-        background: {
-          srcKey: response.srcKey,
-        },
-        screen: 'crop'
+      const action = payloadRefineAction({
+        type: 'BERNIE_CROP',
+        payload: {
+          // ...this.props.location.payload,
+          ...compositeImageIntoParams(this.props.compositeImageData),
+          bgSrcKey: response.srcKey
+        }
       });
+      this.props.setCompositeImageData(action);
     });
   }
   handleForegroundImageSelection(imgSrcObj) {
-    this.props.setCompositeImageData({
-      foreground: {
-        srcKey: imgSrcObj.srcKey,
-      },
-      screen: 'crop'
+    const action = payloadRefineAction({
+      type: 'BERNIE_CROP',
+      payload: {
+        // ...this.props.location.payload,
+        ...compositeImageIntoParams(this.props.compositeImageData),
+        fgSrcKey: imgSrcObj.srcKey
+      }
     });
+    this.props.setCompositeImageData(action);
   }
   generateCompletionUrl(activeCompositeImageData) {
     return `${nameSpace}/${formUrl(activeCompositeImageData)}`;
@@ -74,7 +80,9 @@ export default connect(
     };
   },
   {
-    setCompositeImageData: compositeImageSetterActionCreator,
+    setCompositeImageData: (action) => { 
+      return action;
+    },
   }
 )(Routing);
 
