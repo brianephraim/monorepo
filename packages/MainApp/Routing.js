@@ -9,7 +9,7 @@ import Bernie from 'bernie';
 import Battleship from 'battleship';
 import history from '@defualt/shared-history';
 import React, { Component } from 'react';
-import { bernieRoutesMap } from 'bernie/Routing';
+import { bernieRoutesMap } from 'bernie/setup';
 // import PropTypes from 'prop-types';
 
 /*

@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Link from 'redux-first-router-link'
 import Upload from './Upload';
+import {BernieLink} from './routingComponents';
 
 import './app.scss';
 
@@ -78,8 +79,9 @@ let BernieAppButtonGroup = class extends Component {
                 {btnDetails.text}
               </a>
             );
-          } else if (btnDetails.routerLinkScreenName) {
-            console.log(this.props.location.payload);
+          } else if (btnDetails.actionType) {
+            // console.log(this.props.location.payload);
+            // console.log('btnDetails.routerLinkScreenName',btnDetails.routerLinkScreenName)
             /*
               to={
                   {
@@ -88,14 +90,20 @@ let BernieAppButtonGroup = class extends Component {
                   }
                 }
             */
-            //to={`${this.props.compositeImageData.browserUrlBaseWithPreceedingUrlFrag}/${btnDetails.routerLinkScreenName}`}
+            //
+            // to={`${this.props.compositeImageData.browserUrlBaseWithPreceedingUrlFrag}/${btnDetails.routerLinkScreenName}`}
             btnInner = (
-              <Link
+              <BernieLink
                 className={btnDetails.className}
-                to={`${this.props.compositeImageData.browserUrlBaseWithPreceedingUrlFrag}/${btnDetails.routerLinkScreenName}`}
+                to={
+                  {
+                    type: `BERNIE_${btnDetails.actionType}`,
+                    payload: {...this.props.location.payload}
+                  }
+                }
               >
                 {btnDetails.text}
-              </Link>
+              </BernieLink>
             );
           } else if (btnDetails.onClick) {
             btnInner = (
@@ -207,7 +215,8 @@ const ImportButtonGroup = makeButtonGroupComponent({
     {
       className: 'importFbPhotoButton',
       text: 'Facebook',
-      routerLinkScreenName: 'import-photo-from-facebook'
+      routerLinkScreenName: 'import-photo-from-facebook',
+      actionType: 'IMPORT_FACEBOOK'
     },
     {
       className: 'cameraUploadizer',
@@ -279,7 +288,8 @@ const EditSizeButtonGroup = makeButtonGroupComponent({
     {
       className: 'editSizeAndPositionButton',
       text: 'Size and position',
-      routerLinkScreenName: 'crop'
+      routerLinkScreenName: 'crop',
+      actionType: 'CROP'
     },
   ],
 });
@@ -295,7 +305,8 @@ const EditDesignButtonGroup = makeButtonGroupComponent({
     {
       className: 'moreimageOptionsHome',
       text: 'more options',
-      routerLinkScreenName: 'select-template'
+      routerLinkScreenName: 'select-template',
+      actionType: 'SELECT_TEMPLATE'
     },
     {
       className: 'templateModalButton',

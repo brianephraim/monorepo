@@ -4,7 +4,7 @@ import createLogger from 'redux-logger';
 import thunk from 'redux-thunk';
 import ToDosReducers from 'todo_app/src/toDos/state/reducers';
 import { usersReducers } from 'todo_app/src/users';
-import { bernieReducers } from 'bernie/Routing';
+import { bernieReducers } from 'bernie/setup';
 import appRootReducers from './appRootReducers';
 import history from '@defualt/shared-history';
 

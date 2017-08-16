@@ -62,10 +62,6 @@ export function setterActionCreator(newCompositeImageData, namespace) {
       type: 'SET_COMPOSITE_IMAGE_DATA',
       compositeImageData,
     });
-
-
-    console.log('$$$$',compositeImageData.desiredRoute);
-
     
     if (
       compositeImageDataState.desiredRoute !== compositeImageData.desiredRoute &&
