@@ -1,16 +1,19 @@
 /* eslint-disable react/no-multi-comp */
 // import React from 'react';
-import { connectRoutes, NOT_FOUND } from 'redux-first-router'
+import { connectRoutes, addRoutes, NOT_FOUND } from 'redux-first-router'
 import PropTypes from 'prop-types';
 import { Provider, connect } from 'react-redux';
 import Link from 'redux-first-router-link'
 import ToDoUserAssignmentScreen from 'todo_app';
-import Bernie from 'bernie';
 import Battleship from 'battleship';
 import history from '@defualt/shared-history';
 import React, { Component } from 'react';
-import { bernieRoutesMap } from 'bernie/setup';
-// import PropTypes from 'prop-types';
+import { createStore, applyMiddleware, combineReducers, compose } from 'redux';
+// import createLogger from 'redux-logger';
+import thunk from 'redux-thunk';
+import ToDosReducers from 'todo_app/src/toDos/state/reducers';
+import { usersReducers } from 'todo_app/src/users';
+import appRootReducers from './appRootReducers';
 
 /*
 
@@ -25,12 +28,6 @@ const routes = [
     component: ToDoUserAssignmentScreen,
   },
   {
-    action: 'BERNIE',
-    description: 'Bernie',
-    path: '/bernie',
-    component: Bernie,
-  },
-  {
     action: 'BATTLESHIP',
     description: 'Battleship',
     path: '/battleship',
@@ -42,11 +39,6 @@ let actionTypeToComponentDict = routes.reduce((accum,route) => {
   accum[route.action] = route.component;
   return accum;
 }, {});
-const bernieRoutesActionTypeToComponentDict = Object.keys(bernieRoutesMap).reduce((accum,routeKey) => {
-  accum[routeKey] = Bernie;
-  return accum;
-},{});
-actionTypeToComponentDict = {...actionTypeToComponentDict, ...bernieRoutesActionTypeToComponentDict};
 
 const LandingScreen = () => {
   return (
@@ -65,68 +57,102 @@ const LandingScreen = () => {
   );
 };
 
-export const userIdReducer = (state = null, action = {}) => {
-  switch(action.type) {
-    case 'HOME':
-    case NOT_FOUND:
-      return null
-    case 'USER':
-      return action.payload.id
-    default: 
-      return state
-  }
-}
 
 const routesMap = routes.reduce((accum,route) => {
   accum[route.action] = route.path
   return accum;
 },{});
 
-const { reducer, middleware, enhancer } = connectRoutes(history, {...routesMap,...bernieRoutesMap});
+const { reducer, middleware, enhancer, initialDispatch } = connectRoutes(history, {...routesMap}, {initialDispatch: false,});
 const routingMiddleware = middleware;
 const routingEnhancer = enhancer;
 
 const routingReducers = {
   location: reducer,
-  userId: userIdReducer
 };
 export { routingReducers/* combineReducers(routingReducer) */, routingMiddleware/* applyMiddleware(routingMiddleware) */, routingEnhancer/* createStore(rootReducer, compose(routingEnhancer, middlewares))*/ };
 
+
+
+
+
+let RootComponent = class extends Component {
+  render(){
+    const Comp = actionTypeToComponentDict[this.props.nameOfScreenComponent] || LandingScreen;
+    return (<Comp />);
+  }
+}
+RootComponent.propTypes = {
+  nameOfScreenComponent: PropTypes.string.isRequired,
+};
+RootComponent = connect(
+  (state) => {
+    return {
+      nameOfScreenComponent: state.location.type,
+    };
+  }
+)(RootComponent);
+
+
+
+let allReducers = {
+  ...routingReducers,
+  toDos: ToDosReducers,
+  users: usersReducers,
+  appRoot: appRootReducers,
+  // bernie: bernieReducers,
+};
+
+const configureStore = () => {
+  const middlewares = [thunk, routingMiddleware];
+  // if (process.env.NODE_ENV !== 'production') {
+    // middlewares.push(createLogger());
+  // }
+
+  return createStore(
+    combineReducers(allReducers),
+    compose(routingEnhancer, applyMiddleware(...middlewares))
+  );
+};
+
+
+
+const store = configureStore();
+export function addRoutesToApp({routesMap,routeRootComponent,reducers, routeInfo}) {
+  if (routeInfo) {
+    routes.push(routeInfo);
+  }
+  if (routesMap && routeRootComponent) {
+    const newRoutesActionTypeToComponentDict = Object.keys(routesMap).reduce((accum,routeKey) => {
+      accum[routeKey] = routeRootComponent;
+      return accum;
+    },{});
+    actionTypeToComponentDict = {...actionTypeToComponentDict, ...newRoutesActionTypeToComponentDict};
+
+    store.dispatch(addRoutes(routesMap));
+  }
+  if (reducers) {
+    allReducers = {...allReducers, ...reducers};
+    store.replaceReducer(combineReducers(allReducers));
+  }
+};
+
+
+window.ss = store;
 class RoutingApp extends Component {
-  render() {
-    // const Comp = this.props.routeScreenComponent;
-    const Comp = actionTypeToComponentDict[this.props.locationType] || LandingScreen;
+  componentWillMount() {
+    initialDispatch();
+  }
+
+  render() {    
     return (
-      <Provider store={this.props.store}>
-        <Comp />
+      <Provider store={store}>
+        <RootComponent />
       </Provider>
       
     );
   }
 }
-RoutingApp.propTypes = {
-  store: PropTypes.object.isRequired,
-  // routeScreenComponent: PropTypes.func.isRequired,
-  locationType: PropTypes.string.isRequired
-};
-export default connect(
-  ( state/* , { params }*/) => {
-    return {
-      locationType: state.location.type,
 
-
-      // routes.reduce((component, route) => {
-      //   console.log(route.path,state.location.pathname,state)
-      //   if (state.location.pathname === route.path) {
-      //     console.log(route.path)
-      //     component = route.component
-      //   }
-      //   return component;
-      // }, LandingScreen),
-      // toBeAssigned: getDetailsOfToBeAssigned(state),
-    };
-  },
-  {
-  }
-)(RoutingApp);
+export default RoutingApp;
 

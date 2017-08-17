@@ -95,6 +95,8 @@ routeModes.forEach((homeLayoutPath) => {
     bernieScreenComponentMap[route.action] = route.component;
   });
 });
+bernieRoutesMap.BERNIE = '/bernie';
+bernieScreenNameMap.BERNIE = 'BERNIE_HOME';
 
 const bernieReducers = combineReducers({
   compositeImageData: (state = {}, action) => {
@@ -115,8 +117,6 @@ const bernieReducers = combineReducers({
     if(bernieRoutesMap[action.type]) {
       return bernieScreenNameMap[action.type];
     }
-    // always revert to 'BERNIE_HOME' if not matching
-    // this covers the case of a route consisting entirely of '/bernie'
     return 'BERNIE_HOME';
   },
 });

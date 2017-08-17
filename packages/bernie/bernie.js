@@ -24,3 +24,6 @@ function Bernie(props) {
 }
 
 export default Bernie
+
+
+

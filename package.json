@@ -51,7 +51,7 @@
     "prettier": "^1.5.3"
   },
   "dependencies": {
-    "redux-first-router": "^1.9.13",
+    "redux-first-router": "0.0.9-next",
     "redux-first-router-link": "^1.1.3"
   }
 }

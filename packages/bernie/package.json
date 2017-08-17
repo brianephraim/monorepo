@@ -15,8 +15,6 @@
     "react": "^15.0.2",
     "react-cropper": "^0.12.0",
     "react-redux": "^4.4.5",
-    "react-router-dom": "^4.1.1",
-    "react-router-redux": "^5.0.0-alpha.6",
     "redux": "^3.5.2",
     "redux-first-router": "^1.9.13",
     "redux-first-router-link": "^1.1.3"

@@ -2,10 +2,12 @@ import 'babel-polyfill';
 import React from 'react';
 import { render } from 'react-dom';
 import Routing from './Routing';
-import configureStore from './configureStore';
+import integrateBernie from 'bernie/mainAppIntegration'
 import './reset.css';
 
 // import '#./asdf';
+
+integrateBernie();
 
 let rootEl;
 function getRootEl() {
@@ -21,9 +23,7 @@ function getRootEl() {
   return rootEl;
 }
 
-const store = configureStore();
-window.ss = store;
 render(
-  <Routing store={store} />,
+  <Routing />,
   getRootEl()
 );
