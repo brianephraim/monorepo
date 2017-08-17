@@ -7,7 +7,7 @@ import {
 import {
   buttonGroupComponentsRegexArrayString,
 } from './buttonGroups';
-import { paramsIntoCompositeImage, furtherRefineCompositeImageData } from './compositeImage';
+import { paramsIntoCompositeImage } from './compositeImage';
 
 
 const nameSpace = '/bernie';
@@ -30,13 +30,6 @@ const routeModes = [
       return payload.fgSrcKey;
     },
   },
-//   {
-//     key: 'BASE',
-//     urlStart: nameSpace,
-//     match:() => {
-//       return true;
-//     },
-//   },  
 ];
 function payloadRefineAction({type, payload}){
   let found = false;
@@ -106,8 +99,7 @@ routeModes.forEach((homeLayoutPath) => {
 const bernieReducers = combineReducers({
   compositeImageData: (state = {}, action) => {
     if(bernieRoutesMap[action.type] || action.type === 'BERNIE') {
-      const newCompositeImageData = paramsIntoCompositeImage(action.payload);
-      const compositeImageData = furtherRefineCompositeImageData(state, newCompositeImageData, '/bernie');
+      const compositeImageData = paramsIntoCompositeImage(action.payload);
       return compositeImageData;
     }
     switch (action.type) {
@@ -123,7 +115,7 @@ const bernieReducers = combineReducers({
     if(bernieRoutesMap[action.type]) {
       return bernieScreenNameMap[action.type];
     }
-    // always revery to 'BERNIE_HOME' if not matching
+    // always revert to 'BERNIE_HOME' if not matching
     // this covers the case of a route consisting entirely of '/bernie'
     return 'BERNIE_HOME';
   },

@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-
 import ResponsiveHOC, {
   generateGiantSquareDetails,
 } from '@defualt/responsive';
+import {generateCompositeImgSrcUrl} from './compositeImage';
 
 import {
   EditDesignButtonGroup,
@@ -194,7 +194,7 @@ BernieAppHero = connect(
       imSrc: (
         state.bernie && state.bernie.compositeImageData
         ?
-        state.bernie.compositeImageData.imgSrcUrl
+        generateCompositeImgSrcUrl(state.bernie.compositeImageData)
         :
         '/images/mock-selfie.png'
       ),

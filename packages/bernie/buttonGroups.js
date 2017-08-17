@@ -120,13 +120,11 @@ let BernieAppButtonGroup = class extends Component {
       </div>;
 
     const LinkOrDiv = this.props.compositeImageData.screen === this.props.urlFragment ? Div : BernieLink;
-    // const linkUrl = `${this.props.compositeImageData.browserUrlBaseWithPreceedingUrlFrag}/${this.props.urlFragment}`;
     const to = {
       type: `BERNIE_DYNAMIC`,
       compositeImageData: this.props.compositeImageData,
       bernieDynamicScreen: this.props.urlFragment,
     };
-    // console.log('linkUrl',linkUrl)
     return (
       <div
         className={`app_body_rightPillar_section_subsection ${this.props

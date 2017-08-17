@@ -1,53 +1,7 @@
-import { formUrl } from './deriveUrlInfo';
-
-
-export function refresh(oldData, pathAssignments) {
-  if (!Array.isArray(pathAssignments)) {
-    pathAssignments = [pathAssignments];
-  }
-  const compositeImageData = pathAssignments.reduce((accum, assignment) => {
-    const path = assignment.path;
-    const pathSplit = path.split('.');
-    const val = assignment.val;
-    accum.background = accum.background || { ...oldData.background };
-    accum.foreground = accum.foreground || { ...oldData.foreground };
-    accum[pathSplit[0]][pathSplit[1]] = val;
-    return accum;
-  }, {});
-  return compositeImageData;
-}
-
-
-
-function generateCompositeImgSrcUrl(compositeImageData) {
+export function generateCompositeImgSrcUrl(compositeImageData) {
   return `/image/${compositeImageData.foreground.srcKey}/${compositeImageData.background
     .srcKey}_${compositeImageData.foreground.width}_${compositeImageData.foreground
     .height}_${compositeImageData.foreground.x}_${compositeImageData.foreground.y}.jpg`;
-}
-
-// function ensureTrailingSlash (url) {
-//   return url.replace(/\/?$/, '/');
-// }
-export function furtherRefineCompositeImageData(compositeImageDataState,newCompositeImageData,namespace) {
-  const compositeImageData = {
-    ...compositeImageDataState,
-    foreground: {
-      ...compositeImageDataState.foreground,
-      ...newCompositeImageData.foreground,
-    },
-    background: {
-      ...compositeImageDataState.background,
-      ...newCompositeImageData.background,
-    },
-    screen: typeof newCompositeImageData.screen !== 'undefined' ? newCompositeImageData.screen : compositeImageDataState.screen,
-    namespace: namespace || compositeImageDataState.namespace,
-  };
-
-  compositeImageData.imgSrcUrl = generateCompositeImgSrcUrl(compositeImageData);
-  const browserUrlBase = formUrl(compositeImageData);
-  compositeImageData.browserUrlBaseWithPreceedingUrlFrag = `${compositeImageData.namespace}/${browserUrlBase}`;
-  // compositeImageData.desiredRoute = `${compositeImageData.browserUrlBaseWithPreceedingUrlFrag}/${compositeImageData.screen}`;
-  return compositeImageData;
 }
 
 export function compositeImageIntoParams (compositeImageData) {
@@ -72,7 +26,6 @@ export function paramsIntoCompositeImage (params) {
     bgH: 1200,
     bgSrcKey: 'zephyr1476401787491',
     fgSrcKey: 'h3',
-    screen: '',
   };
   const paramsToUse = {
     ...placeholder,
@@ -93,7 +46,6 @@ export function paramsIntoCompositeImage (params) {
       src: `http://s3-us-west-1.amazonaws.com/bernieapp/selfies/${paramsToUse.bgSrcKey}.png`,
       srcKey: paramsToUse.bgSrcKey,
     },
-    screen: paramsToUse.screen,
   };
   return compositeImageData;
 }
