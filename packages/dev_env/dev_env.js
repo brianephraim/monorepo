@@ -10,6 +10,8 @@ import serve from './webpackExpressServer.js';
 
 const env = argv.env;
 const item = argv.item;
+console.log('NOTHING');
+console.log(argv.nothing)
 if (item) {
   shellCommand(`(cd ./packages/${item} && npm run start)`);
 } else if (env === 'test') {
@@ -20,6 +22,7 @@ if (item) {
   webpackRunCompiler(webpackMakeCompiler);
 } else {
   if (argv.server) {
+
     const p = '/Users/brianephraim/Sites/monorepo/packages/bernieserver/bernieserver';
     const x = '.express';
     // const p = '/Users/brianephraim/Sites/monorepo/packages/bernieserver/bernieserver.express';
