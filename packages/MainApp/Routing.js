@@ -4,41 +4,15 @@ import { connectRoutes, addRoutes, NOT_FOUND } from 'redux-first-router'
 import PropTypes from 'prop-types';
 import { Provider, connect } from 'react-redux';
 import Link from 'redux-first-router-link'
-import ToDoUserAssignmentScreen from 'todo_app';
-import Battleship from 'battleship';
 import history from '@defualt/shared-history';
 import React, { Component } from 'react';
 import { createStore, applyMiddleware, combineReducers, compose } from 'redux';
 // import createLogger from 'redux-logger';
 import thunk from 'redux-thunk';
-import ToDosReducers from 'todo_app/src/toDos/state/reducers';
-import { usersReducers } from 'todo_app/src/users';
-import appRootReducers from './appRootReducers';
 
-/*
+const routes = [];
 
-*/
-
-const routes = [
-  {
-    action: 'TODOS',
-    description: 'Todos',
-    path: '/todos/:filter',
-    demoPath: '/todos/all',
-    component: ToDoUserAssignmentScreen,
-  },
-  {
-    action: 'BATTLESHIP',
-    description: 'Battleship',
-    path: '/battleship',
-    component: Battleship,
-  },
-];
-
-let actionTypeToComponentDict = routes.reduce((accum,route) => {
-  accum[route.action] = route.component;
-  return accum;
-}, {});
+let actionTypeToComponentDict = {};
 
 const LandingScreen = () => {
   return (
@@ -56,25 +30,6 @@ const LandingScreen = () => {
     </div>
   );
 };
-
-
-const routesMap = routes.reduce((accum,route) => {
-  accum[route.action] = route.path
-  return accum;
-},{});
-
-const { reducer, middleware, enhancer, initialDispatch } = connectRoutes(history, {...routesMap}, {initialDispatch: false,});
-const routingMiddleware = middleware;
-const routingEnhancer = enhancer;
-
-const routingReducers = {
-  location: reducer,
-};
-export { routingReducers/* combineReducers(routingReducer) */, routingMiddleware/* applyMiddleware(routingMiddleware) */, routingEnhancer/* createStore(rootReducer, compose(routingEnhancer, middlewares))*/ };
-
-
-
-
 
 let RootComponent = class extends Component {
   render(){
@@ -94,24 +49,23 @@ RootComponent = connect(
 )(RootComponent);
 
 
+const routesMap = {};
+
+const { reducer, middleware, enhancer, initialDispatch } = connectRoutes(history, routesMap, {initialDispatch: false});
 
 let allReducers = {
-  ...routingReducers,
-  toDos: ToDosReducers,
-  users: usersReducers,
-  appRoot: appRootReducers,
-  // bernie: bernieReducers,
+  location: reducer,
 };
 
 const configureStore = () => {
-  const middlewares = [thunk, routingMiddleware];
+  const middlewares = [thunk, middleware];
   // if (process.env.NODE_ENV !== 'production') {
     // middlewares.push(createLogger());
   // }
 
   return createStore(
     combineReducers(allReducers),
-    compose(routingEnhancer, applyMiddleware(...middlewares))
+    compose(enhancer, applyMiddleware(...middlewares))
   );
 };
 

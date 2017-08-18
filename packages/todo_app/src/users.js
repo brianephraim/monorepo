@@ -29,6 +29,15 @@ export const usersReducers = combineReducers({
         return state;
     }
   },
+  toBeAssigned: (state = null, action) => {
+    switch (action.type) {
+      case 'PREPARE_EXTERNAL_ASSIGNMENT':
+        console.log('users',action);
+        return action.userId;
+      default:
+        return state;
+    }
+  },
 });
 
 // =================
@@ -170,7 +179,7 @@ Users.propTypes = {
 };
 
 const getDetailsOfToBeAssigned = (state) => {
-  const id = state.appRoot.toBeAssigned;
+  const id = state.users.toBeAssigned;
   if (!id) {
     return id;
   }

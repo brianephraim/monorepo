@@ -12,5 +12,5 @@ export const getErrorMessage = (state, filter) => {
 };
 
 export const getToBeAssignedFromRoot = (state) => {
-  return state.appRoot.toBeAssigned;
+  return state.users.toBeAssigned;
 };

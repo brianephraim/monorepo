@@ -3,11 +3,15 @@ import React from 'react';
 import { render } from 'react-dom';
 import Routing from './Routing';
 import integrateBernie from 'bernie/mainAppIntegration'
+import integrateToDoApp from 'todo_app/mainAppIntegration'
+import integrateBattleship from 'battleship/mainAppIntegration'
 import './reset.css';
 
 // import '#./asdf';
 
 integrateBernie();
+integrateToDoApp();
+integrateBattleship();
 
 let rootEl;
 function getRootEl() {

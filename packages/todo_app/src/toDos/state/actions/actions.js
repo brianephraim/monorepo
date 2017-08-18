@@ -65,7 +65,7 @@ export const assignUser = (id) => {
     dispatch({
       type: 'ASSIGN_USER_TO_TODO',
       toDoId: id,
-      userId: state.appRoot.toBeAssigned,
+      userId: state.users.toBeAssigned,
     });
     state = getState();
     const toDo = state.toDos.toDosIdDict[id];
