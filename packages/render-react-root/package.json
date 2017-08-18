@@ -1,5 +1,5 @@
 {
-  "name": "@defualt/shared-history",
+  "name": "@defualt/render-react-root",
   "version": "0.0.1",
   "publishConfig": {
     "access": "public"
@@ -9,8 +9,5 @@
   },
   "devDependencies": {
     "@defualt/dev_env": "^0.0.14"
-  },
-  "dependencies": {
-    "history": "^4.6.3"
-  } 
+  }
 }

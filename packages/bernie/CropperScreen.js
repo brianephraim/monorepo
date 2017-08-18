@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import windowSizer from '@defualt/window-sizer';
-import history from '@defualt/shared-history';
+import {back} from 'redux-first-router';
 import ReactCropperEnhanced from './ReactCropperEnhanced';
 
 function whitelistFilterProps(obj, whitelist) {
@@ -75,7 +75,7 @@ function CloseButton() {
   return (
     <div
       className="closeButton button"
-      onClick={history.goBack}
+      onClick={back}
       role="button"
       tabIndex={0}
     >

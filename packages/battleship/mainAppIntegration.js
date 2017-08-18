@@ -1,5 +1,5 @@
 import Battleship from './battleship';
-import { addRoutesToApp } from  'MainApp/Routing';
+import {addRoutesToApp} from 'redux-routing-app-root-component';
 
 export default function () {
   addRoutesToApp({

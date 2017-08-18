@@ -1,33 +1,19 @@
-import 'babel-polyfill';
-import React from 'react';
-import { render } from 'react-dom';
-import Routing from './Routing';
+import renderReactRoot from '@defualt/render-react-root';
+import Routing, {addRoutesToApp} from 'redux-routing-app-root-component';
 import integrateBernie from 'bernie/mainAppIntegration'
 import integrateToDoApp from 'todo_app/mainAppIntegration'
 import integrateBattleship from 'battleship/mainAppIntegration'
+import RouteLinksList from './RouteLinksList';
 import './reset.css';
-
-// import '#./asdf';
 
 integrateBernie();
 integrateToDoApp();
 integrateBattleship();
+addRoutesToApp({
+  routesMap:{
+    FALLBACK_ROUTE: '/doesnt-matter-bacause-key-is-FALLBACK_ROUTED-which-is-special'
+  },
+  routeRootComponent: RouteLinksList,
+});
 
-let rootEl;
-function getRootEl() {
-  if (rootEl) {
-    return rootEl;
-  }
-  rootEl = document.getElementById('root');
-  if (!rootEl) {
-    rootEl = document.createElement('div');
-    rootEl.id = 'root';
-    document.body.appendChild(rootEl);
-  }
-  return rootEl;
-}
-
-render(
-  <Routing />,
-  getRootEl()
-);
+renderReactRoot(Routing);
