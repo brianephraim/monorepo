@@ -14,24 +14,10 @@ import {
   ImportButtonGroup,
 } from './buttonGroups';
 
+import BernieDisclaimer from './Disclaimer';
 
-// This adds padding to the bottom and serves as disclaimer.
-// Disclaimer can probably be nested inside BernieApp.
-function BernieDisclaimer() {
-  return (
-    <div className="disclaimer">
-      <p>
-        contact: admin@bernieselfie.com <br />
-        <a href="/terms">Terms&nbsp;and&nbsp;Conditions</a>
-        {' -- '}
-        <a href="/privacy">Privacy&nbsp;Policy</a>
-        <br />
-        bernieselfie.com is not affiliated with any political party, candidate,
-        or interest group.
-      </p>
-    </div>
-  );
-}
+
+
 
 function BernieContributeBanner() {
   return (

@@ -11,7 +11,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _bernieExpressServer = __webpack_require__(48);
+var _bernieExpressServer = __webpack_require__(50);
 
 var _bernieExpressServer2 = _interopRequireDefault(_bernieExpressServer);
 
@@ -24,7 +24,23 @@ exports.default = _bernieExpressServer2.default;
 /***/ }),
 /* 38 */,
 /* 39 */,
-/* 40 */
+/* 40 */,
+/* 41 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+function ensureLeadingSlash(str) {
+  return str.replace(/^\/?/, '/');
+}
+exports.default = ensureLeadingSlash;
+
+/***/ }),
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59,13 +75,13 @@ module.exports = function (fun) {
 };
 
 /***/ }),
-/* 41 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var prepareModuleWithDefaults = __webpack_require__(40);
+var prepareModuleWithDefaults = __webpack_require__(42);
 module.exports = prepareModuleWithDefaults(function (s) {
 	var res = s.res;
 	var isSuccess = typeof s.isSuccess === 'undefined' || !!s.isSuccess;
@@ -101,35 +117,20 @@ module.exports = prepareModuleWithDefaults(function (s) {
 });
 
 /***/ }),
-/* 42 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-function ensureLeadingSlash(str) {
-  return str.replace(/^\/?/, '/');
-}
-exports.default = ensureLeadingSlash;
-
-/***/ }),
-/* 43 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var jD = __webpack_require__(38);
-var sharp = __webpack_require__(47);
-var prepareModuleWithDefaults = __webpack_require__(40);
+var jD = __webpack_require__(39);
+var sharp = __webpack_require__(49);
+var prepareModuleWithDefaults = __webpack_require__(42);
 var parseUrl = __webpack_require__(12).parse;
 module.exports = prepareModuleWithDefaults(function (s) {
   var dfd = jD.Deferred();
   var buffer = s.Body;
-  var sharp = __webpack_require__(47);
+  var sharp = __webpack_require__(49);
   var image = sharp(buffer);
   image.metadata(function (err, meta) {
     if (err) {
@@ -167,19 +168,19 @@ module.exports = prepareModuleWithDefaults(function (s) {
 });
 
 /***/ }),
-/* 44 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var jD = __webpack_require__(38);
-var aws = __webpack_require__(39);
-var prepareModuleWithDefaults = __webpack_require__(40);
+var jD = __webpack_require__(39);
+var aws = __webpack_require__(40);
+var prepareModuleWithDefaults = __webpack_require__(42);
 module.exports = prepareModuleWithDefaults(function (s) {
   s = Object.assign({}, s);
   if (!s.ContentType) {
-    var mime = __webpack_require__(67);
+    var mime = __webpack_require__(69);
     var extension = s.Key.split('.').pop();
     s.ContentType = mime.lookup(extension);
   }
@@ -207,14 +208,64 @@ module.exports = prepareModuleWithDefaults(function (s) {
 });
 
 /***/ }),
-/* 45 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var jD = __webpack_require__(38);
-var aws = __webpack_require__(39);
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _express = __webpack_require__(13);
+
+var _express2 = _interopRequireDefault(_express);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function makeServeChainableExpress(serverLogic) {
+  return function (_ref) {
+    var app = _ref.app,
+        _ref$port = _ref.port,
+        port = _ref$port === undefined ? 3000 : _ref$port,
+        _ref$nameSpace = _ref.nameSpace,
+        nameSpace = _ref$nameSpace === undefined ? '' : _ref$nameSpace;
+
+    var appIsBrandNew = false;
+    if (!app) {
+      appIsBrandNew = true;
+      app = (0, _express2.default)();
+    }
+    // nameSpace = 'bernieserver';
+
+    serverLogic(app, nameSpace);
+
+    if (appIsBrandNew) {
+      app.listen(port, function (error) {
+        if (error) {
+          console.error(error);
+        } else {
+          console.info('🌎 Listening on port %s. Open up http://localhost:%s/ in your browser.', port, port);
+        }
+      });
+    }
+
+    return app;
+  };
+}
+
+exports.default = makeServeChainableExpress;
+
+/***/ }),
+/* 47 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var jD = __webpack_require__(39);
+var aws = __webpack_require__(40);
 module.exports = function (s) {
   s = Object.assign({}, s);
   var dfd = jD.Deferred();
@@ -239,7 +290,7 @@ module.exports = function (s) {
 };
 
 /***/ }),
-/* 46 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -251,10 +302,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 var mymoduleName = 'mongooseStuff';;
 (function (exports) {
 
-    var jD = __webpack_require__(38);
+    var jD = __webpack_require__(39);
 
-    var mongoose = __webpack_require__(69);
-    var uriUtil = __webpack_require__(68);
+    var mongoose = __webpack_require__(71);
+    var uriUtil = __webpack_require__(70);
 
     var mongooseStuff = function () {
         var MongooseStuff = function MongooseStuff() {
@@ -513,18 +564,18 @@ var mymoduleName = 'mongooseStuff';;
 })( false ? undefined[mymoduleName] = {} : exports);
 
 /***/ }),
-/* 47 */,
-/* 48 */
+/* 49 */,
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
 
-var _mymodule = __webpack_require__(60);
+var _mymodule = __webpack_require__(62);
 
 var _mymodule2 = _interopRequireDefault(_mymodule);
 
@@ -532,7 +583,7 @@ var _express = __webpack_require__(13);
 
 var _express2 = _interopRequireDefault(_express);
 
-var _ejs = __webpack_require__(63);
+var _ejs = __webpack_require__(65);
 
 var _ejs2 = _interopRequireDefault(_ejs);
 
@@ -544,39 +595,43 @@ var _url = __webpack_require__(12);
 
 var _url2 = _interopRequireDefault(_url);
 
-var _fs = __webpack_require__(64);
+var _fs = __webpack_require__(66);
 
 var _fs2 = _interopRequireDefault(_fs);
 
-var _mongooseStuff = __webpack_require__(46);
+var _mongooseStuff = __webpack_require__(48);
 
-var _endpointCompositeImage = __webpack_require__(53);
+var _endpointCompositeImage = __webpack_require__(55);
 
 var _endpointCompositeImage2 = _interopRequireDefault(_endpointCompositeImage);
 
-var _endpointGetNormalizedImageInfo = __webpack_require__(54);
+var _endpointGetNormalizedImageInfo = __webpack_require__(56);
 
 var _endpointGetNormalizedImageInfo2 = _interopRequireDefault(_endpointGetNormalizedImageInfo);
 
-var _endpointGetS3SignedUploadUrl = __webpack_require__(55);
+var _endpointGetS3SignedUploadUrl = __webpack_require__(57);
 
 var _endpointGetS3SignedUploadUrl2 = _interopRequireDefault(_endpointGetS3SignedUploadUrl);
 
-var _endpointIframeUpload = __webpack_require__(56);
+var _endpointIframeUpload = __webpack_require__(58);
 
 var _endpointIframeUpload2 = _interopRequireDefault(_endpointIframeUpload);
 
-var _generateUrlRegexNamespace = __webpack_require__(57);
+var _generateUrlRegexNamespace = __webpack_require__(59);
 
 var _generateUrlRegexNamespace2 = _interopRequireDefault(_generateUrlRegexNamespace);
 
-var _respondWithJson = __webpack_require__(41);
+var _respondWithJson = __webpack_require__(43);
 
 var _respondWithJson2 = _interopRequireDefault(_respondWithJson);
 
-var _ensureLeadingSlash = __webpack_require__(42);
+var _ensureLeadingSlash = __webpack_require__(41);
 
 var _ensureLeadingSlash2 = _interopRequireDefault(_ensureLeadingSlash);
+
+var _makeServeChainableExpress = __webpack_require__(46);
+
+var _makeServeChainableExpress2 = _interopRequireDefault(_makeServeChainableExpress);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -601,229 +656,204 @@ console.log('APP.js');
  * Set-up the Express app.
  */
 
-exports.default = function (_ref) {
-  var app = _ref.app,
-      _ref$port = _ref.port,
-      port = _ref$port === undefined ? 3000 : _ref$port,
-      _ref$nameSpace = _ref.nameSpace,
-      nameSpace = _ref$nameSpace === undefined ? '' : _ref$nameSpace;
+exports.default = (0, _makeServeChainableExpress2.default)(function (app, nameSpace) {
+    app.set('views', __dirname + '/views');
+    app.engine('html', _ejs2.default.renderFile);
 
-  console.log("SERVING BERNIE BACKEND");
-  // This module either extends an existing express app
-  // or creates a new express app
-  var appIsBrandNew = false;
-  if (!app) {
-    appIsBrandNew = true;
-    app = (0, _express2.default)();
-  }
+    app.use(_express2.default.static(_path2.default.join(__dirname, 'public')));
 
-  app.set('views', __dirname + '/views');
-  app.engine('html', _ejs2.default.renderFile);
+    /*
+     * Load the S3 information from the environment variables.
+     */
+    var AWS_ACCESS_KEY = process.env.AWS_ACCESS_KEY;
+    var AWS_SECRET_KEY = process.env.AWS_SECRET_KEY;
+    var S3_BUCKET = process.env.S3_BUCKET;
 
-  app.use(_express2.default.static(_path2.default.join(__dirname, 'public')));
+    //===========================
+    //HTML PAGES
+    //____________________________
 
-  /*
-   * Load the S3 information from the environment variables.
-   */
-  var AWS_ACCESS_KEY = process.env.AWS_ACCESS_KEY;
-  var AWS_SECRET_KEY = process.env.AWS_SECRET_KEY;
-  var S3_BUCKET = process.env.S3_BUCKET;
-
-  //===========================
-  //HTML PAGES
-  //____________________________
-
-  app.get((0, _ensureLeadingSlash2.default)(nameSpace + '/privacy'), function (req, res) {
-    res.render('privacy.html', {
-      pageName: 'privacy',
-      urlInfo: _mymodule2.default.deriveUrlInfo({ nameSpace: nameSpace }),
-      userTemplates: userTemplates
+    app.get((0, _ensureLeadingSlash2.default)(nameSpace + '/privacy'), function (req, res) {
+        res.render('privacy.html', {
+            pageName: 'privacy',
+            urlInfo: _mymodule2.default.deriveUrlInfo({ nameSpace: nameSpace }),
+            userTemplates: userTemplates
+        });
     });
-  });
 
-  app.get((0, _ensureLeadingSlash2.default)(nameSpace + '/terms'), function (req, res) {
-    res.render('terms.html', {
-      pageName: 'terms',
-      urlInfo: _mymodule2.default.deriveUrlInfo({ nameSpace: nameSpace }),
-      userTemplates: userTemplates
+    app.get((0, _ensureLeadingSlash2.default)(nameSpace + '/terms'), function (req, res) {
+        res.render('terms.html', {
+            pageName: 'terms',
+            urlInfo: _mymodule2.default.deriveUrlInfo({ nameSpace: nameSpace }),
+            userTemplates: userTemplates
+        });
     });
-  });
 
-  app.get((0, _ensureLeadingSlash2.default)(nameSpace + '/iframeuploadbutton'), function (req, res) {
-    res.render('iframeuploadbutton.html', {
-      pageName: 'iframeuploadbutton',
-      urlInfo: null,
-      buttonText: req.query.buttonText
+    app.get((0, _ensureLeadingSlash2.default)(nameSpace + '/iframeuploadbutton'), function (req, res) {
+        res.render('iframeuploadbutton.html', {
+            pageName: 'iframeuploadbutton',
+            urlInfo: null,
+            buttonText: req.query.buttonText
+        });
     });
-  });
 
-  var standardRouteHtmlHandler = function standardRouteHtmlHandler(req, res) {
-    var urlToUse = req.url;
-    urlToUse = _url2.default.parse(urlToUse).pathname === '/' ? null : urlToUse;
-    var offline = typeof req.query.offline !== 'undefined';
-    var iframebutton = typeof req.query.iframebutton !== 'undefined';
-    var urlInfo = _mymodule2.default.deriveUrlInfo({ pathname: urlToUse, offline: offline, nameSpace: nameSpace });
+    var standardRouteHtmlHandler = function standardRouteHtmlHandler(req, res) {
+        var urlToUse = req.url;
+        urlToUse = _url2.default.parse(urlToUse).pathname === '/' ? null : urlToUse;
+        var offline = typeof req.query.offline !== 'undefined';
+        var iframebutton = typeof req.query.iframebutton !== 'undefined';
+        var urlInfo = _mymodule2.default.deriveUrlInfo({ pathname: urlToUse, offline: offline, nameSpace: nameSpace });
 
-    _mongooseStuff.x.UpdateComplexImage(urlInfo).then(function (result) {});
+        _mongooseStuff.x.UpdateComplexImage(urlInfo).then(function (result) {});
 
-    res.render('redesign' + '.html', {
-      userTemplates: userTemplates,
-      req: req,
-      urlInfo: urlInfo,
-      mymodule: _mymodule2.default,
-      offline: offline,
-      iframebutton: iframebutton
-      // pretty:stringify(req, null, 2)
+        res.render('redesign' + '.html', {
+            userTemplates: userTemplates,
+            req: req,
+            urlInfo: urlInfo,
+            mymodule: _mymodule2.default,
+            offline: offline,
+            iframebutton: iframebutton
+            // pretty:stringify(req, null, 2)
+        });
+    };
+    app.get(_mymodule2.default.getStandardModesRegex(nameSpace), standardRouteHtmlHandler);
+
+    app.get((0, _ensureLeadingSlash2.default)(nameSpace + '/'), standardRouteHtmlHandler);
+
+    app.get((0, _ensureLeadingSlash2.default)(nameSpace + '/redesign'), standardRouteHtmlHandler);
+
+    app.get((0, _ensureLeadingSlash2.default)(nameSpace + '/list'), function (req, res) {
+        var offline = typeof req.query.offline !== 'undefined';
+        _mongooseStuff.x.GetComplexImageAll().then(function (images) {
+            // mongooseStuff.getImages().then(function(images){
+            res.render('list.html', {
+                images: images,
+                offline: offline
+            });
+        });
     });
-  };
-  app.get(_mymodule2.default.getStandardModesRegex(nameSpace), standardRouteHtmlHandler);
 
-  app.get((0, _ensureLeadingSlash2.default)(nameSpace + '/'), standardRouteHtmlHandler);
+    var userTemplates = [];
+    //===========================
+    //ENDPOINTS
+    //____________________________
 
-  app.get((0, _ensureLeadingSlash2.default)(nameSpace + '/redesign'), standardRouteHtmlHandler);
-
-  app.get((0, _ensureLeadingSlash2.default)(nameSpace + '/list'), function (req, res) {
-    var offline = typeof req.query.offline !== 'undefined';
-    _mongooseStuff.x.GetComplexImageAll().then(function (images) {
-      // mongooseStuff.getImages().then(function(images){
-      res.render('list.html', {
-        images: images,
-        offline: offline
-      });
+    (0, _endpointCompositeImage2.default)({
+        app: app,
+        accessKeyId: AWS_ACCESS_KEY,
+        secretAccessKey: AWS_SECRET_KEY,
+        Bucket: S3_BUCKET,
+        urlPattern: (0, _generateUrlRegexNamespace2.default)('image\/')
     });
-  });
 
-  var userTemplates = [];
-  //===========================
-  //ENDPOINTS
-  //____________________________
-
-  (0, _endpointCompositeImage2.default)({
-    app: app,
-    accessKeyId: AWS_ACCESS_KEY,
-    secretAccessKey: AWS_SECRET_KEY,
-    Bucket: S3_BUCKET,
-    urlPattern: (0, _generateUrlRegexNamespace2.default)('image\/')
-  });
-
-  (0, _endpointGetNormalizedImageInfo2.default)({
-    app: app,
-    accessKeyId: AWS_ACCESS_KEY,
-    secretAccessKey: AWS_SECRET_KEY,
-    Bucket: S3_BUCKET,
-    userTemplates: userTemplates,
-    urlPattern: (0, _ensureLeadingSlash2.default)(nameSpace + '/get_normalized_image_info')
-  });
-  (0, _endpointGetS3SignedUploadUrl2.default)({
-    app: app,
-    accessKeyId: AWS_ACCESS_KEY,
-    secretAccessKey: AWS_SECRET_KEY,
-    Bucket: S3_BUCKET,
-    urlPattern: (0, _ensureLeadingSlash2.default)(nameSpace + '/get_s3_signed_upload_url')
-  });
-
-  (0, _endpointIframeUpload2.default)({
-    app: app,
-    accessKeyId: AWS_ACCESS_KEY,
-    secretAccessKey: AWS_SECRET_KEY,
-    Bucket: S3_BUCKET,
-    urlPattern: (0, _ensureLeadingSlash2.default)(nameSpace + '/uploadsimple')
-  });
-
-  app.get((0, _ensureLeadingSlash2.default)(nameSpace + '/get_template_list'), function (req, res) {
-    console.log('req', req);
-    console.log('get_template_list', userTemplates);
-    (0, _respondWithJson2.default)({
-      res: res,
-      userTemplates: userTemplates
+    (0, _endpointGetNormalizedImageInfo2.default)({
+        app: app,
+        accessKeyId: AWS_ACCESS_KEY,
+        secretAccessKey: AWS_SECRET_KEY,
+        Bucket: S3_BUCKET,
+        userTemplates: userTemplates,
+        urlPattern: (0, _ensureLeadingSlash2.default)(nameSpace + '/get_normalized_image_info')
     });
-  });
-
-  // require('./js/passportStuff')({
-  //   app:app
-  // });
-  // app.listen(3000);
-
-
-  app.post((0, _ensureLeadingSlash2.default)(nameSpace + '/SimpleImage'), function (req, res) {
-    var data = req.body;
-    _mongooseStuff.x.simpleimage(data.url, data.idX).then(function () {
-      res.send({
-        status: "success"
-      });
+    (0, _endpointGetS3SignedUploadUrl2.default)({
+        app: app,
+        accessKeyId: AWS_ACCESS_KEY,
+        secretAccessKey: AWS_SECRET_KEY,
+        Bucket: S3_BUCKET,
+        urlPattern: (0, _ensureLeadingSlash2.default)(nameSpace + '/get_s3_signed_upload_url')
     });
-  });
 
-  app.post((0, _ensureLeadingSlash2.default)(nameSpace + '/ComplexImage'), function (req, res) {
-    var data = req.body;
-
-    _mongooseStuff.x.ComplexImage(data).then(function (result) {
-      res.send({
-        status: "success",
-        result: result,
-        payload: data
-      });
+    (0, _endpointIframeUpload2.default)({
+        app: app,
+        accessKeyId: AWS_ACCESS_KEY,
+        secretAccessKey: AWS_SECRET_KEY,
+        Bucket: S3_BUCKET,
+        urlPattern: (0, _ensureLeadingSlash2.default)(nameSpace + '/uploadsimple')
     });
-  });
 
-  app.post((0, _ensureLeadingSlash2.default)(nameSpace + '/GetComplexImage'), function (req, res) {
-    var data = req.body.data;
-    _mongooseStuff.x.GetComplexImage('asdf').then(function (result) {
-      res.send({
-        status: "success",
-        result: result
-      });
+    app.get((0, _ensureLeadingSlash2.default)(nameSpace + '/get_template_list'), function (req, res) {
+        console.log('req', req);
+        console.log('get_template_list', userTemplates);
+        (0, _respondWithJson2.default)({
+            res: res,
+            userTemplates: userTemplates
+        });
     });
-  });
 
-  app.post((0, _ensureLeadingSlash2.default)(nameSpace + '/UpdateComplexImage'), function (req, res) {
-    var data = req.body;
-    _mongooseStuff.x.UpdateComplexImage(data).then(function (result) {
-      res.send({
-        status: "success",
-        result: result
-      });
+    // require('./js/passportStuff')({
+    //   app:app
+    // });
+    // app.listen(3000);
+
+
+    app.post((0, _ensureLeadingSlash2.default)(nameSpace + '/SimpleImage'), function (req, res) {
+        var data = req.body;
+        _mongooseStuff.x.simpleimage(data.url, data.idX).then(function () {
+            res.send({
+                status: "success"
+            });
+        });
     });
-  });
 
-  // GetComplexImage
-  // mongooseStuff.ComplexImage({url:'asdf'}).always(function(arguments){
-  //    console.log('ComplexImage',arguments)
-  //  })
+    app.post((0, _ensureLeadingSlash2.default)(nameSpace + '/ComplexImage'), function (req, res) {
+        var data = req.body;
 
-  // mongooseStuff.GetComplexImageAll().always(function(arguments){
-  //   console.log('ComplexImage',arguments)
-  // })
-
-  _mongooseStuff.x.GetUserTemplatesAll().always(function (data) {
-    // console.log('GetUserTemplatesAll',data);
-    userTemplates = data;
-    // console.log('userTemplates',userTemplates)
-  });
-
-  if (appIsBrandNew) {
-    app.listen(port, function (error) {
-      if (error) {
-        console.error(error);
-      } else {
-        console.info('🌎 Listening on port %s. Open up http://localhost:%s/ in your browser.', port, port);
-      }
+        _mongooseStuff.x.ComplexImage(data).then(function (result) {
+            res.send({
+                status: "success",
+                result: result,
+                payload: data
+            });
+        });
     });
-  }
 
-  return app;
-};
+    app.post((0, _ensureLeadingSlash2.default)(nameSpace + '/GetComplexImage'), function (req, res) {
+        var data = req.body.data;
+        _mongooseStuff.x.GetComplexImage('asdf').then(function (result) {
+            res.send({
+                status: "success",
+                result: result
+            });
+        });
+    });
+
+    app.post((0, _ensureLeadingSlash2.default)(nameSpace + '/UpdateComplexImage'), function (req, res) {
+        var data = req.body;
+        _mongooseStuff.x.UpdateComplexImage(data).then(function (result) {
+            res.send({
+                status: "success",
+                result: result
+            });
+        });
+    });
+
+    // GetComplexImage
+    // mongooseStuff.ComplexImage({url:'asdf'}).always(function(arguments){
+    //    console.log('ComplexImage',arguments)
+    //  })
+
+    // mongooseStuff.GetComplexImageAll().always(function(arguments){
+    //   console.log('ComplexImage',arguments)
+    // })
+
+    _mongooseStuff.x.GetUserTemplatesAll().always(function (data) {
+        // console.log('GetUserTemplatesAll',data);
+        userTemplates = data;
+        // console.log('userTemplates',userTemplates)
+    });
+
+    return app;
+});
 
 /***/ }),
-/* 49 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var jD = __webpack_require__(38);
-var prepareModuleWithDefaults = __webpack_require__(40);
-var Busboy = __webpack_require__(61);
+var jD = __webpack_require__(39);
+var prepareModuleWithDefaults = __webpack_require__(42);
+var Busboy = __webpack_require__(63);
 
 module.exports = prepareModuleWithDefaults(function (req) {
   var dfd = jD.Deferred();
@@ -882,7 +912,7 @@ module.exports = prepareModuleWithDefaults(function (req) {
 });
 
 /***/ }),
-/* 50 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -940,15 +970,15 @@ module.exports = function (cropSettings, userPhotoWidthHeight) {
 };
 
 /***/ }),
-/* 51 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var sharp = __webpack_require__(47);
-var jD = __webpack_require__(38);
-var calcOverlayAndTemplateProcessingSettings = __webpack_require__(50);
+var sharp = __webpack_require__(49);
+var jD = __webpack_require__(39);
+var calcOverlayAndTemplateProcessingSettings = __webpack_require__(52);
 module.exports = function (overlaySettings, responses) {
   var dfd = jD.Deferred();
   var templateFetchResponse = responses.template;
@@ -998,15 +1028,15 @@ module.exports = function (overlaySettings, responses) {
 };
 
 /***/ }),
-/* 52 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var jD = __webpack_require__(38);
-var aws = __webpack_require__(39);
-var prepareModuleWithDefaults = __webpack_require__(40);
+var jD = __webpack_require__(39);
+var aws = __webpack_require__(40);
+var prepareModuleWithDefaults = __webpack_require__(42);
 
 module.exports = prepareModuleWithDefaults(function (s) {
   var dfd = jD.Deferred();
@@ -1036,7 +1066,7 @@ module.exports = prepareModuleWithDefaults(function (s) {
 });
 
 /***/ }),
-/* 53 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1046,25 +1076,25 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _awsSdk = __webpack_require__(39);
+var _awsSdk = __webpack_require__(40);
 
 var _awsSdk2 = _interopRequireDefault(_awsSdk);
 
 var _url = __webpack_require__(12);
 
-var _ensureLeadingSlash = __webpack_require__(42);
+var _ensureLeadingSlash = __webpack_require__(41);
 
 var _ensureLeadingSlash2 = _interopRequireDefault(_ensureLeadingSlash);
 
-var _getAllS3Objects = __webpack_require__(58);
+var _getAllS3Objects = __webpack_require__(60);
 
 var _getAllS3Objects2 = _interopRequireDefault(_getAllS3Objects);
 
-var _getS3ObjectData = __webpack_require__(45);
+var _getS3ObjectData = __webpack_require__(47);
 
 var _getS3ObjectData2 = _interopRequireDefault(_getS3ObjectData);
 
-var _createCompositeBuffer = __webpack_require__(51);
+var _createCompositeBuffer = __webpack_require__(53);
 
 var _createCompositeBuffer2 = _interopRequireDefault(_createCompositeBuffer);
 
@@ -1163,7 +1193,7 @@ exports.default = function (_ref) {
 };
 
 /***/ }),
-/* 54 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1173,15 +1203,15 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _awsSdk = __webpack_require__(39);
+var _awsSdk = __webpack_require__(40);
 
 var _awsSdk2 = _interopRequireDefault(_awsSdk);
 
-var _jqueryDeferred = __webpack_require__(38);
+var _jqueryDeferred = __webpack_require__(39);
 
 var _jqueryDeferred2 = _interopRequireDefault(_jqueryDeferred);
 
-var _mongooseStuff = __webpack_require__(46);
+var _mongooseStuff = __webpack_require__(48);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1193,8 +1223,8 @@ exports.default = function (_ref) {
       userTemplates = _ref.userTemplates,
       urlPattern = _ref.urlPattern;
 
-  var urlToFileData = __webpack_require__(59);
-  var uploadToS3 = __webpack_require__(44)({
+  var urlToFileData = __webpack_require__(61);
+  var uploadToS3 = __webpack_require__(45)({
     prepareModuleWithDefaults: true,
     accessKeyId: accessKeyId,
     secretAccessKey: secretAccessKey,
@@ -1203,7 +1233,7 @@ exports.default = function (_ref) {
 
   var parseUrl = __webpack_require__(12).parse;
 
-  var normalizeImageFileData = __webpack_require__(43)({
+  var normalizeImageFileData = __webpack_require__(44)({
     prepareModuleWithDefaults: true,
     parseSettings: function parseSettings(s) {
       var filename;
@@ -1236,8 +1266,8 @@ exports.default = function (_ref) {
       return s;
     }
   });
-  var deep = __webpack_require__(62);
-  var deleteS3Object = __webpack_require__(52)({
+  var deep = __webpack_require__(64);
+  var deleteS3Object = __webpack_require__(54)({
     prepareModuleWithDefaults: true,
     parseSettings: function parseSettings(s) {
       s.Key = deep(s, 'originalFilename');
@@ -1252,12 +1282,12 @@ exports.default = function (_ref) {
     var originalUrl = decodeURIComponent(req.query.image_url);
     var mustBeSquare = req.query.must_be_square === 'true';
 
-    var respondWithJsonSuccess = __webpack_require__(41)({
+    var respondWithJsonSuccess = __webpack_require__(43)({
       prepareModuleWithDefaults: true,
       res: res,
       isSuccess: true
     });
-    var respondWithJsonFail = __webpack_require__(41)({
+    var respondWithJsonFail = __webpack_require__(43)({
       prepareModuleWithDefaults: true,
       res: res,
       isSuccess: false
@@ -1299,7 +1329,7 @@ exports.default = function (_ref) {
    */
 
 /***/ }),
-/* 55 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1309,15 +1339,15 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _awsSdk = __webpack_require__(39);
+var _awsSdk = __webpack_require__(40);
 
 var _awsSdk2 = _interopRequireDefault(_awsSdk);
 
-var _ensureLeadingSlash = __webpack_require__(42);
+var _ensureLeadingSlash = __webpack_require__(41);
 
 var _ensureLeadingSlash2 = _interopRequireDefault(_ensureLeadingSlash);
 
-var _respondWithJson = __webpack_require__(41);
+var _respondWithJson = __webpack_require__(43);
 
 var _respondWithJson2 = _interopRequireDefault(_respondWithJson);
 
@@ -1363,7 +1393,7 @@ exports.default = function (_ref) {
    */
 
 /***/ }),
-/* 56 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1373,7 +1403,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _ensureLeadingSlash = __webpack_require__(42);
+var _ensureLeadingSlash = __webpack_require__(41);
 
 var _ensureLeadingSlash2 = _interopRequireDefault(_ensureLeadingSlash);
 
@@ -1388,7 +1418,7 @@ exports.default = function (_ref) {
 
   app.post(urlPattern, function (req, res, next) {
     var parseUrl = __webpack_require__(12).parse;
-    var normalizeImageFileData = __webpack_require__(43)({
+    var normalizeImageFileData = __webpack_require__(44)({
       prepareModuleWithDefaults: true,
       parseSettings: function parseSettings(s) {
         var filename = s.filename;
@@ -1404,13 +1434,13 @@ exports.default = function (_ref) {
         return s;
       }
     });
-    var uploadToS3 = __webpack_require__(44)({
+    var uploadToS3 = __webpack_require__(45)({
       prepareModuleWithDefaults: true,
       accessKeyId: accessKeyId,
       secretAccessKey: secretAccessKey,
       Bucket: Bucket
     });
-    var apiRequestIntoBufferData = __webpack_require__(49);
+    var apiRequestIntoBufferData = __webpack_require__(51);
     apiRequestIntoBufferData(req).then(normalizeImageFileData).then(uploadToS3).then(function (r) {
       var details = {
         url: r.url
@@ -1431,7 +1461,7 @@ exports.default = function (_ref) {
 };
 
 /***/ }),
-/* 57 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1451,15 +1481,15 @@ module.exports = function (standardModes) {
 };
 
 /***/ }),
-/* 58 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var aws = __webpack_require__(39);
-var jD = __webpack_require__(38);
-var getS3ObjectData = __webpack_require__(45);
+var aws = __webpack_require__(40);
+var jD = __webpack_require__(39);
+var getS3ObjectData = __webpack_require__(47);
 module.exports = function (s) {
   var dfdMain = jD.Deferred();
   var promises = [];
@@ -1485,7 +1515,7 @@ module.exports = function (s) {
       }).then(entryDfd.resolve).fail(function (originalErr) {
         if (entry.retrySearchCriteria) {
           var retryBucket = entry.retrySearchCriteria.Bucket ? entry.retrySearchCriteria.Bucket : s.Bucket;
-          var aws = __webpack_require__(39);
+          var aws = __webpack_require__(40);
           aws.config.update({ accessKeyId: s.accessKeyId, secretAccessKey: s.secretAccessKey });
           var s3 = new aws.S3();
           var params = {
@@ -1511,7 +1541,7 @@ module.exports = function (s) {
                   Bucket: retryBucket
                 }).then(function () {
                   var args = arguments;
-                  var normalizeImageFileData = __webpack_require__(43)({
+                  var normalizeImageFileData = __webpack_require__(44)({
                     prepareModuleWithDefaults: true,
                     filename: filename,
                     parseSettings: function parseSettings(s) {
@@ -1519,7 +1549,7 @@ module.exports = function (s) {
                       return s;
                     }
                   });
-                  var uploadToS3 = __webpack_require__(44)({
+                  var uploadToS3 = __webpack_require__(45)({
                     prepareModuleWithDefaults: true,
                     accessKeyId: s.accessKeyId,
                     secretAccessKey: s.secretAccessKey,
@@ -1559,13 +1589,13 @@ module.exports = function (s) {
 };
 
 /***/ }),
-/* 59 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var jD = __webpack_require__(38);
+var jD = __webpack_require__(39);
 module.exports = function (originalUrl) {
   var isHttps = originalUrl.indexOf('https://') !== -1;
   var url = __webpack_require__(12);
@@ -1574,9 +1604,9 @@ module.exports = function (originalUrl) {
   var options = url.parse(originalUrl);
   var http;
   if (isHttps) {
-    http = __webpack_require__(66);
+    http = __webpack_require__(68);
   } else {
-    http = __webpack_require__(65);
+    http = __webpack_require__(67);
   }
 
   http.get(options, function (response) {
@@ -1600,7 +1630,7 @@ module.exports = function (originalUrl) {
 };
 
 /***/ }),
-/* 60 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

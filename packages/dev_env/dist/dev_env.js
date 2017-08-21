@@ -8,7 +8,7 @@ require("source-map-support").install();
 		exports["@defualt/dev_env"] = factory(require("fs-extra"), require("webpack"), require("path"), require("yargs"), require("child_process"), require("globby"), require("url"), require("express"), require("directory-named-webpack-plugin"), require("extract-text-webpack-plugin"), require("html-webpack-plugin"), require("node-sass-json-importer"), require("single-line-log"), require("string-replace-webpack-plugin"), require("validate-npm-package-name"), require("webpack-dev-middleware"), require("webpack-node-externals"), require("jquery-deferred"), require("aws-sdk"), require("sharp"), require("busboy"), require("deep-get-set"), require("ejs"), require("fs"), require("http"), require("https"), require("mime-types"), require("mongodb-uri"), require("mongoose"));
 	else
 		root["@defualt/dev_env"] = factory(root["fs-extra"], root["webpack"], root["path"], root["yargs"], root["child_process"], root["globby"], root["url"], root["express"], root["directory-named-webpack-plugin"], root["extract-text-webpack-plugin"], root["html-webpack-plugin"], root["node-sass-json-importer"], root["single-line-log"], root["string-replace-webpack-plugin"], root["validate-npm-package-name"], root["webpack-dev-middleware"], root["webpack-node-externals"], root["jquery-deferred"], root["aws-sdk"], root["sharp"], root["busboy"], root["deep-get-set"], root["ejs"], root["fs"], root["http"], root["https"], root["mime-types"], root["mongodb-uri"], root["mongoose"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_0__, __WEBPACK_EXTERNAL_MODULE_1__, __WEBPACK_EXTERNAL_MODULE_2__, __WEBPACK_EXTERNAL_MODULE_3__, __WEBPACK_EXTERNAL_MODULE_9__, __WEBPACK_EXTERNAL_MODULE_10__, __WEBPACK_EXTERNAL_MODULE_12__, __WEBPACK_EXTERNAL_MODULE_13__, __WEBPACK_EXTERNAL_MODULE_27__, __WEBPACK_EXTERNAL_MODULE_28__, __WEBPACK_EXTERNAL_MODULE_29__, __WEBPACK_EXTERNAL_MODULE_30__, __WEBPACK_EXTERNAL_MODULE_31__, __WEBPACK_EXTERNAL_MODULE_32__, __WEBPACK_EXTERNAL_MODULE_33__, __WEBPACK_EXTERNAL_MODULE_34__, __WEBPACK_EXTERNAL_MODULE_35__, __WEBPACK_EXTERNAL_MODULE_38__, __WEBPACK_EXTERNAL_MODULE_39__, __WEBPACK_EXTERNAL_MODULE_47__, __WEBPACK_EXTERNAL_MODULE_61__, __WEBPACK_EXTERNAL_MODULE_62__, __WEBPACK_EXTERNAL_MODULE_63__, __WEBPACK_EXTERNAL_MODULE_64__, __WEBPACK_EXTERNAL_MODULE_65__, __WEBPACK_EXTERNAL_MODULE_66__, __WEBPACK_EXTERNAL_MODULE_67__, __WEBPACK_EXTERNAL_MODULE_68__, __WEBPACK_EXTERNAL_MODULE_69__) {
+})(this, function(__WEBPACK_EXTERNAL_MODULE_0__, __WEBPACK_EXTERNAL_MODULE_1__, __WEBPACK_EXTERNAL_MODULE_2__, __WEBPACK_EXTERNAL_MODULE_3__, __WEBPACK_EXTERNAL_MODULE_9__, __WEBPACK_EXTERNAL_MODULE_10__, __WEBPACK_EXTERNAL_MODULE_12__, __WEBPACK_EXTERNAL_MODULE_13__, __WEBPACK_EXTERNAL_MODULE_27__, __WEBPACK_EXTERNAL_MODULE_28__, __WEBPACK_EXTERNAL_MODULE_29__, __WEBPACK_EXTERNAL_MODULE_30__, __WEBPACK_EXTERNAL_MODULE_31__, __WEBPACK_EXTERNAL_MODULE_32__, __WEBPACK_EXTERNAL_MODULE_33__, __WEBPACK_EXTERNAL_MODULE_34__, __WEBPACK_EXTERNAL_MODULE_35__, __WEBPACK_EXTERNAL_MODULE_39__, __WEBPACK_EXTERNAL_MODULE_40__, __WEBPACK_EXTERNAL_MODULE_49__, __WEBPACK_EXTERNAL_MODULE_63__, __WEBPACK_EXTERNAL_MODULE_64__, __WEBPACK_EXTERNAL_MODULE_65__, __WEBPACK_EXTERNAL_MODULE_66__, __WEBPACK_EXTERNAL_MODULE_67__, __WEBPACK_EXTERNAL_MODULE_68__, __WEBPACK_EXTERNAL_MODULE_69__, __WEBPACK_EXTERNAL_MODULE_70__, __WEBPACK_EXTERNAL_MODULE_71__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -16,7 +16,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// object to store loaded chunks
 /******/ 	// "0" means "already loaded"
 /******/ 	var installedChunks = {
-/******/ 		1: 0
+/******/ 		2: 0
 /******/ 	};
 /******/
 /******/ 	// The require function
@@ -156,7 +156,7 @@ var _webpackEnhanceConfigNode = __webpack_require__(6);
 
 var _webpackEnhanceConfigNode2 = _interopRequireDefault(_webpackEnhanceConfigNode);
 
-var _webpackEnhanceImmediateConfig = __webpack_require__(19);
+var _webpackEnhanceImmediateConfig = __webpack_require__(18);
 
 var _webpackEnhanceImmediateConfig2 = _interopRequireDefault(_webpackEnhanceImmediateConfig);
 
@@ -199,7 +199,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _webpackConfigResolve = __webpack_require__(17);
+var _webpackConfigResolve = __webpack_require__(16);
 
 var _webpackConfigResolve2 = _interopRequireDefault(_webpackConfigResolve);
 
@@ -367,11 +367,11 @@ var _fsExtra = __webpack_require__(0);
 
 var _fsExtra2 = _interopRequireDefault(_fsExtra);
 
-var _webpackConfig = __webpack_require__(22);
+var _webpackConfig = __webpack_require__(21);
 
 var _webpackConfig2 = _interopRequireDefault(_webpackConfig);
 
-var _webpackParseStatsForDepProblems = __webpack_require__(26);
+var _webpackParseStatsForDepProblems = __webpack_require__(25);
 
 var _webpackParseStatsForDepProblems2 = _interopRequireDefault(_webpackParseStatsForDepProblems);
 
@@ -428,11 +428,11 @@ exports.serve = undefined;
 
 var _yargs = __webpack_require__(3);
 
-var _shellCommand = __webpack_require__(16);
+var _shellCommand = __webpack_require__(15);
 
 var _shellCommand2 = _interopRequireDefault(_shellCommand);
 
-var _jestSpawnProcess = __webpack_require__(20);
+var _jestSpawnProcess = __webpack_require__(19);
 
 var _jestSpawnProcess2 = _interopRequireDefault(_jestSpawnProcess);
 
@@ -444,11 +444,11 @@ var _webpackRunCompiler = __webpack_require__(7);
 
 var _webpackRunCompiler2 = _interopRequireDefault(_webpackRunCompiler);
 
-var _webpackBuildCommandLine = __webpack_require__(18);
+var _webpackBuildCommandLine = __webpack_require__(17);
 
 var _webpackBuildCommandLine2 = _interopRequireDefault(_webpackBuildCommandLine);
 
-var _webpackExpressServer = __webpack_require__(25);
+var _webpackExpressServer = __webpack_require__(24);
 
 var _webpackExpressServer2 = _interopRequireDefault(_webpackExpressServer);
 
@@ -459,8 +459,34 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var env = _yargs.argv.env; /* eslint-disable no-console */
 
 var item = _yargs.argv.item;
-console.log('NOTHING');
-console.log(_yargs.argv.nothing);
+
+function asyncRecurseStartApps(serverNamespaces) {
+  var lastBackendApp = null;
+  var i = 0;
+  function recurse(backendAppNamespace) {
+    __webpack_require__(26)("./" + backendAppNamespace + '/' + backendAppNamespace + '.express').then(function (someBackendApp) {
+      var serveBackendApp = someBackendApp.default;
+      var backendAppSettings = {
+        nameSpace: backendAppNamespace
+      };
+      if (lastBackendApp) {
+        backendAppSettings.app = lastBackendApp;
+      }
+      var backendAppServed = serveBackendApp(backendAppSettings);
+      lastBackendApp = backendAppServed;
+      var nextNamespace = serverNamespaces[++i];
+      if (nextNamespace) {
+        recurse(nextNamespace);
+      } else {
+        (0, _webpackExpressServer2.default)({
+          app: backendAppServed
+        });
+      }
+    });
+  }
+  recurse(serverNamespaces[i]);
+}
+
 if (item) {
   (0, _shellCommand2.default)('(cd ./packages/' + item + ' && npm run start)');
 } else if (env === 'test') {
@@ -469,46 +495,11 @@ if (item) {
   (0, _webpackBuildCommandLine2.default)();
 } else if (env === 'build') {
   (0, _webpackRunCompiler2.default)(_webpackMakeCompiler2.default);
+} else if (_yargs.argv.servers) {
+  var serverNamespaces = _yargs.argv.servers.split(',');
+  asyncRecurseStartApps(serverNamespaces);
 } else {
-  if (_yargs.argv.server) {
-
-    var p = '/Users/brianephraim/Sites/monorepo/packages/bernieserver/bernieserver';
-    var x = '.express';
-    // const p = '/Users/brianephraim/Sites/monorepo/packages/bernieserver/bernieserver.express';
-    // /Users/brianephraim/Sites/monorepo/packages/bernieserver/bernieserver.express
-    // argv.server
-    // System.import('../bernieserver/bernieserver' + x).then((someServer) => {
-
-    // let serverImport;
-    // if (isWithinMonoRepo(__dirname) {
-    //   serverImport = System.import('../../' + argv.server + '.express')
-    // } else {
-    //   serverImport = System.import('../../' + argv.server + '.express'
-    // }
-
-
-    __webpack_require__(14)("./" + _yargs.argv.server + '.express').then(function (someServer) {
-      // System.import(p+'.express').then((someServer) => {
-      // System.import(argv.server+'.express').then((someServer) => {
-      // System.import('/Users/brianephraim/Sites/monorepo/packages/bernieserver/bernieserver'+'.express').then((someServer) => {
-      // System.import(argv.server + '.express.js').then((someServer) => {
-      var serveBernieBackend = someServer.default;
-
-      // const dev_envServed = serve();
-      // const bernieBackendServed = serveBernieBackend(dev_envServed);
-
-      var bernieBackendServed = serveBernieBackend({
-        nameSpace: 'bernieBackend'
-      });
-      var dev_envServed = (0, _webpackExpressServer2.default)({
-        app: bernieBackendServed,
-        nameSpaces: ['bernieBackend']
-      });
-    });
-  } else {
-    (0, _webpackExpressServer2.default)({});
-  }
-  // serve();
+  (0, _webpackExpressServer2.default)({});
 }
 
 exports.serve = _webpackExpressServer2.default;
@@ -527,30 +518,6 @@ module.exports = require("express");
 
 /***/ }),
 /* 14 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var map = {
-	"./packages/bernieserver/bernieserver.express": [
-		37,
-		0
-	]
-};
-function webpackAsyncContext(req) {
-	var ids = map[req];
-	if(!ids)
-		return Promise.reject(new Error("Cannot find module '" + req + "'."));
-	return __webpack_require__.e(ids[1]).then(function() {
-		return __webpack_require__(ids[0]);
-	});
-};
-webpackAsyncContext.keys = function webpackAsyncContextKeys() {
-	return Object.keys(map);
-};
-module.exports = webpackAsyncContext;
-webpackAsyncContext.id = 14;
-
-/***/ }),
-/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -598,7 +565,7 @@ function parseRequestResolvePlugin() {
 module.exports = parseRequestResolvePlugin;
 
 /***/ }),
-/* 16 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -638,14 +605,14 @@ module.exports = function (commandToRun) {
 };
 
 /***/ }),
-/* 17 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var DirectoryNamedWebpackPlugin = __webpack_require__(27);
-var parseRequestResolvePlugin = __webpack_require__(15);
+var parseRequestResolvePlugin = __webpack_require__(14);
 var path = __webpack_require__(2);
 module.exports = {
   resolve: {
@@ -668,7 +635,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 18 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -703,7 +670,7 @@ exports.default = function () {
 };
 
 /***/ }),
-/* 19 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -749,7 +716,7 @@ function enhance(originalConfig) {
 exports.default = enhance;
 
 /***/ }),
-/* 20 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -803,7 +770,7 @@ exports.default = function (testdevenv) {
 };
 
 /***/ }),
-/* 21 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -847,7 +814,7 @@ exports.register = register;
 exports.default = plugins;
 
 /***/ }),
-/* 22 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -873,11 +840,11 @@ var _webpackEnhanceConfigNode = __webpack_require__(6);
 
 var _webpackEnhanceConfigNode2 = _interopRequireDefault(_webpackEnhanceConfigNode);
 
-var _webpackEnhanceConfigWeb = __webpack_require__(23);
+var _webpackEnhanceConfigWeb = __webpack_require__(22);
 
 var _webpackEnhanceConfigWeb2 = _interopRequireDefault(_webpackEnhanceConfigWeb);
 
-var _webpackEnhanceEntryOutputStandard = __webpack_require__(24);
+var _webpackEnhanceEntryOutputStandard = __webpack_require__(23);
 
 var _webpackEnhanceEntryOutputStandard2 = _interopRequireDefault(_webpackEnhanceEntryOutputStandard);
 
@@ -991,7 +958,7 @@ function generateConfigJson() {
 exports.default = generateConfigJson();
 
 /***/ }),
-/* 23 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1033,7 +1000,7 @@ var _globby = __webpack_require__(10);
 
 var _globby2 = _interopRequireDefault(_globby);
 
-var _pluginRegistry = __webpack_require__(21);
+var _pluginRegistry = __webpack_require__(20);
 
 var _pluginRegistry2 = _interopRequireDefault(_pluginRegistry);
 
@@ -1174,7 +1141,7 @@ function enhance(originalConfig, libraryName, isBuild, dirRoot, username, output
 exports.default = enhance;
 
 /***/ }),
-/* 24 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1212,7 +1179,7 @@ function enhance(originalConfig, dirRoot, libraryName, entryFiles) {
 exports.default = enhance;
 
 /***/ }),
-/* 25 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1295,7 +1262,7 @@ exports.default = function (_ref) {
 }; /* eslint-disable no-console */
 
 /***/ }),
-/* 26 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1449,6 +1416,34 @@ function webpackParseStatsForDepProblems(stats) {
 exports.default = webpackParseStatsForDepProblems;
 
 /***/ }),
+/* 26 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var map = {
+	"./bernieserver/bernieserver.express": [
+		37,
+		0
+	],
+	"./junk-express/junk-express.express": [
+		38,
+		1
+	]
+};
+function webpackAsyncContext(req) {
+	var ids = map[req];
+	if(!ids)
+		return Promise.reject(new Error("Cannot find module '" + req + "'."));
+	return __webpack_require__.e(ids[1]).then(function() {
+		return __webpack_require__(ids[0]);
+	});
+};
+webpackAsyncContext.keys = function webpackAsyncContextKeys() {
+	return Object.keys(map);
+};
+module.exports = webpackAsyncContext;
+webpackAsyncContext.id = 26;
+
+/***/ }),
 /* 27 */
 /***/ (function(module, exports) {
 
@@ -1511,33 +1506,33 @@ module.exports = __webpack_require__(11);
 
 /***/ }),
 /* 37 */,
-/* 38 */
+/* 38 */,
+/* 39 */
 /***/ (function(module, exports) {
 
 module.exports = require("jquery-deferred");
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ (function(module, exports) {
 
 module.exports = require("aws-sdk");
 
 /***/ }),
-/* 40 */,
 /* 41 */,
 /* 42 */,
 /* 43 */,
 /* 44 */,
 /* 45 */,
 /* 46 */,
-/* 47 */
+/* 47 */,
+/* 48 */,
+/* 49 */
 /***/ (function(module, exports) {
 
 module.exports = require("sharp");
 
 /***/ }),
-/* 48 */,
-/* 49 */,
 /* 50 */,
 /* 51 */,
 /* 52 */,
@@ -1549,55 +1544,57 @@ module.exports = require("sharp");
 /* 58 */,
 /* 59 */,
 /* 60 */,
-/* 61 */
+/* 61 */,
+/* 62 */,
+/* 63 */
 /***/ (function(module, exports) {
 
 module.exports = require("busboy");
 
 /***/ }),
-/* 62 */
+/* 64 */
 /***/ (function(module, exports) {
 
 module.exports = require("deep-get-set");
 
 /***/ }),
-/* 63 */
+/* 65 */
 /***/ (function(module, exports) {
 
 module.exports = require("ejs");
 
 /***/ }),
-/* 64 */
+/* 66 */
 /***/ (function(module, exports) {
 
 module.exports = require("fs");
 
 /***/ }),
-/* 65 */
+/* 67 */
 /***/ (function(module, exports) {
 
 module.exports = require("http");
 
 /***/ }),
-/* 66 */
+/* 68 */
 /***/ (function(module, exports) {
 
 module.exports = require("https");
 
 /***/ }),
-/* 67 */
+/* 69 */
 /***/ (function(module, exports) {
 
 module.exports = require("mime-types");
 
 /***/ }),
-/* 68 */
+/* 70 */
 /***/ (function(module, exports) {
 
 module.exports = require("mongodb-uri");
 
 /***/ }),
-/* 69 */
+/* 71 */
 /***/ (function(module, exports) {
 
 module.exports = require("mongoose");

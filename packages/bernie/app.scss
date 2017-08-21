@@ -71,25 +71,7 @@ html .branding_title{
 .homeLayout{
 	position: relative;
 }
-.disclaimer{
-	background: $grey0;
-	border-top:1px solid $grey1;
-	z-index:1;
-	position:absolute;
-	top:100%;
-	padding: $appPad*12 $appPad $appPad $appPad;
-	width:100%;
-	box-sizing:border-box;
-	text-align:center;
-	p{
-		font-size: 12px;
-		text-align:center;
-		display:inline-block;
-		padding:$appPad/2;
-		border:1px solid $grey2;
-		color:$grey2;
-	}
-}
+
 
 // SPINNER
 .spinnerShowing{

@@ -78,5 +78,8 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/defualt/dev_env.git"
+  },
+  "devDependencies": {
+    "babel-plugin-styled-components": "^1.1.7"
   }
 }
