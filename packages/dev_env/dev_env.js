@@ -11,7 +11,7 @@ import serve from './webpackExpressServer.js';
 const env = argv.env;
 const item = argv.item;
 console.log('NOTHING');
-console.log(argv.nothing)
+console.log(argv.nothing, typeof argv.nothing)
 if (item) {
   shellCommand(`(cd ./packages/${item} && npm run start)`);
 } else if (env === 'test') {
@@ -39,22 +39,13 @@ if (item) {
 
 
     System.import('../../' + argv.server + '.express').then((someServer) => {
-    // System.import(p+'.express').then((someServer) => {
-    // System.import(argv.server+'.express').then((someServer) => {
-    // System.import('/Users/brianephraim/Sites/monorepo/packages/bernieserver/bernieserver'+'.express').then((someServer) => {
-    // System.import(argv.server + '.express.js').then((someServer) => {
       const serveBernieBackend = someServer.default;
-
-
-      // const dev_envServed = serve();
-      // const bernieBackendServed = serveBernieBackend(dev_envServed);
 
       const bernieBackendServed = serveBernieBackend({
         nameSpace: 'bernieBackend'
       });
       const dev_envServed = serve({
         app: bernieBackendServed,
-        nameSpaces: ['bernieBackend'],
       });
     });
   }
