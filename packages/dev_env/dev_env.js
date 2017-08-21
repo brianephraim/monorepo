@@ -38,7 +38,8 @@ if (item) {
     // }
 
 
-    System.import('../../' + argv.server + '.express').then((someServer) => {
+    System.import(`../../packages/${argv.server}/${argv.server}.express`).then((someServer) => {
+    // System.import('../../' + argv.server + '.express').then((someServer) => {
       const serveBernieBackend = someServer.default;
 
       const bernieBackendServed = serveBernieBackend({
