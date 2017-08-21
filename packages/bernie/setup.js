@@ -119,5 +119,17 @@ const bernieReducers = combineReducers({
     }
     return 'BERNIE_HOME';
   },
+  responsiveStatuses: (state = [], action) => {
+    if (action.type === 'UDATE_RESPONSIVE_STATUSES' && action.name === 'bernie') {
+      return [...action.responsiveStatuses]
+    }
+    return state;
+  },
+  responsiveStatusesDict: (state = {}, action) => {
+    if (action.type === 'UDATE_RESPONSIVE_STATUSES_DICT' && action.name === 'bernie') {
+      return {...action.responsiveStatusesDict}
+    }
+    return state;
+  }
 });
 export {nameSpace,bernieScreenComponentMap,payloadRefineAction,bernieReducers,bernieRoutesMap};

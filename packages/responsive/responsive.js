@@ -67,61 +67,71 @@ const ResponsiveHOC = (ComponentToWrap, defaults) => {
 export default ResponsiveHOC;
 
 /* eslint-disable react/no-multi-comp */
-class ResponsiveMaster extends Component {
-  constructor() {
-    super();
-    this.state = {
-      activeStatusRegistry: {},
-      realClassNameYall: '',
-    };
-  }
-  componentDidMount() {
-    this.unregisterResponsiveRefresh = registerResponsiveRefresh({
-      name: this.props.name,
-      updateMasterClasses: (...args) => { return this.updateMasterClasses(...args); },
-      nukeActiveStatusRegistryOnMaster: () => {
-        this.setState({
-          activeStatusRegistry: {},
-          realClassNameYall: '',
-        });
-      },
-    });
-  }
-  componentWillUnmount() {
-    this.unregisterResponsiveRefresh();
-  }
-
-  updateMasterClasses(idPriority, activeStatusRegistry) {
-    const objectComplexUpdate = {
-      ...this.state.activeStatusRegistry,
-      [idPriority]: activeStatusRegistry,
-    };
-
-    const toReturn = {};
-    Object.keys(objectComplexUpdate).forEach((priority) => {
-      const priorityClassNames = objectComplexUpdate[priority];
-      Object.keys(priorityClassNames).forEach((name) => {
-        if (priorityClassNames[name]) {
-          toReturn[name] = true;
-        }
+function ResponsiveMasterHOC(Comp) {
+  class ResponsiveMaster extends Component {
+    constructor() {
+      super();
+      this.state = {
+        activeStatuses: [],
+        activeStatusRegistry: {},
+        activeStatusesDict: {},
+        realClassNameYall: '',
+      };
+    }
+    componentDidMount() {
+      this.unregisterResponsiveRefresh = registerResponsiveRefresh({
+        name: this.props.name,
+        updateMasterClasses: (...args) => { return this.updateMasterClasses(...args); },
+        nukeActiveStatusRegistryOnMaster: () => {
+          this.setState({
+            activeStatuses: [],
+            activeStatusRegistry: {},
+            activeStatusesDict: {},
+            realClassNameYall: '',
+          });
+        },
       });
-    });
+    }
+    componentWillUnmount() {
+      this.unregisterResponsiveRefresh();
+    }
 
-    const realClassNameYall = Object.keys(toReturn).reduce((c, n) => {
-      return `${c} responsive_${n}`;
-    }, '');
-    this.setState({
-      realClassNameYall,
-      activeStatusRegistry: objectComplexUpdate,
-    });
-    return toReturn;
+    updateMasterClasses(idPriority, activeStatusRegistry) {
+      const objectComplexUpdate = {
+        ...this.state.activeStatusRegistry,
+        [idPriority]: activeStatusRegistry,
+      };
+
+      const toReturn = {};
+      Object.keys(objectComplexUpdate).forEach((priority) => {
+        const priorityClassNames = objectComplexUpdate[priority];
+        Object.keys(priorityClassNames).forEach((name) => {
+          if (priorityClassNames[name]) {
+            toReturn[name] = true;
+          }
+        });
+      });
+
+      const realClassNameYall = Object.keys(toReturn).reduce((c, n) => {
+        return `${c} responsive_${n}`;
+      }, '');
+      this.setState({
+        realClassNameYall,
+        activeStatusRegistry: objectComplexUpdate,
+        activeStatuses: Object.keys(toReturn),
+        activeStatusesDict: toReturn,
+      });
+      return toReturn;
+    }
+    render() {
+      return (<Comp className={`${this.state.realClassNameYall}`} activeStatuses={this.state.activeStatuses} activeStatusesDict={this.state.activeStatusesDict} >{this.props.children}</Comp>);
+    }
   }
-  render() {
-    return (<div className={this.state.realClassNameYall}>{this.props.children}</div>);
-  }
+  ResponsiveMaster.propTypes = {
+    name: PropTypes.string,
+    children: PropTypes.object,
+  };
+  return ResponsiveMaster;
 }
-ResponsiveMaster.propTypes = {
-  name: PropTypes.string,
-  children: PropTypes.object,
-};
-export { ResponsiveMaster };
+
+export { ResponsiveMasterHOC };

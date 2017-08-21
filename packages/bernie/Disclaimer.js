@@ -2,36 +2,8 @@
 /* eslint-disable react/jsx-pascal-case */
 import React from 'react';
 import styled from 'styled-components';
-/*
-$blue: #087ED7;
-$red: #EA504E;
-$white: #fff;
-$grey0: #eee;
-$grey1: #ccc;
-$grey2: #666;
+import styleConstants from './style-constants';
 
-$appPad: 1em;
-$headerHeight: $appPad*2;
-
-$singleColHome: '.responsive_singleCol .homeLayout &';// #{$singleColHome}
-
-$font1: 'Fjalla One', sans-serif;
-$font2: 'Cantarell', sans-serif;
-*/
-const styleConstants = {
-  colors: {
-    blue: '#087ED7',
-    red: '#EA504E',
-    white: '#fff',
-    grey0: '#eee',
-    grey1: '#ccc',
-    grey2: '#666',
-  },
-  font1: "'Fjalla One', sans-serif",
-  font2: "'Cantarell', sans-serif",
-  appPad: 1,
-};
-styleConstants.headerHeight = styleConstants.appPad * 2;
 
 const Styled_Disclaimer = styled.div`
   background: ${styleConstants.colors.grey0};
@@ -40,6 +12,7 @@ const Styled_Disclaimer = styled.div`
   position:absolute;
   top:100%;
   padding: ${styleConstants.appPad * 12}em ${styleConstants.appPad}em ${styleConstants.appPad}em ${styleConstants.appPad}em;
+  margin: ${props => {return props.small ? '0.25em 1em' : '0.5em 2em'}};
   width:100%;
   box-sizing:border-box;
   text-align:center;
@@ -55,7 +28,7 @@ const Styled_Disclaimer_P = styled.p`
 // This adds padding to the bottom and serves as disclaimer.
 function BernieDisclaimer() {
   return (
-    <Styled_Disclaimer>
+    <Styled_Disclaimer small>
       <Styled_Disclaimer_P>
         contact: admin@bernieselfie.com <br />
         <a href="/terms">Terms&nbsp;and&nbsp;Conditions</a>

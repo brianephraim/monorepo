@@ -1,11 +1,41 @@
 /* eslint-disable react/no-multi-comp */
 /* eslint-disable class-methods-use-this */
-import React from 'react';
+import React, {Component} from 'react';
 import {
-  ResponsiveMaster,
+  ResponsiveMasterHOC,
 } from '@defualt/responsive';
+import { connect } from 'react-redux';
 import Routing from './Routing'
 import './app.scss';
+
+let MyResponsiveMaster = class extends Component {
+  componentWillReceiveProps(nextProps){
+    console.log(nextProps);
+    nextProps.doThing(nextProps.activeStatusesDict);
+    
+  }
+  render() {
+    return <div className={this.props.className} >{this.props.children}</div>
+  }
+};
+MyResponsiveMaster = connect(
+() => {
+  return {};
+},
+{
+  doThing: (responsiveStatusesDict) => {
+    console.log(responsiveStatusesDict);
+    return {
+      name: 'bernie',
+      responsiveStatusesDict,
+      type:'UDATE_RESPONSIVE_STATUSES_DICT'
+    }
+  },
+})(MyResponsiveMaster);
+
+
+
+let ResponsiveMaster = ResponsiveMasterHOC(MyResponsiveMaster);
 
 function Bernie(props) {
   return (
