@@ -1,0 +1,13 @@
+{
+  "name": "@defualt/junk-express",
+  "version": "0.0.1",
+  "private": true,
+  "privateFromGithub": true,
+  "bundleForNode": true,
+  "scripts": {
+    "start": "devenv"
+  },
+  "devDependencies": {
+    "@defualt/dev_env": "^0.0.14"
+  }
+}

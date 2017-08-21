@@ -12,7 +12,7 @@ class ImagePickerTemplate extends Component {
   componentWillMount() {
     imagesFromFetchPromise =
       imagesFromFetchPromise ||
-      fetch('/bernieBackend/get_template_list').then(r => {
+      fetch('/bernieserver/get_template_list').then(r => {
         return r.json();
       });
     imagesFromFetchPromise.then(response => {

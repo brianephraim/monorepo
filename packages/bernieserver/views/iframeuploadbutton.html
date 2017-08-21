@@ -22,7 +22,7 @@
 </head>
 <body class="iframeUploadButton">
 <div class="button">
-    <form class="uploadFileForm" action="/bernieBackend/uploadsimple?contentType=text_html&buttonText=<%- encodeURIComponent(buttonText) %>" method="post" enctype="multipart/form-data">
+    <form class="uploadFileForm" action="/bernieserver/uploadsimple?contentType=text_html&buttonText=<%- encodeURIComponent(buttonText) %>" method="post" enctype="multipart/form-data">
         <input type="file" class="uploadFileInput fileInput" name="uploadFile" id="iframeUploadButton" style="width:0;height:0;visibility:hidden;">
         <label for="iframeUploadButton"><%- buttonText %></label>
         <!-- <button type="submit">submit</button> -->

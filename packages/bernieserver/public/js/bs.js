@@ -431,7 +431,7 @@ window.bs.setupNewModalManager = function($parentToInject){
         var crop = data.crop;
         var mode = typeof data.mode !== 'undefined' ? data.mode : urlInfo.mode;
 
-        var urlInfoDeriver = mymodule.deriveUrlInfo({pathname: urlInfo.pathname, nameSpace: 'bernieBackend'} );
+        var urlInfoDeriver = mymodule.deriveUrlInfo({pathname: urlInfo.pathname, nameSpace: 'bernieserver'} );
         var settings = {
             x:crop.x,
             y:crop.y,
@@ -540,7 +540,7 @@ window.bs.setupNewModalManager = function($parentToInject){
                         //     templateHeight: result.height,
                         //     templateWidth: result.width
                         // };
-                        var urlInfoDeriver = mymodule.deriveUrlInfo({pathname: urlInfo.pathname, nameSpace: 'bernieBackend'});
+                        var urlInfoDeriver = mymodule.deriveUrlInfo({pathname: urlInfo.pathname, nameSpace: 'bernieserver'});
                         urlInfoDeriver.makeCustomUrl({
                             mode:'ut',
                             customTemplate: response.Key.replace('.png','').replace('decorations/','')
@@ -766,7 +766,7 @@ window.bs.setupNewModalManager = function($parentToInject){
         var self = this;
         bs.loader.load();
         if(!offline){
-            Webcam.upload(data_uri, '/bernieBackend/uploadsimple', function(code, result) {
+            Webcam.upload(data_uri, '/bernieserver/uploadsimple', function(code, result) {
                 if(code === 200){
                     result = JSON.parse(result);
                     var formattedResponse = self.formatUrlAndResponseForCropModal({result:result});
@@ -1301,13 +1301,13 @@ window.bs.s3Stuff = (function(){
         request.
     */
     function get_signed_request(file,folder,mustBeSquare){
-        console.log(2,"/bernieBackend/get_s3_signed_upload_url?file_name="+filename+"&file_type="+file.type);
+        console.log(2,"/bernieserver/get_s3_signed_upload_url?file_name="+filename+"&file_type="+file.type);
         folder = !!folder ? folder : 'selfies';
         var dfd = jQuery.Deferred();
         var xhr = new XMLHttpRequest();
         var filename = file.name;
         filename = folder + '/' + filename;
-        xhr.open("GET", "/bernieBackend/get_s3_signed_upload_url?file_name="+filename+"&file_type="+file.type);
+        xhr.open("GET", "/bernieserver/get_s3_signed_upload_url?file_name="+filename+"&file_type="+file.type);
         xhr.onreadystatechange = function(){
             if(xhr.readyState === 4){
                 if(xhr.status === 200){
@@ -1335,7 +1335,7 @@ window.bs.s3Stuff = (function(){
             console.log(3,"/get_normalized_image_info?image_url="+encodeURIComponent(image_url)+"&must_be_square="+mustBeSquare);
             var dfd = jQuery.Deferred();
             var xhr = new XMLHttpRequest();
-            xhr.open("GET", "/bernieBackend/get_normalized_image_info?image_url="+encodeURIComponent(image_url)+"&must_be_square="+mustBeSquare);
+            xhr.open("GET", "/bernieserver/get_normalized_image_info?image_url="+encodeURIComponent(image_url)+"&must_be_square="+mustBeSquare);
             xhr.onreadystatechange = function(){
                 if(xhr.readyState === 4){
                     if(xhr.status === 200){

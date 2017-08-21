@@ -10,8 +10,34 @@ import serve from './webpackExpressServer.js';
 
 const env = argv.env;
 const item = argv.item;
-console.log('NOTHING');
-console.log(argv.nothing, typeof argv.nothing)
+
+function asyncRecurseStartApps(serverNamespaces) {
+  let lastBackendApp = null;
+  let i = 0;
+  function recurse(backendAppNamespace) {
+    System.import(`../../packages/${backendAppNamespace}/${backendAppNamespace}.express`).then((someBackendApp) => {
+      const serveBackendApp = someBackendApp.default;
+      const backendAppSettings = {
+        nameSpace: backendAppNamespace,
+      };
+      if (lastBackendApp) {
+        backendAppSettings.app = lastBackendApp;
+      }
+      const backendAppServed = serveBackendApp(backendAppSettings);
+      lastBackendApp = backendAppServed;
+      const nextNamespace = serverNamespaces[++i];
+      if (nextNamespace) {
+        recurse(nextNamespace);
+      } else {
+        serve({
+          app: backendAppServed,
+        });
+      }
+    });
+  }
+  recurse(serverNamespaces[i]);
+}
+
 if (item) {
   shellCommand(`(cd ./packages/${item} && npm run start)`);
 } else if (env === 'test') {
@@ -20,40 +46,11 @@ if (item) {
   webpackBuildCommandLine();
 } else if (env === 'build') {
   webpackRunCompiler(webpackMakeCompiler);
+} else if (argv.servers) {
+  const serverNamespaces = argv.servers.split(',');
+  asyncRecurseStartApps(serverNamespaces);
 } else {
-  if (argv.server) {
-
-    const p = '/Users/brianephraim/Sites/monorepo/packages/bernieserver/bernieserver';
-    const x = '.express';
-    // const p = '/Users/brianephraim/Sites/monorepo/packages/bernieserver/bernieserver.express';
-    // /Users/brianephraim/Sites/monorepo/packages/bernieserver/bernieserver.express
-// argv.server
-    // System.import('../bernieserver/bernieserver' + x).then((someServer) => {
-
-    // let serverImport;
-    // if (isWithinMonoRepo(__dirname) {
-    //   serverImport = System.import('../../' + argv.server + '.express')
-    // } else {
-    //   serverImport = System.import('../../' + argv.server + '.express'
-    // }
-
-
-    System.import(`../../packages/${argv.server}/${argv.server}.express`).then((someServer) => {
-    // System.import('../../' + argv.server + '.express').then((someServer) => {
-      const serveBernieBackend = someServer.default;
-
-      const bernieBackendServed = serveBernieBackend({
-        nameSpace: 'bernieBackend'
-      });
-      const dev_envServed = serve({
-        app: bernieBackendServed,
-      });
-    });
-  }
-  else {
-    serve({});
-  }
-  // serve();
+  serve({});
 }
 
 export { serve };

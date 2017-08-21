@@ -27,7 +27,7 @@ function makeGetNormalizedImageInfo(mustBeSquare) {
       const xhr = new XMLHttpRequest();
       xhr.open(
         'GET',
-        `/bernieBackend/get_normalized_image_info?image_url=${encodeURIComponent(
+        `/bernieserver/get_normalized_image_info?image_url=${encodeURIComponent(
           imageUrl
         )}&must_be_square=${mustBeSquare}`
       );
@@ -80,7 +80,7 @@ function getSignedRequest(file, folder, mustBeSquare) {
     filename = `${folder}/${filename}`;
     xhr.open(
       'GET',
-      `/bernieBackend/get_s3_signed_upload_url?file_name=${filename}&file_type=${file.type}`
+      `/bernieserver/get_s3_signed_upload_url?file_name=${filename}&file_type=${file.type}`
     );
     xhr.onreadystatechange = () => {
       if (xhr.readyState === 4) {
