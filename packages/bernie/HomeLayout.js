@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import ResponsiveHOC, {
-  generateGiantSquareDetails, ResponsiveListener
+  generateGiantSquareDetails
 } from '@defualt/responsive';
 import {generateCompositeImgSrcUrl} from './compositeImage';
 
@@ -18,7 +18,7 @@ import BernieDisclaimer from './Disclaimer';
 import styled from 'styled-components';
 import styleConstants from './style-constants';
 
-const Styled_HomeLayout = styled.div`
+const StyledHomeLayout = styled.div`
   position: relative;
 `;
 
@@ -28,7 +28,7 @@ const ConnectResponsiveStatusesDictHOC = connect(( state /* , { params }*/) => {
   };
 });
 
-const Styled_Left_Pillar = ConnectResponsiveStatusesDictHOC(styled.div`
+const StyledLeftPillar = ConnectResponsiveStatusesDictHOC(styled.div`
   ${styleConstants.mixins.leftPiller()}
   ${props => {
     return props.responsiveStatusesDict.windowVerticalTooSmall ? 'float: none;' : '';
@@ -39,21 +39,21 @@ const Styled_Left_Pillar = ConnectResponsiveStatusesDictHOC(styled.div`
   }
 `);
 
-const Styled_Branding = ConnectResponsiveStatusesDictHOC(styled.div`
+const StyledBranding = ConnectResponsiveStatusesDictHOC(styled.div`
   height:${styleConstants.headerTopHeight}em;
   ${props => {
     return props.responsiveStatusesDict.windowVerticalTooSmall ? 'height: auto;' : '';
   }}
 `);
 
-const Styled_Branding_Title = ConnectResponsiveStatusesDictHOC(styled.div`
+const StyledBrandingTitle = ConnectResponsiveStatusesDictHOC(styled.div`
   font-size: ${styleConstants.appPad * 2}em;
   ${props => {
     return props.responsiveStatusesDict.windowVerticalTooSmall ? 'text-align: center;' : '';
   }}
 `);
 
-const Styled_Branding_Subtitle = ConnectResponsiveStatusesDictHOC(styled.div`
+const StyledBrandingSubtitle = ConnectResponsiveStatusesDictHOC(styled.div`
   font-size: ${styleConstants.appPad * 1.5}em;
   ${props => {
     return props.responsiveStatusesDict.windowVerticalTooSmall ? 'display: none;' : '';
@@ -67,14 +67,13 @@ const Styled_Branding_Subtitle = ConnectResponsiveStatusesDictHOC(styled.div`
   }
 `);
 
-const Styled_Social_Row = ConnectResponsiveStatusesDictHOC(styled.div`
+const StyledSocialRow = ConnectResponsiveStatusesDictHOC(styled.div`
   ${props => {
     return styleConstants.mixins.socialRow_left(props.responsiveStatusesDict.windowVerticalTooSmall);
   }}
 `);
-const Styled_Social_Widget = ConnectResponsiveStatusesDictHOC(styled.div`
+const StyledSocialWidget = ConnectResponsiveStatusesDictHOC(styled.div`
   ${props => {
-    console.log(styleConstants.mixins.socialWidget_left(props.responsiveStatusesDict.windowVerticalTooSmall));
     return styleConstants.mixins.socialWidget_left(props.responsiveStatusesDict.windowVerticalTooSmall);
   }}
   
@@ -136,25 +135,25 @@ function BernieContributeBanner() {
 function BernieAppHeader() {
   return (
     <div className="app_header header">
-      <Styled_Left_Pillar className="app_header_leftPillar leftPillar">
-        <Styled_Branding className="app_header_leftPillar_branding branding">
-          <Styled_Branding_Title className="app_header_leftPillar_branding_title branding_title">
+      <StyledLeftPillar className="app_header_leftPillar leftPillar">
+        <StyledBranding className="app_header_leftPillar_branding branding">
+          <StyledBrandingTitle className="app_header_leftPillar_branding_title branding_title">
             BernieSelfie.com
-          </Styled_Branding_Title>
-          <div className="app_header_leftPillar_branding_subtitle branding_subtitle">
+          </StyledBrandingTitle>
+          <StyledBrandingSubtitle className="app_header_leftPillar_branding_subtitle branding_subtitle">
             Support Bernie with your picture
-          </div>
-        </Styled_Branding>
-        <Styled_Social_Row className="app_header_leftPillar_socialRow socialRow">
-          <Styled_Social_Widget className="app_header_leftPillar_socialRow_socialWidget socialWidget">
+          </StyledBrandingSubtitle>
+        </StyledBranding>
+        <StyledSocialRow className="app_header_leftPillar_socialRow socialRow">
+          <StyledSocialWidget className="app_header_leftPillar_socialRow_socialWidget socialWidget">
             <a
               className="twitter-share-button"
               href="https://twitter.com/intent/tweet?url=xXxXxXxXxXxXxXxXxXxXxXxX&via=bernieselfie&hashtags=BernieSanders%2Cfeelthebern%2Cbernieselfie&related=BernieSanders"
             >
               Tweet
             </a>
-          </Styled_Social_Widget>
-          <Styled_Social_Widget
+          </StyledSocialWidget>
+          <StyledSocialWidget
             className="fb-like app_header_leftPillar_socialRow_socialWidget socialWidget"
             data-share="true"
             data-width="450"
@@ -162,7 +161,7 @@ function BernieAppHeader() {
             data-show-faces="true"
           />
 
-          <Styled_Social_Widget className="app_header_leftPillar_socialRow_socialWidget socialWidget">
+          <StyledSocialWidget className="app_header_leftPillar_socialRow_socialWidget socialWidget">
             <a
               href="//www.pinterest.com/pin/create/button/?url=xXxXxXxXxXxXxXxXxX&description=xXxXxXxXxXxXxXxXxXxXxXxXxXxXxX"
               data-pin-do="buttonPin"
@@ -174,9 +173,9 @@ function BernieAppHeader() {
                 alt="Pintrest Pinit badge"
               />
             </a>
-          </Styled_Social_Widget>
-        </Styled_Social_Row>
-      </Styled_Left_Pillar>
+          </StyledSocialWidget>
+        </StyledSocialRow>
+      </StyledLeftPillar>
       <div className="app_header_rightPillar rightPillar">
         <div className="app_header_rightPillar_fbLikePageWrap">
           <img
@@ -349,7 +348,7 @@ BernieAppPod.defaultProps = {
 // It was also used to display:none the home screen when modal appears.
 function BernieHomeLayout(props) {
   return (
-    <Styled_HomeLayout className="homeLayout">
+    <StyledHomeLayout className="homeLayout">
       {/* The wrapping element below distinguishes the photo-plus-buttonGroupComponents from disclaimer.*/}
       <div className="app">
         <BernieContributeBanner />
@@ -372,7 +371,7 @@ function BernieHomeLayout(props) {
         </div>
       </div>
       <BernieDisclaimer />
-    </Styled_HomeLayout>
+    </StyledHomeLayout>
   );
 }
 
