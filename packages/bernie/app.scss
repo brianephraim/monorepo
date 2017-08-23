@@ -99,24 +99,24 @@ html .branding_title{
 // .socialWidget{
 // 	display:block;
 // }
-@mixin socialWidget_left(){
-	float:left;
-	padding-right:$appPad;
-	.responsive_windowVerticalTooSmall &{
-		float:right;
-	}
-}
-@mixin socialWidget_right(){
-	float:right;
-}
-@mixin socialWidget_rightTop(){
-	@include socialWidget_right;
-	padding-left:$appPad;
-}
-@mixin socialWidget_rightBottom(){
-	@include socialWidget_right;
-	padding-left:$appPad;
-}
+// @mixin socialWidget_left(){
+// 	float:left;
+// 	padding-right:$appPad;
+// 	.responsive_windowVerticalTooSmall &{
+// 		float:right;
+// 	}
+// }
+// @mixin socialWidget_right(){
+// 	float:right;
+// }
+// @mixin socialWidget_rightTop(){
+// 	@include socialWidget_right;
+// 	padding-left:$appPad;
+// }
+// @mixin socialWidget_rightBottom(){
+// 	@include socialWidget_right;
+// 	padding-left:$appPad;
+// }
 
 //SOCIAL ROW
 
@@ -125,60 +125,60 @@ html .branding_title{
 // 	& > * {padding-bottom:$appPad*2;}
 // }
 
-%socialRow{
-	height:$appPad*2;
-	overflow:hidden;
-}
+// %socialRow{
+// 	height:$appPad*2;
+// 	overflow:hidden;
+// }
 
-@mixin socialRow_left(){
-	@extend %socialRow;
-	&_socialWidget{
-		@include socialWidget_left;
+// @mixin socialRow_left(){
+// 	@extend %socialRow;
+// 	&_socialWidget{
+// 		@include socialWidget_left;
 		
-	}
+// 	}
 
-	.responsive_windowVerticalTooSmall &{
-		@include socialAtBottom;
-		padding-right:0;
-		margin-top:$appPad*8;
-	}
-}
+// 	.responsive_windowVerticalTooSmall &{
+// 		@include socialAtBottom;
+// 		padding-right:0;
+// 		margin-top:$appPad*8;
+// 	}
+// }
 
-@mixin socialRow_right(){
-	@extend %socialRow;
-	&_socialWidget{
-		@include socialWidget_rightBottom;
-	}
-}
+// @mixin socialRow_right(){
+// 	@extend %socialRow;
+// 	&_socialWidget{
+// 		@include socialWidget_rightBottom;
+// 	}
+// }
 
 
 //========
 
-$headerTopHeight:$appPad*5;
-%leftPillar{
-	float:left;
-}
-%rightPillar{
-	overflow:hidden;
-}
+// $headerTopHeight:$appPad*5;
+// %leftPillar{
+// 	float:left;
+// }
+// %rightPillar{
+// 	overflow:hidden;
+// }
 
 
 
-@mixin socialAtBottom{
-	position:absolute;
-	top:100%;
-	right:0;
-	padding-bottom:$appPad;
-	padding-right:$appPad;
-	padding-top:$appPad;
-}
-.app{
-	z-index:2;
-	position:relative;
-	box-sizing:border-box;
-	.responsive_singleCol &{
-		padding-bottom:$appPad;
-	}
+// @mixin socialAtBottom{
+// 	position:absolute;
+// 	top:100%;
+// 	right:0;
+// 	padding-bottom:$appPad;
+// 	padding-right:$appPad;
+// 	padding-top:$appPad;
+// }
+// .app{
+	// z-index:2;
+	// position:relative;
+	// box-sizing:border-box;
+	// .responsive_singleCol &{
+	// 	padding-bottom:$appPad;
+	// }
 	// &_header{
 		// padding:$appPad;
 		// &_leftPillar{
@@ -245,9 +245,9 @@ $headerTopHeight:$appPad*5;
 			// }
 		// }
 	// }
-	&_body{
-		@include clearfix;
-		background:$white;
+	// &_body{
+		// @include clearfix;
+		// background:$white;
 		// &_leftPillar{
 			// @extend %leftPillar;
 			// position: relative;
@@ -285,7 +285,7 @@ $headerTopHeight:$appPad*5;
 				// }
 			// }
 		// }
-		&_rightPillar{
+		// &_rightPillar{
 			// @extend %rightPillar;
 
 			// padding-top:$appPad;
@@ -294,7 +294,7 @@ $headerTopHeight:$appPad*5;
 			// 	margin-left:$appPad;
 			// 	position: relative;
 			// }
-			&_section{
+			// &_section{
 				// &.section_share{
 				// 	float:right;
 				// 	.responsive_singleCol &{
@@ -331,7 +331,7 @@ $headerTopHeight:$appPad*5;
 				// &_subsection{
 				// 	padding-bottom: $appPad;
 				// }
-			}
+			// }
 			
 			
 			
@@ -356,9 +356,9 @@ $headerTopHeight:$appPad*5;
 			// 		line-height:$appPad*7;
 			// 	}
 			// }
-		}
-	}
-}
+		// }
+	// }
+// }
 .uploadButtonIframe{
 	background:white;
 	display:block;

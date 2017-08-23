@@ -355,6 +355,26 @@ const StyledSection = ConnectResponsiveStatusesDictHOC(styled.div`
   }}
 `);
 
+const StyledApp = ConnectResponsiveStatusesDictHOC(styled.div`
+  z-index:2;
+  position:relative;
+  box-sizing:border-box;
+
+  ${props => {
+    if (props.responsiveStatusesDict.singleCol) {
+      return `
+        padding-bottom:${styleConstants.appPad}em;
+      `;
+    }
+    return '';
+  }}
+`);
+
+const StyledAppBody = ConnectResponsiveStatusesDictHOC(styled.div`
+  ${styleConstants.mixins.clearfix()}
+  background:${styleConstants.colors.white};
+`);
+
 // This component exists as a container to distingsh from the modals outside this container.
 // This was used for descendant selectors.
 // For instance, .someButton within .homeLayout was styled differently than within .modal
@@ -364,10 +384,10 @@ function BernieHomeLayout(props) {
   return (
     <StyledHomeLayout className="homeLayout">
       {/* The wrapping element below distinguishes the photo-plus-buttonGroupComponents from disclaimer.*/}
-      <div className="app">
+      <StyledApp className="app">
         <BernieContributeBanner />
         <HomeLayoutHeader />
-        <div className="app_body">
+        <StyledAppBody className="app_body">
           <BernieAppHero {...props} />
           <BernieAppBusiness>
             <StyledSection section="share">
@@ -382,8 +402,8 @@ function BernieHomeLayout(props) {
               <EditDesignButtonGroup section="design" {...props} />
             </StyledSection>
           </BernieAppBusiness>
-        </div>
-      </div>
+        </StyledAppBody>
+      </StyledApp>
       <BernieDisclaimer />
     </StyledHomeLayout>
   );
