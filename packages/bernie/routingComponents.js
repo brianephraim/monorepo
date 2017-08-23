@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Link from 'redux-first-router-link'
-import { buttonGroupComponents } from './buttonGroups';
 import {payloadRefineAction} from './setup';
 import CropperScreen from './CropperScreen';
 import ImagePickerFacebook from './ImagePickerFacebook';
@@ -103,14 +102,3 @@ CropperWithFgBgCompletion.propTypes = {
   generateCompletionUrl: PropTypes.func.isRequired,
 };
 
-export function Dynamic(props) {
-  const Comp = buttonGroupComponents[props.dynamicScreen];
-  return (
-    <Comp
-      isModal
-    />
-  );
-}
-Dynamic.propTypes = {
-  dynamicScreen: PropTypes.string.isRequired,
-};

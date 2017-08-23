@@ -634,60 +634,60 @@ $headerTopHeight:$appPad*5;
 .devMode{
 	// .comingSoon{display:block;}
 }
-.microSubsection{
-	display:none;
-	#{$singleColHome} {
-		display:block;
-	}
-}
-.section{
-	&_header{
-		display: block;
-		text-decoration: none;
-		line-height:$appPad*2;
-		color:$white;
-		padding-bottom: $appPad/2;
-		&_microText{
-			display:none;
-			text-align:center;
-			line-height: 0;
-			padding-top: $appPad/2;
-			padding-bottom: $appPad;
-			#{$singleColHome} {
-				display:block;
-			}
-		}
-		&_icon{
-			// width:$appPad*2;
-			// height: $appPad*2;
-			// float:left;
+// .microSubsection{
+// 	display:none;
+// 	#{$singleColHome} {
+// 		display:block;
+// 	}
+// }
+// .section{
+// 	// &_header{
+// 	// 	// display: block;
+// 	// 	// text-decoration: none;
+// 	// 	// line-height:$appPad*2;
+// 	// 	// color:$white;
+// 	// 	// padding-bottom: $appPad/2;
+// 	// 	&_microText{
+// 	// 		// display:none;
+// 	// 		// text-align:center;
+// 	// 		// line-height: 0;
+// 	// 		// padding-top: $appPad/2;
+// 	// 		// padding-bottom: $appPad;
+// 	// 		// #{$singleColHome} {
+// 	// 		// 	display:block;
+// 	// 		// }
+// 	// 	}
+// 	// 	&_icon{
+// 	// 		// width:$appPad*2;
+// 	// 		// height: $appPad*2;
+// 	// 		// float:left;
 			
-			// .material-icons{
-			// 	font-size:$appPad*2;
-			// }
-			// #{$singleColHome} {
-				// float:none;
-				// margin:0 auto;
-			// }
-		}
-		&_text{
-			padding-left:$appPad/2;
-			overflow: hidden;
-			#{$singleColHome} {
-				width:0;
-				white-space: nowrap;
-				display: none;
-			}
-		}
-	}
-}
+// 	// 		// .material-icons{
+// 	// 		// 	font-size:$appPad*2;
+// 	// 		// }
+// 	// 		// #{$singleColHome} {
+// 	// 			// float:none;
+// 	// 			// margin:0 auto;
+// 	// 		// }
+// 	// 	}
+// 	// 	&_text{
+// 	// 		// padding-left:$appPad/2;
+// 	// 		// overflow: hidden;
+// 	// 		// #{$singleColHome} {
+// 	// 		// 	width:0;
+// 	// 		// 	white-space: nowrap;
+// 	// 		// 	display: none;
+// 	// 		// }
+// 	// 	}
+// 	// }
+// }
 
-.editSubsection,.designSubsection{
-	#{$singleColHome}{
-		display:none;
-	}
+// .editSubsection,.designSubsection{
+// 	#{$singleColHome}{
+// 		display:none;
+// 	}
 	
-}
+// }
 
 // .topBanner{
 	// text-align:center;

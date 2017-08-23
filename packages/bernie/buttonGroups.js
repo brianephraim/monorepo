@@ -10,7 +10,6 @@ import styleConstants from './style-constants';
 import ConnectResponsiveStatusesDictHOC from './ConnectResponsiveStatusesDictHOC';
 
 
-
 import './app.scss';
 
 const Div = props => {
@@ -37,6 +36,32 @@ A.propTypes = {
 
 const StyledSubsection = ConnectResponsiveStatusesDictHOC(styled.div`
   padding-bottom: ${styleConstants.appPad}em;
+  ${props => {
+    let toReturn = '';
+    // singleColHome
+    if(!props.isModal && props.responsiveStatusesDict.singleCol) {
+      toReturn += `
+        float:none;
+        margin:0 auto;
+      `;
+      if(props.themex === 'editSubsection' || props.themex === 'designSubsection') {
+        toReturn += `display:none;`;
+      }
+    }
+
+    if(props.themex === 'microSubsection') {
+      toReturn += `
+        display:none;
+      `;
+      if(!props.isModal && props.responsiveStatusesDict.singleCol) {
+        toReturn += `
+          display:block;
+        `;
+      }
+    }
+    return toReturn;
+  }}
+
 `);
 
 const StyledIconWrapper = ConnectResponsiveStatusesDictHOC(styled.div`
@@ -60,6 +85,53 @@ const StyledIcon = ConnectResponsiveStatusesDictHOC(styled.i`
   
 `);
 
+const headerStyle = `
+  display: block;
+  text-decoration: none;
+  line-height:${styleConstants.appPad * 2}em;
+  color:${styleConstants.colors.white};
+  padding-bottom: ${styleConstants.appPad / 2}em;
+`;
+const StyledHeaderLink = ConnectResponsiveStatusesDictHOC(styled(BernieLink)`
+  ${headerStyle}
+`);
+const StyledHeaderDiv = ConnectResponsiveStatusesDictHOC(styled.div`
+  ${headerStyle}
+`);
+
+const StyledMicroText = ConnectResponsiveStatusesDictHOC(styled.div`
+  display:none;
+  text-align:center;
+  line-height: 0;
+  padding-top: ${styleConstants.appPad * 2}em;
+  padding-bottom: ${styleConstants.appPad}em;
+  ${props => {
+    // singleColHome
+    if(!props.isModal && props.responsiveStatusesDict.singleCol) {
+      return `
+        display:block;
+      `;
+    }
+    return '';
+  }}
+`);
+
+const StyledText = ConnectResponsiveStatusesDictHOC(styled.div`
+  padding-left:${styleConstants.appPad / 2}em;
+  overflow: hidden;
+  ${props => {
+    // singleColHome
+    if(!props.isModal && props.responsiveStatusesDict.singleCol) {
+      return `
+        width:0;
+        white-space: nowrap;
+        display: none;
+      `;
+    }
+    return '';
+  }}
+`);
+
 let BernieAppButtonGroup = class extends Component {
   constructor() {
     super();
@@ -76,19 +148,19 @@ let BernieAppButtonGroup = class extends Component {
 
     const shortHeadline =
       this.props.shortHeadline &&
-      <div className="section_header_microText">
+      <StyledMicroText className="section_header_microText" isModal={this.props.isModal}>
         <span>
           {this.props.shortHeadline}
         </span>
-      </div>;
+      </StyledMicroText>;
 
     const headline =
       this.props.headline &&
-      <div className="section_header_text">
+      <StyledText className="section_header_text">
         <span>
           {this.props.headline}
         </span>
-      </div>;
+      </StyledText>;
     const buttons =
       this.props.buttons &&
       <div className="buttonGroup_buttons">
@@ -148,7 +220,7 @@ let BernieAppButtonGroup = class extends Component {
         })}
       </div>;
 
-    const LinkOrDiv = this.props.compositeImageData.screen === this.props.urlFragment ? Div : BernieLink;
+    const LinkOrDiv = this.props.compositeImageData.screen === this.props.urlFragment ? StyledHeaderDiv : StyledHeaderLink;
     const to = {
       type: `BERNIE_DYNAMIC`,
       compositeImageData: this.props.compositeImageData,
@@ -156,6 +228,7 @@ let BernieAppButtonGroup = class extends Component {
     };
     return (
       <StyledSubsection
+        themex={this.props.themex}
         className={`app_body_rightPillar_section_subsection ${this.props
           .className}`}
       >
@@ -289,6 +362,7 @@ buttonGroupComponents.share = ShareButtonGroup;
 const EditBrushButtonGroup = makeButtonGroupComponent({
   urlFragment: 'editBrush',
   className: 'microSubsection',
+  themex: 'microSubsection',
   shortHeadline: 'edit',
   icon: 'brush',
 });
@@ -297,6 +371,7 @@ buttonGroupComponents.editBrush = EditBrushButtonGroup;
 const EditSizeButtonGroup = makeButtonGroupComponent({
   urlFragment: 'editSize',
   className: 'editSubsection',
+  themex: 'editSubsection',
   shortHeadline: 'edit',
   headline: 'Edit:',
   icon: 'transform',
@@ -313,6 +388,7 @@ buttonGroupComponents.editSize = EditSizeButtonGroup;
 const EditDesignButtonGroup = makeButtonGroupComponent({
   urlFragment: 'editDesign',
   className: 'designSubsection',
+  themex: 'designSubsection',
   shortHeadline: 'edit',
   headline: 'Change design:',
   icon: 'brush',

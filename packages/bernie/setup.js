@@ -1,13 +1,29 @@
+import React from 'react';
+import PropTypes from 'prop-types';
 import { combineReducers } from 'redux';
 import { standardModesRegexArrayString } from './deriveUrlInfo';
 import {
-  BernieHomeLayoutWithUploadCallback, ImagePickerFacebookWithOnClick,
-  ImagePickerTemplateWithOnClick,CropperWithFgBgCompletion,Dynamic
-} from './routingComponents';
-import {
   buttonGroupComponentsRegexArrayString,
+  buttonGroupComponents
 } from './buttonGroups';
+import {
+  BernieHomeLayoutWithUploadCallback, ImagePickerFacebookWithOnClick,
+  ImagePickerTemplateWithOnClick,CropperWithFgBgCompletion
+} from './routingComponents';
+
 import { paramsIntoCompositeImage } from './compositeImage';
+
+export function Dynamic(props) {
+  const Comp = buttonGroupComponents[props.dynamicScreen];
+  return (
+    <Comp
+      isModal
+    />
+  );
+}
+Dynamic.propTypes = {
+  dynamicScreen: PropTypes.string.isRequired,
+};
 
 
 const nameSpace = '/bernie';
