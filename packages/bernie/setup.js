@@ -117,7 +117,7 @@ const bernieReducers = combineReducers({
     if(bernieRoutesMap[action.type]) {
       return bernieScreenNameMap[action.type];
     }
-    return 'BERNIE_HOME';
+    return state;
   },
   responsiveStatuses: (state = [], action) => {
     if (action.type === 'UDATE_RESPONSIVE_STATUSES' && action.name === 'bernie') {

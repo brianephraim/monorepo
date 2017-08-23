@@ -317,12 +317,7 @@ const StyledSection = ConnectResponsiveStatusesDictHOC(styled.div`
     let toReturn = '';
     if (props.section === 'share') {
       toReturn += 'float:right;';
-      if (props.responsiveStatusesDict.doubleCol) {
-        toReturn += 'float: none;';
-      }
-    } else if (props.section === 'photo') {
-      toReturn += 'float:left;';
-      if (props.responsiveStatusesDict.doubleCol) {
+      if (props.responsiveStatusesDict.singleCol) {
         toReturn += 'float: none;';
       }
     } else if (props.section === 'photo') {

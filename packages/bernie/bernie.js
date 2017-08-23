@@ -9,15 +9,20 @@ import Routing from './Routing'
 import './app.scss';
 
 let MyResponsiveMaster = class extends Component {
-  componentWillReceiveProps(nextProps){
-    nextProps.doThing(nextProps.activeStatusesDict);
+  // componentWillReceiveProps(nextProps){
+  //   nextProps.doThing(nextProps.activeStatusesDict);
     
-  }
+  // }
   render() {
     return <div className={this.props.className} >{this.props.children}</div>
   }
 };
-MyResponsiveMaster = connect(
+
+
+
+
+let ResponsiveMaster = ResponsiveMasterHOC(MyResponsiveMaster);
+ResponsiveMaster = connect(
 () => {
   return {};
 },
@@ -29,11 +34,7 @@ MyResponsiveMaster = connect(
       type:'UDATE_RESPONSIVE_STATUSES_DICT'
     }
   },
-})(MyResponsiveMaster);
-
-
-
-let ResponsiveMaster = ResponsiveMasterHOC(MyResponsiveMaster);
+})(ResponsiveMaster);
 
 function Bernie(props) {
   return (

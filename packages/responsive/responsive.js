@@ -8,6 +8,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { makeResponsive, registerResponsiveRefresh } from './responsiveService';
+import { connect } from 'react-redux';
+
+
 
 const ResponsiveHOC = (ComponentToWrap, defaults) => {
   class Responsive extends Component {
@@ -69,7 +72,7 @@ export default ResponsiveHOC;
 /* eslint-disable react/no-multi-comp */
 function ResponsiveMasterHOC(Comp) {
   class ResponsiveMaster extends Component {
-    constructor() {
+    constructor(props) {
       super();
       this.state = {
         activeStatuses: [],
@@ -77,7 +80,9 @@ function ResponsiveMasterHOC(Comp) {
         activeStatusesDict: {},
         realClassNameYall: '',
       };
+      props.doThing({});
     }
+    
     componentDidMount() {
       this.unregisterResponsiveRefresh = registerResponsiveRefresh({
         name: this.props.name,
@@ -89,6 +94,7 @@ function ResponsiveMasterHOC(Comp) {
             activeStatusesDict: {},
             realClassNameYall: '',
           });
+          this.props.doThing({});
         },
       });
     }
@@ -121,6 +127,7 @@ function ResponsiveMasterHOC(Comp) {
         activeStatuses: Object.keys(toReturn),
         activeStatusesDict: toReturn,
       });
+      this.props.doThing(toReturn);
       return toReturn;
     }
     render() {
@@ -128,10 +135,96 @@ function ResponsiveMasterHOC(Comp) {
     }
   }
   ResponsiveMaster.propTypes = {
-    name: PropTypes.string,
-    children: PropTypes.object,
+    name: PropTypes.string.isRequired,
+    children: PropTypes.object.isRequired,
+    doThing: PropTypes.func,
   };
-  return ResponsiveMaster;
+  ResponsiveMaster.defaultProps = {
+    doThing: () => {},
+  };
+  return ResponsiveMaster
+  // return ResponsiveMaster;
 }
+
+class ResponsiveMaster extends Component {
+  constructor() {
+    super();
+    this.state = {
+      activeStatusRegistry: {},
+      realClassNameYall: '',
+    };
+  }
+
+  componentDidMount() {
+    this.unregisterResponsiveRefresh = registerResponsiveRefresh({
+      name: this.props.name,
+      updateMasterClasses: (...args) => { return this.updateMasterClasses(...args); },
+      nukeActiveStatusRegistryOnMaster: () => {
+        this.setState({
+          activeStatusRegistry: {},
+          realClassNameYall: '',
+        });
+      },
+    });
+  }
+  componentWillReceiveProps(nextProps){
+    console.log('jjjj');
+    if (nextProps.doThing && nextProps.activeStatusesDict) {
+      nextProps.doThing(nextProps.activeStatusesDict);
+    }
+    
+  }
+  componentWillUnmount() {
+    this.unregisterResponsiveRefresh();
+  }
+
+  updateMasterClasses(idPriority, activeStatusRegistry) {
+    const objectComplexUpdate = {
+      ...this.state.activeStatusRegistry,
+      [idPriority]: activeStatusRegistry,
+    };
+
+    const toReturn = {};
+    Object.keys(objectComplexUpdate).forEach((priority) => {
+      const priorityClassNames = objectComplexUpdate[priority];
+      Object.keys(priorityClassNames).forEach((name) => {
+        if (priorityClassNames[name]) {
+          toReturn[name] = true;
+        }
+      });
+    });
+
+    const realClassNameYall = Object.keys(toReturn).reduce((c, n) => {
+      return `${c} responsive_${n}`;
+    }, '');
+    this.setState({
+      realClassNameYall,
+      activeStatusRegistry: objectComplexUpdate,
+    });
+    return toReturn;
+  }
+  render() {
+    return (<div className={this.state.realClassNameYall}>{this.props.children}</div>);
+  }
+}
+ResponsiveMaster.propTypes = {
+  name: PropTypes.string,
+  children: PropTypes.object,
+};
+ResponsiveMaster = connect(
+  () => {
+    return {};
+  },
+  {
+    doThing: (responsiveStatusesDict) => {
+      return {
+        name: 'bernie',
+        responsiveStatusesDict,
+        type:'UDATE_RESPONSIVE_STATUSES_DICT'
+      }
+    },
+  }
+)(ResponsiveMaster);
+export { ResponsiveMaster };
 
 export { ResponsiveMasterHOC };

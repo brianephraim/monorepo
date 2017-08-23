@@ -68,7 +68,7 @@ let BernieAppButtonGroup = class extends Component {
   render() {
     const icon =
       this.props.icon &&
-      <StyledIconWrapper className="section_header_icon">
+      <StyledIconWrapper className="section_header_icon" isModal={this.props.isModal}>
         <StyledIcon className="material-icons" isModal={this.props.isModal}>
           {this.props.icon}
         </StyledIcon>
