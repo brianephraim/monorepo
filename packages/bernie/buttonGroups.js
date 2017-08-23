@@ -91,6 +91,7 @@ const headerStyle = `
   line-height:${styleConstants.appPad * 2}em;
   color:${styleConstants.colors.white};
   padding-bottom: ${styleConstants.appPad / 2}em;
+  line-height:${styleConstants.appPad / 2}em;
 `;
 const StyledHeaderLink = ConnectResponsiveStatusesDictHOC(styled(BernieLink)`
   ${headerStyle}
@@ -132,6 +133,34 @@ const StyledText = ConnectResponsiveStatusesDictHOC(styled.div`
   }}
 `);
 
+const StyledButtonGroup = ConnectResponsiveStatusesDictHOC(styled.div`
+  overflow:hidden;
+  padding: ${styleConstants.appPad / 2}em ${styleConstants.appPad}em 0 ${styleConstants.appPad}em;
+  ${props => {
+    // singleColHome
+    if(!props.isModal && props.responsiveStatusesDict.singleCol) {
+      return `
+        padding: ${styleConstants.appPad / 2}em 0 0 0;
+        cursor:pointer;
+      `;
+    }
+    return '';
+  }}
+  background:${styleConstants.colors.red};
+`);
+
+const StyledButtonGroupButtons = ConnectResponsiveStatusesDictHOC(styled.div`
+  ${props => {
+    // singleColHome
+    if(!props.isModal && props.responsiveStatusesDict.singleCol) {
+      return `
+        display:none;
+      `;
+    }
+    return '';
+  }}
+`);
+
 let BernieAppButtonGroup = class extends Component {
   constructor() {
     super();
@@ -156,14 +185,14 @@ let BernieAppButtonGroup = class extends Component {
 
     const headline =
       this.props.headline &&
-      <StyledText className="section_header_text">
+      <StyledText className="section_header_text" isModal={this.props.isModal}>
         <span>
           {this.props.headline}
         </span>
       </StyledText>;
     const buttons =
       this.props.buttons &&
-      <div className="buttonGroup_buttons">
+      <StyledButtonGroupButtons className="buttonGroup_buttons" isModal={this.props.isModal}>
         {this.props.buttons.map(btnDetails => {
           let btnInner;
           let className = 'buttonGroup_button button';
@@ -218,7 +247,7 @@ let BernieAppButtonGroup = class extends Component {
             </div>
           );
         })}
-      </div>;
+      </StyledButtonGroupButtons>;
 
     const LinkOrDiv = this.props.compositeImageData.screen === this.props.urlFragment ? StyledHeaderDiv : StyledHeaderLink;
     const to = {
@@ -232,14 +261,14 @@ let BernieAppButtonGroup = class extends Component {
         className={`app_body_rightPillar_section_subsection ${this.props
           .className}`}
       >
-        <div className="buttonGroup">
+        <StyledButtonGroup className="buttonGroup" isModal={this.props.isModal}>
           <LinkOrDiv to={to} className="section_header">
             {shortHeadline}
             {icon}
             {headline}
           </LinkOrDiv>
           {buttons}
-        </div>
+        </StyledButtonGroup>
       </StyledSubsection>
     );
   }

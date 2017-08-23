@@ -411,29 +411,29 @@ html .branding_title{
 	}
 }
 .buttonGroup{
-	overflow:hidden;
-	padding: $appPad/2 $appPad 0 $appPad;
-	#{$singleColHome} {
-		padding: $appPad/2 0 0 0;
-		cursor:pointer;
-	}
-	background:$red;
-	&__singleRow{
-		.button{
-			padding-top:$appPad/2;
-		}
-	}
-	&_header{
-		line-height:$appPad*2;
-	}
-	&_buttons{
+	// overflow:hidden;
+	// padding: $appPad/2 $appPad 0 $appPad;
+	// #{$singleColHome} {
+	// 	padding: $appPad/2 0 0 0;
+	// 	cursor:pointer;
+	// }
+	// background:$red;
+	// &__singleRow{
+	// 	.button{
+	// 		padding-top:$appPad/2;
+	// 	}
+	// }
+	// &_header{
+	// 	line-height:$appPad*2;
+	// }
+	// &_buttons{
 		// padding-top:$buttonPad;
-		#{$singleColHome} {
-			display: none;
-		}
-	}
-	&_button{
-	}
+		// #{$singleColHome} {
+		// 	display: none;
+		// }
+	// }
+	// &_button{
+	// }
 	.designFrame{
 		padding-bottom: $appPad;
 	}
