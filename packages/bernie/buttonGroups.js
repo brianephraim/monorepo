@@ -1,7 +1,6 @@
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Link from 'redux-first-router-link'
 import Upload from './Upload';
 import {BernieLink} from './routingComponents';
 
@@ -11,28 +10,6 @@ import ConnectResponsiveStatusesDictHOC from './ConnectResponsiveStatusesDictHOC
 
 
 import './app.scss';
-
-const Div = props => {
-  return (
-    <div {...props}>
-      {props.children}
-    </div>
-  );
-};
-Div.propTypes = {
-  children: PropTypes.node.isRequired,
-};
-
-const A = props => {
-  return (
-    <a {...props}>
-      {props.children}
-    </a>
-  );
-};
-A.propTypes = {
-  children: PropTypes.node.isRequired,
-};
 
 const StyledSubsection = ConnectResponsiveStatusesDictHOC(styled.div`
   padding-bottom: ${styleConstants.appPad}em;
@@ -91,7 +68,6 @@ const headerStyle = `
   line-height:${styleConstants.appPad * 2}em;
   color:${styleConstants.colors.white};
   padding-bottom: ${styleConstants.appPad / 2}em;
-  line-height:${styleConstants.appPad / 2}em;
 `;
 const StyledHeaderLink = ConnectResponsiveStatusesDictHOC(styled(BernieLink)`
   ${headerStyle}
@@ -161,6 +137,25 @@ const StyledButtonGroupButtons = ConnectResponsiveStatusesDictHOC(styled.div`
   }}
 `);
 
+const StyledButton = ConnectResponsiveStatusesDictHOC(styled.div`
+  ${styleConstants.mixins.button()}
+  color: ${styleConstants.colors.red};
+`);
+
+const StyledButtonInnerAnchor = ConnectResponsiveStatusesDictHOC(styled.a`
+  ${styleConstants.mixins.buttonInner()}
+  background: ${styleConstants.colors.white};
+`);
+const StyledButtonInnerBernieLink = ConnectResponsiveStatusesDictHOC(styled(BernieLink)`
+  ${styleConstants.mixins.buttonInner()}
+  background: ${styleConstants.colors.white};
+`);
+const StyledButtonInnerSpan = ConnectResponsiveStatusesDictHOC(styled.span`
+  ${styleConstants.mixins.buttonInner()}
+  background: ${styleConstants.colors.white};
+`);
+
+
 let BernieAppButtonGroup = class extends Component {
   constructor() {
     super();
@@ -207,13 +202,13 @@ let BernieAppButtonGroup = class extends Component {
             );
           } else if (btnDetails.aHref) {
             btnInner = (
-              <a className={btnDetails.className} href={btnDetails.aHref}>
+              <StyledButtonInnerAnchor className={btnDetails.className} href={btnDetails.aHref}>
                 {btnDetails.text}
-              </a>
+              </StyledButtonInnerAnchor>
             );
           } else if (btnDetails.actionType) {
             btnInner = (
-              <BernieLink
+              <StyledButtonInnerBernieLink
                 className={btnDetails.className}
                 to={
                   {
@@ -223,28 +218,28 @@ let BernieAppButtonGroup = class extends Component {
                 }
               >
                 {btnDetails.text}
-              </BernieLink>
+              </StyledButtonInnerBernieLink>
             );
           } else if (btnDetails.onClick) {
             btnInner = (
-              <span onClick={btnDetails.onClick} role="button" tabIndex="0">
+              <StyledButtonInnerSpan onClick={btnDetails.onClick} role="button" tabIndex="0">
                 {btnDetails.text}
-              </span>
+              </StyledButtonInnerSpan>
             );
             className = `${className} ${btnDetails.className}`;
           } else {
             btnInner = (
-              <span>
+              <StyledButtonInnerSpan>
                 {btnDetails.text}
-              </span>
+              </StyledButtonInnerSpan>
             );
             className = `${className} ${btnDetails.className}`;
           }
 
           return (
-            <div key={btnDetails.text} className={className}>
+            <StyledButton key={btnDetails.text} className={className}>
               {btnInner}
-            </div>
+            </StyledButton>
           );
         })}
       </StyledButtonGroupButtons>;

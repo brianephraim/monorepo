@@ -367,39 +367,40 @@ html .branding_title{
 	width:100%;
 }
 .button{
-	display:block;
-	text-decoration: none;
-	text-align: center;
-	box-sizing:border-box;
-	padding: 0 0 $appPad 0;
-	color: $white;
-	.buttonGroup &,.iframeUploadButton &{
+	// display:block;
+	// text-decoration: none;
+	// text-align: center;
+	// box-sizing:border-box;
+	// padding: 0 0 $appPad 0;
+	// color: $white;
+	/* .buttonGroup &, */
+	.iframeUploadButton &{
 		color: $red;
 	}
-	span,a,label{
-		color:inherit;
-		text-decoration:none;
-		height: $appPad*3;
-		line-height: $appPad*3;
-		display:block;
+	// span/* ,a *//* ,label */{
+	// 	color:inherit;
+	// 	text-decoration:none;
+	// 	height: $appPad*3;
+	// 	line-height: $appPad*3;
+	// 	display:block;
+	// 	background: $red;
+	// 	cursor:pointer;
+	// 	.buttonGroup &,.iframeUploadButton &{
+	// 		background: $white;
+	// 	}
+		
 
-		background: $red;
-		.buttonGroup &,.iframeUploadButton &{
-			background: $white;
-		}
-		cursor:pointer;
-
-	}
-	&.comingSoon{
-		span,a,label{
-			opacity:.5;
-			cursor:default;
-		}
-	}
-	.fileInput{
-		position:absolute;
-		visibility:hidden;
-	}
+	// }
+	// &.comingSoon{
+	// 	span,a,label{
+	// 		opacity:.5;
+	// 		cursor:default;
+	// 	}
+	// }
+	// .fileInput{
+	// 	position:absolute;
+	// 	visibility:hidden;
+	// }
 
 }
 .closeButton{
@@ -593,10 +594,6 @@ html .branding_title{
 			}
 		}
 	}
-	.doneSection{
-		.button{
-		}
-	}
 	.inputContainer{
 		padding:$appPad;
 	}
@@ -630,7 +627,7 @@ html .branding_title{
 }
 
 
-.comingSoon{display:none;}
+// .comingSoon{display:none;}
 .devMode{
 	// .comingSoon{display:block;}
 }

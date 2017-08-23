@@ -100,6 +100,27 @@ const styleConstants = {
         display:block;
       `;
     },
+    button() {
+      return `
+        display:block;
+        text-decoration: none;
+        text-align: center;
+        box-sizing:border-box;
+        padding: 0 0 ${styleConstants.appPad}em 0;
+        color: ${styleConstants.colors.white};
+      `;
+    },
+    buttonInner() {
+      return `
+        color:inherit;
+        text-decoration:none;
+        height: ${styleConstants.appPad * 3}em;
+        line-height: ${styleConstants.appPad * 3}em;
+        display:block;
+        background: ${styleConstants.colors.white};
+        cursor:pointer;
+      `;
+    },
 
 
     

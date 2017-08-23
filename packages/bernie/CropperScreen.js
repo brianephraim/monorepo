@@ -6,6 +6,21 @@ import windowSizer from '@defualt/window-sizer';
 import {back} from 'redux-first-router';
 import ReactCropperEnhanced from './ReactCropperEnhanced';
 
+import styled from 'styled-components';
+import styleConstants from './style-constants';
+import ConnectResponsiveStatusesDictHOC from './ConnectResponsiveStatusesDictHOC';
+
+const StyledButton = ConnectResponsiveStatusesDictHOC(styled.div`
+  ${styleConstants.mixins.button()}
+`);
+const StyledButtonAnchor = ConnectResponsiveStatusesDictHOC(styled.a`
+  ${styleConstants.mixins.button()}
+`);
+
+const StyledButtonInnerSpan = ConnectResponsiveStatusesDictHOC(styled.span`
+  ${styleConstants.mixins.buttonInner()}
+`);
+
 function whitelistFilterProps(obj, whitelist) {
   return Object.keys(obj).reduce((accum, key) => {
     const keyIsAllowed =
@@ -54,17 +69,17 @@ class DesignPicker extends Component {
               />
             </div>
           </div>
-          <div className="moreimageOptions button">
-            <span className="macro">more options</span>
-            <span className="micro">change design</span>
-          </div>
+          <StyledButton className="moreimageOptions button">
+            <StyledButtonInnerSpan className="macro">more options</StyledButtonInnerSpan>
+            <StyledButtonInnerSpan className="micro">change design</StyledButtonInnerSpan>
+          </StyledButton>
         </div>
         <div className="footer_section">
           <h3>&nbsp;</h3>
           <div className="designFrame designFrame-empty" />
-          <div className="getPhotoButton button">
-            <span>get photo</span>
-          </div>
+          <StyledButton className="getPhotoButton button">
+            <StyledButtonInnerSpan>get photo</StyledButtonInnerSpan>
+          </StyledButton>
         </div>
       </div>
     );
@@ -73,14 +88,14 @@ class DesignPicker extends Component {
 
 function CloseButton() {
   return (
-    <div
+    <StyledButton
       className="closeButton button"
       onClick={back}
       role="button"
       tabIndex={0}
     >
-      <span>X</span>
-    </div>
+      <StyledButtonInnerSpan>X</StyledButtonInnerSpan>
+    </StyledButton>
   );
 }
 
@@ -91,9 +106,9 @@ function CompletionInterface(props) {
       <div className="doneSection">
         <h2>Drag and resize the box to crop</h2>
         <div className="modal_buttonGroup">
-          <a href={url} className="button mainButton cropDoneButton">
-            <span>Done</span>
-          </a>
+          <StyledButtonAnchor href={url} className="button mainButton cropDoneButton">
+            <StyledButtonInnerSpan>Done</StyledButtonInnerSpan>
+          </StyledButtonAnchor>
         </div>
       </div>
     </div>

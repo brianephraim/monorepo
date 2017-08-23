@@ -4,6 +4,19 @@ import bindHere from '@defualt/bind_here';
 import { initUpload } from './s3';
 import './app.scss';
 
+import styled from 'styled-components';
+import styleConstants from './style-constants';
+import ConnectResponsiveStatusesDictHOC from './ConnectResponsiveStatusesDictHOC';
+
+const StyledFileInput = ConnectResponsiveStatusesDictHOC(styled.input`
+  position:absolute;
+  visibility:hidden;
+`);
+
+const StyledLabel = ConnectResponsiveStatusesDictHOC(styled.label`
+  ${styleConstants.mixins.buttonInner()}
+`);
+
 const bs = {
   loader: {
     load: () => {},
@@ -90,16 +103,16 @@ class Upload extends Component {
     if (window.FormData) {
       return (
         <form>
-          <input
+          <StyledFileInput
             id={id}
             className="fileInput"
             type="file"
             name="someInputUploadName"
             onChange={this.handleChange}
           />
-          <label htmlFor={id}>
+          <StyledLabel htmlFor={id}>
             {this.props.children}
-          </label>
+          </StyledLabel>
         </form>
       );
     }
