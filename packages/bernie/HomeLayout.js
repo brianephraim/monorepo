@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import styled from 'styled-components';
+
 import ResponsiveHOC, {
   generateGiantSquareDetails
 } from '@defualt/responsive';
@@ -17,6 +17,7 @@ import {
 import BernieDisclaimer from './Disclaimer';
 import HomeLayoutHeader from './HomeLayoutHeader';
 
+import styled from 'styled-components';
 import styleConstants from './style-constants';
 import ConnectResponsiveStatusesDictHOC from './ConnectResponsiveStatusesDictHOC';
 
@@ -226,12 +227,24 @@ BernieAppHero = connect(
   }
 )(BernieAppHero);
 
-
+const StyledRightPillar = ConnectResponsiveStatusesDictHOC(styled.div`
+  ${styleConstants.mixins.rightPillar()}
+  padding-top:${styleConstants.appPad}em;
+  ${props => {
+    if (props.responsiveStatusesDict.noFloat) {
+      return `
+        margin-left:${styleConstants.appPad}em;
+        position: relative;
+      `;
+    }
+    return '';
+  }}
+`);
 let BernieAppBusiness = props => {
   return (
-    <div className="app_body_rightPillar" ref={props.responsiveRef}>
+    <StyledRightPillar className="app_body_rightPillar" innerRef={props.responsiveRef}>
       {props.children}
-    </div>
+    </StyledRightPillar>
   );
 };
 BernieAppBusiness.propTypes = {
@@ -257,21 +270,95 @@ BernieAppBusiness = ResponsiveHOC(BernieAppBusiness, {
     },
   ],
 });
+/*
+x&.section_share{
+x  float:right;
+x  .responsive_singleCol &{
+x    float:none;
+x  }
+x}
+x&.section_photo{
+x  float:left;
+x  .responsive_doubleCol &{
+x    float: none;
+x  }
+x}
 
-function BernieAppPod (props) {
-  return (
-    <div className={`app_body_rightPillar_section ${props.className}`}>
-      {props.children}
-    </div>
-  );
+x box-sizing:border-box;
+x width:33.3333%;
+x.responsive_doubleCol &{
+x  width:50%;
+x}
+x.responsive_singleCol &{
+x  float:none;
+x  width:auto;
+x  &.responsive_noFloat{
+x    float:left;
+x    width:33.3333%;
+x  }
+x}
+x.responsive_noFloat.responsive_singleCol &{
+x  float:left;
+x  width:33.3333%;
+x}
+
+xfloat:left;
+xpadding-right:$appPad;
+&_subsection{
+  padding-bottom: $appPad;
 }
-BernieAppPod.propTypes = {
-  className: PropTypes.string,
-  children: PropTypes.node.isRequired,
-};
-BernieAppPod.defaultProps = {
-  className: '',
-};
+*/
+const StyledSection = ConnectResponsiveStatusesDictHOC(styled.div`
+  box-sizing:border-box;
+  width:33.3333%;
+  float:left;
+  padding-right:${styleConstants.appPad}em;
+  ${props => {
+    let toReturn = '';
+    if (props.section === 'share') {
+      toReturn += 'float:right;';
+      if (props.responsiveStatusesDict.doubleCol) {
+        toReturn += 'float: none;';
+      }
+    } else if (props.section === 'photo') {
+      toReturn += 'float:left;';
+      if (props.responsiveStatusesDict.doubleCol) {
+        toReturn += 'float: none;';
+      }
+    } else if (props.section === 'photo') {
+      toReturn += 'float:left;';
+      if (props.responsiveStatusesDict.doubleCol) {
+        toReturn += 'float: none;';
+      }
+    }
+    return toReturn;
+  }}
+  
+  ${props => {
+    if (props.responsiveStatusesDict.doubleCol) {
+      return `
+        width:50%;
+      `;
+    }
+    return '';
+  }}
+  ${props => {
+    let toReturn = '';
+    if (props.responsiveStatusesDict.singleCol) {
+      toReturn += `
+        float:none;
+        width:auto;
+      `;
+      if (props.responsiveStatusesDict.noFloat) {
+        toReturn += `
+          float:left;
+          width:33.3333%;
+        `;
+      }
+    }
+    return toReturn;
+  }}
+`);
 
 // This component exists as a container to distingsh from the modals outside this container.
 // This was used for descendant selectors.
@@ -288,17 +375,17 @@ function BernieHomeLayout(props) {
         <div className="app_body">
           <BernieAppHero {...props} />
           <BernieAppBusiness>
-            <BernieAppPod className="section_share">
-              <ShareButtonGroup {...props} />
-            </BernieAppPod>
-            <BernieAppPod className="section_photo featured">
-              <ImportButtonGroup {...props} />
-            </BernieAppPod>
-            <BernieAppPod className="section_design">
-              <EditBrushButtonGroup {...props} />
-              <EditSizeButtonGroup {...props} />
-              <EditDesignButtonGroup {...props} />
-            </BernieAppPod>
+            <StyledSection section="share">
+              <ShareButtonGroup section="share" {...props} />
+            </StyledSection>
+            <StyledSection section="photo" featured>
+              <ImportButtonGroup section="photo" {...props} />
+            </StyledSection>
+            <StyledSection section="design">
+              <EditBrushButtonGroup section="design" {...props} />
+              <EditSizeButtonGroup section="design" {...props} />
+              <EditDesignButtonGroup section="design" {...props} />
+            </StyledSection>
           </BernieAppBusiness>
         </div>
       </div>

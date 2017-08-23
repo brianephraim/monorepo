@@ -96,9 +96,9 @@ html .branding_title{
 
 
 //SOCIAL WIDGET
-.socialWidget{
-	display:block;
-}
+// .socialWidget{
+// 	display:block;
+// }
 @mixin socialWidget_left(){
 	float:left;
 	padding-right:$appPad;
@@ -120,10 +120,10 @@ html .branding_title{
 
 //SOCIAL ROW
 
-.socialRow{
-	@include clearfix;
-	& > * {padding-bottom:$appPad*2;}
-}
+// .socialRow{
+// 	@include clearfix;
+// 	& > * {padding-bottom:$appPad*2;}
+// }
 
 %socialRow{
 	height:$appPad*2;
@@ -286,76 +286,76 @@ $headerTopHeight:$appPad*5;
 			// }
 		// }
 		&_rightPillar{
-			@extend %rightPillar;
+			// @extend %rightPillar;
 
-			padding-top:$appPad;
+			// padding-top:$appPad;
 
-			.responsive_noFloat &{
-				margin-left:$appPad;
-				position: relative;
-			}
+			// .responsive_noFloat &{
+			// 	margin-left:$appPad;
+			// 	position: relative;
+			// }
 			&_section{
-				&.section_share{
-					float:right;
-					.responsive_singleCol &{
-						float:none;
-					}
-				}
-				&.section_photo{
-					float:left;
-					.responsive_doubleCol &{
-						float: none;
-					}
-				}
+				// &.section_share{
+				// 	float:right;
+				// 	.responsive_singleCol &{
+				// 		float:none;
+				// 	}
+				// }
+				// &.section_photo{
+				// 	float:left;
+				// 	.responsive_doubleCol &{
+				// 		float: none;
+				// 	}
+				// }
 				
-				box-sizing:border-box;
-				width:33.3333%;
-				.responsive_doubleCol &{
-					width:50%;
-				}
-				.responsive_singleCol &{
-					float:none;
-					width:auto;
-					&.responsive_noFloat{
-						float:left;
-						width:33.3333%;
-					}
-				}
-				.responsive_noFloat.responsive_singleCol &{
-					float:left;
-					width:33.3333%;
-				}
+				// box-sizing:border-box;
+				// width:33.3333%;
+				// .responsive_doubleCol &{
+				// 	width:50%;
+				// }
+				// .responsive_singleCol &{
+				// 	float:none;
+				// 	width:auto;
+				// 	&.responsive_noFloat{
+				// 		float:left;
+				// 		width:33.3333%;
+				// 	}
+				// }
+				// .responsive_noFloat.responsive_singleCol &{
+				// 	float:left;
+				// 	width:33.3333%;
+				// }
 
-				float:left;
-				padding-right:$appPad;
-				&_subsection{
-					padding-bottom: $appPad;
-				}
+				// float:left;
+				// padding-right:$appPad;
+				// &_subsection{
+				// 	padding-bottom: $appPad;
+				// }
 			}
 			
 			
 			
-			.section_design{
+			// .section_design{
 				
-				&_icon{
-					padding-top:$headerHeight;
-					line-height:$appPad*4;
-					height:$appPad;
-				}
-			}
-			.section_adjust{
-				&_icon{
-					height:$appPad*2.5;
-					line-height:$appPad*3.9;
-				}
-			}
-			.section_share{
-				&_icon{
-					padding-top:$headerHeight;
-					height:$appPad*5.5;
-					line-height:$appPad*7;
-				}
-			}
+			// 	&_icon{
+			// 		padding-top:$headerHeight;
+			// 		line-height:$appPad*4;
+			// 		height:$appPad;
+			// 	}
+			// }
+			// .section_adjust{
+			// 	&_icon{
+			// 		height:$appPad*2.5;
+			// 		line-height:$appPad*3.9;
+			// 	}
+			// }
+			// .section_share{
+			// 	&_icon{
+			// 		padding-top:$headerHeight;
+			// 		height:$appPad*5.5;
+			// 		line-height:$appPad*7;
+			// 	}
+			// }
 		}
 	}
 }
@@ -658,17 +658,17 @@ $headerTopHeight:$appPad*5;
 			}
 		}
 		&_icon{
-			width:$appPad*2;
-			height: $appPad*2;
-			float:left;
+			// width:$appPad*2;
+			// height: $appPad*2;
+			// float:left;
 			
-			.material-icons{
-				font-size:$appPad*2;
-			}
-			#{$singleColHome} {
-				float:none;
-				margin:0 auto;
-			}
+			// .material-icons{
+			// 	font-size:$appPad*2;
+			// }
+			// #{$singleColHome} {
+				// float:none;
+				// margin:0 auto;
+			// }
 		}
 		&_text{
 			padding-left:$appPad/2;

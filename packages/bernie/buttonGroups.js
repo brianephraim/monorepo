@@ -5,6 +5,10 @@ import Link from 'redux-first-router-link'
 import Upload from './Upload';
 import {BernieLink} from './routingComponents';
 
+import styled from 'styled-components';
+import styleConstants from './style-constants';
+import ConnectResponsiveStatusesDictHOC from './ConnectResponsiveStatusesDictHOC';
+
 
 
 import './app.scss';
@@ -31,6 +35,31 @@ A.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
+const StyledSubsection = ConnectResponsiveStatusesDictHOC(styled.div`
+  padding-bottom: ${styleConstants.appPad}em;
+`);
+
+const StyledIconWrapper = ConnectResponsiveStatusesDictHOC(styled.div`
+  width:${styleConstants.appPad * 2}em;
+  height: ${styleConstants.appPad * 2}em;
+  float:left;
+  ${props => {
+    // singleColHome
+    if(!props.isModal && props.responsiveStatusesDict.singleCol) {
+      return `
+        float:none;
+        margin:0 auto;
+      `;
+    }
+    return '';
+  }}
+`);
+
+const StyledIcon = ConnectResponsiveStatusesDictHOC(styled.i`
+  font-size:${styleConstants.appPad * 2}em;
+  
+`);
+
 let BernieAppButtonGroup = class extends Component {
   constructor() {
     super();
@@ -39,11 +68,11 @@ let BernieAppButtonGroup = class extends Component {
   render() {
     const icon =
       this.props.icon &&
-      <div className="section_header_icon">
-        <i className="material-icons">
+      <StyledIconWrapper className="section_header_icon">
+        <StyledIcon className="material-icons" isModal={this.props.isModal}>
           {this.props.icon}
-        </i>
-      </div>;
+        </StyledIcon>
+      </StyledIconWrapper>;
 
     const shortHeadline =
       this.props.shortHeadline &&
@@ -126,7 +155,7 @@ let BernieAppButtonGroup = class extends Component {
       bernieDynamicScreen: this.props.urlFragment,
     };
     return (
-      <div
+      <StyledSubsection
         className={`app_body_rightPillar_section_subsection ${this.props
           .className}`}
       >
@@ -138,7 +167,7 @@ let BernieAppButtonGroup = class extends Component {
           </LinkOrDiv>
           {buttons}
         </div>
-      </div>
+      </StyledSubsection>
     );
   }
 }
@@ -207,13 +236,11 @@ const ImportButtonGroup = makeButtonGroupComponent({
   icon: 'photo_camera',
   buttons: [
     {
-      className: 'importFbPhotoButton',
       text: 'Facebook',
       routerLinkScreenName: 'import-photo-from-facebook',
       actionType: 'IMPORT_FACEBOOK'
     },
     {
-      className: 'cameraUploadizer',
       text: 'Camera',
       onUploadSuccess(imgData) {
         /*
@@ -229,11 +256,9 @@ const ImportButtonGroup = makeButtonGroupComponent({
       },
     },
     {
-      className: 'urlUploadizer',
       text: 'URL',
     },
     {
-      className: 'storageUploadizer',
       text: 'Storage',
     },
   ],
@@ -247,15 +272,12 @@ const ShareButtonGroup = makeButtonGroupComponent({
   icon: 'share',
   buttons: [
     {
-      className: 'shareFbPhotoButton',
       text: 'Facebook photo',
     },
     {
-      className: 'shareFbWallButton',
       text: 'Facebook post',
     },
     {
-      className: 'twitterBigButton mainButton',
       text: 'Tweet',
       aHref:
         'https://twitter.com/intent/tweet?url=xXxXxXxXxXxXxXxXxXxXxXxX&via=bernieselfie&hashtags=BernieSanders%2Cfeelthebern%2Cbernieselfie&related=BernieSander',
@@ -266,7 +288,7 @@ buttonGroupComponents.share = ShareButtonGroup;
 
 const EditBrushButtonGroup = makeButtonGroupComponent({
   urlFragment: 'editBrush',
-  className: 'editMicroSubsection microSubsection',
+  className: 'microSubsection',
   shortHeadline: 'edit',
   icon: 'brush',
 });
@@ -280,7 +302,6 @@ const EditSizeButtonGroup = makeButtonGroupComponent({
   icon: 'transform',
   buttons: [
     {
-      className: 'editSizeAndPositionButton',
       text: 'Size and position',
       routerLinkScreenName: 'crop',
       actionType: 'CROP'
@@ -297,13 +318,11 @@ const EditDesignButtonGroup = makeButtonGroupComponent({
   icon: 'brush',
   buttons: [
     {
-      className: 'moreimageOptionsHome',
       text: 'more options',
       routerLinkScreenName: 'select-template',
       actionType: 'SELECT_TEMPLATE'
     },
     {
-      className: 'templateModalButton',
       text: 'upload a template',
     },
   ],

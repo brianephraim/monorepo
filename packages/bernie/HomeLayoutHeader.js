@@ -91,6 +91,7 @@ const StyledSocialWidgetRight = ConnectResponsiveStatusesDictHOC(styled.img`
 `);
 const StyledSocialRowRight = ConnectResponsiveStatusesDictHOC(styled.div`
   ${styleConstants.mixins.socialRow_right()}
+  ${styleConstants.mixins.socialRowClass()}
 `);
 const StyledHeader = ConnectResponsiveStatusesDictHOC(styled.div`
   padding:${styleConstants.appPad}em;
@@ -180,7 +181,7 @@ export default function BernieAppHeader() {
             alt="Facebook Like badge"
           />
         </StyledFbLikePageWrap>
-        <StyledSocialRowRight className="app_header_rightPillar_socialRow socialRow">
+        <StyledSocialRowRight className="app_header_rightPillar_socialRow">
           <StyledSocialWidgetRight
             className="app_header_rightPillar_socialRow_socialWidget"
             src="/images/mock-fb-like.png"
