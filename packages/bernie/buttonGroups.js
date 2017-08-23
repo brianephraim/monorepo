@@ -104,7 +104,7 @@ const StyledMicroText = ConnectResponsiveStatusesDictHOC(styled.div`
   display:none;
   text-align:center;
   line-height: 0;
-  padding-top: ${styleConstants.appPad * 2}em;
+  padding-top: ${styleConstants.appPad / 2}em;
   padding-bottom: ${styleConstants.appPad}em;
   ${props => {
     // singleColHome
