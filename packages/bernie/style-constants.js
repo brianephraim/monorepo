@@ -1,33 +1,5 @@
 /*
 
-
-@mixin socialRow_left(){
-  @extend %socialRow;
-  &_socialWidget{
-    @include socialWidget_left;
-    
-  }
-
-  .responsive_windowVerticalTooSmall &{
-    @include socialAtBottom;
-    padding-right:0;
-    margin-top:$appPad*8;
-  }
-}
-
-@mixin socialWidget_right(){
-  float:right;
-}
-@mixin socialWidget_rightBottom(){
-  @include socialWidget_right;
-  padding-left:$appPad;
-}
-@mixin socialRow_right(){
-  @extend %socialRow;
-  &_socialWidget{
-    @include socialWidget_rightBottom;
-  }
-}
 */
 const styleConstants = {
   colors: {
@@ -42,7 +14,7 @@ const styleConstants = {
   font2: "'Cantarell', sans-serif",
   appPad: 1,
   mixins: {
-    leftPiller(){
+    leftPillar(){
       return 'float:left;'
     },
     socialAtBottom(){
@@ -72,27 +44,66 @@ const styleConstants = {
       return `
         ${styleConstants.mixins.socialRow()}
         ${windowVerticalTooSmall ? `
-          ${styleConstants.mixins.socialAtBottom.socialAtBottom()}
+          ${styleConstants.mixins.socialAtBottom()}
           padding-right:0;
-          margin-top:$appPad*8;
+          margin-top:${styleConstants.appPad * 8}em;
         ` : ''}
       `;
     },
+    clearfix() {
+      return `
+        *zoom:1;
+        &:before, &:after {
+          content: " ";
+          display: table;
+        }
+        &:after {
+          clear: both;
+        }
+      `;
+    },
+    socialRowClass() {
+      return `
+        ${styleConstants.mixins.clearfix()}
+        & > * {padding-bottom:${styleConstants.appPad * 2}em;}
+      `;
+    },
+    socialWidget_right() {
+      return `
+        float:right;
+      `;
+    },
+    socialWidget_rightBottom() {
+      return `
+        ${styleConstants.mixins.socialWidget_right()}
+        padding-left:${styleConstants.appPad}em;
+      `;
+    },
+    rightPillar() {
+      return `
+        overflow:hidden;
+      `;
+    },
+    socialWidget_rightTop() {
+      return `
+        ${styleConstants.mixins.socialWidget_right()}
+        padding-left:${styleConstants.appPad}em;
+      `;
+    },
+    socialRow_right() {
+      return `
+        ${styleConstants.mixins.socialRow()}
+      `;
+    },
+    socialWidgetClass() {
+      return `
+        display:block;
+      `;
+    },
+    
     
     /*
-    @mixin socialRow_left(){
-      @extend %socialRow;
-      &_socialWidget{
-        @include socialWidget_left;
-        
-      }
 
-      .responsive_windowVerticalTooSmall &{
-        @include socialAtBottom;
-        padding-right:0;
-        margin-top:$appPad*8;
-      }
-    }
     */
     asdf() {
       return `

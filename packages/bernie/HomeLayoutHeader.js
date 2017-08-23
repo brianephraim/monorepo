@@ -1,0 +1,203 @@
+import React from 'react';
+
+import styled from 'styled-components';
+import styleConstants from './style-constants';
+import ConnectResponsiveStatusesDictHOC from './ConnectResponsiveStatusesDictHOC';
+
+const StyledLeftPillar = ConnectResponsiveStatusesDictHOC(styled.div`
+  ${styleConstants.mixins.leftPillar()}
+  ${props => {
+    return props.responsiveStatusesDict.windowVerticalTooSmall ? 'float: none;' : '';
+  }}
+  @media (max-width: 700px){
+    float:none;
+    text-align:center;
+  }
+`);
+
+const StyledBranding = ConnectResponsiveStatusesDictHOC(styled.div`
+  height:${styleConstants.headerTopHeight}em;
+  ${props => {
+    return props.responsiveStatusesDict.windowVerticalTooSmall ? 'height: auto;' : '';
+  }}
+`);
+
+const StyledBrandingTitle = ConnectResponsiveStatusesDictHOC(styled.div`
+  font-family: ${styleConstants.font1};
+  font-size: ${styleConstants.appPad * 2}em;
+  ${props => {
+    return props.responsiveStatusesDict.windowVerticalTooSmall ? 'text-align: center;' : '';
+  }}
+`);
+
+const StyledBrandingSubtitle = ConnectResponsiveStatusesDictHOC(styled.div`
+  font-size: ${styleConstants.appPad * 1.5}em;
+  ${props => {
+    return props.responsiveStatusesDict.windowVerticalTooSmall ? 'display: none;' : '';
+  }}
+  @media (max-width: 400px){
+    font-size:1em;
+    line-height:2em;  
+  }
+  @media (max-width: 280px){
+    font-size:.75em;
+  }
+`);
+
+const StyledSocialRow = ConnectResponsiveStatusesDictHOC(styled.div`
+  ${props => {
+    return styleConstants.mixins.socialRow_left(props.responsiveStatusesDict.windowVerticalTooSmall);
+  }}
+  ${styleConstants.mixins.socialRowClass()}
+`);
+const StyledSocialWidget = ConnectResponsiveStatusesDictHOC(styled.div`
+  ${props => {
+    return styleConstants.mixins.socialWidget_left(props.responsiveStatusesDict.windowVerticalTooSmall);
+  }}
+  ${styleConstants.mixins.socialWidgetClass()}
+`);
+
+const StyledRightPillar = ConnectResponsiveStatusesDictHOC(styled.div`
+  ${styleConstants.mixins.rightPillar()}
+  ${props => {
+    if (props.responsiveStatusesDict.windowVerticalTooSmall) {
+      return `
+        ${styleConstants.mixins.socialAtBottom()}
+        padding-bottom:0;
+      `;
+    }
+    return '';
+  }}
+  @media (max-width: 700px){
+    padding-top:${styleConstants.appPad}em;
+    ${styleConstants.mixins.socialAtBottom()}
+  }
+`);
+
+const StyledFbLikePageWrap = ConnectResponsiveStatusesDictHOC(styled.div`
+  height:${styleConstants.headerTopHeight}em;
+  overflow:hidden;
+  & > * {
+    float:right
+  }
+`);
+
+const StyledFbLikePageWidget = ConnectResponsiveStatusesDictHOC(styled.img`
+  ${styleConstants.mixins.socialWidget_rightTop()}
+`);
+const StyledSocialWidgetRight = ConnectResponsiveStatusesDictHOC(styled.img`
+  ${styleConstants.mixins.socialWidget_rightBottom()}
+  ${styleConstants.mixins.socialWidgetClass()}
+`);
+const StyledSocialRowRight = ConnectResponsiveStatusesDictHOC(styled.div`
+  ${styleConstants.mixins.socialRow_right()}
+`);
+const StyledHeader = ConnectResponsiveStatusesDictHOC(styled.div`
+  padding:${styleConstants.appPad}em;
+`);
+
+
+
+/*
+&_rightPillar{
+  x@extend %rightPillar;
+  x.responsive_windowVerticalTooSmall &{
+  x  @include socialAtBottom;
+  x  padding-bottom:0;
+  x}
+  x@media (max-width: 700px){
+  x  padding-top:$appPad;
+  x  @include socialAtBottom;
+  x}
+  &_fbLikePageWrap{
+  x  height:$headerTopHeight;
+  x  overflow:hidden;
+  x  & > * {
+  x    float:right
+  x  }
+  x  &_socialWidget{
+  x    @include socialWidget_rightTop;
+  x  }
+  }
+  &_socialRow{
+    @include socialRow_right;
+  }
+}
+*/
+
+
+
+
+export default function BernieAppHeader() {
+  return (
+    <StyledHeader className="app_header">
+      <StyledLeftPillar className="app_header_leftPillar">
+        <StyledBranding className="app_header_leftPillar_branding">
+          <StyledBrandingTitle className="app_header_leftPillar_branding_title">
+            BernieSelfie.com
+          </StyledBrandingTitle>
+          <StyledBrandingSubtitle className="app_header_leftPillar_branding_subtitle">
+            Support Bernie with your picture
+          </StyledBrandingSubtitle>
+        </StyledBranding>
+        <StyledSocialRow className="app_header_leftPillar_socialRow">
+          <StyledSocialWidget className="app_header_leftPillar_socialRow_socialWidget">
+            <a
+              className="twitter-share-button"
+              href="https://twitter.com/intent/tweet?url=xXxXxXxXxXxXxXxXxXxXxXxX&via=bernieselfie&hashtags=BernieSanders%2Cfeelthebern%2Cbernieselfie&related=BernieSanders"
+            >
+              Tweet
+            </a>
+          </StyledSocialWidget>
+          <StyledSocialWidget
+            className="fb-like app_header_leftPillar_socialRow_socialWidget"
+            data-share="true"
+            data-width="450"
+            data-layout="button_count"
+            data-show-faces="true"
+          />
+
+          <StyledSocialWidget className="app_header_leftPillar_socialRow_socialWidget">
+            <a
+              href="//www.pinterest.com/pin/create/button/?url=xXxXxXxXxXxXxXxXxX&description=xXxXxXxXxXxXxXxXxXxXxXxXxXxXxX"
+              data-pin-do="buttonPin"
+              data-pin-config="beside"
+              data-pin-color="red"
+            >
+              <img
+                src="//assets.pinterest.com/images/pidgets/pinit_fg_en_rect_red_20.png"
+                alt="Pintrest Pinit badge"
+              />
+            </a>
+          </StyledSocialWidget>
+        </StyledSocialRow>
+      </StyledLeftPillar>
+      <StyledRightPillar className="app_header_rightPillar">
+        <StyledFbLikePageWrap className="app_header_rightPillar_fbLikePageWrap">
+          <StyledFbLikePageWidget
+            className="app_header_rightPillar_fbLikePageWrap_socialWidget"
+            src="/images/mock-fb-page.png"
+            alt="Facebook Like badge"
+          />
+        </StyledFbLikePageWrap>
+        <StyledSocialRowRight className="app_header_rightPillar_socialRow socialRow">
+          <StyledSocialWidgetRight
+            className="app_header_rightPillar_socialRow_socialWidget"
+            src="/images/mock-fb-like.png"
+            alt="Facebook Like badge"
+          />
+          <StyledSocialWidgetRight
+            className="app_header_rightPillar_socialRow_socialWidget"
+            src="/images/mock-tweet.png"
+            alt="Twitter tweet badge"
+          />
+          <StyledSocialWidgetRight
+            className="app_header_rightPillar_socialRow_socialWidget"
+            src="/images/mock-pintrest.png"
+            alt="Pintrest Pinit badge"
+          />
+        </StyledSocialRowRight>
+      </StyledRightPillar>
+    </StyledHeader>
+  );
+}

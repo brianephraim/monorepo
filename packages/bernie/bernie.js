@@ -10,7 +10,6 @@ import './app.scss';
 
 let MyResponsiveMaster = class extends Component {
   componentWillReceiveProps(nextProps){
-    console.log(nextProps);
     nextProps.doThing(nextProps.activeStatusesDict);
     
   }
@@ -24,7 +23,6 @@ MyResponsiveMaster = connect(
 },
 {
   doThing: (responsiveStatusesDict) => {
-    console.log(responsiveStatusesDict);
     return {
       name: 'bernie',
       responsiveStatusesDict,

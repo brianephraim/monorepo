@@ -12,7 +12,6 @@ const Styled_Disclaimer = styled.div`
   position:absolute;
   top:100%;
   padding: ${styleConstants.appPad * 12}em ${styleConstants.appPad}em ${styleConstants.appPad}em ${styleConstants.appPad}em;
-  margin: ${props => {return props.small ? '0.25em 1em' : '0.5em 2em'}};
   width:100%;
   box-sizing:border-box;
   text-align:center;
@@ -28,7 +27,7 @@ const Styled_Disclaimer_P = styled.p`
 // This adds padding to the bottom and serves as disclaimer.
 function BernieDisclaimer() {
   return (
-    <Styled_Disclaimer small>
+    <Styled_Disclaimer>
       <Styled_Disclaimer_P>
         contact: admin@bernieselfie.com <br />
         <a href="/terms">Terms&nbsp;and&nbsp;Conditions</a>
