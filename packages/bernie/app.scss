@@ -441,11 +441,11 @@ html .branding_title{
 }
 
 .designFrame{
-	box-sizing:border-box;
-	&_innerWrap{
-		cursor:pointer;
-		background: $grey0;	
-	}
+	// box-sizing:border-box;
+	// &_innerWrap{
+		// cursor:pointer;
+		// background: $grey0;	
+	// }
 	&_design{
 		width:100%;
 		display:block;
@@ -496,18 +496,15 @@ html .branding_title{
 	}
 	.imageOptions{
 		padding-right:$appPad;
-		h3{
-			padding:$appPad/2 $appPad;
-		}
+		// h3{
+		// 	padding:$appPad/2 $appPad;
+		// }
 		.photoImg,.moreimageOptions,.designFrame{
 			vertical-align: middle;
 			padding-left:$appPad;
 			padding-bottom:$appPad;
 			box-sizing:border-box;
 			
-			
-		}
-		.photoImg,.moreimageOptions,.designFrame{
 			cursor:pointer;
 			display:inline-block;
 			width:25%;
@@ -521,83 +518,78 @@ html .branding_title{
 				width:100%;
 			}
 		}
-		.designFrame{
 
-		}
 
 		
 
 		
 	}
-	.footer_section{
-		padding: $appPad 0 0 $appPad;
-		float:left;
-		@media (max-height: 500px){
-			font-size:.75em;
-		}
-		@media (max-width: 530px){
-			font-size:.75em;
-		}
-		.button,.designFrame{
-			cursor:pointer;
-			display:inline-block;
-			vertical-align: middle;
-			padding-right: $appPad;
-			@media (max-width: 430px){
-				padding-right: 0;
-			}
-		}
-		.designFrame{
-			width:$appPad*5;
-			height:$appPad*5;
-			padding-bottom: $appPad;
-			&-empty{
-				width:0;
-				padding-right:0;
-				visibility: hidden;
-			}
-			@media (max-width: 430px){
-				display:none;
-			}
-		}
+	// .footer_section{
+		// padding: $appPad 0 0 $appPad;
+		// float:left;
+		// @media (max-height: 500px){
+		// 	font-size:.75em;
+		// }
+		// @media (max-width: 530px){
+		// 	font-size:.75em;
+		// }
+		// .button,.designFrame{
+		// 	cursor:pointer;
+		// 	display:inline-block;
+		// 	vertical-align: middle;
+		// 	padding-right: $appPad;
+		// 	@media (max-width: 430px){
+		// 		padding-right: 0;
+		// 	}
+		// }
+		// .designFrame{
+			// width:$appPad*5;
+			// height:$appPad*5;
+			// padding-bottom: $appPad;
+			// &-empty{
+			// 	width:0;
+			// 	padding-right:0;
+			// 	visibility: hidden;
+			// }
+			// @media (max-width: 430px){
+			// 	display:none;
+			// }
+		// }
 		
-		h3{
-			padding-bottom: $appPad;
-			@media (max-width: 430px){
-				display:none;
-			}
-		}
-	}
-	.footer_imageOptions{
-		border-right: $appPad*.5 solid $grey1;
-		@media (max-width: 430px){
-			border-right:0;
-		}
-	}
-	.modalFooter{
-		.button{
-			span{
-				padding: $appPad/2 $appPad/2;
-			    height: auto;
-			    line-height: normal;
-			    &.micro{
-			    	display:none;
-				}
-				@media (max-width: 430px){
-					&.macro{
-				    	display:none;
-					}
-					&.micro{
-				    	display:block;
-					}
-				}
-			}
-		}
-	}
+		// h3{
+		// 	padding-bottom: $appPad;
+		// 	@media (max-width: 430px){
+		// 		display:none;
+		// 	}
+		// }
+	// }
+	// .footer_imageOptions{
+	// 	border-right: $appPad*.5 solid $grey1;
+	// 	@media (max-width: 430px){
+	// 		border-right:0;
+	// 	}
+	// }
+	// .modalFooter{
+	// 	.button{
+	// 		span{
+	// 			padding: $appPad/2 $appPad/2;
+	// 	    height: auto;
+	// 	    line-height: normal;
+	// 	    &.micro{
+	// 	    	display:none;
+	// 			}
+	// 			@media (max-width: 430px){
+	// 				&.macro{
+	// 			    	display:none;
+	// 				}
+	// 				&.micro{
+	// 			    	display:block;
+	// 				}
+	// 			}
+	// 		}
+	// 	}
+	// }
 	.inputContainer{
-		padding:$appPad;
-	}
-	.textContainer{
 		padding:$appPad;
 	}
 	.textInput{
@@ -611,6 +603,7 @@ html .branding_title{
 }
 
 .textContainer{
+	padding:$appPad;
 	box-sizing:border-box;
 	@media (min-width: 500px){
 		width:500px;

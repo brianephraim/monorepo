@@ -64,38 +64,6 @@ function BernieContributeBanner() {
   );
 }
 
-/*
-&_selfieFrame{  
-  .responsive_noFloat &{
-    margin: 0 auto;
-  }
-  background:$white;
-  padding:$appPad $appPad $appPad $appPad;
-  .responsive_noFloat &{
-    padding:$appPad;
-    // padding:$appPad ($appPad * 2) ($appPad * 3) ($appPad * 2);
-  }
-  box-sizing:border-box;
-  &_instructions{
-    text-align: center;
-    position:absolute;
-    width:100%;
-    margin:($appPad*-1.5) 0 0 0;
-    left:0;
-    span{
-    }
-  }
-  &_selfie{
-    display:block;
-    width:100%;
-    height:100%;
-    // max-width: 100%;
-    margin:0 auto;
-    box-shadow: 0 0 .25em rgba(0,0,0,.75);
-  }
-}
-
-*/
 const StyledSelfieFrame = ConnectResponsiveStatusesDictHOC(styled.div`
   background:${styleConstants.colors.white};
   padding:${styleConstants.appPad}em ${styleConstants.appPad}em ${styleConstants.appPad}em ${styleConstants.appPad}em;
@@ -270,44 +238,7 @@ BernieAppBusiness = ResponsiveHOC(BernieAppBusiness, {
     },
   ],
 });
-/*
-x&.section_share{
-x  float:right;
-x  .responsive_singleCol &{
-x    float:none;
-x  }
-x}
-x&.section_photo{
-x  float:left;
-x  .responsive_doubleCol &{
-x    float: none;
-x  }
-x}
 
-x box-sizing:border-box;
-x width:33.3333%;
-x.responsive_doubleCol &{
-x  width:50%;
-x}
-x.responsive_singleCol &{
-x  float:none;
-x  width:auto;
-x  &.responsive_noFloat{
-x    float:left;
-x    width:33.3333%;
-x  }
-x}
-x.responsive_noFloat.responsive_singleCol &{
-x  float:left;
-x  width:33.3333%;
-x}
-
-xfloat:left;
-xpadding-right:$appPad;
-&_subsection{
-  padding-bottom: $appPad;
-}
-*/
 const StyledSection = ConnectResponsiveStatusesDictHOC(styled.div`
   box-sizing:border-box;
   width:33.3333%;

@@ -97,38 +97,6 @@ const StyledHeader = ConnectResponsiveStatusesDictHOC(styled.div`
   padding:${styleConstants.appPad}em;
 `);
 
-
-
-/*
-&_rightPillar{
-  x@extend %rightPillar;
-  x.responsive_windowVerticalTooSmall &{
-  x  @include socialAtBottom;
-  x  padding-bottom:0;
-  x}
-  x@media (max-width: 700px){
-  x  padding-top:$appPad;
-  x  @include socialAtBottom;
-  x}
-  &_fbLikePageWrap{
-  x  height:$headerTopHeight;
-  x  overflow:hidden;
-  x  & > * {
-  x    float:right
-  x  }
-  x  &_socialWidget{
-  x    @include socialWidget_rightTop;
-  x  }
-  }
-  &_socialRow{
-    @include socialRow_right;
-  }
-}
-*/
-
-
-
-
 export default function BernieAppHeader() {
   return (
     <StyledHeader className="app_header">

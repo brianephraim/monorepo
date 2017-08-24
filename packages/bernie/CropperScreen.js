@@ -13,13 +13,114 @@ import ConnectResponsiveStatusesDictHOC from './ConnectResponsiveStatusesDictHOC
 const StyledButton = ConnectResponsiveStatusesDictHOC(styled.div`
   ${styleConstants.mixins.button()}
 `);
+
 const StyledButtonAnchor = ConnectResponsiveStatusesDictHOC(styled.a`
   ${styleConstants.mixins.button()}
 `);
 
 const StyledButtonInnerSpan = ConnectResponsiveStatusesDictHOC(styled.span`
   ${styleConstants.mixins.buttonInner()}
+  background: ${styleConstants.colors.red};
 `);
+const StyledModalFooterButtonInnerSpan = StyledButtonInnerSpan.extend`
+  padding: ${styleConstants.appPad / 2}em ${styleConstants.appPad / 2}em;
+  height: auto;
+  line-height: normal;
+`;
+
+
+const StyledModalFooterButtonInnerSpanMicro = StyledModalFooterButtonInnerSpan.extend`
+  display:none;
+  @media (max-width: 430px){
+    display:block;
+  }
+`;
+
+const StyledModalFooterButtonInnerSpanMacro = StyledModalFooterButtonInnerSpan.extend`
+  @media (max-width: 430px){
+    display:none;
+  }
+`;
+
+const footerSectionButtonAndDesignFrameStyles = `
+  cursor:pointer;
+  display:inline-block;
+  vertical-align: middle;
+  padding-right: ${styleConstants.appPad}em;
+  @media (max-width: 430px){
+    padding-right: 0;
+  }
+`;
+
+const StyledFooterButton = StyledButton.extend`
+  ${footerSectionButtonAndDesignFrameStyles}
+`;
+
+const StyledDesignFrame = ConnectResponsiveStatusesDictHOC(styled.div`
+  box-sizing:border-box;
+  ${footerSectionButtonAndDesignFrameStyles}
+  width:${styleConstants.appPad * 5}em;
+  height:${styleConstants.appPad * 5}em;
+  padding-bottom: ${styleConstants.appPad}em;
+  @media (max-width: 430px){
+    display:none;
+  }
+`);
+const StyledDesignFrameEmpty = StyledDesignFrame.extend`
+  width:0;
+  padding-right:0;
+  visibility: hidden;
+`;
+const StyledDesignFrameInnerWrap = ConnectResponsiveStatusesDictHOC(styled.div`
+  cursor:pointer;
+  background: ${styleConstants.colors.grey0};
+`);
+
+const StyledDesignFrameDesign = ConnectResponsiveStatusesDictHOC(styled.img`
+  width:100%;
+  display:block;
+`);
+
+const footerSectionStyles = `
+  padding: ${styleConstants.appPad}em 0 0 ${styleConstants.appPad}em;
+  float:left;
+  @media (max-height: 500px){
+    font-size:.75em;
+  }
+  @media (max-width: 530px){
+    font-size:.75em;
+  }
+
+  
+`;
+const StyledFooterSection = ConnectResponsiveStatusesDictHOC(styled.div`
+  ${footerSectionStyles}
+`);
+
+
+
+
+const StyledImageOptions = ConnectResponsiveStatusesDictHOC(styled.div`
+  ${footerSectionStyles}
+  border-right: ${styleConstants.appPad * 0.5}em solid ${styleConstants.colors.grey1};
+  @media (max-width: 430px){
+    border-right:0;
+  }
+  padding-right:${styleConstants.appPad}em;
+`);
+
+const StyledFooterSectionH3 = ConnectResponsiveStatusesDictHOC(styled.h3`
+  padding-bottom: ${styleConstants.appPad}em;
+  @media (max-width: 430px){
+    display:none;
+  }
+`);
+const StyledImageOptionsH3 = StyledFooterSectionH3.extend`
+  padding:${styleConstants.appPad/2}em ${styleConstants.appPad}em;
+`;
+
+
+
 
 function whitelistFilterProps(obj, whitelist) {
   return Object.keys(obj).reduce((accum, key) => {
@@ -40,47 +141,47 @@ class DesignPicker extends Component {
   render() {
     return (
       <div className="modalFooter clearfix">
-        <div className="footer_section footer_imageOptions">
-          <h3>Change design</h3>
-          <div className="designFrame">
-            <div className="designFrame_innerWrap">
-              <img
+        <StyledImageOptions className="footer_section footer_imageOptions">
+          <StyledImageOptionsH3>Change design</StyledImageOptionsH3>
+          <StyledDesignFrame className="designFrame">
+            <StyledDesignFrameInnerWrap className="designFrame_innerWrap">
+              <StyledDesignFrameDesign
                 alt="Basic Hair and Glasses Template"
                 className="designFrame_design standardTemplate"
                 src="http://s3-us-west-1.amazonaws.com/bernieapp/decorations/h3.png"
               />
-            </div>
-          </div>
-          <div className="designFrame">
-            <div className="designFrame_innerWrap">
-              <img
+            </StyledDesignFrameInnerWrap>
+          </StyledDesignFrame>
+          <StyledDesignFrame className="designFrame">
+            <StyledDesignFrameInnerWrap className="designFrame_innerWrap">
+              <StyledDesignFrameDesign
                 alt="Colorful Hair and Glasses Template"
                 className="designFrame_design standardTemplate"
                 src="http://s3-us-west-1.amazonaws.com/bernieapp/decorations/h4.png"
               />
-            </div>
-          </div>
-          <div className="designFrame">
-            <div className="designFrame_innerWrap">
-              <img
+            </StyledDesignFrameInnerWrap>
+          </StyledDesignFrame>
+          <StyledDesignFrame className="designFrame">
+            <StyledDesignFrameInnerWrap className="designFrame_innerWrap">
+              <StyledDesignFrameDesign
                 alt="Text and GradientTemplate Template"
                 className="designFrame_design standardTemplate"
                 src="http://s3-us-west-1.amazonaws.com/bernieapp/decorations/wg.png"
               />
-            </div>
-          </div>
-          <StyledButton className="moreimageOptions button">
-            <StyledButtonInnerSpan className="macro">more options</StyledButtonInnerSpan>
-            <StyledButtonInnerSpan className="micro">change design</StyledButtonInnerSpan>
-          </StyledButton>
-        </div>
-        <div className="footer_section">
-          <h3>&nbsp;</h3>
-          <div className="designFrame designFrame-empty" />
-          <StyledButton className="getPhotoButton button">
-            <StyledButtonInnerSpan>get photo</StyledButtonInnerSpan>
-          </StyledButton>
-        </div>
+            </StyledDesignFrameInnerWrap>
+          </StyledDesignFrame>
+          <StyledFooterButton className="moreimageOptions button">
+            <StyledModalFooterButtonInnerSpanMacro className="macro">more options</StyledModalFooterButtonInnerSpanMacro>
+            <StyledModalFooterButtonInnerSpanMicro className="micro">change design</StyledModalFooterButtonInnerSpanMicro>
+          </StyledFooterButton>
+        </StyledImageOptions>
+        <StyledFooterSection className="footer_section">
+          <StyledFooterSectionH3>&nbsp;</StyledFooterSectionH3>
+          <StyledDesignFrameEmpty className="designFrame designFrame-empty" />
+          <StyledFooterButton className="getPhotoButton button">
+            <StyledModalFooterButtonInnerSpan>get photo</StyledModalFooterButtonInnerSpan>
+          </StyledFooterButton>
+        </StyledFooterSection>
       </div>
     );
   }
