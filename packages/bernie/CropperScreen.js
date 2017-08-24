@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import windowSizer from '@defualt/window-sizer';
 import {back} from 'redux-first-router';
 import ReactCropperEnhanced from './ReactCropperEnhanced';
-
+import CloseButton from './CloseButton';
 import styled from 'styled-components';
 import styleConstants from './style-constants';
 import ConnectResponsiveStatusesDictHOC from './ConnectResponsiveStatusesDictHOC';
@@ -185,19 +185,6 @@ class DesignPicker extends Component {
       </div>
     );
   }
-}
-
-function CloseButton() {
-  return (
-    <StyledButton
-      className="closeButton button"
-      onClick={back}
-      role="button"
-      tabIndex={0}
-    >
-      <StyledButtonInnerSpan>X</StyledButtonInnerSpan>
-    </StyledButton>
-  );
 }
 
 function CompletionInterface(props) {

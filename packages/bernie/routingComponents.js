@@ -5,7 +5,9 @@ import {payloadRefineAction} from './setup';
 import CropperScreen from './CropperScreen';
 import ImagePickerFacebook from './ImagePickerFacebook';
 import ImagePickerTemplate from './ImagePickerTemplate';
-import BernieHomeLayout from './HomeLayout'
+import BernieHomeLayout from './HomeLayout';
+import UrlImportScreen from './UrlImportScreen';
+import TemplateUploadScreen from './TemplateUploadScreen';
 import { compositeImageIntoParams } from './compositeImage';
 import './app.scss';
 /*
@@ -101,4 +103,15 @@ CropperWithFgBgCompletion.propTypes = {
   compositeImageData: PropTypes.object.isRequired,
   generateCompletionUrl: PropTypes.func.isRequired,
 };
+
+
+export function UrlImportScreenWithWithUploadCallback() {
+  return (<UrlImportScreen />);
+}
+
+export function TemplateUploadScreenWithUploadCallback() {
+  return (<TemplateUploadScreen />);
+}
+
+
 

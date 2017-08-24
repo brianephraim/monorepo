@@ -354,6 +354,8 @@ const ImportButtonGroup = makeButtonGroupComponent({
     },
     {
       text: 'URL',
+      routerLinkScreenName: 'import-url',
+      actionType: 'IMPORT_URL'
     },
     {
       text: 'Storage',
@@ -424,6 +426,8 @@ const EditDesignButtonGroup = makeButtonGroupComponent({
     },
     {
       text: 'upload a template',
+      routerLinkScreenName: 'upload-template',
+      actionType: 'UPLOAD_TEMPLATE'
     },
   ],
 });

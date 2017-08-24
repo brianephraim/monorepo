@@ -8,7 +8,9 @@ import {
 } from './buttonGroups';
 import {
   BernieHomeLayoutWithUploadCallback, ImagePickerFacebookWithOnClick,
-  ImagePickerTemplateWithOnClick,CropperWithFgBgCompletion
+  ImagePickerTemplateWithOnClick,CropperWithFgBgCompletion,
+  UrlImportScreenWithWithUploadCallback,
+  TemplateUploadScreenWithUploadCallback
 } from './routingComponents';
 
 import { paramsIntoCompositeImage } from './compositeImage';
@@ -77,6 +79,17 @@ const routes = [
     urlEnd: 'import-photo-from-facebook',
     component: ImagePickerFacebookWithOnClick,
   },
+  {
+    action: 'BERNIE_IMPORT_URL',
+    urlEnd: 'import-url',
+    component: UrlImportScreenWithWithUploadCallback,
+  },
+  {
+    action: 'BERNIE_UPLOAD_TEMPLATE',
+    urlEnd: 'upload-template',
+    component: TemplateUploadScreenWithUploadCallback,
+  },
+  
   {
     action: 'BERNIE_SELECT_TEMPLATE',
     urlEnd: 'select-template',
