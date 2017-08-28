@@ -404,12 +404,12 @@ html .branding_title{
 
 }
 .closeButton{
-	position:absolute;
-	right:0;
-	width:$appPad*3;
-	span{
-		width:$appPad*3;
-	}
+	// position:absolute;
+	// right:0;
+	// width:$appPad*3;
+	// span{
+	// 	width:$appPad*3;
+	// }
 }
 .buttonGroup{
 	// overflow:hidden;
@@ -602,22 +602,22 @@ html .branding_title{
 	// }
 }
 
-.textContainer{
-	padding:$appPad;
-	box-sizing:border-box;
-	@media (min-width: 500px){
-		width:500px;
-		margin:0 auto;
-	}
-	li{
-		list-style: square;
-		list-style-position: inside;
-		padding-left:1em;		
-	}
-	p,li{
-		line-height: 1.5em;
-	}
-}
+// .textContainer{
+// 	// padding:$appPad;
+// 	// box-sizing:border-box;
+// 	// @media (min-width: 500px){
+// 	// 	width:500px;
+// 	// 	margin:0 auto;
+// 	// }
+// 	li{
+// 		list-style: square;
+// 		list-style-position: inside;
+// 		padding-left:1em;		
+// 	}
+// 	p,li{
+// 		line-height: 1.5em;
+// 	}
+// }
 
 
 // .comingSoon{display:none;}
