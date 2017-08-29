@@ -186,18 +186,21 @@ class DesignPicker extends Component {
     );
   }
 }
-
+const StyledModalButtonGroup = StyledModalFooterButtonInnerSpan.extend`
+  padding-left: ${styleConstants.appPad}em;
+  padding-right: ${styleConstants.appPad}em;
+`;
 function CompletionInterface(props) {
   const url = props.generateCompletionUrl(props.activeCompositeImageData);
   return (
     <div className="modalHeader clearfix">
       <div className="doneSection">
         <h2>Drag and resize the box to crop</h2>
-        <div className="modal_buttonGroup">
+        <StyledModalButtonGroup className="modal_buttonGroup">
           <StyledButtonAnchor href={url} className="button mainButton cropDoneButton">
             <StyledButtonInnerSpan>Done</StyledButtonInnerSpan>
           </StyledButtonAnchor>
-        </div>
+        </StyledModalButtonGroup>
       </div>
     </div>
   );

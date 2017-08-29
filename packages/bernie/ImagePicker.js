@@ -14,6 +14,30 @@ const StyledButtonInnerSpan = ConnectResponsiveStatusesDictHOC(styled.span`
   ${styleConstants.mixins.buttonInner()}
 `);
 
+const StyledImageOptions = ConnectResponsiveStatusesDictHOC(styled.div`
+  padding-right:${styleConstants.appPad}em;
+`);
+
+const StyledPhotoImg = ConnectResponsiveStatusesDictHOC(styled.div`
+  vertical-align: middle;
+  padding-left:${styleConstants.appPad}em;
+  padding-bottom:${styleConstants.appPad}em;
+  box-sizing:border-box;
+  
+  cursor:pointer;
+  display:inline-block;
+  width:25%;
+  @media (max-width: 1100px){
+    width:33.333%;
+  }
+  @media (max-width: 600px){
+    width:50%;
+  }
+  @media (max-width: 350px){
+    width:100%;
+  }
+`);
+
 class ImagePicker extends Component {
   constructor() {
     super();
@@ -24,7 +48,8 @@ class ImagePicker extends Component {
   /*
     {this.state.images.map((imgSrc) => {
         return  (<img className="photoImg" src={imgSrc} />);
-    });}
+    })
+    ;}
   */
   imgOnClick(imgSrc) {
     return () => {
@@ -40,10 +65,10 @@ class ImagePicker extends Component {
           <StyledButtonInnerSpan>X</StyledButtonInnerSpan>
         </StyledButton>
         <h2>Pick a photo</h2>
-        <div className="imageOptions">
+        <StyledImageOptions className="imageOptions">
           {this.props.images.map((imgSrcObj, i) => {
             return (
-              <img
+              <StyledPhotoImg
                 className="photoImg"
                 src={imgSrcObj.src}
                 key={imgSrcObj.src}
@@ -52,7 +77,7 @@ class ImagePicker extends Component {
               />
             );
           })}
-        </div>
+        </StyledImageOptions>
       </div>
     );
   }

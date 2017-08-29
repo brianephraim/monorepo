@@ -7,6 +7,7 @@ import {BernieLink} from './routingComponents';
 import styled from 'styled-components';
 import styleConstants from './style-constants';
 import ConnectResponsiveStatusesDictHOC from './ConnectResponsiveStatusesDictHOC';
+import ImagePickerTemplate from './ImagePickerTemplate';
 
 
 import './app.scss';
@@ -188,6 +189,7 @@ let BernieAppButtonGroup = class extends Component {
     const buttons =
       this.props.buttons &&
       <StyledButtonGroupButtons className="buttonGroup_buttons" isModal={this.props.isModal}>
+        {this.props.buttonsPrepend}
         {this.props.buttons.map(btnDetails => {
           let btnInner;
           let className = 'buttonGroup_button button';
@@ -411,6 +413,21 @@ const EditSizeButtonGroup = makeButtonGroupComponent({
 });
 buttonGroupComponents.editSize = EditSizeButtonGroup;
 
+
+const StyledDesignImg = ConnectResponsiveStatusesDictHOC(styled.img`
+  width: 100%;
+  display: block;
+`);
+const StyledDesignInnerWrap = ConnectResponsiveStatusesDictHOC(styled.div`
+  cursor: pointer;
+  background: #eee;
+`);
+const StyledDesign = ConnectResponsiveStatusesDictHOC(styled.div`
+  padding-bottom: ${styleConstants.appPad}em;
+  box-sizing: border-box;
+`);
+
+
 const EditDesignButtonGroup = makeButtonGroupComponent({
   urlFragment: 'editDesign',
   className: 'designSubsection',
@@ -418,7 +435,31 @@ const EditDesignButtonGroup = makeButtonGroupComponent({
   shortHeadline: 'edit',
   headline: 'Change design:',
   icon: 'brush',
+  buttonsPrepend: (
+    <div>
+      <StyledDesign className="designFrame">
+        <StyledDesignInnerWrap className="designFrame_innerWrap">
+          <StyledDesignImg className="designFrame_design standardTemplate" src="http://s3-us-west-1.amazonaws.com/bernieapp/decorations/h3.png" />
+        </StyledDesignInnerWrap>
+      </StyledDesign>
+      <StyledDesign className="designFrame">
+        <StyledDesignInnerWrap className="designFrame_innerWrap">
+          <StyledDesignImg className="designFrame_design standardTemplate" src="http://s3-us-west-1.amazonaws.com/bernieapp/decorations/h4.png" />
+        </StyledDesignInnerWrap>
+      </StyledDesign>
+      <StyledDesign className="designFrame">
+        <StyledDesignInnerWrap className="designFrame_innerWrap">
+          <StyledDesignImg className="designFrame_design standardTemplate" src="http://s3-us-west-1.amazonaws.com/bernieapp/decorations/wg.png" />
+        </StyledDesignInnerWrap>
+      </StyledDesign>
+    </div>
+  ),
   buttons: [
+    {
+      text: 'Size and position',
+      routerLinkScreenName: 'crop',
+      actionType: 'CROP'
+    },
     {
       text: 'more options',
       routerLinkScreenName: 'select-template',

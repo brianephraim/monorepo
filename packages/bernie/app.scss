@@ -440,18 +440,18 @@ html .branding_title{
 	}
 }
 
-.designFrame{
-	// box-sizing:border-box;
-	// &_innerWrap{
-		// cursor:pointer;
-		// background: $grey0;	
-	// }
-	&_design{
-		width:100%;
-		display:block;
+// .designFrame{
+// 	// box-sizing:border-box;
+// 	// &_innerWrap{
+// 		// cursor:pointer;
+// 		// background: $grey0;	
+// 	// }
+// 	&_design{
+// 		width:100%;
+// 		display:block;
 		
-	}
-}
+// 	}
+// }
 
 //
 
@@ -460,64 +460,64 @@ html .branding_title{
 }
 
 .modal{
-	&_buttonGroup{
-		padding-left: $appPad;
-		padding-right: $appPad;
-	}
+	// &_buttonGroup{
+	// 	padding-left: $appPad;
+	// 	padding-right: $appPad;
+	// }
 	h2{
 		padding:$appPad/2 $appPad*1.5;
 	    text-align: center;
 	    font-size: $appPad*2;
 	}
 	
-	&.cropModal{
-		.imageOptions{
-			height:$appPad*7;
-			img,.moreimageOptions{
-				height:$appPad*5;
-				max-width:25%;
-				width:inherit;
-				span{
-				}
-			}
+	// &.cropModal{
+	// 	.imageOptions{
+	// 		height:$appPad*7;
+	// 		img,.moreimageOptions{
+	// 			height:$appPad*5;
+	// 			max-width:25%;
+	// 			width:inherit;
+	// 			span{
+	// 			}
+	// 		}
 
 			
-		} 
+	// 	} 
 		
-		h2{
-			@media (max-height: 500px){
-				font-size: 1em;
-			}
-			@media (max-width: 530px){
-				font-size: 1em;
-			}
-		}
+	// 	h2{
+	// 		@media (max-height: 500px){
+	// 			font-size: 1em;
+	// 		}
+	// 		@media (max-width: 530px){
+	// 			font-size: 1em;
+	// 		}
+	// 	}
 		
-	}
-	.imageOptions{
-		padding-right:$appPad;
-		// h3{
-		// 	padding:$appPad/2 $appPad;
-		// }
-		.photoImg,.moreimageOptions,.designFrame{
-			vertical-align: middle;
-			padding-left:$appPad;
-			padding-bottom:$appPad;
-			box-sizing:border-box;
+	// }
+	// .imageOptions{
+	// 	padding-right:$appPad;
+	// 	// h3{
+	// 	// 	padding:$appPad/2 $appPad;
+	// 	// }
+	// 	.photoImg,.moreimageOptions,.designFrame{
+	// 		vertical-align: middle;
+	// 		padding-left:$appPad;
+	// 		padding-bottom:$appPad;
+	// 		box-sizing:border-box;
 			
-			cursor:pointer;
-			display:inline-block;
-			width:25%;
-			@media (max-width: 1100px){
-				width:33.333%;
-			}
-			@media (max-width: 600px){
-				width:50%;
-			}
-			@media (max-width: 350px){
-				width:100%;
-			}
-		}
+	// 		cursor:pointer;
+	// 		display:inline-block;
+	// 		width:25%;
+	// 		@media (max-width: 1100px){
+	// 			width:33.333%;
+	// 		}
+	// 		@media (max-width: 600px){
+	// 			width:50%;
+	// 		}
+	// 		@media (max-width: 350px){
+	// 			width:100%;
+	// 		}
+	// 	}
 
 
 		
