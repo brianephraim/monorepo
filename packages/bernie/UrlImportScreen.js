@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import CloseButton from './CloseButton';
+import ModalScreen from './ModalScreen';
 
 import styled from 'styled-components';
 import styleConstants from './style-constants';
@@ -31,17 +31,9 @@ const StyledInput = ConnectResponsiveStatusesDictHOC(styled.input`
   margin-bottom: ${styleConstants.appPad}em;
 `);
 
-const StyledH2 = ConnectResponsiveStatusesDictHOC(styled.h2`
-  padding: ${styleConstants.appPad * 0.5}em ${styleConstants.appPad * 1.5}em;
-  text-align: center;
-  font-size: ${styleConstants.appPad * 2}em;
-`);
-
 export default function UrlImportScreen() {
   return (
-    <div className="modal designModal">
-      <CloseButton />
-      <StyledH2>Enter the URL to an Image</StyledH2>
+    <ModalScreen hasCloseButton headerText="Enter the URL to an Image">
       <StyledInputContainer className="inputContainer">
         <StyledInput className="textInput urlInput" />
       </StyledInputContainer>
@@ -50,6 +42,6 @@ export default function UrlImportScreen() {
           <StyledButtonInner>Done</StyledButtonInner>
         </StyledButton>
       </StyledButtonWrap>
-    </div>
+    </ModalScreen>
   );
 }

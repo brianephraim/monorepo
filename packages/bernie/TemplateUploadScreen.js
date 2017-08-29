@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import CloseButton from './CloseButton';
+import ModalScreen from './ModalScreen';
 
 import styled from 'styled-components';
 import styleConstants from './style-constants';
@@ -17,13 +17,6 @@ const StyledButtonInner = ConnectResponsiveStatusesDictHOC(styled.span`
 const StyledInputContainer = ConnectResponsiveStatusesDictHOC(styled.div`
   padding: ${styleConstants.appPad}em;
 `);
-
-const StyledH2 = ConnectResponsiveStatusesDictHOC(styled.h2`
-  padding: ${styleConstants.appPad * 0.5}em ${styleConstants.appPad * 1.5}em;
-  text-align: center;
-  font-size: ${styleConstants.appPad * 2}em;
-`);
-
 
 const StyledTextContainer = ConnectResponsiveStatusesDictHOC(styled.div`
   padding:${styleConstants.appPad}em;
@@ -48,10 +41,8 @@ const StyledP = ConnectResponsiveStatusesDictHOC(styled.p`
 
 export default function TemplateUploadScreen() {
   return (
-    <div className="modal designModal">
-      <CloseButton />
+    <ModalScreen hasCloseButton headerText="Upload a template">
       <StyledTextContainer className="textContainer">
-        <StyledH2>Upload a template</StyledH2>
         <StyledP>Upload an image with the following specs.  Then you and other users can use it as a template to enhance selfies!</StyledP>
         <StyledP>Your template image must be:</StyledP>
         <ul>
@@ -66,6 +57,6 @@ export default function TemplateUploadScreen() {
           <StyledButtonInner>Upload a template</StyledButtonInner>
         </StyledButton>
       </StyledInputContainer>
-    </div>
+    </ModalScreen>
   );
 }

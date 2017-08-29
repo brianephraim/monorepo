@@ -5,10 +5,10 @@ import PropTypes from 'prop-types';
 import windowSizer from '@defualt/window-sizer';
 import {back} from 'redux-first-router';
 import ReactCropperEnhanced from './ReactCropperEnhanced';
-import CloseButton from './CloseButton';
 import styled from 'styled-components';
 import styleConstants from './style-constants';
 import ConnectResponsiveStatusesDictHOC from './ConnectResponsiveStatusesDictHOC';
+import ModalScreen from './ModalScreen';
 
 const StyledButton = ConnectResponsiveStatusesDictHOC(styled.div`
   ${styleConstants.mixins.button()}
@@ -190,12 +190,17 @@ const StyledModalButtonGroup = StyledModalFooterButtonInnerSpan.extend`
   padding-left: ${styleConstants.appPad}em;
   padding-right: ${styleConstants.appPad}em;
 `;
+const StyledH2 = StyledModalFooterButtonInnerSpan.extend`
+  padding:${styleConstants.appPad / 2}em ${styleConstants.appPad * 1.5}em;
+  text-align: center;
+  font-size: ${styleConstants.appPad * 2}em
+`;
 function CompletionInterface(props) {
   const url = props.generateCompletionUrl(props.activeCompositeImageData);
   return (
     <div className="modalHeader clearfix">
       <div className="doneSection">
-        <h2>Drag and resize the box to crop</h2>
+        <StyledH2>Drag and resize the box to crop</StyledH2>
         <StyledModalButtonGroup className="modal_buttonGroup">
           <StyledButtonAnchor href={url} className="button mainButton cropDoneButton">
             <StyledButtonInnerSpan>Done</StyledButtonInnerSpan>
@@ -301,8 +306,7 @@ class CropperScreen extends Component {
       background: this.props.background,
     };
     return (
-      <div className="modal cropModal" style={styles.cropModal}>
-        <CloseButton />
+      <ModalScreen hasCloseButton style={styles.cropModal}>
         <DesignPicker />
         <div className="cropOuterContainer">
           <div className="cropContainer" style={styles.cropContainer}>
@@ -316,7 +320,7 @@ class CropperScreen extends Component {
           activeCompositeImageData={activeCompositeImageData}
           generateCompletionUrl={this.props.generateCompletionUrl}
         />
-      </div>
+      </ModalScreen>
     );
   }
 }

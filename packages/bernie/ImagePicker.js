@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import styleConstants from './style-constants';
 import ConnectResponsiveStatusesDictHOC from './ConnectResponsiveStatusesDictHOC';
+import ModalScreen from './ModalScreen';
 
 const StyledButton = ConnectResponsiveStatusesDictHOC(styled.div`
   ${styleConstants.mixins.button()}
@@ -18,7 +19,7 @@ const StyledImageOptions = ConnectResponsiveStatusesDictHOC(styled.div`
   padding-right:${styleConstants.appPad}em;
 `);
 
-const StyledPhotoImg = ConnectResponsiveStatusesDictHOC(styled.div`
+const StyledPhotoImg = ConnectResponsiveStatusesDictHOC(styled.img`
   vertical-align: middle;
   padding-left:${styleConstants.appPad}em;
   padding-bottom:${styleConstants.appPad}em;
@@ -60,11 +61,7 @@ class ImagePicker extends Component {
     // const imgSrc =
     //   'https://scontent.xx.fbcdn.net/v/t1.0-9/14729128_10157953620800725_5026720440547477533_n.jpg?oh=ac158b7c520d1310164aabb3c18fa3ff&amp;oe=59F6F820';
     return (
-      <div className="modal designModal">
-        <StyledButton className="closeButton button">
-          <StyledButtonInnerSpan>X</StyledButtonInnerSpan>
-        </StyledButton>
-        <h2>Pick a photo</h2>
+      <ModalScreen hasCloseButton headerText="Pick a photo">
         <StyledImageOptions className="imageOptions">
           {this.props.images.map((imgSrcObj, i) => {
             return (
@@ -78,7 +75,7 @@ class ImagePicker extends Component {
             );
           })}
         </StyledImageOptions>
-      </div>
+      </ModalScreen>
     );
   }
 }

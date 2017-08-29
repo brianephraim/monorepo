@@ -8,6 +8,7 @@ import styled from 'styled-components';
 import styleConstants from './style-constants';
 import ConnectResponsiveStatusesDictHOC from './ConnectResponsiveStatusesDictHOC';
 import ImagePickerTemplate from './ImagePickerTemplate';
+import ModalScreen from './ModalScreen';
 
 
 import './app.scss';
@@ -312,9 +313,10 @@ function makeButtonGroupComponent(
     const ButtonGroup = <BernieAppButtonGroup {...props} {...options} />;
     if (props.isModal) {
       return (
-        <div className="modal">
+
+        <ModalScreen hasCloseButton>
           {ButtonGroup}
-        </div>
+        </ModalScreen>
       );
     }
     return ButtonGroup;
