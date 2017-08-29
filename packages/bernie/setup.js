@@ -15,6 +15,8 @@ import {
 
 import { paramsIntoCompositeImage } from './compositeImage';
 
+import fbManager from './fb';
+
 export function Dynamic(props) {
   const Comp = buttonGroupComponents[props.dynamicScreen];
   return (
@@ -127,6 +129,8 @@ routeModes.forEach((homeLayoutPath) => {
 bernieRoutesMap.BERNIE = '/bernie';
 bernieScreenNameMap.BERNIE = 'BERNIE_HOME';
 
+
+
 const bernieReducers = combineReducers({
   compositeImageData: (state = {}, action) => {
     if(bernieRoutesMap[action.type] || action.type === 'BERNIE') {
@@ -157,6 +161,12 @@ const bernieReducers = combineReducers({
   responsiveStatusesDict: (state = {}, action) => {
     if (action.type === 'UDATE_RESPONSIVE_STATUSES_DICT' && action.name === 'bernie') {
       return {...action.responsiveStatusesDict}
+    }
+    return state;
+  },
+  facebookPhotos: (state = [], action) => {
+    if (action.type === 'BERNIE_FETCH_FACEBOOK_PHOTOS') {
+      return [...action.images];
     }
     return state;
   }

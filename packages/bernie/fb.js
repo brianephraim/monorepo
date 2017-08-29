@@ -251,4 +251,37 @@ class FbManager {
   }
 }
 
-export default new FbManager();
+const fbManager = new FbManager();
+export default fbManager;
+
+
+let imagesFromFBPromise = null;
+export function makeActionFetchUsers(){
+  return (dispatch/* , getState*/) => {
+    imagesFromFBPromise = imagesFromFBPromise || fbManager.importStuff();
+    return imagesFromFBPromise.then(response => {
+      if (response && response.data && response.data.length) {
+        const images = response.data.reduce((accum, imageObj) => {
+          if (
+            imageObj &&
+            imageObj.images &&
+            imageObj.images[0] &&
+            imageObj.images[0].source
+          ) {
+            return [
+              ...accum,
+              {
+                src: imageObj.images[0].source,
+              },
+            ];
+          }
+          return accum;
+        }, []);
+        dispatch({
+          type: 'BERNIE_FETCH_FACEBOOK_PHOTOS',
+          images,
+        });
+      }
+    });
+  };
+};

@@ -1,10 +1,10 @@
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 import Upload from './Upload';
 import {BernieLink} from './routingComponents';
 
-import styled from 'styled-components';
 import styleConstants from './style-constants';
 import ConnectResponsiveStatusesDictHOC from './ConnectResponsiveStatusesDictHOC';
 import ImagePickerTemplate from './ImagePickerTemplate';
@@ -59,10 +59,9 @@ const StyledIconWrapper = ConnectResponsiveStatusesDictHOC(styled.div`
   }}
 `);
 
-const StyledIcon = ConnectResponsiveStatusesDictHOC(styled.i`
+const StyledIcon = styled.i`
   font-size:${styleConstants.appPad * 2}em;
-  
-`);
+`;
 
 const headerStyle = `
   display: block;
@@ -71,12 +70,12 @@ const headerStyle = `
   color:${styleConstants.colors.white};
   padding-bottom: ${styleConstants.appPad / 2}em;
 `;
-const StyledHeaderLink = ConnectResponsiveStatusesDictHOC(styled(BernieLink)`
+const StyledHeaderLink = styled(BernieLink)`
   ${headerStyle}
-`);
-const StyledHeaderDiv = ConnectResponsiveStatusesDictHOC(styled.div`
+`;
+const StyledHeaderDiv = styled.div`
   ${headerStyle}
-`);
+`;
 
 const StyledMicroText = ConnectResponsiveStatusesDictHOC(styled.div`
   display:none;
@@ -139,23 +138,23 @@ const StyledButtonGroupButtons = ConnectResponsiveStatusesDictHOC(styled.div`
   }}
 `);
 
-const StyledButton = ConnectResponsiveStatusesDictHOC(styled.div`
+const StyledButton = styled.div`
   ${styleConstants.mixins.button()}
   color: ${styleConstants.colors.red};
-`);
+`;
 
-const StyledButtonInnerAnchor = ConnectResponsiveStatusesDictHOC(styled.a`
+const StyledButtonInnerAnchor = styled.a`
   ${styleConstants.mixins.buttonInner()}
   background: ${styleConstants.colors.white};
-`);
-const StyledButtonInnerBernieLink = ConnectResponsiveStatusesDictHOC(styled(BernieLink)`
+`;
+const StyledButtonInnerBernieLink = styled(BernieLink)`
   ${styleConstants.mixins.buttonInner()}
   background: ${styleConstants.colors.white};
-`);
-const StyledButtonInnerSpan = ConnectResponsiveStatusesDictHOC(styled.span`
+`;
+const StyledButtonInnerSpan = styled.span`
   ${styleConstants.mixins.buttonInner()}
   background: ${styleConstants.colors.white};
-`);
+`;
 
 
 let BernieAppButtonGroup = class extends Component {
@@ -166,7 +165,7 @@ let BernieAppButtonGroup = class extends Component {
   render() {
     const icon =
       this.props.icon &&
-      <StyledIconWrapper className="section_header_icon" isModal={this.props.isModal}>
+      <StyledIconWrapper isModal={this.props.isModal}>
         <StyledIcon className="material-icons" isModal={this.props.isModal}>
           {this.props.icon}
         </StyledIcon>
@@ -174,7 +173,7 @@ let BernieAppButtonGroup = class extends Component {
 
     const shortHeadline =
       this.props.shortHeadline &&
-      <StyledMicroText className="section_header_microText" isModal={this.props.isModal}>
+      <StyledMicroText isModal={this.props.isModal}>
         <span>
           {this.props.shortHeadline}
         </span>
@@ -182,22 +181,20 @@ let BernieAppButtonGroup = class extends Component {
 
     const headline =
       this.props.headline &&
-      <StyledText className="section_header_text" isModal={this.props.isModal}>
+      <StyledText isModal={this.props.isModal}>
         <span>
           {this.props.headline}
         </span>
       </StyledText>;
     const buttons =
       this.props.buttons &&
-      <StyledButtonGroupButtons className="buttonGroup_buttons" isModal={this.props.isModal}>
+      <StyledButtonGroupButtons isModal={this.props.isModal}>
         {this.props.buttonsPrepend}
         {this.props.buttons.map(btnDetails => {
           let btnInner;
-          let className = 'buttonGroup_button button';
           if (btnDetails.onUploadSuccess) {
             btnInner = (
               <Upload
-                className={btnDetails.className}
                 onSuccess={this.props.onUploadSuccess}
               >
                 {btnDetails.text}
@@ -205,14 +202,13 @@ let BernieAppButtonGroup = class extends Component {
             );
           } else if (btnDetails.aHref) {
             btnInner = (
-              <StyledButtonInnerAnchor className={btnDetails.className} href={btnDetails.aHref}>
+              <StyledButtonInnerAnchor href={btnDetails.aHref}>
                 {btnDetails.text}
               </StyledButtonInnerAnchor>
             );
           } else if (btnDetails.actionType) {
             btnInner = (
               <StyledButtonInnerBernieLink
-                className={btnDetails.className}
                 to={
                   {
                     type: `BERNIE_${btnDetails.actionType}`,
@@ -229,18 +225,16 @@ let BernieAppButtonGroup = class extends Component {
                 {btnDetails.text}
               </StyledButtonInnerSpan>
             );
-            className = `${className} ${btnDetails.className}`;
           } else {
             btnInner = (
               <StyledButtonInnerSpan>
                 {btnDetails.text}
               </StyledButtonInnerSpan>
             );
-            className = `${className} ${btnDetails.className}`;
           }
 
           return (
-            <StyledButton key={btnDetails.text} className={className}>
+            <StyledButton key={btnDetails.text}>
               {btnInner}
             </StyledButton>
           );
@@ -256,11 +250,9 @@ let BernieAppButtonGroup = class extends Component {
     return (
       <StyledSubsection
         themex={this.props.themex}
-        className={`app_body_rightPillar_section_subsection ${this.props
-          .className}`}
       >
-        <StyledButtonGroup className="buttonGroup" isModal={this.props.isModal}>
-          <LinkOrDiv to={to} className="section_header">
+        <StyledButtonGroup isModal={this.props.isModal}>
+          <LinkOrDiv to={to}>
             {shortHeadline}
             {icon}
             {headline}
@@ -274,22 +266,24 @@ let BernieAppButtonGroup = class extends Component {
 BernieAppButtonGroup.propTypes = {
   icon: PropTypes.string,
   shortHeadline: PropTypes.string,
-  className: PropTypes.string,
   headline: PropTypes.string,
   buttons: PropTypes.array,
   urlFragment: PropTypes.string,
   compositeImageData: PropTypes.object,
   onUploadSuccess: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
+  isModal: PropTypes.bool,
+  themex: PropTypes.string,
 };
 BernieAppButtonGroup.defaultProps = {
   icon: '',
   shortHeadline: '',
-  className: '',
   headline: '',
   buttons: [],
   urlFragment: '',
   compositeImageData: null,
   onUploadSuccess: null,
+  isModal: false,
+  themex: '',
 };
 
 BernieAppButtonGroup = connect(
@@ -391,7 +385,6 @@ buttonGroupComponents.share = ShareButtonGroup;
 
 const EditBrushButtonGroup = makeButtonGroupComponent({
   urlFragment: 'editBrush',
-  className: 'microSubsection',
   themex: 'microSubsection',
   shortHeadline: 'edit',
   icon: 'brush',
@@ -400,7 +393,6 @@ buttonGroupComponents.editBrush = EditBrushButtonGroup;
 
 const EditSizeButtonGroup = makeButtonGroupComponent({
   urlFragment: 'editSize',
-  className: 'editSubsection',
   themex: 'editSubsection',
   shortHeadline: 'edit',
   headline: 'Edit:',
@@ -416,42 +408,41 @@ const EditSizeButtonGroup = makeButtonGroupComponent({
 buttonGroupComponents.editSize = EditSizeButtonGroup;
 
 
-const StyledDesignImg = ConnectResponsiveStatusesDictHOC(styled.img`
+const StyledDesignImg = styled.img`
   width: 100%;
   display: block;
-`);
-const StyledDesignInnerWrap = ConnectResponsiveStatusesDictHOC(styled.div`
+`;
+const StyledDesignInnerWrap = styled.div`
   cursor: pointer;
   background: #eee;
-`);
-const StyledDesign = ConnectResponsiveStatusesDictHOC(styled.div`
+`;
+const StyledDesign = styled.div`
   padding-bottom: ${styleConstants.appPad}em;
   box-sizing: border-box;
-`);
+`;
 
 
 const EditDesignButtonGroup = makeButtonGroupComponent({
   urlFragment: 'editDesign',
-  className: 'designSubsection',
   themex: 'designSubsection',
   shortHeadline: 'edit',
   headline: 'Change design:',
   icon: 'brush',
   buttonsPrepend: (
     <div>
-      <StyledDesign className="designFrame">
-        <StyledDesignInnerWrap className="designFrame_innerWrap">
-          <StyledDesignImg className="designFrame_design standardTemplate" src="http://s3-us-west-1.amazonaws.com/bernieapp/decorations/h3.png" />
+      <StyledDesign>
+        <StyledDesignInnerWrap>
+          <StyledDesignImg src="http://s3-us-west-1.amazonaws.com/bernieapp/decorations/h3.png" />
         </StyledDesignInnerWrap>
       </StyledDesign>
-      <StyledDesign className="designFrame">
-        <StyledDesignInnerWrap className="designFrame_innerWrap">
-          <StyledDesignImg className="designFrame_design standardTemplate" src="http://s3-us-west-1.amazonaws.com/bernieapp/decorations/h4.png" />
+      <StyledDesign>
+        <StyledDesignInnerWrap>
+          <StyledDesignImg src="http://s3-us-west-1.amazonaws.com/bernieapp/decorations/h4.png" />
         </StyledDesignInnerWrap>
       </StyledDesign>
-      <StyledDesign className="designFrame">
-        <StyledDesignInnerWrap className="designFrame_innerWrap">
-          <StyledDesignImg className="designFrame_design standardTemplate" src="http://s3-us-west-1.amazonaws.com/bernieapp/decorations/wg.png" />
+      <StyledDesign>
+        <StyledDesignInnerWrap>
+          <StyledDesignImg src="http://s3-us-west-1.amazonaws.com/bernieapp/decorations/wg.png" />
         </StyledDesignInnerWrap>
       </StyledDesign>
     </div>
