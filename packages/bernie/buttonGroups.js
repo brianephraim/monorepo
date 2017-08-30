@@ -45,10 +45,21 @@ const StyledSubsection = ConnectResponsiveStatusesDictHOC(styled.div`
     if(props.layoutVariation === 'header') {
       return `
         display: inline-block;
+        padding-bottom: 0;
       `;
     }
   }}
 
+  ${props => {
+    if(props.hasLeftBorder) {
+      return `
+        border-left: ${styleConstants.appPad * 0.5}em solid ${styleConstants.colors.red};
+      `;
+    }
+  }}
+
+
+  
 `);
 
 const StyledIconWrapper = ConnectResponsiveStatusesDictHOC(styled.div`
@@ -199,6 +210,7 @@ const StyledButtonInnerBernieLink = styled(BernieLink)`
         padding: ${styleConstants.appPad / 2}em ${styleConstants.appPad / 2}em;
         height: auto;
         line-height: normal;
+        cursor: normal;
       `;
     }
   }}
@@ -260,14 +272,20 @@ let BernieAppButtonGroup = class extends Component {
               </StyledButtonInnerAnchor>
             );
           } else if (btnDetails.actionType) {
+            const toSettings = {
+              type: `BERNIE_${btnDetails.actionType}`,
+              compositeImageData: this.props.compositeImageData,
+            };
+            if (btnDetails.bernieDynamicScreen) {
+              toSettings.bernieDynamicScreen = btnDetails.bernieDynamicScreen;
+            }
+            console.log('this.props.bernieDynamicScreen',btnDetails.bernieDynamicScreen)
+            console.log('toSettings',toSettings);
             btnInner = (
               <StyledButtonInnerBernieLink
                 layoutVariation={this.props.layoutVariation}
                 to={
-                  {
-                    type: `BERNIE_${btnDetails.actionType}`,
-                    compositeImageData: this.props.compositeImageData,
-                  }
+                  toSettings
                 }
               >
                 {btnDetails.text}
@@ -305,6 +323,7 @@ let BernieAppButtonGroup = class extends Component {
       <StyledSubsection
         themex={this.props.themex}
         layoutVariation={this.props.layoutVariation}
+        hasLeftBorder={this.props.hasLeftBorder}
       >
         <StyledButtonGroup isModal={this.props.isModal}  layoutVariation={this.props.layoutVariation}>
           <LinkOrDiv to={to} layoutVariation={this.props.layoutVariation}>
@@ -493,6 +512,35 @@ const EditDesignButtonGroup = makeButtonGroupComponent({
   ]
 });
 buttonGroupComponents.editDesign = EditDesignButtonGroup;
+
+const ImageNeighborCompensator = styled.div`
+  display: inline-block;
+  vertical-align: middle;
+  height: 5em;
+`;
+
+const GetPhotoMinimalButtonGroup = makeButtonGroupComponent({
+  urlFragment: 'editDesign',
+  themex: 'designSubsection',
+  // shortHeadline: 'edit',
+  headline: '\u00A0',
+  // icon: 'brush',
+  buttonsPrepend: () => {
+    return (
+      <ImageNeighborCompensator />
+    );
+  },
+  buttons: [
+    {
+      text: 'get photo',
+      routerLinkScreenName: 'select-template',
+      actionType: 'DYNAMIC',
+      bernieDynamicScreen: 'import',
+    },
+  ]
+});
+buttonGroupComponents.getPhotoMinimal = GetPhotoMinimalButtonGroup;
+
 const objectKeysButtonGroupComponents = Object.keys(buttonGroupComponents);
 const buttonGroupComponentsRegexArrayString = objectKeysButtonGroupComponents.reduce(
   (regexArray, componentKey, i) => {
@@ -514,4 +562,5 @@ export {
   EditBrushButtonGroup,
   ShareButtonGroup,
   ImportButtonGroup,
+  GetPhotoMinimalButtonGroup,
 };

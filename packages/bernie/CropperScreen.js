@@ -11,6 +11,7 @@ import ConnectResponsiveStatusesDictHOC from './ConnectResponsiveStatusesDictHOC
 import ModalScreen from './ModalScreen';
 import {
   EditDesignButtonGroup,
+  GetPhotoMinimalButtonGroup,
 } from './buttonGroups';
 
 const StyledButton = ConnectResponsiveStatusesDictHOC(styled.div`
@@ -123,6 +124,11 @@ const StyledImageOptionsH3 = StyledFooterSectionH3.extend`
 `;
 
 
+const StyledHeaderWrap = styled.div`
+  line-height: 0;
+  height: ${styleConstants.appPad * 8}em
+  overflow: hidden;
+`;
 
 
 function whitelistFilterProps(obj, whitelist) {
@@ -145,55 +151,14 @@ function filterEditDesignButtonGroup(buttons){
     return buttonInfo.actionType !== 'UPLOAD_TEMPLATE';
   });
 }
+
 class DesignPicker extends Component {
   render() {
     return (
-      <div className="modalFooter clearfix">
+      <StyledHeaderWrap>
         <EditDesignButtonGroup filter={filterEditDesignButtonGroup} layoutVariation="header" />
-        <EditDesignButtonGroup filter={filterEditDesignButtonGroup} layoutVariation="header" />
-        <StyledImageOptions className="footer_section footer_imageOptions">
-          <StyledImageOptionsH3>Change design</StyledImageOptionsH3>
-          <StyledDesignFrame className="designFrame">
-            <StyledDesignFrameInnerWrap className="designFrame_innerWrap">
-              <StyledDesignFrameDesign
-                alt="Basic Hair and Glasses Template"
-                className="designFrame_design standardTemplate"
-                src="http://s3-us-west-1.amazonaws.com/bernieapp/decorations/h3.png"
-              />
-            </StyledDesignFrameInnerWrap>
-          </StyledDesignFrame>
-          <StyledDesignFrame className="designFrame">
-            <StyledDesignFrameInnerWrap className="designFrame_innerWrap">
-              <StyledDesignFrameDesign
-                alt="Colorful Hair and Glasses Template"
-                className="designFrame_design standardTemplate"
-                src="http://s3-us-west-1.amazonaws.com/bernieapp/decorations/h4.png"
-              />
-            </StyledDesignFrameInnerWrap>
-          </StyledDesignFrame>
-          <StyledDesignFrame className="designFrame">
-            <StyledDesignFrameInnerWrap className="designFrame_innerWrap">
-              <StyledDesignFrameDesign
-                alt="Text and GradientTemplate Template"
-                className="designFrame_design standardTemplate"
-                src="http://s3-us-west-1.amazonaws.com/bernieapp/decorations/wg.png"
-              />
-            </StyledDesignFrameInnerWrap>
-          </StyledDesignFrame>
-          <StyledFooterButton className="moreimageOptions button">
-            <StyledModalFooterButtonInnerSpanMacro className="macro">more options</StyledModalFooterButtonInnerSpanMacro>
-            <StyledModalFooterButtonInnerSpanMicro className="micro">change design</StyledModalFooterButtonInnerSpanMicro>
-          </StyledFooterButton>
-        </StyledImageOptions>
-
-        <StyledFooterSection className="footer_section">
-          <StyledFooterSectionH3>&nbsp;</StyledFooterSectionH3>
-          <StyledDesignFrameEmpty className="designFrame designFrame-empty" />
-          <StyledFooterButton className="getPhotoButton button">
-            <StyledModalFooterButtonInnerSpan>get photo</StyledModalFooterButtonInnerSpan>
-          </StyledFooterButton>
-        </StyledFooterSection>
-      </div>
+        <GetPhotoMinimalButtonGroup filter={filterEditDesignButtonGroup} layoutVariation="header" hasLeftBorder />
+      </StyledHeaderWrap>
     );
   }
 }
