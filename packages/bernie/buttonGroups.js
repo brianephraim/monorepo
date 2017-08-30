@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Upload from './Upload';
-import {BernieLink} from './routingComponents';
+import BernieLink from './BernieLink';
 
 import styleConstants from './style-constants';
 import ConnectResponsiveStatusesDictHOC from './ConnectResponsiveStatusesDictHOC';
@@ -407,21 +407,6 @@ const EditSizeButtonGroup = makeButtonGroupComponent({
 });
 buttonGroupComponents.editSize = EditSizeButtonGroup;
 
-
-const StyledDesignImg = styled.img`
-  width: 100%;
-  display: block;
-`;
-const StyledDesignInnerWrap = styled.div`
-  cursor: pointer;
-  background: #eee;
-`;
-const StyledDesign = styled.div`
-  padding-bottom: ${styleConstants.appPad}em;
-  box-sizing: border-box;
-`;
-
-
 const EditDesignButtonGroup = makeButtonGroupComponent({
   urlFragment: 'editDesign',
   themex: 'designSubsection',
@@ -429,31 +414,9 @@ const EditDesignButtonGroup = makeButtonGroupComponent({
   headline: 'Change design:',
   icon: 'brush',
   buttonsPrepend: (
-    <div>
-      <ImagePickerTemplate />
-      <StyledDesign>
-        <StyledDesignInnerWrap>
-          <StyledDesignImg src="http://s3-us-west-1.amazonaws.com/bernieapp/decorations/h3.png" />
-        </StyledDesignInnerWrap>
-      </StyledDesign>
-      <StyledDesign>
-        <StyledDesignInnerWrap>
-          <StyledDesignImg src="http://s3-us-west-1.amazonaws.com/bernieapp/decorations/h4.png" />
-        </StyledDesignInnerWrap>
-      </StyledDesign>
-      <StyledDesign>
-        <StyledDesignInnerWrap>
-          <StyledDesignImg src="http://s3-us-west-1.amazonaws.com/bernieapp/decorations/wg.png" />
-        </StyledDesignInnerWrap>
-      </StyledDesign>
-    </div>
+    <ImagePickerTemplate limit={3} inButtonGroup />
   ),
   buttons: [
-    {
-      text: 'Size and position',
-      routerLinkScreenName: 'crop',
-      actionType: 'CROP'
-    },
     {
       text: 'more options',
       routerLinkScreenName: 'select-template',

@@ -171,10 +171,16 @@ const bernieReducers = combineReducers({
     return state;
   },
   templates: (state = [], action) => {
+    const featured = ['h3','h4','wg'].map((srcKey) => {
+      return {
+        src: `http://s3-us-west-1.amazonaws.com/bernieapp/decorations/${srcKey}.png`,
+        srcKey
+      };
+    });
     if (action.type === 'BERNIE_FETCH_TEMPLATES') {
-      return [...action.images];
+      return [...featured,...action.images];
     }
-    return state;
+    return featured;
   }
 });
 export {nameSpace,bernieScreenComponentMap,payloadRefineAction,bernieReducers,bernieRoutesMap};
