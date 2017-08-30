@@ -430,6 +430,8 @@ const EditDesignButtonGroup = makeButtonGroupComponent({
   icon: 'brush',
   buttonsPrepend: (
     <div>
+      <ImagePickerTemplate
+      />
       <StyledDesign>
         <StyledDesignInnerWrap>
           <StyledDesignImg src="http://s3-us-west-1.amazonaws.com/bernieapp/decorations/h3.png" />

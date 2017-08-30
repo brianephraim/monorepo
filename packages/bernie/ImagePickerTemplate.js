@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ImagePicker from './ImagePicker';
 
+
 let imagesFromFetchPromise = null;
 class ImagePickerTemplate extends Component {
   constructor() {
@@ -38,7 +39,7 @@ class ImagePickerTemplate extends Component {
   }
   render() {
     return (
-      <ImagePicker images={this.state.images} onClick={this.props.onClick} />
+      <ImagePicker images={this.state.images} setsForegroundForCrop limit={3} />
     );
   }
 }

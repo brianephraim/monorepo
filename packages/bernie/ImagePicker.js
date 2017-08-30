@@ -1,19 +1,14 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import styled from 'styled-components';
 import styleConstants from './style-constants';
 import ConnectResponsiveStatusesDictHOC from './ConnectResponsiveStatusesDictHOC';
-import ModalScreen from './ModalScreen';
+import {BernieLink} from './routingComponents';
+import { compositeImageIntoParams } from './compositeImage';
 
-const StyledButton = ConnectResponsiveStatusesDictHOC(styled.div`
-  ${styleConstants.mixins.button()}
-`);
-
-const StyledButtonInnerSpan = ConnectResponsiveStatusesDictHOC(styled.span`
-  ${styleConstants.mixins.buttonInner()}
-`);
 
 const StyledImageOptions = ConnectResponsiveStatusesDictHOC(styled.div`
   padding-right:${styleConstants.appPad}em;
@@ -60,32 +55,72 @@ class ImagePicker extends Component {
   render() {
     // const imgSrc =
     //   'https://scontent.xx.fbcdn.net/v/t1.0-9/14729128_10157953620800725_5026720440547477533_n.jpg?oh=ac158b7c520d1310164aabb3c18fa3ff&amp;oe=59F6F820';
+    const images = this.props.limit !== Infinity ? this.props.images.slice(0,this.props.limit) : this.props.images;
     return (
-      <ModalScreen hasCloseButton headerText="Pick a photo">
-        <StyledImageOptions className="imageOptions">
-          {this.props.images.map((imgSrcObj, i) => {
+      <StyledImageOptions className="imageOptions">
+        {images.map((imgSrcObj, i) => {
+          const imgProps = {
+            className: "photoImg",
+            src: imgSrcObj.src,
+            key: imgSrcObj.src,
+            alt: `item number ${i}`,
+          };
+          if (this.props.setsForegroundForCrop) {
             return (
-              <StyledPhotoImg
-                className="photoImg"
-                src={imgSrcObj.src}
+              <BernieLink
                 key={imgSrcObj.src}
-                alt={`item number ${i}`}
-                onClick={this.imgOnClick(imgSrcObj)}
-              />
+                to={
+                  {
+                    type: `BERNIE_CROP`,
+                    payload: {
+                      ...compositeImageIntoParams(this.props.compositeImageData),
+                      fgSrcKey: imgSrcObj.srcKey
+                    }
+                  }
+
+                }
+              >
+                <StyledPhotoImg
+                  {...imgProps}
+                />
+              </BernieLink>
             );
-          })}
-        </StyledImageOptions>
-      </ModalScreen>
+          }
+          return (
+            <StyledPhotoImg
+              {...imgProps}
+              onClick={this.imgOnClick(imgSrcObj)}
+            />
+          );
+        })}
+      </StyledImageOptions>
     );
   }
 }
 ImagePicker.propTypes = {
   onClick: PropTypes.func,
   images: PropTypes.array,
+  setsForegroundForCrop: PropTypes.bool,
+  compositeImageData: PropTypes.object,
+  limit: PropTypes.number,
 };
 ImagePicker.defaultProps = {
   onClick: () => {},
   images: [],
+  setsForegroundForCrop: false,
+  compositeImageData: null,
+  limit: Infinity,
 };
 
-export default ImagePicker;
+export default connect(
+  ( state /* , { params }*/) => {
+    return {
+      compositeImageData: state.bernie.compositeImageData,
+    };
+  },
+  {
+    // setCompositeImageData: (action) => { 
+    //   return action;
+    // },
+  }
+)(ImagePicker);

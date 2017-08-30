@@ -9,6 +9,7 @@ import BernieHomeLayout from './HomeLayout';
 import UrlImportScreen from './UrlImportScreen';
 import TemplateUploadScreen from './TemplateUploadScreen';
 import { compositeImageIntoParams } from './compositeImage';
+import ModalScreen from './ModalScreen';
 import './app.scss';
 /*
 <BernieLink
@@ -70,9 +71,11 @@ BernieHomeLayoutWithUploadCallback.propTypes = {
 
 export function ImagePickerFacebookWithOnClick(props){
   return (
-    <ImagePickerFacebook
-      onClick={props.handleBackroundImageSelection()}
-    />
+    <ModalScreen hasCloseButton headerText="Pick a photo">
+      <ImagePickerFacebook
+        onClick={props.handleBackroundImageSelection()}
+      />
+    </ModalScreen>
   );
 };
 ImagePickerFacebookWithOnClick.propTypes = {
@@ -81,9 +84,11 @@ ImagePickerFacebookWithOnClick.propTypes = {
 
 export function ImagePickerTemplateWithOnClick(props){
   return (
-    <ImagePickerTemplate
-      onClick={props.handleForegroundImageSelection()}
-    />
+    <ModalScreen hasCloseButton headerText="Pick a design">
+      <ImagePickerTemplate
+        onClick={props.handleForegroundImageSelection()}
+      />
+    </ModalScreen>
   );
 };
 ImagePickerTemplateWithOnClick.propTypes = {
