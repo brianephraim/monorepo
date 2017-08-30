@@ -9,6 +9,7 @@ const styleConstants = {
     grey0: '#eee',
     grey1: '#ccc',
     grey2: '#666',
+    black: '#333',
   },
   font1: "'Fjalla One', sans-serif",
   font2: "'Cantarell', sans-serif",

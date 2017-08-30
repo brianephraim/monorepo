@@ -41,6 +41,14 @@ const StyledSubsection = ConnectResponsiveStatusesDictHOC(styled.div`
     return toReturn;
   }}
 
+  ${props => {
+    if(props.layoutVariation === 'header') {
+      return `
+        display: inline-block;
+      `;
+    }
+  }}
+
 `);
 
 const StyledIconWrapper = ConnectResponsiveStatusesDictHOC(styled.div`
@@ -72,6 +80,13 @@ const headerStyle = `
 `;
 const StyledHeaderLink = styled(BernieLink)`
   ${headerStyle}
+  ${props => {
+    if(props.layoutVariation === 'header') {
+      return `
+        color: ${styleConstants.colors.red};
+      `;
+    }
+  }}
 `;
 const StyledHeaderDiv = styled.div`
   ${headerStyle}
@@ -124,11 +139,20 @@ const StyledButtonGroup = ConnectResponsiveStatusesDictHOC(styled.div`
     return '';
   }}
   background:${styleConstants.colors.red};
+  ${props => {
+    if(props.layoutVariation === 'header') {
+      return `
+        background: ${styleConstants.colors.white};
+        padding-right: 0;
+      `;
+    }
+  }}
 `);
 
 const StyledButtonGroupButtons = ConnectResponsiveStatusesDictHOC(styled.div`
   ${props => {
     // singleColHome
+
     if(!props.isModal && props.responsiveStatusesDict.singleCol) {
       return `
         display:none;
@@ -138,9 +162,25 @@ const StyledButtonGroupButtons = ConnectResponsiveStatusesDictHOC(styled.div`
   }}
 `);
 
+
+const headerButtonsStyles = `
+  cursor:pointer;
+  display:inline-block;
+  vertical-align: middle;
+  padding-right: ${styleConstants.appPad}em;
+  @media (max-width: 430px){
+    padding-right: 0;
+  }
+`;
+
 const StyledButton = styled.div`
   ${styleConstants.mixins.button()}
   color: ${styleConstants.colors.red};
+  ${props => {
+    if(props.layoutVariation === 'header') {
+      return headerButtonsStyles;
+    }
+  }}
 `;
 
 const StyledButtonInnerAnchor = styled.a`
@@ -150,6 +190,18 @@ const StyledButtonInnerAnchor = styled.a`
 const StyledButtonInnerBernieLink = styled(BernieLink)`
   ${styleConstants.mixins.buttonInner()}
   background: ${styleConstants.colors.white};
+  ${props => {
+    if(props.layoutVariation === 'header') {
+      return `
+        ${styleConstants.mixins.buttonInner()}
+        background: ${styleConstants.colors.red};
+        color: ${styleConstants.colors.white};
+        padding: ${styleConstants.appPad / 2}em ${styleConstants.appPad / 2}em;
+        height: auto;
+        line-height: normal;
+      `;
+    }
+  }}
 `;
 const StyledButtonInnerSpan = styled.span`
   ${styleConstants.mixins.buttonInner()}
@@ -210,6 +262,7 @@ let BernieAppButtonGroup = class extends Component {
           } else if (btnDetails.actionType) {
             btnInner = (
               <StyledButtonInnerBernieLink
+                layoutVariation={this.props.layoutVariation}
                 to={
                   {
                     type: `BERNIE_${btnDetails.actionType}`,
@@ -235,7 +288,7 @@ let BernieAppButtonGroup = class extends Component {
           }
 
           return (
-            <StyledButton key={btnDetails.text}>
+            <StyledButton key={btnDetails.text} layoutVariation={this.props.layoutVariation}>
               {btnInner}
             </StyledButton>
           );
@@ -251,9 +304,10 @@ let BernieAppButtonGroup = class extends Component {
     return (
       <StyledSubsection
         themex={this.props.themex}
+        layoutVariation={this.props.layoutVariation}
       >
-        <StyledButtonGroup isModal={this.props.isModal}>
-          <LinkOrDiv to={to}>
+        <StyledButtonGroup isModal={this.props.isModal}  layoutVariation={this.props.layoutVariation}>
+          <LinkOrDiv to={to} layoutVariation={this.props.layoutVariation}>
             {shortHeadline}
             {icon}
             {headline}
@@ -422,7 +476,7 @@ const EditDesignButtonGroup = makeButtonGroupComponent({
   icon: 'brush',
   buttonsPrepend: (props) => {
     return (
-      <ImagePickerTemplate limit={3} verticalLayout={props.verticalLayout} inHeader={props.inHeader} />
+      <ImagePickerTemplate limit={3} layoutVariation={props.layoutVariation} />
     );
   },
   buttons: [

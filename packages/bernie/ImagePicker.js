@@ -8,44 +8,16 @@ import styleConstants from './style-constants';
 import ConnectResponsiveStatusesDictHOC from './ConnectResponsiveStatusesDictHOC';
 import BernieLink from './BernieLink';
 import { compositeImageIntoParams } from './compositeImage';
-/*
-const StyledDesignImg = styled.img`
-  width: 100%;
-  display: block;
-`;
-const StyledDesignInnerWrap = styled.div`
-  cursor: pointer;
-  background: #eee;
-`;
-const StyledDesign = styled.div`
-  padding-bottom: ${styleConstants.appPad}em;
-  box-sizing: border-box;
-`;
 
-<StyledDesign>
-  <StyledDesignInnerWrap>
-    <StyledDesignImg src="http://s3-us-west-1.amazonaws.com/bernieapp/decorations/h3.png" />
-  </StyledDesignInnerWrap>
-</StyledDesign>
-<StyledDesign>
-  <StyledDesignInnerWrap>
-    <StyledDesignImg src="http://s3-us-west-1.amazonaws.com/bernieapp/decorations/h4.png" />
-  </StyledDesignInnerWrap>
-</StyledDesign>
-<StyledDesign>
-  <StyledDesignInnerWrap>
-    <StyledDesignImg src="http://s3-us-west-1.amazonaws.com/bernieapp/decorations/wg.png" />
-  </StyledDesignInnerWrap>
-</StyledDesign>
-*/
+
 const StyledOuterWrap = styled.div`
   ${props => {
-    if(props.verticalLayout) {
+    if(props.layoutVariation === 'vertical') {
       return `
 
       `;
     }
-    if (props.inHeader){
+    if (props.layoutVariation === 'header'){
       return `
         display: inline-block;
         vertical-align: middle;
@@ -78,12 +50,21 @@ const StyledOuterWrap = styled.div`
 
 const StyledImageOptions = styled.div`
   ${props => {
-    if(props.verticalLayout) {
+    let toReturn = '';
+    if(props.layoutVariation === 'vertical') {
       return ``;
     }
-    return `
-      padding-right:${styleConstants.appPad}em;
-    `;
+    if(props.layoutVariation === 'header') {
+      toReturn += `
+        display: inline-block;
+      `;
+    } else {
+      toReturn += `
+        padding-right:${styleConstants.appPad}em;
+      `;
+    }
+    
+    return toReturn;
   }}
 `;
 
@@ -129,7 +110,7 @@ class ImagePicker extends Component {
     //   'https://scontent.xx.fbcdn.net/v/t1.0-9/14729128_10157953620800725_5026720440547477533_n.jpg?oh=ac158b7c520d1310164aabb3c18fa3ff&amp;oe=59F6F820';
     const images = this.props.limit !== Infinity ? this.props.images.slice(0,this.props.limit) : this.props.images;
     return (
-      <StyledImageOptions className="imageOptions" verticalLayout={this.props.verticalLayout}>
+      <StyledImageOptions className="imageOptions" layoutVariation={this.props.layoutVariation}>
         {images.map((imgSrcObj, i) => {
           let InnerWrap = StyledPhotoImgInnerWrap;
           const InnerWrapProps = {
@@ -154,9 +135,9 @@ class ImagePicker extends Component {
             imgProps.onClick = this.imgOnClick(imgSrcObj);
           }
           return (
-            <StyledOuterWrap inHeader={this.props.inHeader} verticalLayout={this.props.verticalLayout} key={imgSrcObj.src} >
-              <InnerWrap {...InnerWrapProps} inHeader={this.props.inHeader} verticalLayout={this.props.verticalLayout} >
-                <StyledPhotoImg {...imgProps} inHeader={this.props.inHeader} verticalLayout={this.props.verticalLayout} />
+            <StyledOuterWrap layoutVariation={this.props.layoutVariation} key={imgSrcObj.src} >
+              <InnerWrap {...InnerWrapProps} layoutVariation={this.props.layoutVariation} >
+                <StyledPhotoImg {...imgProps} layoutVariation={this.props.layoutVariation} />
               </InnerWrap>
             </StyledOuterWrap>
           );
@@ -171,7 +152,7 @@ ImagePicker.propTypes = {
   setsForegroundForCrop: PropTypes.bool,
   compositeImageData: PropTypes.object,
   limit: PropTypes.number,
-  verticalLayout: PropTypes.bool,
+  layoutVariation: PropTypes.string,
 };
 ImagePicker.defaultProps = {
   onClick: () => {},
@@ -179,7 +160,7 @@ ImagePicker.defaultProps = {
   setsForegroundForCrop: false,
   compositeImageData: null,
   limit: Infinity,
-  verticalLayout: false,
+  layoutVariation: '',
 };
 
 export default connect(

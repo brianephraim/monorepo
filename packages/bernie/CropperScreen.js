@@ -149,7 +149,8 @@ class DesignPicker extends Component {
   render() {
     return (
       <div className="modalFooter clearfix">
-        <EditDesignButtonGroup filter={filterEditDesignButtonGroup} inHeader />
+        <EditDesignButtonGroup filter={filterEditDesignButtonGroup} layoutVariation="header" />
+        <EditDesignButtonGroup filter={filterEditDesignButtonGroup} layoutVariation="header" />
         <StyledImageOptions className="footer_section footer_imageOptions">
           <StyledImageOptionsH3>Change design</StyledImageOptionsH3>
           <StyledDesignFrame className="designFrame">
