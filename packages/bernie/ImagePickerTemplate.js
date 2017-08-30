@@ -13,7 +13,13 @@ class ImagePickerTemplate extends Component {
   }
   render() {
     return (
-      <ImagePicker images={this.props.images} setsForegroundForCrop limit={this.props.limit} inButtonGroup={this.props.inButtonGroup} />
+      <ImagePicker
+        images={this.props.images}
+        setsForegroundForCrop
+        limit={this.props.limit}
+        verticalLayout={this.props.verticalLayout}
+        inHeader={this.props.inHeader}
+      />
     );
   }
 }
@@ -21,13 +27,15 @@ ImagePickerTemplate.propTypes = {
   fetchTemplates: PropTypes.func.isRequired,
   images: PropTypes.array,
   limit: PropTypes.number,
-  inButtonGroup: PropTypes.bool,
+  verticalLayout: PropTypes.bool,
+  inHeader: PropTypes.bool,
 };
 ImagePickerTemplate.defaultProps = {
   onClick: () => {},
   images: [],
   limit: Infinity,
-  inButtonGroup: false,
+  verticalLayout: false,
+  inHeader: false,
 };
 export default connect(
   ( state /* , { params }*/) => {

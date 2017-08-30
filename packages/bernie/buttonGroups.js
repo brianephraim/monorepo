@@ -186,11 +186,12 @@ let BernieAppButtonGroup = class extends Component {
           {this.props.headline}
         </span>
       </StyledText>;
-    const buttons =
-      this.props.buttons &&
-      <StyledButtonGroupButtons isModal={this.props.isModal}>
-        {this.props.buttonsPrepend}
-        {this.props.buttons.map(btnDetails => {
+    const buttons = this.props.filter(this.props.buttons);
+    const buttonComponents =
+      buttons &&
+      <StyledButtonGroupButtons isModal={this.props.isModal} filter={this.props.filter}>
+        {this.props.buttonsPrepend(this.props)}
+        {buttons.map(btnDetails => {
           let btnInner;
           if (btnDetails.onUploadSuccess) {
             btnInner = (
@@ -257,7 +258,7 @@ let BernieAppButtonGroup = class extends Component {
             {icon}
             {headline}
           </LinkOrDiv>
-          {buttons}
+          {buttonComponents}
         </StyledButtonGroup>
       </StyledSubsection>
     );
@@ -273,6 +274,8 @@ BernieAppButtonGroup.propTypes = {
   onUploadSuccess: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
   isModal: PropTypes.bool,
   themex: PropTypes.string,
+  filter: PropTypes.func,
+  buttonsPrepend: PropTypes.func,
 };
 BernieAppButtonGroup.defaultProps = {
   icon: '',
@@ -284,6 +287,10 @@ BernieAppButtonGroup.defaultProps = {
   onUploadSuccess: null,
   isModal: false,
   themex: '',
+  filter: (buttons) => {
+    return buttons;
+  },
+  buttonsPrepend: () => {},
 };
 
 BernieAppButtonGroup = connect(
@@ -413,9 +420,11 @@ const EditDesignButtonGroup = makeButtonGroupComponent({
   shortHeadline: 'edit',
   headline: 'Change design:',
   icon: 'brush',
-  buttonsPrepend: (
-    <ImagePickerTemplate limit={3} inButtonGroup />
-  ),
+  buttonsPrepend: (props) => {
+    return (
+      <ImagePickerTemplate limit={3} verticalLayout={props.verticalLayout} inHeader={props.inHeader} />
+    );
+  },
   buttons: [
     {
       text: 'more options',
@@ -426,8 +435,8 @@ const EditDesignButtonGroup = makeButtonGroupComponent({
       text: 'upload a template',
       routerLinkScreenName: 'upload-template',
       actionType: 'UPLOAD_TEMPLATE'
-    },
-  ],
+    }
+  ]
 });
 buttonGroupComponents.editDesign = EditDesignButtonGroup;
 const objectKeysButtonGroupComponents = Object.keys(buttonGroupComponents);

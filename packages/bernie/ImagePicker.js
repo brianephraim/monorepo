@@ -40,10 +40,18 @@ const StyledDesign = styled.div`
 */
 const StyledOuterWrap = styled.div`
   ${props => {
-    console.log(props)
-    if(props.inButtonGroup) {
+    if(props.verticalLayout) {
       return `
 
+      `;
+    }
+    if (props.inHeader){
+      return `
+        display: inline-block;
+        vertical-align: middle;
+        padding-right: ${styleConstants.appPad}em;
+        width: ${styleConstants.appPad * 5}em;
+        height: ${styleConstants.appPad * 5}em;
       `;
     }
     return `
@@ -70,7 +78,7 @@ const StyledOuterWrap = styled.div`
 
 const StyledImageOptions = styled.div`
   ${props => {
-    if(props.inButtonGroup) {
+    if(props.verticalLayout) {
       return ``;
     }
     return `
@@ -121,7 +129,7 @@ class ImagePicker extends Component {
     //   'https://scontent.xx.fbcdn.net/v/t1.0-9/14729128_10157953620800725_5026720440547477533_n.jpg?oh=ac158b7c520d1310164aabb3c18fa3ff&amp;oe=59F6F820';
     const images = this.props.limit !== Infinity ? this.props.images.slice(0,this.props.limit) : this.props.images;
     return (
-      <StyledImageOptions className="imageOptions" inButtonGroup={this.props.inButtonGroup}>
+      <StyledImageOptions className="imageOptions" verticalLayout={this.props.verticalLayout}>
         {images.map((imgSrcObj, i) => {
           let InnerWrap = StyledPhotoImgInnerWrap;
           const InnerWrapProps = {
@@ -146,9 +154,9 @@ class ImagePicker extends Component {
             imgProps.onClick = this.imgOnClick(imgSrcObj);
           }
           return (
-            <StyledOuterWrap inButtonGroup={this.props.inButtonGroup} key={imgSrcObj.src} >
-              <InnerWrap {...InnerWrapProps}  inButtonGroup={this.props.inButtonGroup} >
-                <StyledPhotoImg {...imgProps}  inButtonGroup={this.props.inButtonGroup} />
+            <StyledOuterWrap inHeader={this.props.inHeader} verticalLayout={this.props.verticalLayout} key={imgSrcObj.src} >
+              <InnerWrap {...InnerWrapProps} inHeader={this.props.inHeader} verticalLayout={this.props.verticalLayout} >
+                <StyledPhotoImg {...imgProps} inHeader={this.props.inHeader} verticalLayout={this.props.verticalLayout} />
               </InnerWrap>
             </StyledOuterWrap>
           );
@@ -163,7 +171,7 @@ ImagePicker.propTypes = {
   setsForegroundForCrop: PropTypes.bool,
   compositeImageData: PropTypes.object,
   limit: PropTypes.number,
-  inButtonGroup: PropTypes.bool,
+  verticalLayout: PropTypes.bool,
 };
 ImagePicker.defaultProps = {
   onClick: () => {},
@@ -171,7 +179,7 @@ ImagePicker.defaultProps = {
   setsForegroundForCrop: false,
   compositeImageData: null,
   limit: Infinity,
-  inButtonGroup: false,
+  verticalLayout: false,
 };
 
 export default connect(

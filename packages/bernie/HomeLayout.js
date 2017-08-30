@@ -330,7 +330,7 @@ function BernieHomeLayout(props) {
             <StyledSection section="design">
               <EditBrushButtonGroup section="design" {...props} />
               <EditSizeButtonGroup section="design" {...props} />
-              <EditDesignButtonGroup section="design" {...props} />
+              <EditDesignButtonGroup section="design" verticalLayout {...props} />
             </StyledSection>
           </BernieAppBusiness>
         </StyledAppBody>

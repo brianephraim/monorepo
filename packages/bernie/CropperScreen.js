@@ -9,6 +9,9 @@ import styled from 'styled-components';
 import styleConstants from './style-constants';
 import ConnectResponsiveStatusesDictHOC from './ConnectResponsiveStatusesDictHOC';
 import ModalScreen from './ModalScreen';
+import {
+  EditDesignButtonGroup,
+} from './buttonGroups';
 
 const StyledButton = ConnectResponsiveStatusesDictHOC(styled.div`
   ${styleConstants.mixins.button()}
@@ -137,10 +140,16 @@ function whitelistFilterProps(obj, whitelist) {
 
 const isTouchDevice = 'ontouchstart' in document.documentElement;
 
+function filterEditDesignButtonGroup(buttons){
+  return buttons.filter((buttonInfo) => {
+    return buttonInfo.actionType !== 'UPLOAD_TEMPLATE';
+  });
+}
 class DesignPicker extends Component {
   render() {
     return (
       <div className="modalFooter clearfix">
+        <EditDesignButtonGroup filter={filterEditDesignButtonGroup} inHeader />
         <StyledImageOptions className="footer_section footer_imageOptions">
           <StyledImageOptionsH3>Change design</StyledImageOptionsH3>
           <StyledDesignFrame className="designFrame">
@@ -175,6 +184,7 @@ class DesignPicker extends Component {
             <StyledModalFooterButtonInnerSpanMicro className="micro">change design</StyledModalFooterButtonInnerSpanMicro>
           </StyledFooterButton>
         </StyledImageOptions>
+
         <StyledFooterSection className="footer_section">
           <StyledFooterSectionH3>&nbsp;</StyledFooterSectionH3>
           <StyledDesignFrameEmpty className="designFrame designFrame-empty" />
