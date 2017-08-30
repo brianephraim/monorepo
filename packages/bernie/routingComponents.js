@@ -85,14 +85,9 @@ ImagePickerFacebookWithOnClick.propTypes = {
 export function ImagePickerTemplateWithOnClick(props){
   return (
     <ModalScreen hasCloseButton headerText="Pick a design">
-      <ImagePickerTemplate
-        onClick={props.handleForegroundImageSelection()}
-      />
+      <ImagePickerTemplate />
     </ModalScreen>
   );
-};
-ImagePickerTemplateWithOnClick.propTypes = {
-  handleForegroundImageSelection: PropTypes.func.isRequired,
 };
 
 export function CropperWithFgBgCompletion(props) {

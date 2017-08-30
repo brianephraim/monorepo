@@ -15,7 +15,6 @@ const Routing = class extends Component {
     super();
     this.state = {};
     makeBinder(this, 'handleBackroundImageSelection');
-    makeBinder(this, 'handleForegroundImageSelection');
     this.generateCompletionUrl = this.generateCompletionUrl.bind(this);
   }
   handleBackroundImageSelection(imgSrcObj) {
@@ -33,17 +32,6 @@ const Routing = class extends Component {
       this.props.setCompositeImageData(action);
     });
   }
-  handleForegroundImageSelection(imgSrcObj) {
-    const action = payloadRefineAction({
-      type: 'BERNIE_CROP',
-      payload: {
-        // ...this.props.location.payload,
-        ...compositeImageIntoParams(this.props.compositeImageData),
-        fgSrcKey: imgSrcObj.srcKey
-      }
-    });
-    this.props.setCompositeImageData(action);
-  }
   generateCompletionUrl(activeCompositeImageData) {
     return `${nameSpace}/${formUrl(activeCompositeImageData)}`;
   }
@@ -53,7 +41,6 @@ const Routing = class extends Component {
     return (
       <Comp
         handleBackroundImageSelection={this.handleBackroundImageSelection}
-        handleForegroundImageSelection={this.handleForegroundImageSelection}
         generateCompletionUrl={this.generateCompletionUrl}
         compositeImageData={this.props.compositeImageData}
         dynamicScreen={this.props.dynamicScreen}
