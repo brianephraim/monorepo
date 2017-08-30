@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { makeActionFetchUsers } from './fb';
+import { makeActionFetchPhotos } from './fb';
 import ImagePicker from './ImagePicker';
 
 class ImagePickerFacebook extends Component {
@@ -23,6 +23,6 @@ export default connect(
     };
   },
   {
-    fetchFacebookPhotos: makeActionFetchUsers,
+    fetchFacebookPhotos: makeActionFetchPhotos,
   }
 )(ImagePickerFacebook);

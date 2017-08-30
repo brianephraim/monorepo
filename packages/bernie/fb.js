@@ -256,7 +256,7 @@ export default fbManager;
 
 
 let imagesFromFBPromise = null;
-export function makeActionFetchUsers(){
+export function makeActionFetchPhotos(){
   return (dispatch/* , getState*/) => {
     imagesFromFBPromise = imagesFromFBPromise || fbManager.importStuff();
     return imagesFromFBPromise.then(response => {
@@ -285,3 +285,5 @@ export function makeActionFetchUsers(){
     });
   };
 };
+
+

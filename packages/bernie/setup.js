@@ -169,6 +169,12 @@ const bernieReducers = combineReducers({
       return [...action.images];
     }
     return state;
+  },
+  templates: (state = [], action) => {
+    if (action.type === 'BERNIE_FETCH_TEMPLATES') {
+      return [...action.images];
+    }
+    return state;
   }
 });
 export {nameSpace,bernieScreenComponentMap,payloadRefineAction,bernieReducers,bernieRoutesMap};
