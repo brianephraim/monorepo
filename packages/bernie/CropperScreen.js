@@ -2,187 +2,98 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import windowSizer from '@defualt/window-sizer';
-import {back} from 'redux-first-router';
-import ReactCropperEnhanced from './ReactCropperEnhanced';
 import styled from 'styled-components';
+import whitelistFilterProps from '@defualt/whitelist-filter-props';
+import windowSizer from '@defualt/window-sizer';
+import ReactCropperEnhanced from './ReactCropperEnhanced';
 import styleConstants from './style-constants';
-import ConnectResponsiveStatusesDictHOC from './ConnectResponsiveStatusesDictHOC';
 import ModalScreen from './ModalScreen';
 import {
   EditDesignButtonGroup,
   GetPhotoMinimalButtonGroup,
 } from './buttonGroups';
 
-const StyledButton = ConnectResponsiveStatusesDictHOC(styled.div`
-  ${styleConstants.mixins.button()}
-`);
-
-const StyledButtonAnchor = ConnectResponsiveStatusesDictHOC(styled.a`
-  ${styleConstants.mixins.button()}
-`);
-
-const StyledButtonInnerSpan = ConnectResponsiveStatusesDictHOC(styled.span`
-  ${styleConstants.mixins.buttonInner()}
-  background: ${styleConstants.colors.red};
-`);
-const StyledModalFooterButtonInnerSpan = StyledButtonInnerSpan.extend`
-  padding: ${styleConstants.appPad / 2}em ${styleConstants.appPad / 2}em;
-  height: auto;
-  line-height: normal;
-`;
-
-
-const StyledModalFooterButtonInnerSpanMicro = StyledModalFooterButtonInnerSpan.extend`
-  display:none;
-  @media (max-width: 430px){
-    display:block;
-  }
-`;
-
-const StyledModalFooterButtonInnerSpanMacro = StyledModalFooterButtonInnerSpan.extend`
-  @media (max-width: 430px){
-    display:none;
-  }
-`;
-
-const footerSectionButtonAndDesignFrameStyles = `
-  cursor:pointer;
-  display:inline-block;
-  vertical-align: middle;
-  padding-right: ${styleConstants.appPad}em;
-  @media (max-width: 430px){
-    padding-right: 0;
-  }
-`;
-
-const StyledFooterButton = StyledButton.extend`
-  ${footerSectionButtonAndDesignFrameStyles}
-`;
-
-const StyledDesignFrame = ConnectResponsiveStatusesDictHOC(styled.div`
-  box-sizing:border-box;
-  ${footerSectionButtonAndDesignFrameStyles}
-  width:${styleConstants.appPad * 5}em;
-  height:${styleConstants.appPad * 5}em;
-  padding-bottom: ${styleConstants.appPad}em;
-  @media (max-width: 430px){
-    display:none;
-  }
-`);
-const StyledDesignFrameEmpty = StyledDesignFrame.extend`
-  width:0;
-  padding-right:0;
-  visibility: hidden;
-`;
-const StyledDesignFrameInnerWrap = ConnectResponsiveStatusesDictHOC(styled.div`
-  cursor:pointer;
-  background: ${styleConstants.colors.grey0};
-`);
-
-const StyledDesignFrameDesign = ConnectResponsiveStatusesDictHOC(styled.img`
-  width:100%;
-  display:block;
-`);
-
-const footerSectionStyles = `
-  padding: ${styleConstants.appPad}em 0 0 ${styleConstants.appPad}em;
-  float:left;
+const breakpoints = {
+  shrink: 530,
+  compact: 375,
+};
+const shrinkFontBreakpointStyles = `
   @media (max-height: 500px){
-    font-size:.75em;
+    font-size:${styleConstants.appPad * 0.75}em;
   }
-  @media (max-width: 530px){
-    font-size:.75em;
+  @media (max-width: ${breakpoints.shrink}px){
+    font-size:${styleConstants.appPad * 0.75}em;
   }
-
-  
-`;
-const StyledFooterSection = ConnectResponsiveStatusesDictHOC(styled.div`
-  ${footerSectionStyles}
-`);
-
-
-
-
-const StyledImageOptions = ConnectResponsiveStatusesDictHOC(styled.div`
-  ${footerSectionStyles}
-  border-right: ${styleConstants.appPad * 0.5}em solid ${styleConstants.colors.grey1};
-  @media (max-width: 430px){
-    border-right:0;
-  }
-  padding-right:${styleConstants.appPad}em;
-`);
-
-const StyledFooterSectionH3 = ConnectResponsiveStatusesDictHOC(styled.h3`
-  padding-bottom: ${styleConstants.appPad}em;
-  @media (max-width: 430px){
-    display:none;
-  }
-`);
-const StyledImageOptionsH3 = StyledFooterSectionH3.extend`
-  padding:${styleConstants.appPad/2}em ${styleConstants.appPad}em;
 `;
 
+const isTouchDevice = 'ontouchstart' in document.documentElement;
 
 const StyledHeaderWrap = styled.div`
   line-height: 0;
   height: ${styleConstants.appPad * 8}em
   overflow: hidden;
+  ${shrinkFontBreakpointStyles}
 `;
-
-
-function whitelistFilterProps(obj, whitelist) {
-  return Object.keys(obj).reduce((accum, key) => {
-    const keyIsAllowed =
-      whitelist.filter(whitelistItem => {
-        return key === whitelistItem;
-      }).length > 0;
-    if (keyIsAllowed) {
-      accum[key] = obj[key];
-    }
-    return accum;
-  }, {});
-}
-
-const isTouchDevice = 'ontouchstart' in document.documentElement;
-
-function filterEditDesignButtonGroup(buttons){
-  return buttons.filter((buttonInfo) => {
-    return buttonInfo.actionType !== 'UPLOAD_TEMPLATE';
-  });
-}
-
 class DesignPicker extends Component {
+  constructor() {
+    super();
+    this.reduceButtonInstructions = this.reduceButtonInstructions.bind(this);
+  }
+  reduceButtonInstructions(buttons){
+    return buttons.reduce((accum,buttonInfo) => {
+      if (buttonInfo.actionType === 'SELECT_TEMPLATE' && this.props.windowWidth <= breakpoints.compact) {
+        accum.push({
+          ...buttonInfo,
+          text: 'change design',
+        });
+      } else if (buttonInfo.actionType !== 'UPLOAD_TEMPLATE') {
+        accum.push(buttonInfo);
+      }
+      return accum;
+    },[]);
+  }
   render() {
+    const hideExtras = this.props.windowWidth <= breakpoints.compact;
     return (
       <StyledHeaderWrap>
-        <EditDesignButtonGroup filter={filterEditDesignButtonGroup} layoutVariation="header" />
-        <GetPhotoMinimalButtonGroup filter={filterEditDesignButtonGroup} layoutVariation="header" hasLeftBorder />
+        <EditDesignButtonGroup filter={this.reduceButtonInstructions} layoutVariation="header" hideExtras={hideExtras} />
+        <GetPhotoMinimalButtonGroup filter={this.reduceButtonInstructions} layoutVariation="header" hideExtras={hideExtras} hasLeftBorder={!hideExtras} noLeftPadding={hideExtras} />
       </StyledHeaderWrap>
     );
   }
 }
-const StyledModalButtonGroup = StyledModalFooterButtonInnerSpan.extend`
+DesignPicker.propTypes = {
+  windowWidth: PropTypes.number.isRequired,
+};
+
+const StyledModalButtonGroup = styled.div`
   padding-left: ${styleConstants.appPad}em;
   padding-right: ${styleConstants.appPad}em;
 `;
-const StyledH2 = StyledModalFooterButtonInnerSpan.extend`
+const StyledH2 = styled.h2`
   padding:${styleConstants.appPad / 2}em ${styleConstants.appPad * 1.5}em;
   text-align: center;
-  font-size: ${styleConstants.appPad * 2}em
+  font-size: ${styleConstants.appPad * 2}em;
+  ${shrinkFontBreakpointStyles}
+`;
+
+const StyledButtonAnchor = styled.a`
+  ${styleConstants.mixins.button()}
+`;
+const StyledButtonInnerSpan = styled.span`
+  ${styleConstants.mixins.buttonInner()}
+  background: ${styleConstants.colors.red};
 `;
 function CompletionInterface(props) {
   const url = props.generateCompletionUrl(props.activeCompositeImageData);
   return (
-    <div className="modalHeader clearfix">
-      <div className="doneSection">
-        <StyledH2>Drag and resize the box to crop</StyledH2>
-        <StyledModalButtonGroup className="modal_buttonGroup">
-          <StyledButtonAnchor href={url} className="button mainButton cropDoneButton">
-            <StyledButtonInnerSpan>Done</StyledButtonInnerSpan>
-          </StyledButtonAnchor>
-        </StyledModalButtonGroup>
-      </div>
+    <div>
+      <StyledH2>Drag and resize the box to crop</StyledH2>
+      <StyledModalButtonGroup className="modal_buttonGroup">
+        <StyledButtonAnchor href={url} className="button mainButton cropDoneButton">
+          <StyledButtonInnerSpan>Done</StyledButtonInnerSpan>
+        </StyledButtonAnchor>
+      </StyledModalButtonGroup>
     </div>
   );
 }
@@ -211,8 +122,10 @@ class CropperScreen extends Component {
     // So <ReactCropper> will unmount then mount another instance.
     // This lets us reset the cropper for each resize.
     this.setState({ windowHeight: windowSizer.dimensions.height });
+    this.setState({ windowWidth: windowSizer.dimensions.width });
     this.windowSizerCb = windowSizer.addCb(() => {
       this.setState({ windowHeight: windowSizer.dimensions.height });
+      this.setState({ windowWidth: windowSizer.dimensions.width });
     });
   }
   componentWillUnmount() {
@@ -236,10 +149,30 @@ class CropperScreen extends Component {
   }
 
   render() {
+    const isShort = this.state.windowWidth <= breakpoints.shrink;
+    const isShorter = this.state.windowWidth <= breakpoints.compact;
+    let assumedHeights = {
+      header: 128,
+      footer: 128,
+    };
+    if (isShort) {
+      assumedHeights = {
+        header: 96,
+        footer: 88,
+      };
+    }
+    if (isShorter) {
+      assumedHeights = {
+        header: 50,
+        footer: 88,
+      };
+    }
+
+    const nonCropperTotalHeight = assumedHeights.header + assumedHeights.footer;
     const styles = {
       cropModal: { height: this.state.windowHeight || '', overflow: 'hidden' },
       cropContainer: {
-        height: this.state.windowHeight - 256,
+        height: this.state.windowHeight - nonCropperTotalHeight,
         overflow: 'hidden',
       },
     };
@@ -281,9 +214,10 @@ class CropperScreen extends Component {
       foreground: this.state.foreground,
       background: this.props.background,
     };
+    
     return (
       <ModalScreen hasCloseButton style={styles.cropModal}>
-        <DesignPicker />
+        <DesignPicker windowWidth={this.state.windowWidth} />
         <div className="cropOuterContainer">
           <div className="cropContainer" style={styles.cropContainer}>
             <ReactCropperEnhanced

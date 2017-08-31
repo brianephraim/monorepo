@@ -158,6 +158,16 @@ const StyledButtonGroup = ConnectResponsiveStatusesDictHOC(styled.div`
       `;
     }
   }}
+
+  ${props => {
+    if(props.noLeftPadding) {
+      return `
+        padding-left: 0;
+      `;
+    }
+  }}
+
+  noLeftPadding
 `);
 
 const StyledButtonGroupButtons = ConnectResponsiveStatusesDictHOC(styled.div`
@@ -179,9 +189,7 @@ const headerButtonsStyles = `
   display:inline-block;
   vertical-align: middle;
   padding-right: ${styleConstants.appPad}em;
-  @media (max-width: 430px){
-    padding-right: 0;
-  }
+
 `;
 
 const StyledButton = styled.div`
@@ -227,8 +235,9 @@ let BernieAppButtonGroup = class extends Component {
     this.state = {};
   }
   render() {
+    console.log(this.props.hideExtras);
     const icon =
-      this.props.icon &&
+      this.props.icon && !this.props.hideExtras && 
       <StyledIconWrapper isModal={this.props.isModal}>
         <StyledIcon className="material-icons" isModal={this.props.isModal}>
           {this.props.icon}
@@ -244,8 +253,8 @@ let BernieAppButtonGroup = class extends Component {
       </StyledMicroText>;
 
     const headline =
-      this.props.headline &&
-      <StyledText isModal={this.props.isModal}>
+      this.props.headline && !this.props.hideExtras && 
+      <StyledText isModal={this.props.isModal} layoutVariation={this.props.layoutVariation}>
         <span>
           {this.props.headline}
         </span>
@@ -254,7 +263,7 @@ let BernieAppButtonGroup = class extends Component {
     const buttonComponents =
       buttons &&
       <StyledButtonGroupButtons isModal={this.props.isModal} filter={this.props.filter}>
-        {this.props.buttonsPrepend(this.props)}
+        {!this.props.hideExtras && this.props.buttonsPrepend(this.props)}
         {buttons.map(btnDetails => {
           let btnInner;
           if (btnDetails.onUploadSuccess) {
@@ -279,8 +288,6 @@ let BernieAppButtonGroup = class extends Component {
             if (btnDetails.bernieDynamicScreen) {
               toSettings.bernieDynamicScreen = btnDetails.bernieDynamicScreen;
             }
-            console.log('this.props.bernieDynamicScreen',btnDetails.bernieDynamicScreen)
-            console.log('toSettings',toSettings);
             btnInner = (
               <StyledButtonInnerBernieLink
                 layoutVariation={this.props.layoutVariation}
@@ -325,7 +332,7 @@ let BernieAppButtonGroup = class extends Component {
         layoutVariation={this.props.layoutVariation}
         hasLeftBorder={this.props.hasLeftBorder}
       >
-        <StyledButtonGroup isModal={this.props.isModal}  layoutVariation={this.props.layoutVariation}>
+        <StyledButtonGroup isModal={this.props.isModal}  layoutVariation={this.props.layoutVariation} noLeftPadding={this.props.noLeftPadding}>
           <LinkOrDiv to={to} layoutVariation={this.props.layoutVariation}>
             {shortHeadline}
             {icon}
