@@ -5,9 +5,8 @@ import styleConstants from './style-constants';
 import ConnectResponsiveStatusesDictHOC from './ConnectResponsiveStatusesDictHOC';
 import CloseButton from './CloseButton';
 
-
 const StyledWrap = ConnectResponsiveStatusesDictHOC(styled.div`
-  color:black;
+  color: black;
   position: absolute;
   top: 0;
   background: red;
@@ -23,20 +22,22 @@ const StyledH2 = ConnectResponsiveStatusesDictHOC(styled.h2`
 `);
 
 const StyledButtonInnerSpan = ConnectResponsiveStatusesDictHOC(styled.span`
-  ${styleConstants.mixins.buttonInner()}
-  background: ${styleConstants.colors.red};
-  width:${styleConstants.appPad * 3}em;
-  ${styleConstants.mixins.button()}
-  position:absolute;
-  right:0;
-  width:${styleConstants.appPad * 3}em;
+  ${styleConstants.mixins.buttonInner()} background: ${styleConstants.colors
+      .red};
+  width: ${styleConstants.appPad * 3}em;
+  ${styleConstants.mixins.button()} position:absolute;
+  right: 0;
+  width: ${styleConstants.appPad * 3}em;
 `);
 
 export default function ModalScreen(props) {
   return (
     <StyledWrap>
-      {props.hasCloseButton && (<CloseButton />)}
-      {props.headerText && (<StyledH2>{props.headerText}</StyledH2>)}
+      {props.hasCloseButton && <CloseButton />}
+      {props.headerText &&
+        <StyledH2>
+          {props.headerText}
+        </StyledH2>}
       {props.children}
     </StyledWrap>
   );

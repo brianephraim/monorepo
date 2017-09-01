@@ -10,7 +10,6 @@ import ConnectResponsiveStatusesDictHOC from './ConnectResponsiveStatusesDictHOC
 import ImagePickerTemplate from './ImagePickerTemplate';
 import ModalScreen from './ModalScreen';
 
-
 import './app.scss';
 
 const StyledSubsection = ConnectResponsiveStatusesDictHOC(styled.div`
@@ -18,69 +17,64 @@ const StyledSubsection = ConnectResponsiveStatusesDictHOC(styled.div`
   ${props => {
     let toReturn = '';
     // singleColHome
-    if(!props.isModal && props.responsiveStatusesDict.singleCol) {
+    if (!props.isModal && props.responsiveStatusesDict.singleCol) {
       toReturn += `
         float:none;
         margin:0 auto;
       `;
-      if(props.themex === 'editSubsection' || props.themex === 'designSubsection') {
+      if (
+        props.themex === 'editSubsection' ||
+        props.themex === 'designSubsection'
+      ) {
         toReturn += `display:none;`;
       }
     }
 
-    if(props.themex === 'microSubsection') {
+    if (props.themex === 'microSubsection') {
       toReturn += `
         display:none;
       `;
-      if(!props.isModal && props.responsiveStatusesDict.singleCol) {
+      if (!props.isModal && props.responsiveStatusesDict.singleCol) {
         toReturn += `
           display:block;
         `;
       }
     }
     return toReturn;
-  }}
-
-  ${props => {
-    if(props.layoutVariation === 'header') {
-      return `
+  }} ${props => {
+      if (props.layoutVariation === 'header') {
+        return `
         display: inline-block;
         padding-bottom: 0;
       `;
-    }
-  }}
-
-  ${props => {
-    if(props.hasLeftBorder) {
-      return `
-        border-left: ${styleConstants.appPad * 0.5}em solid ${styleConstants.colors.red};
+      }
+    }} ${props => {
+      if (props.hasLeftBorder) {
+        return `
+        border-left: ${styleConstants.appPad * 0.5}em solid ${styleConstants
+          .colors.red};
       `;
-    }
-  }}
-
-
-  
+      }
+    }};
 `);
 
 const StyledIconWrapper = ConnectResponsiveStatusesDictHOC(styled.div`
-  width:${styleConstants.appPad * 2}em;
+  width: ${styleConstants.appPad * 2}em;
   height: ${styleConstants.appPad * 2}em;
-  float:left;
+  float: left;
   ${props => {
     // singleColHome
-    if(!props.isModal && props.responsiveStatusesDict.singleCol) {
+    if (!props.isModal && props.responsiveStatusesDict.singleCol) {
       return `
         float:none;
         margin:0 auto;
       `;
     }
     return '';
-  }}
+  }};
 `);
 
-const StyledIcon = styled.i`
-  font-size:${styleConstants.appPad * 2}em;
-`;
+const StyledIcon = styled.i`font-size: ${styleConstants.appPad * 2}em;`;
 
 const headerStyle = `
   display: block;
@@ -92,40 +86,38 @@ const headerStyle = `
 const StyledHeaderLink = styled(BernieLink)`
   ${headerStyle}
   ${props => {
-    if(props.layoutVariation === 'header') {
+    if (props.layoutVariation === 'header') {
       return `
         color: ${styleConstants.colors.red};
       `;
     }
   }}
 `;
-const StyledHeaderDiv = styled.div`
-  ${headerStyle}
-`;
+const StyledHeaderDiv = styled.div`${headerStyle};`;
 
 const StyledMicroText = ConnectResponsiveStatusesDictHOC(styled.div`
-  display:none;
-  text-align:center;
+  display: none;
+  text-align: center;
   line-height: 0;
   padding-top: ${styleConstants.appPad / 2}em;
   padding-bottom: ${styleConstants.appPad}em;
   ${props => {
     // singleColHome
-    if(!props.isModal && props.responsiveStatusesDict.singleCol) {
+    if (!props.isModal && props.responsiveStatusesDict.singleCol) {
       return `
         display:block;
       `;
     }
     return '';
-  }}
+  }};
 `);
 
 const StyledText = ConnectResponsiveStatusesDictHOC(styled.div`
-  padding-left:${styleConstants.appPad / 2}em;
+  padding-left: ${styleConstants.appPad / 2}em;
   overflow: hidden;
   ${props => {
     // singleColHome
-    if(!props.isModal && props.responsiveStatusesDict.singleCol) {
+    if (!props.isModal && props.responsiveStatusesDict.singleCol) {
       return `
         width:0;
         white-space: nowrap;
@@ -133,15 +125,16 @@ const StyledText = ConnectResponsiveStatusesDictHOC(styled.div`
       `;
     }
     return '';
-  }}
+  }};
 `);
 
 const StyledButtonGroup = ConnectResponsiveStatusesDictHOC(styled.div`
   overflow:hidden;
-  padding: ${styleConstants.appPad / 2}em ${styleConstants.appPad}em 0 ${styleConstants.appPad}em;
+  padding: ${styleConstants.appPad /
+    2}em ${styleConstants.appPad}em 0 ${styleConstants.appPad}em;
   ${props => {
     // singleColHome
-    if(!props.isModal && props.responsiveStatusesDict.singleCol) {
+    if (!props.isModal && props.responsiveStatusesDict.singleCol) {
       return `
         padding: ${styleConstants.appPad / 2}em 0 0 0;
         cursor:pointer;
@@ -151,7 +144,7 @@ const StyledButtonGroup = ConnectResponsiveStatusesDictHOC(styled.div`
   }}
   background:${styleConstants.colors.red};
   ${props => {
-    if(props.layoutVariation === 'header') {
+    if (props.layoutVariation === 'header') {
       return `
         background: ${styleConstants.colors.white};
         padding-right: 0;
@@ -160,7 +153,7 @@ const StyledButtonGroup = ConnectResponsiveStatusesDictHOC(styled.div`
   }}
 
   ${props => {
-    if(props.noLeftPadding) {
+    if (props.noLeftPadding) {
       return `
         padding-left: 0;
       `;
@@ -174,18 +167,16 @@ const StyledButtonGroupButtons = ConnectResponsiveStatusesDictHOC(styled.div`
   ${props => {
     // singleColHome
 
-    if(!props.isModal && props.responsiveStatusesDict.singleCol) {
+    if (!props.isModal && props.responsiveStatusesDict.singleCol) {
       return `
         display:none;
       `;
     }
     return '';
-  }}
+  }};
 `);
 
-
 const headerButtonsStyles = `
-  cursor:pointer;
   display:inline-block;
   vertical-align: middle;
   padding-right: ${styleConstants.appPad}em;
@@ -193,24 +184,24 @@ const headerButtonsStyles = `
 `;
 
 const StyledButton = styled.div`
-  ${styleConstants.mixins.button()}
+  ${styleConstants.mixins.button()};
   color: ${styleConstants.colors.red};
   ${props => {
-    if(props.layoutVariation === 'header') {
+    if (props.layoutVariation === 'header') {
       return headerButtonsStyles;
     }
-  }}
+  }};
 `;
 
 const StyledButtonInnerAnchor = styled.a`
-  ${styleConstants.mixins.buttonInner()}
-  background: ${styleConstants.colors.white};
+  ${styleConstants.mixins.buttonInner()} background: ${styleConstants.colors
+      .white};
 `;
 const StyledButtonInnerBernieLink = styled(BernieLink)`
   ${styleConstants.mixins.buttonInner()}
   background: ${styleConstants.colors.white};
   ${props => {
-    if(props.layoutVariation === 'header') {
+    if (props.layoutVariation === 'header') {
       return `
         ${styleConstants.mixins.buttonInner()}
         background: ${styleConstants.colors.red};
@@ -224,10 +215,9 @@ const StyledButtonInnerBernieLink = styled(BernieLink)`
   }}
 `;
 const StyledButtonInnerSpan = styled.span`
-  ${styleConstants.mixins.buttonInner()}
-  background: ${styleConstants.colors.white};
+  ${styleConstants.mixins.buttonInner()} background: ${styleConstants.colors
+      .white};
 `;
-
 
 let BernieAppButtonGroup = class extends Component {
   constructor() {
@@ -235,9 +225,9 @@ let BernieAppButtonGroup = class extends Component {
     this.state = {};
   }
   render() {
-    console.log(this.props.hideExtras);
     const icon =
-      this.props.icon && !this.props.hideExtras && 
+      this.props.icon &&
+      !this.props.hideExtras &&
       <StyledIconWrapper isModal={this.props.isModal}>
         <StyledIcon className="material-icons" isModal={this.props.isModal}>
           {this.props.icon}
@@ -253,8 +243,12 @@ let BernieAppButtonGroup = class extends Component {
       </StyledMicroText>;
 
     const headline =
-      this.props.headline && !this.props.hideExtras && 
-      <StyledText isModal={this.props.isModal} layoutVariation={this.props.layoutVariation}>
+      this.props.headline &&
+      !this.props.hideExtras &&
+      <StyledText
+        isModal={this.props.isModal}
+        layoutVariation={this.props.layoutVariation}
+      >
         <span>
           {this.props.headline}
         </span>
@@ -262,15 +256,16 @@ let BernieAppButtonGroup = class extends Component {
     const buttons = this.props.filter(this.props.buttons);
     const buttonComponents =
       buttons &&
-      <StyledButtonGroupButtons isModal={this.props.isModal} filter={this.props.filter}>
+      <StyledButtonGroupButtons
+        isModal={this.props.isModal}
+        filter={this.props.filter}
+      >
         {!this.props.hideExtras && this.props.buttonsPrepend(this.props)}
         {buttons.map(btnDetails => {
           let btnInner;
           if (btnDetails.onUploadSuccess) {
             btnInner = (
-              <Upload
-                onSuccess={this.props.onUploadSuccess}
-              >
+              <Upload onSuccess={this.props.onUploadSuccess}>
                 {btnDetails.text}
               </Upload>
             );
@@ -291,16 +286,18 @@ let BernieAppButtonGroup = class extends Component {
             btnInner = (
               <StyledButtonInnerBernieLink
                 layoutVariation={this.props.layoutVariation}
-                to={
-                  toSettings
-                }
+                to={toSettings}
               >
                 {btnDetails.text}
               </StyledButtonInnerBernieLink>
             );
           } else if (btnDetails.onClick) {
             btnInner = (
-              <StyledButtonInnerSpan onClick={btnDetails.onClick} role="button" tabIndex="0">
+              <StyledButtonInnerSpan
+                onClick={btnDetails.onClick}
+                role="button"
+                tabIndex="0"
+              >
                 {btnDetails.text}
               </StyledButtonInnerSpan>
             );
@@ -313,14 +310,20 @@ let BernieAppButtonGroup = class extends Component {
           }
 
           return (
-            <StyledButton key={btnDetails.text} layoutVariation={this.props.layoutVariation}>
+            <StyledButton
+              key={btnDetails.text}
+              layoutVariation={this.props.layoutVariation}
+            >
               {btnInner}
             </StyledButton>
           );
         })}
       </StyledButtonGroupButtons>;
 
-    const LinkOrDiv = this.props.compositeImageData.screen === this.props.urlFragment ? StyledHeaderDiv : StyledHeaderLink;
+    const LinkOrDiv =
+      this.props.compositeImageData.screen === this.props.urlFragment
+        ? StyledHeaderDiv
+        : StyledHeaderLink;
     const to = {
       type: `BERNIE_DYNAMIC`,
       compositeImageData: this.props.compositeImageData,
@@ -332,7 +335,11 @@ let BernieAppButtonGroup = class extends Component {
         layoutVariation={this.props.layoutVariation}
         hasLeftBorder={this.props.hasLeftBorder}
       >
-        <StyledButtonGroup isModal={this.props.isModal}  layoutVariation={this.props.layoutVariation} noLeftPadding={this.props.noLeftPadding}>
+        <StyledButtonGroup
+          isModal={this.props.isModal}
+          layoutVariation={this.props.layoutVariation}
+          noLeftPadding={this.props.noLeftPadding}
+        >
           <LinkOrDiv to={to} layoutVariation={this.props.layoutVariation}>
             {shortHeadline}
             {icon}
@@ -343,7 +350,7 @@ let BernieAppButtonGroup = class extends Component {
       </StyledSubsection>
     );
   }
-}
+};
 BernieAppButtonGroup.propTypes = {
   icon: PropTypes.string,
   shortHeadline: PropTypes.string,
@@ -367,22 +374,18 @@ BernieAppButtonGroup.defaultProps = {
   onUploadSuccess: null,
   isModal: false,
   themex: '',
-  filter: (buttons) => {
+  filter: buttons => {
     return buttons;
   },
   buttonsPrepend: () => {},
 };
 
-BernieAppButtonGroup = connect(
-  ( state /* , { params }*/) => {
-    return {
-      compositeImageData: state.bernie.compositeImageData,
-      location: state.location,
-    };
-  },
-  {
-  }
-)(BernieAppButtonGroup);
+BernieAppButtonGroup = connect((state /* , { params }*/) => {
+  return {
+    compositeImageData: state.bernie.compositeImageData,
+    location: state.location,
+  };
+}, {})(BernieAppButtonGroup);
 
 const buttonGroupComponents = {};
 function makeButtonGroupComponent(
@@ -394,7 +397,6 @@ function makeButtonGroupComponent(
     const ButtonGroup = <BernieAppButtonGroup {...props} {...options} />;
     if (props.isModal) {
       return (
-
         <ModalScreen hasCloseButton>
           {ButtonGroup}
         </ModalScreen>
@@ -420,7 +422,7 @@ const ImportButtonGroup = makeButtonGroupComponent({
     {
       text: 'Facebook',
       routerLinkScreenName: 'import-photo-from-facebook',
-      actionType: 'IMPORT_FACEBOOK'
+      actionType: 'IMPORT_FACEBOOK',
     },
     {
       text: 'Camera',
@@ -440,7 +442,7 @@ const ImportButtonGroup = makeButtonGroupComponent({
     {
       text: 'URL',
       routerLinkScreenName: 'import-url',
-      actionType: 'IMPORT_URL'
+      actionType: 'IMPORT_URL',
     },
     {
       text: 'Storage',
@@ -488,7 +490,7 @@ const EditSizeButtonGroup = makeButtonGroupComponent({
     {
       text: 'Size and position',
       routerLinkScreenName: 'crop',
-      actionType: 'CROP'
+      actionType: 'CROP',
     },
   ],
 });
@@ -500,7 +502,7 @@ const EditDesignButtonGroup = makeButtonGroupComponent({
   shortHeadline: 'edit',
   headline: 'Change design:',
   icon: 'brush',
-  buttonsPrepend: (props) => {
+  buttonsPrepend: props => {
     return (
       <ImagePickerTemplate limit={3} layoutVariation={props.layoutVariation} />
     );
@@ -509,14 +511,14 @@ const EditDesignButtonGroup = makeButtonGroupComponent({
     {
       text: 'more options',
       routerLinkScreenName: 'select-template',
-      actionType: 'SELECT_TEMPLATE'
+      actionType: 'SELECT_TEMPLATE',
     },
     {
       text: 'upload a template',
       routerLinkScreenName: 'upload-template',
-      actionType: 'UPLOAD_TEMPLATE'
-    }
-  ]
+      actionType: 'UPLOAD_TEMPLATE',
+    },
+  ],
 });
 buttonGroupComponents.editDesign = EditDesignButtonGroup;
 
@@ -533,9 +535,7 @@ const GetPhotoMinimalButtonGroup = makeButtonGroupComponent({
   headline: '\u00A0',
   // icon: 'brush',
   buttonsPrepend: () => {
-    return (
-      <ImageNeighborCompensator />
-    );
+    return <ImageNeighborCompensator />;
   },
   buttons: [
     {
@@ -544,7 +544,7 @@ const GetPhotoMinimalButtonGroup = makeButtonGroupComponent({
       actionType: 'DYNAMIC',
       bernieDynamicScreen: 'import',
     },
-  ]
+  ],
 });
 buttonGroupComponents.getPhotoMinimal = GetPhotoMinimalButtonGroup;
 
@@ -559,7 +559,6 @@ const buttonGroupComponentsRegexArrayString = objectKeysButtonGroupComponents.re
   },
   []
 );
-
 
 export {
   buttonGroupComponents,

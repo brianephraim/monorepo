@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Link from 'redux-first-router-link'
-import {payloadRefineAction} from './setup';
+import Link from 'redux-first-router-link';
+import { payloadRefineAction } from './setup';
 import { compositeImageIntoParams } from './compositeImage';
 /*
 <BernieLink
@@ -16,7 +16,7 @@ import { compositeImageIntoParams } from './compositeImage';
   {btnDetails.text}
 </BernieLink>
 */
-function BernieLink (props) {
+function BernieLink(props) {
   let to = props.to;
   if (to.compositeImageData) {
     const payload = compositeImageIntoParams(to.compositeImageData);
@@ -25,16 +25,14 @@ function BernieLink (props) {
     }
     to = {
       type: to.type,
-      payload
-    }
+      payload,
+    };
   }
   return (
-    <Link
-      className={props.className}
-      to={payloadRefineAction(to)}
-    >
+    <Link className={props.className} to={payloadRefineAction(to)}>
       {props.children}
-    </Link>);
+    </Link>
+  );
 }
 BernieLink.propTypes = {
   className: PropTypes.string,
@@ -43,6 +41,6 @@ BernieLink.propTypes = {
 };
 BernieLink.defaultProps = {
   className: '',
-  bernieDynamicScreen: ''
+  bernieDynamicScreen: '',
 };
 export default BernieLink;

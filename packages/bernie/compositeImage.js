@@ -1,10 +1,11 @@
 export function generateCompositeImgSrcUrl(compositeImageData) {
-  return `/image/${compositeImageData.foreground.srcKey}/${compositeImageData.background
-    .srcKey}_${compositeImageData.foreground.width}_${compositeImageData.foreground
-    .height}_${compositeImageData.foreground.x}_${compositeImageData.foreground.y}.jpg`;
+  return `/image/${compositeImageData.foreground.srcKey}/${compositeImageData
+    .background.srcKey}_${compositeImageData.foreground
+    .width}_${compositeImageData.foreground.height}_${compositeImageData
+    .foreground.x}_${compositeImageData.foreground.y}.jpg`;
 }
 
-export function compositeImageIntoParams (compositeImageData) {
+export function compositeImageIntoParams(compositeImageData) {
   return {
     fgX: compositeImageData.foreground.x,
     fgY: compositeImageData.foreground.y,
@@ -16,7 +17,7 @@ export function compositeImageIntoParams (compositeImageData) {
     fgSrcKey: compositeImageData.foreground.srcKey,
   };
 }
-export function paramsIntoCompositeImage (params) {
+export function paramsIntoCompositeImage(params) {
   const placeholder = {
     fgX: 142,
     fgY: 98,

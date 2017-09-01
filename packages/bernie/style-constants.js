@@ -15,10 +15,10 @@ const styleConstants = {
   font2: "'Cantarell', sans-serif",
   appPad: 1,
   mixins: {
-    leftPillar(){
-      return 'float:left;'
+    leftPillar() {
+      return 'float:left;';
     },
-    socialAtBottom(){
+    socialAtBottom() {
       return `
         position:absolute;
         top:100%;
@@ -35,7 +35,7 @@ const styleConstants = {
         ${windowVerticalTooSmall ? 'float:right;' : ''}
       `;
     },
-    socialRow(){
+    socialRow() {
       return `
         height:${styleConstants.appPad * 2}em;
         overflow:hidden;
@@ -44,11 +44,13 @@ const styleConstants = {
     socialRow_left(windowVerticalTooSmall) {
       return `
         ${styleConstants.mixins.socialRow()}
-        ${windowVerticalTooSmall ? `
+        ${windowVerticalTooSmall
+          ? `
           ${styleConstants.mixins.socialAtBottom()}
           padding-right:0;
           margin-top:${styleConstants.appPad * 8}em;
-        ` : ''}
+        `
+          : ''}
       `;
     },
     clearfix() {
@@ -109,6 +111,13 @@ const styleConstants = {
         box-sizing:border-box;
         padding: 0 0 ${styleConstants.appPad}em 0;
         color: ${styleConstants.colors.white};
+        button& {
+          font-size: ${styleConstants.appPad}em;
+          border: none;
+          margin: 0;
+          padding: 0;
+          width: 100%;
+        }
       `;
     },
     buttonInner() {
@@ -123,8 +132,6 @@ const styleConstants = {
       `;
     },
 
-
-    
     /*
 
     */

@@ -1,20 +1,19 @@
 import React from 'react';
-import {back} from 'redux-first-router';
+import { back } from 'redux-first-router';
 
 import styled from 'styled-components';
 import styleConstants from './style-constants';
 import ConnectResponsiveStatusesDictHOC from './ConnectResponsiveStatusesDictHOC';
 
 const StyledButton = ConnectResponsiveStatusesDictHOC(styled.div`
-  ${styleConstants.mixins.button()}
-  position:absolute;
-  right:0;
-  width:${styleConstants.appPad * 3}em;
+  ${styleConstants.mixins.button()} position:absolute;
+  right: 0;
+  width: ${styleConstants.appPad * 3}em;
 `);
 const StyledButtonInnerSpan = ConnectResponsiveStatusesDictHOC(styled.span`
-  ${styleConstants.mixins.buttonInner()}
-  background: ${styleConstants.colors.red};
-  width:${styleConstants.appPad * 3}em;
+  ${styleConstants.mixins.buttonInner()} background: ${styleConstants.colors
+      .red};
+  width: ${styleConstants.appPad * 3}em;
 `);
 
 export default function CloseButton() {

@@ -9,12 +9,12 @@ import styleConstants from './style-constants';
 import ConnectResponsiveStatusesDictHOC from './ConnectResponsiveStatusesDictHOC';
 
 const StyledFileInput = ConnectResponsiveStatusesDictHOC(styled.input`
-  position:absolute;
-  visibility:hidden;
+  position: absolute;
+  visibility: hidden;
 `);
 
 const StyledLabel = ConnectResponsiveStatusesDictHOC(styled.label`
-  ${styleConstants.mixins.buttonInner()}
+  ${styleConstants.mixins.buttonInner()};
 `);
 
 const bs = {

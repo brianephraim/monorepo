@@ -28,20 +28,23 @@ const shrinkFontBreakpointStyles = `
 
 const isTouchDevice = 'ontouchstart' in document.documentElement;
 
-const StyledHeaderWrap = styled.div`
+const StyledControlsHeaderWrap = styled.div`
   line-height: 0;
   height: ${styleConstants.appPad * 8}em
   overflow: hidden;
   ${shrinkFontBreakpointStyles}
 `;
-class DesignPicker extends Component {
+class ControlsHeader extends Component {
   constructor() {
     super();
     this.reduceButtonInstructions = this.reduceButtonInstructions.bind(this);
   }
-  reduceButtonInstructions(buttons){
-    return buttons.reduce((accum,buttonInfo) => {
-      if (buttonInfo.actionType === 'SELECT_TEMPLATE' && this.props.windowWidth <= breakpoints.compact) {
+  reduceButtonInstructions(buttons) {
+    return buttons.reduce((accum, buttonInfo) => {
+      if (
+        buttonInfo.actionType === 'SELECT_TEMPLATE' &&
+        this.props.windowWidth <= breakpoints.compact
+      ) {
         accum.push({
           ...buttonInfo,
           text: 'change design',
@@ -50,38 +53,46 @@ class DesignPicker extends Component {
         accum.push(buttonInfo);
       }
       return accum;
-    },[]);
+    }, []);
   }
   render() {
     const hideExtras = this.props.windowWidth <= breakpoints.compact;
     return (
-      <StyledHeaderWrap>
-        <EditDesignButtonGroup filter={this.reduceButtonInstructions} layoutVariation="header" hideExtras={hideExtras} />
-        <GetPhotoMinimalButtonGroup filter={this.reduceButtonInstructions} layoutVariation="header" hideExtras={hideExtras} hasLeftBorder={!hideExtras} noLeftPadding={hideExtras} />
-      </StyledHeaderWrap>
+      <StyledControlsHeaderWrap>
+        <EditDesignButtonGroup
+          filter={this.reduceButtonInstructions}
+          layoutVariation="header"
+          hideExtras={hideExtras}
+        />
+        <GetPhotoMinimalButtonGroup
+          filter={this.reduceButtonInstructions}
+          layoutVariation="header"
+          hideExtras={hideExtras}
+          hasLeftBorder={!hideExtras}
+          noLeftPadding={hideExtras}
+        />
+      </StyledControlsHeaderWrap>
     );
   }
 }
-DesignPicker.propTypes = {
+ControlsHeader.propTypes = {
   windowWidth: PropTypes.number.isRequired,
 };
 
-const StyledModalButtonGroup = styled.div`
+const StyledButtonWrap = styled.div`
   padding-left: ${styleConstants.appPad}em;
   padding-right: ${styleConstants.appPad}em;
 `;
 const StyledH2 = styled.h2`
-  padding:${styleConstants.appPad / 2}em ${styleConstants.appPad * 1.5}em;
+  padding: ${styleConstants.appPad / 2}em ${styleConstants.appPad * 1.5}em;
   text-align: center;
   font-size: ${styleConstants.appPad * 2}em;
-  ${shrinkFontBreakpointStyles}
+  ${shrinkFontBreakpointStyles};
 `;
 
-const StyledButtonAnchor = styled.a`
-  ${styleConstants.mixins.button()}
-`;
+const StyledButtonAnchor = styled.a`${styleConstants.mixins.button()};`;
 const StyledButtonInnerSpan = styled.span`
-  ${styleConstants.mixins.buttonInner()}
+  ${styleConstants.mixins.buttonInner()};
   background: ${styleConstants.colors.red};
 `;
 function CompletionInterface(props) {
@@ -89,11 +100,14 @@ function CompletionInterface(props) {
   return (
     <div>
       <StyledH2>Drag and resize the box to crop</StyledH2>
-      <StyledModalButtonGroup className="modal_buttonGroup">
-        <StyledButtonAnchor href={url} className="button mainButton cropDoneButton">
+      <StyledButtonWrap className="modal_buttonGroup">
+        <StyledButtonAnchor
+          href={url}
+          className="button mainButton cropDoneButton"
+        >
           <StyledButtonInnerSpan>Done</StyledButtonInnerSpan>
         </StyledButtonAnchor>
-      </StyledModalButtonGroup>
+      </StyledButtonWrap>
     </div>
   );
 }
@@ -115,7 +129,7 @@ class CropperScreen extends Component {
     };
     this.crop = this.crop.bind(this);
   }
-
+  
   componentWillMount() {
     // When window resizes, flicker cropperExists.
     // cropperExists determines whether or not <ReactCropper> renders.
@@ -127,6 +141,18 @@ class CropperScreen extends Component {
       this.setState({ windowHeight: windowSizer.dimensions.height });
       this.setState({ windowWidth: windowSizer.dimensions.width });
     });
+  }
+
+  componentWillReceiveProps(nextProps){
+    if (nextProps.foreground.src !== this.state.foreground.src) {
+      this.setState({
+        foreground: {
+          ...this.state.foreground,
+          src: nextProps.foreground.src,
+          srcKey: nextProps.foreground.srcKey
+        }
+      });
+    }
   }
   componentWillUnmount() {
     if (this.windowSizerCb) {
@@ -214,17 +240,13 @@ class CropperScreen extends Component {
       foreground: this.state.foreground,
       background: this.props.background,
     };
-    
     return (
       <ModalScreen hasCloseButton style={styles.cropModal}>
-        <DesignPicker windowWidth={this.state.windowWidth} />
-        <div className="cropOuterContainer">
-          <div className="cropContainer" style={styles.cropContainer}>
-            <ReactCropperEnhanced
-              onResize={this.state.onResize}
-              {...reactCropperOptions}
-            />
-          </div>
+        <ControlsHeader windowWidth={this.state.windowWidth} />
+        <div className="cropContainer" style={styles.cropContainer}>
+          <ReactCropperEnhanced
+            {...reactCropperOptions}
+          />
         </div>
         <CompletionInterface
           activeCompositeImageData={activeCompositeImageData}
@@ -237,7 +259,7 @@ class CropperScreen extends Component {
 CropperScreen.propTypes = {
   background: PropTypes.object.isRequired,
   foreground: PropTypes.object.isRequired,
-  generateCompletionUrl: PropTypes.func.isRequired
+  generateCompletionUrl: PropTypes.func.isRequired,
 };
 
 export default CropperScreen;

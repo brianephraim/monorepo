@@ -5,96 +5,99 @@ import styleConstants from './style-constants';
 import ConnectResponsiveStatusesDictHOC from './ConnectResponsiveStatusesDictHOC';
 
 const StyledLeftPillar = ConnectResponsiveStatusesDictHOC(styled.div`
-  ${styleConstants.mixins.leftPillar()}
-  ${props => {
-    return props.responsiveStatusesDict.windowVerticalTooSmall ? 'float: none;' : '';
-  }}
-  @media (max-width: 700px){
-    float:none;
-    text-align:center;
+  ${styleConstants.mixins.leftPillar()} ${props => {
+      return props.responsiveStatusesDict.windowVerticalTooSmall
+        ? 'float: none;'
+        : '';
+    }} @media (max-width: 700px) {
+    float: none;
+    text-align: center;
   }
 `);
 
 const StyledBranding = ConnectResponsiveStatusesDictHOC(styled.div`
-  height:${styleConstants.headerTopHeight}em;
+  height: ${styleConstants.headerTopHeight}em;
   ${props => {
-    return props.responsiveStatusesDict.windowVerticalTooSmall ? 'height: auto;' : '';
-  }}
+    return props.responsiveStatusesDict.windowVerticalTooSmall
+      ? 'height: auto;'
+      : '';
+  }};
 `);
 
 const StyledBrandingTitle = ConnectResponsiveStatusesDictHOC(styled.div`
   font-family: ${styleConstants.font1};
   font-size: ${styleConstants.appPad * 2}em;
   ${props => {
-    return props.responsiveStatusesDict.windowVerticalTooSmall ? 'text-align: center;' : '';
-  }}
+    return props.responsiveStatusesDict.windowVerticalTooSmall
+      ? 'text-align: center;'
+      : '';
+  }};
 `);
 
 const StyledBrandingSubtitle = ConnectResponsiveStatusesDictHOC(styled.div`
   font-size: ${styleConstants.appPad * 1.5}em;
   ${props => {
-    return props.responsiveStatusesDict.windowVerticalTooSmall ? 'display: none;' : '';
-  }}
-  @media (max-width: 400px){
-    font-size:1em;
-    line-height:2em;  
+    return props.responsiveStatusesDict.windowVerticalTooSmall
+      ? 'display: none;'
+      : '';
+  }} @media (max-width: 400px) {
+    font-size: 1em;
+    line-height: 2em;
   }
-  @media (max-width: 280px){
-    font-size:.75em;
+  @media (max-width: 280px) {
+    font-size: .75em;
   }
 `);
 
 const StyledSocialRow = ConnectResponsiveStatusesDictHOC(styled.div`
   ${props => {
-    return styleConstants.mixins.socialRow_left(props.responsiveStatusesDict.windowVerticalTooSmall);
-  }}
-  ${styleConstants.mixins.socialRowClass()}
+    return styleConstants.mixins.socialRow_left(
+      props.responsiveStatusesDict.windowVerticalTooSmall
+    );
+  }} ${styleConstants.mixins.socialRowClass()};
 `);
 const StyledSocialWidget = ConnectResponsiveStatusesDictHOC(styled.div`
   ${props => {
-    return styleConstants.mixins.socialWidget_left(props.responsiveStatusesDict.windowVerticalTooSmall);
-  }}
-  ${styleConstants.mixins.socialWidgetClass()}
+    return styleConstants.mixins.socialWidget_left(
+      props.responsiveStatusesDict.windowVerticalTooSmall
+    );
+  }} ${styleConstants.mixins.socialWidgetClass()};
 `);
 
 const StyledRightPillar = ConnectResponsiveStatusesDictHOC(styled.div`
-  ${styleConstants.mixins.rightPillar()}
-  ${props => {
-    if (props.responsiveStatusesDict.windowVerticalTooSmall) {
-      return `
+  ${styleConstants.mixins.rightPillar()} ${props => {
+      if (props.responsiveStatusesDict.windowVerticalTooSmall) {
+        return `
         ${styleConstants.mixins.socialAtBottom()}
         padding-bottom:0;
       `;
-    }
-    return '';
-  }}
-  @media (max-width: 700px){
-    padding-top:${styleConstants.appPad}em;
-    ${styleConstants.mixins.socialAtBottom()}
+      }
+      return '';
+    }} @media (max-width: 700px) {
+    padding-top: ${styleConstants.appPad}em;
+    ${styleConstants.mixins.socialAtBottom()};
   }
 `);
 
 const StyledFbLikePageWrap = ConnectResponsiveStatusesDictHOC(styled.div`
-  height:${styleConstants.headerTopHeight}em;
-  overflow:hidden;
+  height: ${styleConstants.headerTopHeight}em;
+  overflow: hidden;
   & > * {
-    float:right
+    float: right;
   }
 `);
 
 const StyledFbLikePageWidget = ConnectResponsiveStatusesDictHOC(styled.img`
-  ${styleConstants.mixins.socialWidget_rightTop()}
+  ${styleConstants.mixins.socialWidget_rightTop()};
 `);
 const StyledSocialWidgetRight = ConnectResponsiveStatusesDictHOC(styled.img`
-  ${styleConstants.mixins.socialWidget_rightBottom()}
-  ${styleConstants.mixins.socialWidgetClass()}
+  ${styleConstants.mixins.socialWidget_rightBottom()} ${styleConstants.mixins.socialWidgetClass()};
 `);
 const StyledSocialRowRight = ConnectResponsiveStatusesDictHOC(styled.div`
-  ${styleConstants.mixins.socialRow_right()}
-  ${styleConstants.mixins.socialRowClass()}
+  ${styleConstants.mixins.socialRow_right()} ${styleConstants.mixins.socialRowClass()};
 `);
 const StyledHeader = ConnectResponsiveStatusesDictHOC(styled.div`
-  padding:${styleConstants.appPad}em;
+  padding: ${styleConstants.appPad}em;
 `);
 
 export default function BernieAppHeader() {

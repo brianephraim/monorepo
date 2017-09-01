@@ -1,6 +1,6 @@
 let imagesFromFetchPromise = null;
-export default function makeActionFetchTemplates(){
-  return (dispatch/* , getState*/) => {
+export default function makeActionFetchTemplates() {
+  return (dispatch /* , getState*/) => {
     imagesFromFetchPromise =
       imagesFromFetchPromise ||
       fetch('/bernieserver/get_template_list').then(r => {
@@ -27,4 +27,4 @@ export default function makeActionFetchTemplates(){
       }
     });
   };
-};
+}

@@ -1,24 +1,21 @@
+import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import ModalScreen from './ModalScreen';
 import styleConstants from './style-constants';
+import makeActionSetBackground from './makeActionSetBackground';
 
 const StyledButtonWrap = styled.div`
   padding-left: ${styleConstants.appPad}em;
   padding-right: ${styleConstants.appPad}em;
 `;
-const StyledButton = styled.div`
-  ${styleConstants.mixins.button()}
-`;
+const StyledButton = styled.button`${styleConstants.mixins.button()};`;
 const StyledButtonInner = styled.span`
-  ${styleConstants.mixins.buttonInner()}
-  background: ${styleConstants.colors.red};
+  ${styleConstants.mixins.buttonInner()} background: ${styleConstants.colors
+      .red};
 `;
 
-const StyledInputContainer = styled.div`
-  padding: ${styleConstants.appPad}em;
-`;
+const StyledInputContainer = styled.div`padding: ${styleConstants.appPad}em;`;
 
 const StyledInput = styled.input`
   display: block;
@@ -29,17 +26,50 @@ const StyledInput = styled.input`
   margin-bottom: ${styleConstants.appPad}em;
 `;
 
-export default function UrlImportScreen() {
-  return (
-    <ModalScreen hasCloseButton headerText="Enter the URL to an Image">
-      <StyledInputContainer className="inputContainer">
-        <StyledInput className="textInput urlInput" />
-      </StyledInputContainer>
-      <StyledButtonWrap>
-        <StyledButton className="button mainButton urlUploadizerDone">
-          <StyledButtonInner>Done</StyledButtonInner>
-        </StyledButton>
-      </StyledButtonWrap>
-    </ModalScreen>
-  );
+class UrlImportScreen extends Component {
+  constructor(){
+    super();
+    this.onSubmit = this.onSubmit.bind(this);
+    this.inputRef = this.inputRef.bind(this);
+  }
+  onSubmit(e) {
+    e.preventDefault();
+    if (!this.input.value.trim()) {
+      return;
+    }
+    this.props.setBackground(this.input.value);
+    this.input.value = '';
+  }
+  inputRef(node) {
+    this.input = node;
+  }
+  render() {
+    return (
+      <form onSubmit={this.onSubmit}>
+        <StyledInputContainer className="inputContainer">
+          <StyledInput className="textInput urlInput" innerRef={this.inputRef} />
+        </StyledInputContainer>
+        <StyledButtonWrap>
+          <StyledButton className="button mainButton urlUploadizerDone" type="submit">
+            <StyledButtonInner>Done</StyledButtonInner>
+          </StyledButton>
+        </StyledButtonWrap>
+      </form>
+    );
+  }
 }
+
+// export default UrlImportScreen;
+export default connect(
+  (state /* , { params }*/) => {
+    return {
+      compositeImageData: state.bernie.compositeImageData,
+    };
+  },
+  {
+    setBackground: makeActionSetBackground
+    // setCompositeImageData: (action) => {
+    //   return action;
+    // },
+  }
+)(UrlImportScreen);

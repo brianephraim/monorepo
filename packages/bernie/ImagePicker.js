@@ -9,15 +9,14 @@ import ConnectResponsiveStatusesDictHOC from './ConnectResponsiveStatusesDictHOC
 import BernieLink from './BernieLink';
 import { compositeImageIntoParams } from './compositeImage';
 
-
 const StyledOuterWrap = styled.div`
   ${props => {
-    if(props.layoutVariation === 'vertical') {
+    if (props.layoutVariation === 'vertical') {
       return `
 
       `;
     }
-    if (props.layoutVariation === 'header'){
+    if (props.layoutVariation === 'header') {
       return `
         display: inline-block;
         vertical-align: middle;
@@ -42,19 +41,17 @@ const StyledOuterWrap = styled.div`
         width:100%;
       }
     `;
-    
-  }}
-  padding-bottom: ${styleConstants.appPad}em;
+  }} padding-bottom: ${styleConstants.appPad}em;
   box-sizing: border-box;
 `;
 
 const StyledImageOptions = styled.div`
   ${props => {
     let toReturn = '';
-    if(props.layoutVariation === 'vertical') {
+    if (props.layoutVariation === 'vertical') {
       return ``;
     }
-    if(props.layoutVariation === 'header') {
+    if (props.layoutVariation === 'header') {
       toReturn += `
         display: inline-block;
       `;
@@ -63,9 +60,9 @@ const StyledImageOptions = styled.div`
         padding-right:${styleConstants.appPad}em;
       `;
     }
-    
+
     return toReturn;
-  }}
+  }};
 `;
 
 const innerWrapStyles = `
@@ -73,18 +70,15 @@ const innerWrapStyles = `
   background: #eee;
   display: block;
 `;
-const StyledPhotoImgInnerWrap = styled.div`
-  ${innerWrapStyles}
-`;
+const StyledPhotoImgInnerWrap = styled.div`${innerWrapStyles};`;
 
 const StyledBernieLink = styled(BernieLink)`
   ${innerWrapStyles}
 `;
 
-const StyledPhotoImg = styled.img`  
+const StyledPhotoImg = styled.img`
   display: block;
   width: 100%;
-  
 `;
 
 class ImagePicker extends Component {
@@ -108,19 +102,22 @@ class ImagePicker extends Component {
   render() {
     // const imgSrc =
     //   'https://scontent.xx.fbcdn.net/v/t1.0-9/14729128_10157953620800725_5026720440547477533_n.jpg?oh=ac158b7c520d1310164aabb3c18fa3ff&amp;oe=59F6F820';
-    const images = this.props.limit !== Infinity ? this.props.images.slice(0,this.props.limit) : this.props.images;
+    const images =
+      this.props.limit !== Infinity
+        ? this.props.images.slice(0, this.props.limit)
+        : this.props.images;
     return (
-      <StyledImageOptions className="imageOptions" layoutVariation={this.props.layoutVariation}>
+      <StyledImageOptions
+        className="imageOptions"
+        layoutVariation={this.props.layoutVariation}
+      >
         {images.map((imgSrcObj, i) => {
           let InnerWrap = StyledPhotoImgInnerWrap;
-          const InnerWrapProps = {
-            
-          };
+          const InnerWrapProps = {};
           const imgProps = {
-            className: "photoImg",
+            className: 'photoImg',
             src: imgSrcObj.src,
             alt: `item number ${i}`,
-            
           };
           if (this.props.setsForegroundForCrop) {
             InnerWrap = StyledBernieLink;
@@ -128,16 +125,25 @@ class ImagePicker extends Component {
               type: `BERNIE_CROP`,
               payload: {
                 ...compositeImageIntoParams(this.props.compositeImageData),
-                fgSrcKey: imgSrcObj.srcKey
-              }
+                fgSrcKey: imgSrcObj.srcKey,
+              },
             };
           } else {
             imgProps.onClick = this.imgOnClick(imgSrcObj);
           }
           return (
-            <StyledOuterWrap layoutVariation={this.props.layoutVariation} key={imgSrcObj.src} >
-              <InnerWrap {...InnerWrapProps} layoutVariation={this.props.layoutVariation} >
-                <StyledPhotoImg {...imgProps} layoutVariation={this.props.layoutVariation} />
+            <StyledOuterWrap
+              layoutVariation={this.props.layoutVariation}
+              key={imgSrcObj.src}
+            >
+              <InnerWrap
+                {...InnerWrapProps}
+                layoutVariation={this.props.layoutVariation}
+              >
+                <StyledPhotoImg
+                  {...imgProps}
+                  layoutVariation={this.props.layoutVariation}
+                />
               </InnerWrap>
             </StyledOuterWrap>
           );
@@ -164,13 +170,13 @@ ImagePicker.defaultProps = {
 };
 
 export default connect(
-  ( state /* , { params }*/) => {
+  (state /* , { params }*/) => {
     return {
       compositeImageData: state.bernie.compositeImageData,
     };
   },
   {
-    // setCompositeImageData: (action) => { 
+    // setCompositeImageData: (action) => {
     //   return action;
     // },
   }

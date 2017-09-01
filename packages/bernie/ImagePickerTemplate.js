@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import ImagePicker from './ImagePicker';
 import makeActionFetchTemplates from './makeActionFetchTemplates';
 
-
 class ImagePickerTemplate extends Component {
   componentWillMount() {
     if (this.props.limit > 3) {
@@ -35,7 +34,7 @@ ImagePickerTemplate.defaultProps = {
   layoutVariation: '',
 };
 export default connect(
-  ( state /* , { params }*/) => {
+  (state /* , { params }*/) => {
     return {
       images: state.bernie.templates,
     };

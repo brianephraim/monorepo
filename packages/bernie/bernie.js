@@ -1,40 +1,40 @@
 /* eslint-disable react/no-multi-comp */
 /* eslint-disable class-methods-use-this */
-import React, {Component} from 'react';
-import {
-  ResponsiveMasterHOC,
-} from '@defualt/responsive';
+import React, { Component } from 'react';
+import { ResponsiveMasterHOC } from '@defualt/responsive';
 import { connect } from 'react-redux';
-import Routing from './Routing'
+import Routing from './Routing';
 import './app.scss';
 
 let MyResponsiveMaster = class extends Component {
   // componentWillReceiveProps(nextProps){
   //   nextProps.doThing(nextProps.activeStatusesDict);
-    
+
   // }
   render() {
-    return <div className={this.props.className} >{this.props.children}</div>
+    return (
+      <div className={this.props.className}>
+        {this.props.children}
+      </div>
+    );
   }
 };
 
-
-
-
 let ResponsiveMaster = ResponsiveMasterHOC(MyResponsiveMaster);
 ResponsiveMaster = connect(
-() => {
-  return {};
-},
-{
-  doThing: (responsiveStatusesDict) => {
-    return {
-      name: 'bernie',
-      responsiveStatusesDict,
-      type:'UDATE_RESPONSIVE_STATUSES_DICT'
-    }
+  () => {
+    return {};
   },
-})(ResponsiveMaster);
+  {
+    doThing: responsiveStatusesDict => {
+      return {
+        name: 'bernie',
+        responsiveStatusesDict,
+        type: 'UDATE_RESPONSIVE_STATUSES_DICT',
+      };
+    },
+  }
+)(ResponsiveMaster);
 
 function Bernie(props) {
   return (
@@ -52,7 +52,4 @@ function Bernie(props) {
   );
 }
 
-export default Bernie
-
-
-
+export default Bernie;

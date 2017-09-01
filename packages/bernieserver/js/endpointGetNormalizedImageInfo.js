@@ -78,6 +78,7 @@ export default ({accessKeyId,secretAccessKey,Bucket,app,userTemplates, urlPatter
       res:res,
       isSuccess:false
     });
+    console.log('originalUrl',originalUrl);
     var promise = urlToFileData(originalUrl).then(normalizeImageFileData);
     var promises = [
       promise,
@@ -91,6 +92,7 @@ export default ({accessKeyId,secretAccessKey,Bucket,app,userTemplates, urlPatter
           return dfd.promise();
         } else {          
           var uploadToS3Promise = this.then(uploadToS3);
+          console.log('uploadToS3');
           uploadToS3Promise.then(function(){
             if(mustBeSquare){
               var userTemplateModel = {

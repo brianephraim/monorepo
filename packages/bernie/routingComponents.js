@@ -9,41 +9,36 @@ import TemplateUploadScreen from './TemplateUploadScreen';
 import ModalScreen from './ModalScreen';
 import './app.scss';
 
-
 // ========
 // ========
 
-export function BernieHomeLayoutWithUploadCallback(props){
+export function BernieHomeLayoutWithUploadCallback(props) {
   return (
-    <BernieHomeLayout
-      onUploadSuccess={props.handleBackroundImageSelection()}
-    />
+    <BernieHomeLayout onUploadSuccess={props.handleBackroundImageSelection()} />
   );
-};
+}
 BernieHomeLayoutWithUploadCallback.propTypes = {
   handleBackroundImageSelection: PropTypes.func.isRequired,
 };
 
-export function ImagePickerFacebookWithOnClick(props){
+export function ImagePickerFacebookWithOnClick(props) {
   return (
     <ModalScreen hasCloseButton headerText="Pick a photo">
-      <ImagePickerFacebook
-        onClick={props.handleBackroundImageSelection()}
-      />
+      <ImagePickerFacebook onClick={props.handleBackroundImageSelection()} />
     </ModalScreen>
   );
-};
+}
 ImagePickerFacebookWithOnClick.propTypes = {
   handleBackroundImageSelection: PropTypes.func.isRequired,
 };
 
-export function ImagePickerTemplateWithOnClick(){
+export function ImagePickerTemplateWithOnClick() {
   return (
     <ModalScreen hasCloseButton headerText="Pick a design">
       <ImagePickerTemplate />
     </ModalScreen>
   );
-};
+}
 
 export function CropperWithFgBgCompletion(props) {
   return (
@@ -59,14 +54,20 @@ CropperWithFgBgCompletion.propTypes = {
   generateCompletionUrl: PropTypes.func.isRequired,
 };
 
-
-export function UrlImportScreenWithWithUploadCallback() {
-  return (<UrlImportScreen />);
+function zzz (a) {
+  console.log(a);
 }
+export function UrlImportScreenWithWithUploadCallback(props) {
+  return (
+    <ModalScreen hasCloseButton headerText="Enter the URL to an Image">
+      <UrlImportScreen onSubmit={zzz} />
+    </ModalScreen>
+  );
+}
+ImagePickerFacebookWithOnClick.propTypes = {
+  handleBackroundImageSelection: PropTypes.func.isRequired,
+};
 
 export function TemplateUploadScreenWithUploadCallback() {
-  return (<TemplateUploadScreen />);
+  return <TemplateUploadScreen />;
 }
-
-
-

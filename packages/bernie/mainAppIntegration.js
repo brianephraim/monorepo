@@ -1,13 +1,12 @@
 import Bernie from './bernie';
 import { bernieRoutesMap, bernieReducers } from './setup';
-import {addRoutesToApp} from 'redux-routing-app-root-component';
+import { addRoutesToApp } from 'redux-routing-app-root-component';
 
-
-export default function () {
+export default function() {
   addRoutesToApp({
-    routesMap:bernieRoutesMap,
+    routesMap: bernieRoutesMap,
     routeRootComponent: Bernie,
-    reducers: {bernie:bernieReducers},
+    reducers: { bernie: bernieReducers },
     routeInfo: {
       description: 'Bernie',
       path: '/bernie',

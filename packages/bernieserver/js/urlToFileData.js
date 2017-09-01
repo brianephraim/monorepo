@@ -11,8 +11,9 @@ module.exports = function(originalUrl){
   } else {
     http = require('http');
   }
-
+  console.log('http get');
   http.get(options, function (response) {
+    console.log('GOTTEN', response);
     var chunks = [];
     response.on('data', function (chunk) {
       chunks.push(chunk);
@@ -27,7 +28,10 @@ module.exports = function(originalUrl){
     }).on('error', (e) => {
       dfd.reject(e);
     });
-  });
+  }).on('error', (e) => {
+    console.error('urlFileToData http error!!!', e);
+    dfd.reject(e);
+  });;
 
   return dfd.promise();
 };

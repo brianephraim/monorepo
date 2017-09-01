@@ -7,7 +7,11 @@ import makeBinder from '@defualt/make-binder';
 import { formUrl } from './deriveUrlInfo';
 import { getNormalizedImageInfo } from './s3';
 import { compositeImageIntoParams } from './compositeImage';
-import {payloadRefineAction,nameSpace,bernieScreenComponentMap} from './setup';
+import {
+  payloadRefineAction,
+  nameSpace,
+  bernieScreenComponentMap,
+} from './setup';
 import './app.scss';
 
 const Routing = class extends Component {
@@ -26,8 +30,8 @@ const Routing = class extends Component {
         payload: {
           // ...this.props.location.payload,
           ...compositeImageIntoParams(this.props.compositeImageData),
-          bgSrcKey: response.srcKey
-        }
+          bgSrcKey: response.srcKey,
+        },
       });
       this.props.setCompositeImageData(action);
     });
@@ -47,7 +51,7 @@ const Routing = class extends Component {
       />
     );
   }
-}
+};
 Routing.propTypes = {
   bernieScreen: PropTypes.string.isRequired,
   dynamicScreen: PropTypes.string,
@@ -55,11 +59,11 @@ Routing.propTypes = {
   setCompositeImageData: PropTypes.func.isRequired,
 };
 Routing.defaultProps = {
-  dynamicScreen: ''
+  dynamicScreen: '',
 };
 
 export default connect(
-  ( state /* , { params }*/) => {
+  (state /* , { params }*/) => {
     return {
       compositeImageData: state.bernie.compositeImageData,
       bernieScreen: state.bernie.bernieScreen,
@@ -67,11 +71,8 @@ export default connect(
     };
   },
   {
-    setCompositeImageData: (action) => { 
+    setCompositeImageData: action => {
       return action;
     },
   }
 )(Routing);
-
-
-

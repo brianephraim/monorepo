@@ -17,7 +17,7 @@ ImagePickerFacebook.propTypes = {
   fetchFacebookPhotos: PropTypes.func.isRequired,
 };
 export default connect(
-  ( state /* , { params }*/) => {
+  (state /* , { params }*/) => {
     return {
       images: state.bernie.facebookPhotos,
     };

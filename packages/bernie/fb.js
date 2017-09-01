@@ -254,10 +254,9 @@ class FbManager {
 const fbManager = new FbManager();
 export default fbManager;
 
-
 let imagesFromFBPromise = null;
-export function makeActionFetchPhotos(){
-  return (dispatch/* , getState*/) => {
+export function makeActionFetchPhotos() {
+  return (dispatch /* , getState*/) => {
     imagesFromFBPromise = imagesFromFBPromise || fbManager.importStuff();
     return imagesFromFBPromise.then(response => {
       if (response && response.data && response.data.length) {
@@ -284,6 +283,4 @@ export function makeActionFetchPhotos(){
       }
     });
   };
-};
-
-
+}
