@@ -156,7 +156,7 @@ ImagePicker.propTypes = {
   onClick: PropTypes.func,
   images: PropTypes.array,
   setsForegroundForCrop: PropTypes.bool,
-  compositeImageData: PropTypes.object,
+  compositeImageData: PropTypes.object.isRequired,
   limit: PropTypes.number,
   layoutVariation: PropTypes.string,
 };
@@ -164,7 +164,6 @@ ImagePicker.defaultProps = {
   onClick: () => {},
   images: [],
   setsForegroundForCrop: false,
-  compositeImageData: null,
   limit: Infinity,
   layoutVariation: '',
 };

@@ -74,21 +74,29 @@ export function ImagePickerTemplateWithOnClick() {
 function generateCompletionUrl(activeCompositeImageData) {
   return `${nameSpace}/${formUrl(activeCompositeImageData)}`;
 }
-class CropperWithFgBgCompletion extends Component {
-  render(){
-    return (
-      <CropperScreen
-        foreground={this.props.compositeImageData.foreground}
-        background={this.props.compositeImageData.background}
-        generateCompletionUrl={generateCompletionUrl}
-      />
-    );
-  }
+let CropperWithFgBgCompletion = (props) => {
+  return (
+    <CropperScreen
+      foreground={props.compositeImageData.foreground}
+      background={props.compositeImageData.background}
+      generateCompletionUrl={generateCompletionUrl}
+    />
+  );
 }
 CropperWithFgBgCompletion.propTypes = {
   compositeImageData: PropTypes.object.isRequired,
 };
+CropperWithFgBgCompletion = connect(
+  (state /* , { params }*/) => {
+    return {
+      compositeImageData: state.bernie.compositeImageData,
+    };
+  },
+)(CropperWithFgBgCompletion);
 export {CropperWithFgBgCompletion};
+
+
+
 
 export function UrlImportScreenWithWithUploadCallback() {
   return (

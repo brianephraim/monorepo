@@ -1,3 +1,4 @@
+import { connect } from 'react-redux';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { combineReducers } from 'redux';
@@ -19,13 +20,22 @@ import { paramsIntoCompositeImage } from './compositeImage';
 
 import fbManager from './fb';
 
-export function Dynamic(props) {
+let Dynamic = (props) => {
   const Comp = buttonGroupComponents[props.dynamicScreen];
   return <Comp isModal />;
 }
 Dynamic.propTypes = {
   dynamicScreen: PropTypes.string.isRequired,
 };
+Dynamic = connect(
+  (state /* , { params }*/) => {
+    return {
+      dynamicScreen: state.location.payload.bernieDynamicScreen,
+    };
+  },
+  {}
+)(Dynamic);
+export {Dynamic};
 
 const nameSpace = '/bernie';
 

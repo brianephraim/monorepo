@@ -19,18 +19,13 @@ const Routing = class extends Component {
     return (
       <Comp
         compositeImageData={this.props.compositeImageData}
-        dynamicScreen={this.props.dynamicScreen}
       />
     );
   }
 };
 Routing.propTypes = {
   bernieScreen: PropTypes.string.isRequired,
-  dynamicScreen: PropTypes.string,
   compositeImageData: PropTypes.object.isRequired,
-};
-Routing.defaultProps = {
-  dynamicScreen: '',
 };
 
 export default connect(
@@ -38,7 +33,6 @@ export default connect(
     return {
       compositeImageData: state.bernie.compositeImageData,
       bernieScreen: state.bernie.bernieScreen,
-      dynamicScreen: state.location.payload.bernieDynamicScreen,
     };
   },
   {
