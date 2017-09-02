@@ -1,3 +1,4 @@
+import { connect } from 'react-redux';
 import React from 'react';
 import PropTypes from 'prop-types';
 import CropperScreen from './CropperScreen';
@@ -8,29 +9,55 @@ import UrlImportScreen from './UrlImportScreen';
 import TemplateUploadScreen from './TemplateUploadScreen';
 import ModalScreen from './ModalScreen';
 import './app.scss';
+import makeActionSetBackground from './makeActionSetBackground';
 
 // ========
 // ========
-
-export function BernieHomeLayoutWithUploadCallback(props) {
+let BernieHomeLayoutWithUploadCallback = (props) => {
   return (
-    <BernieHomeLayout onUploadSuccess={props.handleBackroundImageSelection()} />
+    <BernieHomeLayout onUploadSuccess={props.setBackground} />
   );
 }
 BernieHomeLayoutWithUploadCallback.propTypes = {
-  handleBackroundImageSelection: PropTypes.func.isRequired,
+  setBackground: PropTypes.func.isRequired,
 };
+BernieHomeLayoutWithUploadCallback = connect(
+  null,
+  {
+    setBackground: makeActionSetBackground
+    // setCompositeImageData: (action) => {
+    //   return action;
+    // },
+  }
+)(BernieHomeLayoutWithUploadCallback);
 
-export function ImagePickerFacebookWithOnClick(props) {
+export {BernieHomeLayoutWithUploadCallback};
+
+
+
+// let ImagePickerFacebookWithOnClick = 
+let ImagePickerFacebookWithOnClick = (props) => {
   return (
     <ModalScreen hasCloseButton headerText="Pick a photo">
-      <ImagePickerFacebook onClick={props.handleBackroundImageSelection()} />
+      <ImagePickerFacebook onClick={props.setBackground} />
     </ModalScreen>
   );
-}
-ImagePickerFacebookWithOnClick.propTypes = {
-  handleBackroundImageSelection: PropTypes.func.isRequired,
 };
+ImagePickerFacebookWithOnClick.propTypes = {
+  setBackground: PropTypes.func.isRequired,
+};
+ImagePickerFacebookWithOnClick = connect(
+  null,
+  {
+    setBackground: makeActionSetBackground
+    // setCompositeImageData: (action) => {
+    //   return action;
+    // },
+  }
+)(ImagePickerFacebookWithOnClick);
+
+export {ImagePickerFacebookWithOnClick};
+
 
 export function ImagePickerTemplateWithOnClick() {
   return (
@@ -54,19 +81,13 @@ CropperWithFgBgCompletion.propTypes = {
   generateCompletionUrl: PropTypes.func.isRequired,
 };
 
-function zzz (a) {
-  console.log(a);
-}
-export function UrlImportScreenWithWithUploadCallback(props) {
+export function UrlImportScreenWithWithUploadCallback() {
   return (
     <ModalScreen hasCloseButton headerText="Enter the URL to an Image">
-      <UrlImportScreen onSubmit={zzz} />
+      <UrlImportScreen />
     </ModalScreen>
   );
 }
-ImagePickerFacebookWithOnClick.propTypes = {
-  handleBackroundImageSelection: PropTypes.func.isRequired,
-};
 
 export function TemplateUploadScreenWithUploadCallback() {
   return <TemplateUploadScreen />;

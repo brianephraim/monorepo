@@ -3,12 +3,8 @@
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import makeBinder from '@defualt/make-binder';
 import { formUrl } from './deriveUrlInfo';
-import { getNormalizedImageInfo } from './s3';
-import { compositeImageIntoParams } from './compositeImage';
 import {
-  payloadRefineAction,
   nameSpace,
   bernieScreenComponentMap,
 } from './setup';
@@ -18,23 +14,7 @@ const Routing = class extends Component {
   constructor() {
     super();
     this.state = {};
-    makeBinder(this, 'handleBackroundImageSelection');
     this.generateCompletionUrl = this.generateCompletionUrl.bind(this);
-  }
-  handleBackroundImageSelection(imgSrcObj) {
-    // bs.loader.load
-    const imgSrc = imgSrcObj.src;
-    getNormalizedImageInfo(imgSrc).then(response => {
-      const action = payloadRefineAction({
-        type: 'BERNIE_CROP',
-        payload: {
-          // ...this.props.location.payload,
-          ...compositeImageIntoParams(this.props.compositeImageData),
-          bgSrcKey: response.srcKey,
-        },
-      });
-      this.props.setCompositeImageData(action);
-    });
   }
   generateCompletionUrl(activeCompositeImageData) {
     return `${nameSpace}/${formUrl(activeCompositeImageData)}`;
@@ -44,7 +24,6 @@ const Routing = class extends Component {
 
     return (
       <Comp
-        handleBackroundImageSelection={this.handleBackroundImageSelection}
         generateCompletionUrl={this.generateCompletionUrl}
         compositeImageData={this.props.compositeImageData}
         dynamicScreen={this.props.dynamicScreen}

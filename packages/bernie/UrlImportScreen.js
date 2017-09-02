@@ -37,7 +37,7 @@ class UrlImportScreen extends Component {
     if (!this.input.value.trim()) {
       return;
     }
-    this.props.setBackground(this.input.value);
+    this.props.setBackground({src:this.input.value});
     this.input.value = '';
   }
   inputRef(node) {
@@ -58,18 +58,12 @@ class UrlImportScreen extends Component {
     );
   }
 }
-
-// export default UrlImportScreen;
+// import makeActionSetBackground from './makeActionSetBackground';
 export default connect(
   (state /* , { params }*/) => {
-    return {
-      compositeImageData: state.bernie.compositeImageData,
-    };
+    return {};
   },
   {
     setBackground: makeActionSetBackground
-    // setCompositeImageData: (action) => {
-    //   return action;
-    // },
   }
 )(UrlImportScreen);
