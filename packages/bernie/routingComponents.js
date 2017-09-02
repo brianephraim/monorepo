@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import React from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import CropperScreen from './CropperScreen';
 import ImagePickerFacebook from './ImagePickerFacebook';
@@ -10,6 +10,10 @@ import TemplateUploadScreen from './TemplateUploadScreen';
 import ModalScreen from './ModalScreen';
 import './app.scss';
 import makeActionSetBackground from './makeActionSetBackground';
+import { formUrl } from './deriveUrlInfo';
+import {
+  nameSpace,
+} from './setup';
 
 // ========
 // ========
@@ -67,19 +71,24 @@ export function ImagePickerTemplateWithOnClick() {
   );
 }
 
-export function CropperWithFgBgCompletion(props) {
-  return (
-    <CropperScreen
-      foreground={props.compositeImageData.foreground}
-      background={props.compositeImageData.background}
-      generateCompletionUrl={props.generateCompletionUrl}
-    />
-  );
+function generateCompletionUrl(activeCompositeImageData) {
+  return `${nameSpace}/${formUrl(activeCompositeImageData)}`;
+}
+class CropperWithFgBgCompletion extends Component {
+  render(){
+    return (
+      <CropperScreen
+        foreground={this.props.compositeImageData.foreground}
+        background={this.props.compositeImageData.background}
+        generateCompletionUrl={generateCompletionUrl}
+      />
+    );
+  }
 }
 CropperWithFgBgCompletion.propTypes = {
   compositeImageData: PropTypes.object.isRequired,
-  generateCompletionUrl: PropTypes.func.isRequired,
 };
+export {CropperWithFgBgCompletion};
 
 export function UrlImportScreenWithWithUploadCallback() {
   return (
