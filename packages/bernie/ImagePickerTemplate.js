@@ -17,6 +17,7 @@ class ImagePickerTemplate extends Component {
         setsForegroundForCrop
         limit={this.props.limit}
         layoutVariation={this.props.layoutVariation}
+        generateLinkTo={this.props.generateLinkTo}
       />
     );
   }
@@ -26,9 +27,10 @@ ImagePickerTemplate.propTypes = {
   images: PropTypes.array,
   limit: PropTypes.number,
   layoutVariation: PropTypes.string,
+  generateLinkTo: PropTypes.func,
 };
 ImagePickerTemplate.defaultProps = {
-  onClick: () => {},
+  generateLinkTo: () => {},
   images: [],
   limit: Infinity,
   layoutVariation: '',

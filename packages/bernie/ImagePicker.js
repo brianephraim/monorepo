@@ -119,15 +119,10 @@ class ImagePicker extends Component {
             src: imgSrcObj.src,
             alt: `item number ${i}`,
           };
-          if (this.props.setsForegroundForCrop) {
+          const generatedLinkTo = this.props.generateLinkTo(imgSrcObj);
+          if (generatedLinkTo) {
             InnerWrap = StyledBernieLink;
-            InnerWrapProps.to = {
-              type: `BERNIE_CROP`,
-              payload: {
-                ...compositeImageIntoParams(this.props.compositeImageData),
-                fgSrcKey: imgSrcObj.srcKey,
-              },
-            };
+            InnerWrapProps.to = generatedLinkTo;
           } else {
             imgProps.onClick = this.imgOnClick(imgSrcObj);
           }
@@ -155,7 +150,7 @@ class ImagePicker extends Component {
 ImagePicker.propTypes = {
   onClick: PropTypes.func,
   images: PropTypes.array,
-  setsForegroundForCrop: PropTypes.bool,
+  generateLinkTo: PropTypes.func,
   compositeImageData: PropTypes.object.isRequired,
   limit: PropTypes.number,
   layoutVariation: PropTypes.string,
@@ -163,7 +158,7 @@ ImagePicker.propTypes = {
 ImagePicker.defaultProps = {
   onClick: () => {},
   images: [],
-  setsForegroundForCrop: false,
+  generateLinkTo: () => {},
   limit: Infinity,
   layoutVariation: '',
 };

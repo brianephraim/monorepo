@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'; 
 import CropperScreen from './CropperScreen';
 import ImagePickerFacebook from './ImagePickerFacebook';
 import ImagePickerTemplate from './ImagePickerTemplate';
@@ -10,11 +10,12 @@ import TemplateUploadScreen from './TemplateUploadScreen';
 import ModalScreen from './ModalScreen';
 import './app.scss';
 import makeActionSetBackground from './makeActionSetBackground';
+import makeActionSetForeground from './makeActionSetForeground';
 import { formUrl } from './deriveUrlInfo';
 import {
   nameSpace,
 } from './setup';
-
+import { compositeImageIntoParams } from './compositeImage';
 // ========
 // ========
 let BernieHomeLayoutWithUploadCallback = (props) => {
@@ -62,14 +63,50 @@ ImagePickerFacebookWithOnClick = connect(
 
 export {ImagePickerFacebookWithOnClick};
 
+// ===
 
-export function ImagePickerTemplateWithOnClick() {
-  return (
-    <ModalScreen hasCloseButton headerText="Pick a design">
-      <ImagePickerTemplate />
-    </ModalScreen>
-  );
-}
+class ImagePickerTemplateWithOnClick extends Component {
+  constructor() {
+    super();
+    this.generateLinkTo = this.generateLinkTo.bind(this);
+  }
+  generateLinkTo(imgSrcObj) {
+    return {
+      type: `BERNIE_CROP`,
+      payload: {
+        ...compositeImageIntoParams(this.props.compositeImageData),
+        fgSrcKey: imgSrcObj.srcKey,
+      },
+    };
+  }
+  render(){
+    return (
+      <ModalScreen hasCloseButton headerText="Pick a design">
+        <ImagePickerTemplate generateLinkTo={this.generateLinkTo} />
+      </ModalScreen>
+    );
+  }
+};
+ImagePickerTemplateWithOnClick.propTypes = {
+  setForeground: PropTypes.func.isRequired,
+};
+ImagePickerTemplateWithOnClick = connect(
+  (state /* , { params }*/) => {
+    return {
+      compositeImageData: state.bernie.compositeImageData,
+    };
+  },
+  {
+    setForeground: makeActionSetForeground
+    // setCompositeImageData: (action) => {
+    //   return action;
+    // },
+  }
+)(ImagePickerTemplateWithOnClick);
+
+export {ImagePickerTemplateWithOnClick};
+
+
 
 function generateCompletionUrl(activeCompositeImageData) {
   return `${nameSpace}/${formUrl(activeCompositeImageData)}`;
