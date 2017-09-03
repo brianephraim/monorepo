@@ -9,6 +9,7 @@ import styleConstants from './style-constants';
 import ConnectResponsiveStatusesDictHOC from './ConnectResponsiveStatusesDictHOC';
 import ImagePickerTemplate from './ImagePickerTemplate';
 import ModalScreen from './ModalScreen';
+import makeActionSetBackground from './makeActionSetBackground';
 
 import './app.scss';
 
@@ -219,6 +220,27 @@ const StyledButtonInnerSpan = styled.span`
       .white};
 `;
 
+let UploadBackgroundSetter = (props) => {
+  return (
+    <Upload onSuccess={props.setBackground}>
+      {props.children}
+    </Upload>
+  );
+};
+UploadBackgroundSetter.propTypes = {
+  setBackground: PropTypes.func.isRequired,
+  children: PropTypes.node
+};
+UploadBackgroundSetter.defaultProps = {
+  children: null,
+}
+UploadBackgroundSetter = connect(
+  null,
+  {
+    setBackground: makeActionSetBackground
+  }
+)(UploadBackgroundSetter);
+
 let BernieAppButtonGroup = class extends Component {
   constructor() {
     super();
@@ -263,11 +285,11 @@ let BernieAppButtonGroup = class extends Component {
         {!this.props.hideExtras && this.props.buttonsPrepend(this.props)}
         {buttons.map(btnDetails => {
           let btnInner;
-          if (btnDetails.onUploadSuccess) {
+          if (btnDetails.isUploadBackgroundSetter) {
             btnInner = (
-              <Upload onSuccess={this.props.onUploadSuccess}>
+              <UploadBackgroundSetter>
                 {btnDetails.text}
-              </Upload>
+              </UploadBackgroundSetter>
             );
           } else if (btnDetails.aHref) {
             btnInner = (
@@ -358,7 +380,7 @@ BernieAppButtonGroup.propTypes = {
   buttons: PropTypes.array,
   urlFragment: PropTypes.string,
   compositeImageData: PropTypes.object.isRequired,
-  onUploadSuccess: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
+  isUploadBackgroundSetter: PropTypes.bool,
   isModal: PropTypes.bool,
   themex: PropTypes.string,
   filter: PropTypes.func,
@@ -370,7 +392,7 @@ BernieAppButtonGroup.defaultProps = {
   headline: '',
   buttons: [],
   urlFragment: '',
-  onUploadSuccess: null,
+  isUploadBackgroundSetter: false,
   isModal: false,
   themex: '',
   filter: buttons => {
@@ -425,18 +447,7 @@ const ImportButtonGroup = makeButtonGroupComponent({
     },
     {
       text: 'Camera',
-      onUploadSuccess(imgData) {
-        /*
-          Key: "selfies/a-brian14744733088711500480799004.png",
-          failingSquare: undefined,
-          height: 1280,
-          public_id:"a-brian14744733088711500480799004.png",
-          url:"https://bernieapp.s3.amazonaws.com/selfies/a-brian14744733088711500480799004.png",
-          width:
-          960
-        */
-        this.props.onUploadSuccess(imgData);
-      },
+      isUploadBackgroundSetter: true,
     },
     {
       text: 'URL',

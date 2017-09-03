@@ -17,21 +17,17 @@ const Routing = class extends Component {
     const Comp = bernieScreenComponentMap[this.props.bernieScreen];
 
     return (
-      <Comp
-        compositeImageData={this.props.compositeImageData}
-      />
+      <Comp />
     );
   }
 };
 Routing.propTypes = {
   bernieScreen: PropTypes.string.isRequired,
-  compositeImageData: PropTypes.object.isRequired,
 };
 
 export default connect(
   (state /* , { params }*/) => {
     return {
-      compositeImageData: state.bernie.compositeImageData,
       bernieScreen: state.bernie.bernieScreen,
     };
   }
