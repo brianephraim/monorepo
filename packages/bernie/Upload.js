@@ -6,16 +6,15 @@ import './app.scss';
 
 import styled from 'styled-components';
 import styleConstants from './style-constants';
-import ConnectResponsiveStatusesDictHOC from './ConnectResponsiveStatusesDictHOC';
 
-const StyledFileInput = ConnectResponsiveStatusesDictHOC(styled.input`
+const StyledFileInput = styled.input`
   position: absolute;
   visibility: hidden;
-`);
+`;
 
-const StyledLabel = ConnectResponsiveStatusesDictHOC(styled.label`
+const StyledLabel = styled.label`
   ${styleConstants.mixins.buttonInner()};
-`);
+`;
 
 const bs = {
   loader: {

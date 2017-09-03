@@ -3,39 +3,38 @@ import PropTypes from 'prop-types';
 
 import styled from 'styled-components';
 import styleConstants from './style-constants';
-import ConnectResponsiveStatusesDictHOC from './ConnectResponsiveStatusesDictHOC';
 
-const StyledButton = ConnectResponsiveStatusesDictHOC(styled.div`
+const StyledButton = styled.div`
   ${styleConstants.mixins.button()};
-`);
-const StyledButtonInner = ConnectResponsiveStatusesDictHOC(styled.span`
+`;
+const StyledButtonInner = styled.span`
   ${styleConstants.mixins.buttonInner()} background: ${styleConstants.colors
       .red};
-`);
+`;
 
-const StyledInputContainer = ConnectResponsiveStatusesDictHOC(styled.div`
+const StyledInputContainer = styled.div`
   padding: ${styleConstants.appPad}em;
-`);
+`;
 
-const StyledTextContainer = ConnectResponsiveStatusesDictHOC(styled.div`
+const StyledTextContainer = styled.div`
   padding: ${styleConstants.appPad}em;
   box-sizing: border-box;
   @media (min-width: 500px) {
     width: 500px;
     margin: 0 auto;
   }
-`);
+`;
 
-const StyledLi = ConnectResponsiveStatusesDictHOC(styled.li`
+const StyledLi = styled.li`
   list-style: square;
   list-style-position: inside;
   padding-left: ${styleConstants.appPad}em;
   line-height: ${styleConstants.appPad * 1.5}em;
-`);
-const StyledP = ConnectResponsiveStatusesDictHOC(styled.p`
+`;
+const StyledP = styled.p`
   line-height: ${styleConstants.appPad * 1.5}em;
   line-height: ${styleConstants.appPad * 1.5}em;
-`);
+`;
 
 export default function TemplateUploadScreen() {
   return (

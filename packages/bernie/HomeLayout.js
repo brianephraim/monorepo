@@ -39,7 +39,7 @@ const StyledTopBanner = ConnectResponsiveStatusesDictHOC(styled.div`
   }
 `);
 
-const StyledTopBannerLink = ConnectResponsiveStatusesDictHOC(styled.a`
+const StyledTopBannerLink = styled.a`
   padding: ${styleConstants.appPad / 2}em;
   border: ${styleConstants.appPad / 2}em solid ${styleConstants.colors.red};
   display: inline-block;
@@ -47,7 +47,7 @@ const StyledTopBannerLink = ConnectResponsiveStatusesDictHOC(styled.a`
   color: ${styleConstants.colors.red};
   text-decoration: none;
   font-weight: bold;
-`);
+`;
 
 function BernieContributeBanner() {
   return (
@@ -102,20 +102,20 @@ const BernieAppMainSelfieFrameResponsive = ResponsiveHOC(
   BernieAppMainSelfieFrame
 );
 
-const StyledInstructions = ConnectResponsiveStatusesDictHOC(styled.div`
+const StyledInstructions = styled.div`
   text-align: center;
   position: absolute;
   width: 100%;
   margin: ${styleConstants.appPad * -1.5}em 0 0 0;
   left: 0;
-`);
-const StyledSelfie = ConnectResponsiveStatusesDictHOC(styled.img`
+`;
+const StyledSelfie = styled.img`
   display: block;
   width: 100%;
   height: 100%;
   margin: 0 auto;
   box-shadow: 0 0 .25em rgba(0, 0, 0, .75);
-`);
+`;
 const StyledLeftPillar = ConnectResponsiveStatusesDictHOC(styled.div`
   ${styleConstants.mixins.leftPillar()} position: relative;
   ${props => {
@@ -290,10 +290,10 @@ const StyledApp = ConnectResponsiveStatusesDictHOC(styled.div`
   }};
 `);
 
-const StyledAppBody = ConnectResponsiveStatusesDictHOC(styled.div`
+const StyledAppBody = styled.div`
   ${styleConstants.mixins.clearfix()}
   background:${styleConstants.colors.white};
-`);
+`;
 
 // This component exists as a container to distingsh from the modals outside this container.
 // This was used for descendant selectors.

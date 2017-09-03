@@ -4,16 +4,16 @@ import styled from 'styled-components';
 import styleConstants from './style-constants';
 import ConnectResponsiveStatusesDictHOC from './ConnectResponsiveStatusesDictHOC';
 
-const StyledButton = styled.div`
+const StyledButton = ConnectResponsiveStatusesDictHOC(styled.div`
   ${styleConstants.mixins.button()} position:absolute;
   right: 0;
   width: ${styleConstants.appPad * 3}em;
-`;
-const StyledButtonInnerSpan = styled.span`
+`);
+const StyledButtonInnerSpan = ConnectResponsiveStatusesDictHOC(styled.span`
   ${styleConstants.mixins.buttonInner()} background: ${styleConstants.colors
       .red};
   width: ${styleConstants.appPad * 3}em;
-`;
+`);
 
 class Asdf extends Component {
   constructor() {
