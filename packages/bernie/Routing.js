@@ -1,25 +1,16 @@
-/* eslint-disable react/no-multi-comp */
-/* eslint-disable class-methods-use-this */
 import { connect } from 'react-redux';
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import {
   bernieScreenComponentMap,
 } from './setup';
 import './app.scss';
 
-const Routing = class extends Component {
-  constructor() {
-    super();
-    this.state = {};
-  }
-  render() {
-    const Comp = bernieScreenComponentMap[this.props.bernieScreen];
-
-    return (
-      <Comp />
-    );
-  }
+function Routing (props) {
+  const Comp = bernieScreenComponentMap[props.bernieScreen];
+  return (
+    <Comp />
+  );
 };
 Routing.propTypes = {
   bernieScreen: PropTypes.string.isRequired,
