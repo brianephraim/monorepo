@@ -1,26 +1,12 @@
 /* eslint-disable react/no-multi-comp */
 /* eslint-disable class-methods-use-this */
-import React, { Component } from 'react';
+import React from 'react';
 import { ResponsiveMasterHOC } from '@defualt/responsive';
 import { connect } from 'react-redux';
 import Routing from './Routing';
 import './app.scss';
 
-let MyResponsiveMaster = class extends Component {
-  // componentWillReceiveProps(nextProps){
-  //   nextProps.onResponsiveUpdate(nextProps.activeStatusesDict);
-
-  // }
-  render() {
-    return (
-      <div className={this.props.className + ' findme'}>
-        {this.props.children}
-      </div>
-    );
-  }
-};
-
-let ResponsiveMaster = ResponsiveMasterHOC(MyResponsiveMaster);
+let ResponsiveMaster = ResponsiveMasterHOC(Routing);
 ResponsiveMaster = connect(
   () => {
     return {};
@@ -36,11 +22,9 @@ ResponsiveMaster = connect(
   }
 )(ResponsiveMaster);
 
-function Bernie(props) {
+function Bernie() {
   return (
-    <ResponsiveMaster name="bernie">
-      <Routing {...props} />
-    </ResponsiveMaster>
+    <ResponsiveMaster name="bernie" />
   );
 }
 

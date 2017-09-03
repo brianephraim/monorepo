@@ -136,94 +136,15 @@ function ResponsiveMasterHOC(Comp) {
   }
   ResponsiveMaster.propTypes = {
     name: PropTypes.string.isRequired,
-    children: PropTypes.object.isRequired,
+    children: PropTypes.node,
     onResponsiveUpdate: PropTypes.func,
   };
   ResponsiveMaster.defaultProps = {
     onResponsiveUpdate: () => {},
+    children: null,
   };
   return ResponsiveMaster
   // return ResponsiveMaster;
 }
-
-class ResponsiveMaster extends Component {
-  constructor() {
-    super();
-    this.state = {
-      activeStatusRegistry: {},
-      realClassNameYall: '',
-    };
-  }
-
-  componentDidMount() {
-    this.unregisterResponsiveRefresh = registerResponsiveRefresh({
-      name: this.props.name,
-      updateMasterClasses: (...args) => { return this.updateMasterClasses(...args); },
-      nukeActiveStatusRegistryOnMaster: () => {
-        this.setState({
-          activeStatusRegistry: {},
-          realClassNameYall: '',
-        });
-      },
-    });
-  }
-  componentWillReceiveProps(nextProps){
-    if (nextProps.onResponsiveUpdate && nextProps.activeStatusesDict) {
-      nextProps.onResponsiveUpdate(nextProps.activeStatusesDict);
-    }
-    
-  }
-  componentWillUnmount() {
-    this.unregisterResponsiveRefresh();
-  }
-
-  updateMasterClasses(idPriority, activeStatusRegistry) {
-    const objectComplexUpdate = {
-      ...this.state.activeStatusRegistry,
-      [idPriority]: activeStatusRegistry,
-    };
-
-    const toReturn = {};
-    Object.keys(objectComplexUpdate).forEach((priority) => {
-      const priorityClassNames = objectComplexUpdate[priority];
-      Object.keys(priorityClassNames).forEach((name) => {
-        if (priorityClassNames[name]) {
-          toReturn[name] = true;
-        }
-      });
-    });
-
-    const realClassNameYall = Object.keys(toReturn).reduce((c, n) => {
-      return `${c} responsive_${n}`;
-    }, '');
-    this.setState({
-      realClassNameYall,
-      activeStatusRegistry: objectComplexUpdate,
-    });
-    return toReturn;
-  }
-  render() {
-    return (<div className={this.state.realClassNameYall}>{this.props.children}</div>);
-  }
-}
-ResponsiveMaster.propTypes = {
-  name: PropTypes.string,
-  children: PropTypes.object,
-};
-ResponsiveMaster = connect(
-  () => {
-    return {};
-  },
-  {
-    onResponsiveUpdate: (responsiveStatusesDict) => {
-      return {
-        name: 'bernie',
-        responsiveStatusesDict,
-        type:'UDATE_RESPONSIVE_STATUSES_DICT'
-      }
-    },
-  }
-)(ResponsiveMaster);
-export { ResponsiveMaster };
 
 export { ResponsiveMasterHOC };
