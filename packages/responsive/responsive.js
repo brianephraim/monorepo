@@ -70,7 +70,7 @@ const ResponsiveHOC = (ComponentToWrap, defaults) => {
 export default ResponsiveHOC;
 
 /* eslint-disable react/no-multi-comp */
-function ResponsiveMasterHOC(Comp) {
+function ResponsiveMasterHOC(Comp, hocName = '') {
   class ResponsiveMaster extends Component {
     constructor(props) {
       super();
@@ -131,11 +131,12 @@ function ResponsiveMasterHOC(Comp) {
     }
   }
   ResponsiveMaster.propTypes = {
-    name: PropTypes.string.isRequired,
+    name: PropTypes.string,
     children: PropTypes.node,
     onResponsiveUpdate: PropTypes.func,
   };
   ResponsiveMaster.defaultProps = {
+    name: hocName,
     onResponsiveUpdate: () => {},
     children: null,
   };
