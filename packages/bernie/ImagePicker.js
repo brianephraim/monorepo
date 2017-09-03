@@ -1,13 +1,10 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
-import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import styled from 'styled-components';
 import styleConstants from './style-constants';
-import ConnectResponsiveStatusesDictHOC from './ConnectResponsiveStatusesDictHOC';
 import BernieLink from './BernieLink';
-import { compositeImageIntoParams } from './compositeImage';
 
 const StyledOuterWrap = styled.div`
   ${props => {
@@ -151,7 +148,6 @@ ImagePicker.propTypes = {
   onClick: PropTypes.func,
   images: PropTypes.array,
   generateLinkTo: PropTypes.func,
-  compositeImageData: PropTypes.object.isRequired,
   limit: PropTypes.number,
   layoutVariation: PropTypes.string,
 };
@@ -163,15 +159,4 @@ ImagePicker.defaultProps = {
   layoutVariation: '',
 };
 
-export default connect(
-  (state /* , { params }*/) => {
-    return {
-      compositeImageData: state.bernie.compositeImageData,
-    };
-  },
-  {
-    // setCompositeImageData: (action) => {
-    //   return action;
-    // },
-  }
-)(ImagePicker);
+export default ImagePicker

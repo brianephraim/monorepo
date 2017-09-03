@@ -8,12 +8,12 @@ import './app.scss';
 
 let MyResponsiveMaster = class extends Component {
   // componentWillReceiveProps(nextProps){
-  //   nextProps.doThing(nextProps.activeStatusesDict);
+  //   nextProps.onResponsiveUpdate(nextProps.activeStatusesDict);
 
   // }
   render() {
     return (
-      <div className={this.props.className}>
+      <div className={this.props.className + ' findme'}>
         {this.props.children}
       </div>
     );
@@ -26,7 +26,7 @@ ResponsiveMaster = connect(
     return {};
   },
   {
-    doThing: responsiveStatusesDict => {
+    onResponsiveUpdate: responsiveStatusesDict => {
       return {
         name: 'bernie',
         responsiveStatusesDict,
@@ -39,15 +39,7 @@ ResponsiveMaster = connect(
 function Bernie(props) {
   return (
     <ResponsiveMaster name="bernie">
-      {/*
-        The wrapping element below exists because its el had a class of 'bodyInner'
-        and this was affected by:
-        `var modalManager = bs.setupNewModalManager($('.bodyInner'));``
-        This is a refactor remnant and we should consider removing.
-      */}
-      <div className="homeScreen">
-        <Routing {...props} />
-      </div>
+      <Routing {...props} />
     </ResponsiveMaster>
   );
 }

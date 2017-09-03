@@ -80,7 +80,7 @@ function ResponsiveMasterHOC(Comp) {
         activeStatusesDict: {},
         realClassNameYall: '',
       };
-      props.doThing({});
+      props.onResponsiveUpdate({});
     }
     
     componentDidMount() {
@@ -94,7 +94,7 @@ function ResponsiveMasterHOC(Comp) {
             activeStatusesDict: {},
             realClassNameYall: '',
           });
-          this.props.doThing({});
+          this.props.onResponsiveUpdate({});
         },
       });
     }
@@ -127,7 +127,7 @@ function ResponsiveMasterHOC(Comp) {
         activeStatuses: Object.keys(toReturn),
         activeStatusesDict: toReturn,
       });
-      this.props.doThing(toReturn);
+      this.props.onResponsiveUpdate(toReturn);
       return toReturn;
     }
     render() {
@@ -137,10 +137,10 @@ function ResponsiveMasterHOC(Comp) {
   ResponsiveMaster.propTypes = {
     name: PropTypes.string.isRequired,
     children: PropTypes.object.isRequired,
-    doThing: PropTypes.func,
+    onResponsiveUpdate: PropTypes.func,
   };
   ResponsiveMaster.defaultProps = {
-    doThing: () => {},
+    onResponsiveUpdate: () => {},
   };
   return ResponsiveMaster
   // return ResponsiveMaster;
@@ -168,9 +168,8 @@ class ResponsiveMaster extends Component {
     });
   }
   componentWillReceiveProps(nextProps){
-    console.log('jjjj');
-    if (nextProps.doThing && nextProps.activeStatusesDict) {
-      nextProps.doThing(nextProps.activeStatusesDict);
+    if (nextProps.onResponsiveUpdate && nextProps.activeStatusesDict) {
+      nextProps.onResponsiveUpdate(nextProps.activeStatusesDict);
     }
     
   }
@@ -216,7 +215,7 @@ ResponsiveMaster = connect(
     return {};
   },
   {
-    doThing: (responsiveStatusesDict) => {
+    onResponsiveUpdate: (responsiveStatusesDict) => {
       return {
         name: 'bernie',
         responsiveStatusesDict,
