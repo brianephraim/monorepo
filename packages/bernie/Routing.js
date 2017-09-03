@@ -2,12 +2,12 @@ import { connect } from 'react-redux';
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  bernieScreenComponentMap,
+  screenComponentMap,
 } from './setup';
 import './app.scss';
 
 function Routing (props) {
-  const Comp = bernieScreenComponentMap[props.activeAppScreen];
+  const Comp = screenComponentMap[props.activeAppScreen];
   return (
     <Comp />
   );

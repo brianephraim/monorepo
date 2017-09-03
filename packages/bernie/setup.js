@@ -121,9 +121,9 @@ const routes = [
   },
 ];
 
-const bernieRoutesMap = {};
-const bernieScreenNameMap = {};
-const bernieScreenComponentMap = {};
+const routesMap = {};
+const screenNameMap = {};
+const screenComponentMap = {};
 routeModes.forEach(homeLayoutPath => {
   const key = homeLayoutPath.key;
   const urlStart = homeLayoutPath.urlStart;
@@ -133,17 +133,17 @@ routeModes.forEach(homeLayoutPath => {
     urlEnd = urlEnd ? `/${urlEnd}` : '';
     const path = `${urlStart}${urlEnd}`;
     const routesMapKey = `${route.action}_${key}`;
-    bernieRoutesMap[routesMapKey] = path;
-    bernieScreenNameMap[routesMapKey] = route.action;
-    bernieScreenComponentMap[route.action] = route.component;
+    routesMap[routesMapKey] = path;
+    screenNameMap[routesMapKey] = route.action;
+    screenComponentMap[route.action] = route.component;
   });
 });
-bernieRoutesMap.BERNIE = '/bernie';
-bernieScreenNameMap.BERNIE = 'BERNIE_HOME';
+routesMap.BERNIE = '/bernie';
+screenNameMap.BERNIE = 'BERNIE_HOME';
 
-const bernieReducers = combineReducers({
+const reducers = combineReducers({
   compositeImageData: (state = {}, action) => {
-    if (bernieRoutesMap[action.type] || action.type === 'BERNIE') {
+    if (routesMap[action.type] || action.type === 'BERNIE') {
       const compositeImageData = paramsIntoCompositeImage(action.payload);
       return compositeImageData;
     }
@@ -157,8 +157,8 @@ const bernieReducers = combineReducers({
     }
   },
   activeAppScreen: (state = 'BERNIE_HOME', action) => {
-    if (bernieRoutesMap[action.type]) {
-      return bernieScreenNameMap[action.type];
+    if (routesMap[action.type]) {
+      return screenNameMap[action.type];
     }
     return state;
   },
@@ -201,8 +201,8 @@ const bernieReducers = combineReducers({
 });
 export {
   nameSpace,
-  bernieScreenComponentMap,
+  screenComponentMap,
   payloadRefineAction,
-  bernieReducers,
-  bernieRoutesMap,
+  reducers,
+  routesMap,
 };
