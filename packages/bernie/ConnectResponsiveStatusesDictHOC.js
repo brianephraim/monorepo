@@ -1,8 +1,7 @@
-import { connect } from 'react-redux';
+import {appNameSpace} from './constants'
+import {makeNamespacedReduxConnectHocForResponsiveStatusesDict} from '@defualt/responsive/responsiveRedux';
 
-const ConnectResponsiveStatusesDictHOC = connect((state /* , { params }*/) => {
-  return {
-    responsiveStatusesDict: state.bernie.responsiveStatusesDict,
-  };
-});
-export default ConnectResponsiveStatusesDictHOC;
+export default makeNamespacedReduxConnectHocForResponsiveStatusesDict(appNameSpace);
+
+// import {makeNamespacedReduxConnectHocForResponsiveStatusesDict} from '@defualt/responsive/responsiveRedux';
+// const ConnectResponsiveStatusesDictHOC = makeNamespacedReduxConnectHocForResponsiveStatusesDict('bernie');

@@ -74,6 +74,22 @@ function ResponsiveMasterHOC(Comp) {
   class ResponsiveMaster extends Component {
     constructor(props) {
       super();
+      this.initComponentInternalState(props);
+    }
+    
+    componentDidMount() {
+      this.unregisterResponsiveRefresh = registerResponsiveRefresh({
+        name: this.props.name,
+        updateMasterClasses: (...args) => { return this.updateMasterClasses(...args); },
+        nukeActiveStatusRegistryOnMaster: () => {
+          this.initComponentInternalState(this.props);
+        },
+      });
+    }
+    componentWillUnmount() {
+      this.unregisterResponsiveRefresh();
+    }
+    initComponentInternalState(props) {
       this.state = {
         activeStatuses: [],
         activeStatusRegistry: {},
@@ -82,26 +98,6 @@ function ResponsiveMasterHOC(Comp) {
       };
       props.onResponsiveUpdate({});
     }
-    
-    componentDidMount() {
-      this.unregisterResponsiveRefresh = registerResponsiveRefresh({
-        name: this.props.name,
-        updateMasterClasses: (...args) => { return this.updateMasterClasses(...args); },
-        nukeActiveStatusRegistryOnMaster: () => {
-          this.setState({
-            activeStatuses: [],
-            activeStatusRegistry: {},
-            activeStatusesDict: {},
-            realClassNameYall: '',
-          });
-          this.props.onResponsiveUpdate({});
-        },
-      });
-    }
-    componentWillUnmount() {
-      this.unregisterResponsiveRefresh();
-    }
-
     updateMasterClasses(idPriority, activeStatusRegistry) {
       const objectComplexUpdate = {
         ...this.state.activeStatusRegistry,

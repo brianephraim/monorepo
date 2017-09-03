@@ -23,6 +23,12 @@ module.exports = {
       parseRequestResolvePlugin((requestStr) => {
         // console.log('requestStr', requestStr);
         if (requestStr.indexOf('@') === 0 && requestStr.indexOf('/') !== -1) {
+          const split = requestStr.split('/');
+          split.shift();
+          split.join('/');
+          console.log('Afindme',split.join('/'),requestStr.split('/')[1]);
+          console.log('Bfindme',requestStr.split('/')[1]);
+          return split.join('/');
           return requestStr.split('/')[1];
         }
         return false;
