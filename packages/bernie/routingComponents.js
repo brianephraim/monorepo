@@ -28,9 +28,6 @@ BernieHomeLayoutWithUploadCallback = connect(
   null,
   {
     setBackground: makeActionSetBackground
-    // setCompositeImageData: (action) => {
-    //   return action;
-    // },
   }
 )(BernieHomeLayoutWithUploadCallback);
 

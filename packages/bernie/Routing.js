@@ -34,10 +34,5 @@ export default connect(
       compositeImageData: state.bernie.compositeImageData,
       bernieScreen: state.bernie.bernieScreen,
     };
-  },
-  {
-    setCompositeImageData: action => {
-      return action;
-    },
   }
 )(Routing);

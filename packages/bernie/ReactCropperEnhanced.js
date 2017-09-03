@@ -43,7 +43,7 @@ class ReactCropperEnhanced extends Component {
     // cropperExists determines whether or not <ReactCropper> renders.
     // So <ReactCropper> will unmount then mount another instance.
     // This lets us reset the cropper for each resize.
-    this.windowSizerCb = windowSizer.addCb(() => {
+    this.removeWindowSizerCb = windowSizer.addCb(() => {
       this.refreshCropper();
     });
   }
@@ -53,9 +53,10 @@ class ReactCropperEnhanced extends Component {
     }
   }
   componentWillUnmount() {
-    if (this.windowSizerCb) {
-      windowSizer.removeCb(this.windowSizerCb);
-      delete this.windowSizerCb;
+    console.log('componentWillUnmount')
+    if (this.removeWindowSizerCb) {
+      this.removeWindowSizerCb();
+      delete this.removeWindowSizerCb;
     }
   }
   refreshCropper() {

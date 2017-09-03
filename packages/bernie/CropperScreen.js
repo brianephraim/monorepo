@@ -32,7 +32,7 @@ class CropperScreen extends Component {
     // This lets us reset the cropper for each resize.
     this.setState({ windowHeight: windowSizer.dimensions.height });
     this.setState({ windowWidth: windowSizer.dimensions.width });
-    this.windowSizerCb = windowSizer.addCb(() => {
+    this.removeWindowSizerCb = windowSizer.addCb(() => {
       this.setState({ windowHeight: windowSizer.dimensions.height });
       this.setState({ windowWidth: windowSizer.dimensions.width });
     });
@@ -50,9 +50,9 @@ class CropperScreen extends Component {
     }
   }
   componentWillUnmount() {
-    if (this.windowSizerCb) {
-      windowSizer.removeCb(this.windowSizerCb);
-      delete this.windowSizerCb;
+    if (this.removeWindowSizerCb) {
+      this.removeWindowSizerCb();
+      delete this.removeWindowSizerCb;
     }
   }
 

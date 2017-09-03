@@ -74,9 +74,11 @@ function ResponsiveMasterHOC(Comp, hocName = '') {
   class ResponsiveMaster extends Component {
     constructor(props) {
       super();
-      this.initComponentInternalState(props);
+      // this.initComponentInternalState(props);
     }
-    
+    componentWillMount() {
+      this.initComponentInternalState(this.props);
+    }
     componentDidMount() {
       this.unregisterResponsiveRefresh = registerResponsiveRefresh({
         name: this.props.name,

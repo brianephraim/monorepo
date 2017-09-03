@@ -18,6 +18,7 @@ import HomeLayoutHeader from './HomeLayoutHeader';
 import styled from 'styled-components';
 import styleConstants from './style-constants';
 import ConnectResponsiveStatusesDictHOC from './ConnectResponsiveStatusesDictHOC';
+import { ResponsiveReduxMasterHOC } from '@defualt/responsive/responsiveRedux';
 
 const StyledHomeLayout = styled.div`position: relative;`;
 
@@ -333,4 +334,5 @@ function BernieHomeLayout(props) {
   );
 }
 
-export default BernieHomeLayout;
+export default ResponsiveReduxMasterHOC(BernieHomeLayout, 'bernie');
+// export default BernieHomeLayout;
