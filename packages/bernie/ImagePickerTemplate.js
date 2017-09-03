@@ -3,21 +3,34 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ImagePicker from './ImagePicker';
 import makeActionFetchTemplates from './makeActionFetchTemplates';
+import { compositeImageIntoParams } from './compositeImage';
 
 class ImagePickerTemplate extends Component {
+  constructor() {
+    super();
+    this.generateLinkTo = this.generateLinkTo.bind(this);
+  }
   componentWillMount() {
     if (this.props.limit > 3) {
       this.props.fetchTemplates();
     }
   }
+  generateLinkTo(imgSrcObj) {
+    return {
+      type: `BERNIE_CROP`,
+      payload: {
+        ...compositeImageIntoParams(this.props.compositeImageData),
+        fgSrcKey: imgSrcObj.srcKey,
+      },
+    };
+  }
   render() {
     return (
       <ImagePicker
         images={this.props.images}
-        setsForegroundForCrop
         limit={this.props.limit}
         layoutVariation={this.props.layoutVariation}
-        generateLinkTo={this.props.generateLinkTo}
+        generateLinkTo={this.generateLinkTo}
       />
     );
   }
@@ -27,7 +40,7 @@ ImagePickerTemplate.propTypes = {
   images: PropTypes.array,
   limit: PropTypes.number,
   layoutVariation: PropTypes.string,
-  generateLinkTo: PropTypes.func,
+  compositeImageData: PropTypes.object.isRequired,
 };
 ImagePickerTemplate.defaultProps = {
   generateLinkTo: () => {},
@@ -39,6 +52,7 @@ export default connect(
   (state /* , { params }*/) => {
     return {
       images: state.bernie.templates,
+      compositeImageData: state.bernie.compositeImageData,
     };
   },
   {

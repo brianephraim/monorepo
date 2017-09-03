@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import ModalScreen from './ModalScreen';
 
 import styled from 'styled-components';
 import styleConstants from './style-constants';
@@ -40,7 +39,7 @@ const StyledP = ConnectResponsiveStatusesDictHOC(styled.p`
 
 export default function TemplateUploadScreen() {
   return (
-    <ModalScreen hasCloseButton headerText="Upload a template">
+    <div>
       <StyledTextContainer className="textContainer">
         <StyledP>
           Upload an image with the following specs. Then you and other users can
@@ -62,6 +61,6 @@ export default function TemplateUploadScreen() {
           <StyledButtonInner>Upload a template</StyledButtonInner>
         </StyledButton>
       </StyledInputContainer>
-    </ModalScreen>
+    </div>
   );
 }

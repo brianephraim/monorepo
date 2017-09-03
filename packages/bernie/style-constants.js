@@ -14,6 +14,10 @@ const styleConstants = {
   font1: "'Fjalla One', sans-serif",
   font2: "'Cantarell', sans-serif",
   appPad: 1,
+  breakpoints: {
+    shrink: 530,
+    compact: 375,
+  },
   mixins: {
     leftPillar() {
       return 'float:left;';
@@ -131,7 +135,16 @@ const styleConstants = {
         cursor:pointer;
       `;
     },
-
+    shrinkFontBreakpointStyles() {
+      return `
+        @media (max-height: 500px){
+          font-size:${styleConstants.appPad * 0.75}em;
+        }
+        @media (max-width: ${styleConstants.breakpoints.shrink}px){
+          font-size:${styleConstants.appPad * 0.75}em;
+        }
+      `;
+    },
     /*
 
     */

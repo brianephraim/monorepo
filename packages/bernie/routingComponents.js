@@ -10,12 +10,10 @@ import TemplateUploadScreen from './TemplateUploadScreen';
 import ModalScreen from './ModalScreen';
 import './app.scss';
 import makeActionSetBackground from './makeActionSetBackground';
-import makeActionSetForeground from './makeActionSetForeground';
 import { formUrl } from './deriveUrlInfo';
 import {
   nameSpace,
 } from './setup';
-import { compositeImageIntoParams } from './compositeImage';
 // ========
 // ========
 let BernieHomeLayoutWithUploadCallback = (props) => {
@@ -41,70 +39,23 @@ export {BernieHomeLayoutWithUploadCallback};
 
 
 // let ImagePickerFacebookWithOnClick = 
-let ImagePickerFacebookWithOnClick = (props) => {
+export function ImagePickerFacebookWithOnClick () {
   return (
     <ModalScreen hasCloseButton headerText="Pick a photo">
-      <ImagePickerFacebook onClick={props.setBackground} />
+      <ImagePickerFacebook />
     </ModalScreen>
   );
-};
-ImagePickerFacebookWithOnClick.propTypes = {
-  setBackground: PropTypes.func.isRequired,
-};
-ImagePickerFacebookWithOnClick = connect(
-  null,
-  {
-    setBackground: makeActionSetBackground
-    // setCompositeImageData: (action) => {
-    //   return action;
-    // },
-  }
-)(ImagePickerFacebookWithOnClick);
-
-export {ImagePickerFacebookWithOnClick};
+}
 
 // ===
 
-class ImagePickerTemplateWithOnClick extends Component {
-  constructor() {
-    super();
-    this.generateLinkTo = this.generateLinkTo.bind(this);
-  }
-  generateLinkTo(imgSrcObj) {
-    return {
-      type: `BERNIE_CROP`,
-      payload: {
-        ...compositeImageIntoParams(this.props.compositeImageData),
-        fgSrcKey: imgSrcObj.srcKey,
-      },
-    };
-  }
-  render(){
-    return (
-      <ModalScreen hasCloseButton headerText="Pick a design">
-        <ImagePickerTemplate generateLinkTo={this.generateLinkTo} />
-      </ModalScreen>
-    );
-  }
-};
-ImagePickerTemplateWithOnClick.propTypes = {
-  setForeground: PropTypes.func.isRequired,
-};
-ImagePickerTemplateWithOnClick = connect(
-  (state /* , { params }*/) => {
-    return {
-      compositeImageData: state.bernie.compositeImageData,
-    };
-  },
-  {
-    setForeground: makeActionSetForeground
-    // setCompositeImageData: (action) => {
-    //   return action;
-    // },
-  }
-)(ImagePickerTemplateWithOnClick);
-
-export {ImagePickerTemplateWithOnClick};
+export function ImagePickerTemplateWithOnClick () {
+  return (
+    <ModalScreen hasCloseButton headerText="Pick a design">
+      <ImagePickerTemplate />
+    </ModalScreen>
+  );
+}
 
 
 
@@ -113,11 +64,13 @@ function generateCompletionUrl(activeCompositeImageData) {
 }
 let CropperWithFgBgCompletion = (props) => {
   return (
-    <CropperScreen
-      foreground={props.compositeImageData.foreground}
-      background={props.compositeImageData.background}
-      generateCompletionUrl={generateCompletionUrl}
-    />
+    <ModalScreen hasCloseButton>
+      <CropperScreen
+        foreground={props.compositeImageData.foreground}
+        background={props.compositeImageData.background}
+        generateCompletionUrl={generateCompletionUrl}
+      />
+    </ModalScreen>
   );
 }
 CropperWithFgBgCompletion.propTypes = {
@@ -144,5 +97,9 @@ export function UrlImportScreenWithWithUploadCallback() {
 }
 
 export function TemplateUploadScreenWithUploadCallback() {
-  return <TemplateUploadScreen />;
+  return (
+    <ModalScreen hasCloseButton headerText="Upload a template">
+      <TemplateUploadScreen />
+    </ModalScreen>
+  );
 }
