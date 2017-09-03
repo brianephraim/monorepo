@@ -4,12 +4,12 @@ import Link from 'redux-first-router-link';
 import { payloadRefineAction } from './setup';
 import { compositeImageIntoParams } from './compositeImage';
 
-function BernieLink(props) {
+function AppReduxLink(props) {
   let to = props.to;
   if (to.compositeImageData) {
     const payload = compositeImageIntoParams(to.compositeImageData);
-    if (to.bernieDynamicScreen) {
-      payload.bernieDynamicScreen = to.bernieDynamicScreen;
+    if (to.dynamicScreen) {
+      payload.dynamicScreen = to.dynamicScreen;
     }
     to = {
       type: to.type,
@@ -22,13 +22,13 @@ function BernieLink(props) {
     </Link>
   );
 }
-BernieLink.propTypes = {
+AppReduxLink.propTypes = {
   className: PropTypes.string,
   to: PropTypes.object.isRequired,
   children: PropTypes.node.isRequired,
 };
-BernieLink.defaultProps = {
+AppReduxLink.defaultProps = {
   className: '',
-  bernieDynamicScreen: '',
+  dynamicScreen: '',
 };
-export default BernieLink;
+export default AppReduxLink;

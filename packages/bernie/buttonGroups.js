@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Upload from './Upload';
-import BernieLink from './BernieLink';
+import AppReduxLink from './AppReduxLink';
 
 import styleConstants from './style-constants';
 import ConnectResponsiveStatusesDictHOC from './ConnectResponsiveStatusesDictHOC';
@@ -84,7 +84,7 @@ const headerStyle = `
   color:${styleConstants.colors.white};
   padding-bottom: ${styleConstants.appPad / 2}em;
 `;
-const StyledHeaderLink = styled(BernieLink)`
+const StyledHeaderLink = styled(AppReduxLink)`
   ${headerStyle}
   ${props => {
     if (props.layoutVariation === 'header') {
@@ -198,7 +198,7 @@ const StyledButtonInnerAnchor = styled.a`
   ${styleConstants.mixins.buttonInner()} background: ${styleConstants.colors
       .white};
 `;
-const StyledButtonInnerBernieLink = styled(BernieLink)`
+const StyledButtonInnerAppReduxLink = styled(AppReduxLink)`
   ${styleConstants.mixins.buttonInner()}
   background: ${styleConstants.colors.white};
   ${props => {
@@ -302,16 +302,16 @@ let BernieAppButtonGroup = class extends Component {
               type: `BERNIE_${btnDetails.actionType}`,
               compositeImageData: this.props.compositeImageData,
             };
-            if (btnDetails.bernieDynamicScreen) {
-              toSettings.bernieDynamicScreen = btnDetails.bernieDynamicScreen;
+            if (btnDetails.dynamicScreen) {
+              toSettings.dynamicScreen = btnDetails.dynamicScreen;
             }
             btnInner = (
-              <StyledButtonInnerBernieLink
+              <StyledButtonInnerAppReduxLink
                 layoutVariation={this.props.layoutVariation}
                 to={toSettings}
               >
                 {btnDetails.text}
-              </StyledButtonInnerBernieLink>
+              </StyledButtonInnerAppReduxLink>
             );
           } else if (btnDetails.onClick) {
             btnInner = (
@@ -349,7 +349,7 @@ let BernieAppButtonGroup = class extends Component {
     const to = {
       type: `BERNIE_DYNAMIC`,
       compositeImageData: this.props.compositeImageData,
-      bernieDynamicScreen: this.props.urlFragment,
+      dynamicScreen: this.props.urlFragment,
     };
     return (
       <StyledSubsection
@@ -552,7 +552,7 @@ const GetPhotoMinimalButtonGroup = makeButtonGroupComponent({
       text: 'get photo',
       routerLinkScreenName: 'select-template',
       actionType: 'DYNAMIC',
-      bernieDynamicScreen: 'import',
+      dynamicScreen: 'import',
     },
   ],
 });

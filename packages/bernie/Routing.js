@@ -7,19 +7,19 @@ import {
 import './app.scss';
 
 function Routing (props) {
-  const Comp = bernieScreenComponentMap[props.bernieScreen];
+  const Comp = bernieScreenComponentMap[props.activeAppScreen];
   return (
     <Comp />
   );
 };
 Routing.propTypes = {
-  bernieScreen: PropTypes.string.isRequired,
+  activeAppScreen: PropTypes.string.isRequired,
 };
 
 export default connect(
   (state /* , { params }*/) => {
     return {
-      bernieScreen: state.bernie.bernieScreen,
+      activeAppScreen: state.bernie.activeAppScreen,
     };
   }
 )(Routing);

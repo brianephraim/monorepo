@@ -30,7 +30,7 @@ Dynamic.propTypes = {
 Dynamic = connect(
   (state /* , { params }*/) => {
     return {
-      dynamicScreen: state.location.payload.bernieDynamicScreen,
+      dynamicScreen: state.location.payload.dynamicScreen,
     };
   },
   {}
@@ -116,7 +116,7 @@ const routes = [
   },
   {
     action: 'BERNIE_DYNAMIC',
-    urlEnd: `:bernieDynamicScreen(${buttonGroupComponentsRegexArrayString})`,
+    urlEnd: `:dynamicScreen(${buttonGroupComponentsRegexArrayString})`,
     component: Dynamic,
   },
 ];
@@ -156,7 +156,7 @@ const bernieReducers = combineReducers({
         return state;
     }
   },
-  bernieScreen: (state = 'BERNIE_HOME', action) => {
+  activeAppScreen: (state = 'BERNIE_HOME', action) => {
     if (bernieRoutesMap[action.type]) {
       return bernieScreenNameMap[action.type];
     }

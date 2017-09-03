@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import styled from 'styled-components';
 import styleConstants from './style-constants';
-import BernieLink from './BernieLink';
+import AppReduxLink from './AppReduxLink';
 
 const StyledOuterWrap = styled.div`
   ${props => {
@@ -69,7 +69,7 @@ const innerWrapStyles = `
 `;
 const StyledPhotoImgInnerWrap = styled.div`${innerWrapStyles};`;
 
-const StyledBernieLink = styled(BernieLink)`
+const StyledAppReduxLink = styled(AppReduxLink)`
   ${innerWrapStyles}
 `;
 
@@ -118,7 +118,7 @@ class ImagePicker extends Component {
           };
           const generatedLinkTo = this.props.generateLinkTo(imgSrcObj);
           if (generatedLinkTo) {
-            InnerWrap = StyledBernieLink;
+            InnerWrap = StyledAppReduxLink;
             InnerWrapProps.to = generatedLinkTo;
           } else {
             imgProps.onClick = this.imgOnClick(imgSrcObj);
