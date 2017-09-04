@@ -8,13 +8,14 @@ import {
   buttonGroupComponents,
 } from './buttonGroups';
 import {
-  BernieHomeLayoutWithUploadCallback,
+  HomeLayoutWithUploadCallback,
   ImagePickerFacebookWithOnClick,
   ImagePickerTemplateWithOnClick,
   CropperWithFgBgCompletion,
   UrlImportScreenWithWithUploadCallback,
   TemplateUploadScreenWithUploadCallback,
 } from './routingComponents';
+import {appNameSpace} from './constants';
 
 import { paramsIntoCompositeImage } from './compositeImage';
 
@@ -45,7 +46,7 @@ const geoPathFrag =
 const routeModes = [
   {
     key: 'H3LIKE',
-    urlStart: `${nameSpace}/:fgSrcKey(${standardModesRegexArrayString})/:bgSrcKey/${geoPathFrag}`,
+    urlStart: `/:appNameSpace(${appNameSpace})/:fgSrcKey(${standardModesRegexArrayString})/:bgSrcKey/${geoPathFrag}`,
     match: payload => {
       return (
         payload.fgSrcKey &&
@@ -57,7 +58,7 @@ const routeModes = [
   },
   {
     key: 'UT',
-    urlStart: `${nameSpace}/ut/:bgSrcKey/${geoPathFrag}/:fgSrcKey`,
+    urlStart: `/:appNameSpace(${appNameSpace})/ut/:bgSrcKey/${geoPathFrag}/:fgSrcKey`,
     match: payload => {
       return payload.fgSrcKey;
     },
@@ -78,7 +79,10 @@ function payloadRefineAction({ type, payload }) {
   }
   return {
     type: found,
-    payload,
+    payload:{
+      ...payload,
+      appNameSpace,
+    },
   };
 }
 
@@ -86,7 +90,7 @@ const routes = [
   {
     action: 'BERNIE_HOME',
     urlEnd: '',
-    component: BernieHomeLayoutWithUploadCallback,
+    component: HomeLayoutWithUploadCallback,
   },
   {
     action: 'BERNIE_IMPORT_FACEBOOK',
@@ -157,17 +161,10 @@ const reducers = combineReducers({
     }
   },
   activeAppScreen: (state = 'BERNIE_HOME', action) => {
+
     if (routesMap[action.type]) {
+      console.log(action)
       return screenNameMap[action.type];
-    }
-    return state;
-  },
-  responsiveStatuses: (state = [], action) => {
-    if (
-      action.type === 'UDATE_RESPONSIVE_STATUSES' &&
-      action.name === 'bernie'
-    ) {
-      return [...action.responsiveStatuses];
     }
     return state;
   },

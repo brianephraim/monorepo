@@ -25,7 +25,7 @@ const Styled_Disclaimer_P = styled.p`
   color: ${styleConstants.colors.grey2};
 `;
 // This adds padding to the bottom and serves as disclaimer.
-function BernieDisclaimer() {
+function Disclaimer() {
   return (
     <Styled_Disclaimer>
       <Styled_Disclaimer_P>
@@ -41,4 +41,4 @@ function BernieDisclaimer() {
   );
 }
 
-export default BernieDisclaimer;
+export default Disclaimer;

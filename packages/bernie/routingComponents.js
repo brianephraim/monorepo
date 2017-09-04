@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import CropperScreen from './CropperScreen';
 import ImagePickerFacebook from './ImagePickerFacebook';
 import ImagePickerTemplate from './ImagePickerTemplate';
-import BernieHomeLayout from './HomeLayout';
+import HomeLayout from './HomeLayout';
 import UrlImportScreen from './UrlImportScreen';
 import TemplateUploadScreen from './TemplateUploadScreen';
 import ModalScreen from './ModalScreen';
@@ -16,22 +16,22 @@ import {
 } from './setup';
 // ========
 // ========
-let BernieHomeLayoutWithUploadCallback = (props) => {
+let HomeLayoutWithUploadCallback = (props) => {
   return (
-    <BernieHomeLayout onUploadSuccess={props.setBackground} />
+    <HomeLayout onUploadSuccess={props.setBackground} />
   );
 }
-BernieHomeLayoutWithUploadCallback.propTypes = {
+HomeLayoutWithUploadCallback.propTypes = {
   setBackground: PropTypes.func.isRequired,
 };
-BernieHomeLayoutWithUploadCallback = connect(
+HomeLayoutWithUploadCallback = connect(
   null,
   {
     setBackground: makeActionSetBackground
   }
-)(BernieHomeLayoutWithUploadCallback);
+)(HomeLayoutWithUploadCallback);
 
-export {BernieHomeLayoutWithUploadCallback};
+export {HomeLayoutWithUploadCallback};
 
 
 

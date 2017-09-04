@@ -12,7 +12,7 @@ import {
   ImportButtonGroup,
 } from './buttonGroups';
 
-import BernieDisclaimer from './Disclaimer';
+import Disclaimer from './Disclaimer';
 import HomeLayoutHeader from './HomeLayoutHeader';
 
 import styled from 'styled-components';
@@ -50,7 +50,7 @@ const StyledTopBannerLink = styled.a`
   font-weight: bold;
 `;
 
-function BernieContributeBanner() {
+function ContributeBanner() {
   return (
     <StyledTopBanner className="topBanner">
       <StyledTopBannerLink
@@ -77,7 +77,7 @@ const StyledSelfieFrame = ConnectResponsiveStatusesDictHOC(styled.div`
     return '';
   }} box-sizing:border-box;
 `);
-function BernieAppMainSelfieFrame(props) {
+function AppMainSelfieFrame(props) {
   return (
     <StyledSelfieFrame
       style={props.style}
@@ -90,17 +90,17 @@ function BernieAppMainSelfieFrame(props) {
     </StyledSelfieFrame>
   );
 }
-BernieAppMainSelfieFrame.propTypes = {
+AppMainSelfieFrame.propTypes = {
   children: PropTypes.node.isRequired,
   style: PropTypes.object,
   responsiveRef: PropTypes.func.isRequired,
 };
-BernieAppMainSelfieFrame.defaultProps = {
+AppMainSelfieFrame.defaultProps = {
   style: null,
 };
 
-const BernieAppMainSelfieFrameResponsive = ResponsiveHOC(
-  BernieAppMainSelfieFrame
+const AppMainSelfieFrameResponsive = ResponsiveHOC(
+  AppMainSelfieFrame
 );
 
 const StyledInstructions = styled.div`
@@ -128,7 +128,7 @@ const StyledLeftPillar = ConnectResponsiveStatusesDictHOC(styled.div`
     return '';
   }};
 `);
-let BernieAppHero = class extends Component {
+let AppHero = class extends Component {
   constructor() {
     super();
     this.state = {};
@@ -155,7 +155,7 @@ let BernieAppHero = class extends Component {
 
     return (
       <StyledLeftPillar className="app_body_leftPillar">
-        <BernieAppMainSelfieFrameResponsive turns={turns} masterName="bernie">
+        <AppMainSelfieFrameResponsive turns={turns} masterName="bernie">
           <StyledInstructions className="app_body_leftPillar_selfieFrame_instructions ">
             <span className="selfieFrame_instructions_text">
               Right click to save{this.state.measurement}
@@ -166,16 +166,16 @@ let BernieAppHero = class extends Component {
             src={this.props.imSrc}
             alt="My BernieSelfie"
           />
-        </BernieAppMainSelfieFrameResponsive>
+        </AppMainSelfieFrameResponsive>
       </StyledLeftPillar>
     );
   }
 };
-BernieAppHero.propTypes = {
+AppHero.propTypes = {
   imSrc: PropTypes.string.isRequired,
 };
 
-BernieAppHero = connect((state /* , { params }*/) => {
+AppHero = connect((state /* , { params }*/) => {
   return {
     imSrc:
       state.bernie && state.bernie.compositeImageData
@@ -183,7 +183,7 @@ BernieAppHero = connect((state /* , { params }*/) => {
         : '/images/mock-selfie.png',
     // toBeAssigned: getDetailsOfToBeAssigned(state),
   };
-}, {})(BernieAppHero);
+}, {})(AppHero);
 
 const StyledRightPillar = ConnectResponsiveStatusesDictHOC(styled.div`
   ${styleConstants.mixins.rightPillar()}
@@ -198,7 +198,7 @@ const StyledRightPillar = ConnectResponsiveStatusesDictHOC(styled.div`
     return '';
   }}
 `);
-let BernieAppBusiness = props => {
+let AppBusiness = props => {
   return (
     <StyledRightPillar
       className="app_body_rightPillar"
@@ -208,12 +208,12 @@ let BernieAppBusiness = props => {
     </StyledRightPillar>
   );
 };
-BernieAppBusiness.propTypes = {
+AppBusiness.propTypes = {
   responsiveRef: PropTypes.func.isRequired,
   children: PropTypes.node.isRequired,
 };
 
-BernieAppBusiness = ResponsiveHOC(BernieAppBusiness, {
+AppBusiness = ResponsiveHOC(AppBusiness, {
   masterName: 'bernie',
   turns: [
     {
@@ -301,16 +301,16 @@ const StyledAppBody = styled.div`
 // For instance, .someButton within .homeLayout was styled differently than within .modal
 // (modal was outside .homeLayout)
 // It was also used to display:none the home screen when modal appears.
-function BernieHomeLayout(props) {
+function HomeLayout(props) {
   return (
     <StyledHomeLayout className="homeLayout">
       {/* The wrapping element below distinguishes the photo-plus-buttonGroupComponents from disclaimer.*/}
       <StyledApp className="app">
-        <BernieContributeBanner />
+        <ContributeBanner />
         <HomeLayoutHeader />
         <StyledAppBody className="app_body">
-          <BernieAppHero {...props} />
-          <BernieAppBusiness>
+          <AppHero {...props} />
+          <AppBusiness>
             <StyledSection section="share">
               <ShareButtonGroup section="share" {...props} />
             </StyledSection>
@@ -326,13 +326,13 @@ function BernieHomeLayout(props) {
                 {...props}
               />
             </StyledSection>
-          </BernieAppBusiness>
+          </AppBusiness>
         </StyledAppBody>
       </StyledApp>
-      <BernieDisclaimer />
+      <Disclaimer />
     </StyledHomeLayout>
   );
 }
 
-export default ResponsiveReduxMasterHOC(BernieHomeLayout, 'bernie');
-// export default BernieHomeLayout;
+export default ResponsiveReduxMasterHOC(HomeLayout, 'bernie');
+// export default HomeLayout;

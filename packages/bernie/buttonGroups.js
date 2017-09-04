@@ -241,7 +241,7 @@ UploadBackgroundSetter = connect(
   }
 )(UploadBackgroundSetter);
 
-let BernieAppButtonGroup = class extends Component {
+let AppButtonGroup = class extends Component {
   constructor() {
     super();
     this.state = {};
@@ -373,7 +373,7 @@ let BernieAppButtonGroup = class extends Component {
     );
   }
 };
-BernieAppButtonGroup.propTypes = {
+AppButtonGroup.propTypes = {
   icon: PropTypes.string,
   shortHeadline: PropTypes.string,
   headline: PropTypes.string,
@@ -386,7 +386,7 @@ BernieAppButtonGroup.propTypes = {
   filter: PropTypes.func,
   buttonsPrepend: PropTypes.func,
 };
-BernieAppButtonGroup.defaultProps = {
+AppButtonGroup.defaultProps = {
   icon: '',
   shortHeadline: '',
   headline: '',
@@ -401,12 +401,12 @@ BernieAppButtonGroup.defaultProps = {
   buttonsPrepend: () => {},
 };
 
-BernieAppButtonGroup = connect((state /* , { params }*/) => {
+AppButtonGroup = connect((state /* , { params }*/) => {
   return {
     compositeImageData: state.bernie.compositeImageData,
     location: state.location,
   };
-}, {})(BernieAppButtonGroup);
+}, {})(AppButtonGroup);
 
 const buttonGroupComponents = {};
 function makeButtonGroupComponent(
@@ -415,7 +415,7 @@ function makeButtonGroupComponent(
 }*/
 ) {
   function ButtonGroup(props) {
-    const ButtonGroup = <BernieAppButtonGroup {...props} {...options} />;
+    const ButtonGroup = <AppButtonGroup {...props} {...options} />;
     if (props.isModal) {
       return (
         <ModalScreen hasCloseButton>
