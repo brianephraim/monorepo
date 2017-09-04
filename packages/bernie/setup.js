@@ -162,7 +162,7 @@ const reducers = combineReducers({
   },
   activeAppScreen: (state = 'BERNIE_HOME', action) => {
 
-    if (routesMap[action.type]) {
+    if (routesMap[action.type] && action.payload.appNameSpace === appNameSpace) {
       console.log(action)
       return screenNameMap[action.type];
     }
