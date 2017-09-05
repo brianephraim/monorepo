@@ -17,7 +17,7 @@ class ImagePickerTemplate extends Component {
   }
   generateLinkTo(imgSrcObj) {
     return {
-      type: `BERNIE_CROP`,
+      type: `CROP`,
       payload: {
         ...compositeImageIntoParams(this.props.compositeImageData),
         fgSrcKey: imgSrcObj.srcKey,

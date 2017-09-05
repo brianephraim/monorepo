@@ -8,7 +8,7 @@ export default function makeActionSetBackground(imgSrc) {
   return (dispatch, getState) => {
     return getNormalizedImageInfo(imgSrc).then(response => {
       const action = payloadRefineAction({
-        type: 'BERNIE_CROP',
+        type: 'CROP',
         payload: {
           ...compositeImageIntoParams(getState().bernie.compositeImageData),
           bgSrcKey: response.srcKey,

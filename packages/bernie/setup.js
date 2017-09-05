@@ -93,33 +93,33 @@ const routes = [
     component: HomeLayoutWithUploadCallback,
   },
   {
-    action: 'BERNIE_IMPORT_FACEBOOK',
+    action: 'IMPORT_FACEBOOK',
     urlEnd: 'import-photo-from-facebook',
     component: ImagePickerFacebookWithOnClick,
   },
   {
-    action: 'BERNIE_IMPORT_URL',
+    action: 'IMPORT_URL',
     urlEnd: 'import-url',
     component: UrlImportScreenWithWithUploadCallback,
   },
   {
-    action: 'BERNIE_UPLOAD_TEMPLATE',
+    action: 'UPLOAD_TEMPLATE',
     urlEnd: 'upload-template',
     component: TemplateUploadScreenWithUploadCallback,
   },
 
   {
-    action: 'BERNIE_SELECT_TEMPLATE',
+    action: 'SELECT_TEMPLATE',
     urlEnd: 'select-template',
     component: ImagePickerTemplateWithOnClick,
   },
   {
-    action: 'BERNIE_CROP',
+    action: 'CROP',
     urlEnd: 'crop',
     component: CropperWithFgBgCompletion,
   },
   {
-    action: 'BERNIE_DYNAMIC',
+    action: 'DYNAMIC',
     urlEnd: `:dynamicScreen(${buttonGroupComponentsRegexArrayString})`,
     component: Dynamic,
   },

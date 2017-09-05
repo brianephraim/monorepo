@@ -11,6 +11,7 @@ import ConnectResponsiveStatusesDictHOC from './ConnectResponsiveStatusesDictHOC
 import ImagePickerTemplate from './ImagePickerTemplate';
 import ModalScreen from './ModalScreen';
 import makeActionSetBackground from './makeActionSetBackground';
+import {tweetUrl} from './constants';
 
 import './app.scss';
 
@@ -300,7 +301,7 @@ let AppButtonGroup = class extends Component {
             );
           } else if (btnDetails.actionType) {
             const toSettings = {
-              type: `BERNIE_${btnDetails.actionType}`,
+              type: `${btnDetails.actionType}`,
               compositeImageData: this.props.compositeImageData,
             };
             if (btnDetails.dynamicScreen) {
@@ -348,7 +349,7 @@ let AppButtonGroup = class extends Component {
         ? StyledHeaderDiv
         : StyledHeaderLink;
     const to = {
-      type: `BERNIE_DYNAMIC`,
+      type: `DYNAMIC`,
       compositeImageData: this.props.compositeImageData,
       dynamicScreen: this.props.urlFragment,
     };
@@ -476,7 +477,7 @@ const ShareButtonGroup = makeButtonGroupComponent({
     {
       text: 'Tweet',
       aHref:
-        'https://twitter.com/intent/tweet?url=xXxXxXxXxXxXxXxXxXxXxXxX&via=bernieselfie&hashtags=BernieSanders%2Cfeelthebern%2Cbernieselfie&related=BernieSander',
+        tweetUrl,
     },
   ],
 });

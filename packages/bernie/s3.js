@@ -1,3 +1,5 @@
+import {backendApiPrefix} from './constants';
+
 function uploadFile(file, signedRequest, url) {
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
@@ -27,7 +29,7 @@ function makeGetNormalizedImageInfo(mustBeSquare) {
       const xhr = new XMLHttpRequest();
       xhr.open(
         'GET',
-        `/bernieserver/get_normalized_image_info?image_url=${encodeURIComponent(
+        `${backendApiPrefix}/get_normalized_image_info?image_url=${encodeURIComponent(
           imageUrl
         )}&must_be_square=${mustBeSquare}`
       );
@@ -80,7 +82,7 @@ function getSignedRequest(file, folder, mustBeSquare) {
     filename = `${folder}/${filename}`;
     xhr.open(
       'GET',
-      `/bernieserver/get_s3_signed_upload_url?file_name=${filename}&file_type=${file.type}`
+      `${backendApiPrefix}/get_s3_signed_upload_url?file_name=${filename}&file_type=${file.type}`
     );
     xhr.onreadystatechange = () => {
       if (xhr.readyState === 4) {

@@ -1,20 +1,3 @@
-// const templateBaseUrl =
-//   'http://s3-us-west-1.amazonaws.com/bernieapp/decorations/';
-
-// const rawImagePrefix = 'http://s3-us-west-1.amazonaws.com/bernieapp/selfies/';
-
-// const isNode = (function() {
-//   let isNode = false;
-//   if (typeof process === 'object') {
-//     if (typeof process.versions === 'object') {
-//       if (typeof process.versions.node !== 'undefined') {
-//         isNode = true;
-//       }
-//     }
-//   }
-//   return isNode;
-// })();
-
 const standardModes = [
   {
     mode: 'f',

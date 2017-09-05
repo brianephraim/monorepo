@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import styleConstants from './style-constants';
 import ConnectResponsiveStatusesDictHOC from './ConnectResponsiveStatusesDictHOC';
 
+import {tweetUrl} from './constants';
+
 const StyledLeftPillar = ConnectResponsiveStatusesDictHOC(styled.div`
   ${styleConstants.mixins.leftPillar()} ${props => {
       return props.responsiveStatusesDict.windowVerticalTooSmall
@@ -116,7 +118,7 @@ export default function BernieAppHeader() {
           <StyledSocialWidget className="app_header_leftPillar_socialRow_socialWidget">
             <a
               className="twitter-share-button"
-              href="https://twitter.com/intent/tweet?url=xXxXxXxXxXxXxXxXxXxXxXxX&via=bernieselfie&hashtags=BernieSanders%2Cfeelthebern%2Cbernieselfie&related=BernieSanders"
+              href={tweetUrl}
             >
               Tweet
             </a>

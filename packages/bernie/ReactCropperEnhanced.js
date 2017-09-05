@@ -75,7 +75,6 @@ class ReactCropperEnhanced extends Component {
     ) {
       // cropOverlayImg implementation
       // DOM manipulation because core cropperjs lib is DOM based
-      // 'http://s3-us-west-1.amazonaws.com/bernieapp/decorations/h3.png'
       const sampleImg = document.createElement('img');
       sampleImg.setAttribute('src', this.props.cropSrc);
       sampleImg.setAttribute(

@@ -3,6 +3,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import styleConstants from './style-constants';
+import {adminEmail,disclaimerText} from './constants';
 
 const Styled_Disclaimer = styled.div`
   background: ${styleConstants.colors.grey0};
@@ -29,13 +30,12 @@ function Disclaimer() {
   return (
     <Styled_Disclaimer>
       <Styled_Disclaimer_P>
-        contact: admin@bernieselfie.com <br />
+        contact: {adminEmail} <br />
         <a href="/terms">Terms&nbsp;and&nbsp;Conditions</a>
         {' -- '}
         <a href="/privacy">Privacy&nbsp;Policy</a>
         <br />
-        bernieselfie.com is not affiliated with any political party, candidate,
-        or interest group.
+        {disclaimerText}
       </Styled_Disclaimer_P>
     </Styled_Disclaimer>
   );

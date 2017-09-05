@@ -1,9 +1,11 @@
+import {fgImagePrefix,imageSuffix,backendApiPrefix} from './constants';
+
 let imagesFromFetchPromise = null;
 export default function makeActionFetchTemplates() {
   return (dispatch /* , getState*/) => {
     imagesFromFetchPromise =
       imagesFromFetchPromise ||
-      fetch('/bernieserver/get_template_list').then(r => {
+      fetch(`${backendApiPrefix}/get_template_list`).then(r => {
         return r.json();
       });
     return imagesFromFetchPromise.then(response => {
@@ -14,7 +16,7 @@ export default function makeActionFetchTemplates() {
               ...accum,
               {
                 srcKey: imageObj.customTemplate,
-                src: `http://s3-us-west-1.amazonaws.com/bernieapp/decorations/${imageObj.customTemplate}.png`,
+                src: `${fgImagePrefix}${imageObj.customTemplate}${imageSuffix}`,
               },
             ];
           }

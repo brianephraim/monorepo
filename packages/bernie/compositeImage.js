@@ -1,3 +1,5 @@
+import {fgImagePrefix,bgImagePrefix, imageSuffix} from './constants';
+
 export function generateCompositeImgSrcUrl(compositeImageData) {
   return `/image/${compositeImageData.foreground.srcKey}/${compositeImageData
     .background.srcKey}_${compositeImageData.foreground
@@ -38,13 +40,13 @@ export function paramsIntoCompositeImage(params) {
       y: +paramsToUse.fgY,
       width: +paramsToUse.fgW,
       height: +paramsToUse.fgH,
-      src: `http://s3-us-west-1.amazonaws.com/bernieapp/decorations/${paramsToUse.fgSrcKey}.png`,
+      src: `${fgImagePrefix}${paramsToUse.fgSrcKey}${imageSuffix}`,
       srcKey: paramsToUse.fgSrcKey,
     },
     background: {
       width: +paramsToUse.bgW,
       height: +paramsToUse.bgH,
-      src: `http://s3-us-west-1.amazonaws.com/bernieapp/selfies/${paramsToUse.bgSrcKey}.png`,
+      src: `${bgImagePrefix}${paramsToUse.bgSrcKey}${imageSuffix}`,
       srcKey: paramsToUse.bgSrcKey,
     },
   };

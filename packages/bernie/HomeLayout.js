@@ -20,6 +20,7 @@ import styled from 'styled-components';
 import styleConstants from './style-constants';
 import ConnectResponsiveStatusesDictHOC from './ConnectResponsiveStatusesDictHOC';
 import { ResponsiveReduxMasterHOC } from '@defualt/responsive/responsiveRedux';
+import {topBanner} from './constants';
 
 const StyledHomeLayout = styled.div`position: relative;`;
 
@@ -51,14 +52,15 @@ const StyledTopBannerLink = styled.a`
   font-weight: bold;
 `;
 
+
 function ContributeBanner() {
   return (
     <StyledTopBanner className="topBanner">
       <StyledTopBannerLink
         className="topBanner_link"
-        href="http://www.berniesanders.com/"
+        href={topBanner.href}
       >
-        Contribute to Bernie at BernieSanders.comx&nbsp;{'>>'}
+        {topBanner.text}&nbsp;{'>>'}
       </StyledTopBannerLink>
     </StyledTopBanner>
   );
