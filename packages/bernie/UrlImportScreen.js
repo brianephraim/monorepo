@@ -1,4 +1,4 @@
-import { connect } from 'react-redux';
+import appConnect from './appConnect';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
@@ -58,11 +58,13 @@ class UrlImportScreen extends Component {
     );
   }
 }
+UrlImportScreen.propTypes = {
+  setBackground: PropTypes.func.isRequired,
+}
 // import makeActionSetBackground from './makeActionSetBackground';
-export default connect(
-  (state /* , { params }*/) => {
-    return {};
-  },
+
+export default appConnect(
+  null,
   {
     setBackground: makeActionSetBackground
   }
