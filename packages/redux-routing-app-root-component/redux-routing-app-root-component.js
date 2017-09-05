@@ -1,6 +1,6 @@
 /* eslint-disable react/no-multi-comp */
 // import React from 'react';
-import { connectRoutes, addRoutes, NOT_FOUND } from 'redux-first-router'
+import { connectRoutes, addRoutes, redirect, NOT_FOUND } from 'redux-first-router'
 import PropTypes from 'prop-types';
 import { Provider, connect } from 'react-redux';
 import createBrowserHistory from 'history/createBrowserHistory'
@@ -50,7 +50,21 @@ RootComponent = connect(
 
 const routesMap = {};
 
-const { reducer, middleware, enhancer, initialDispatch } = connectRoutes(history, routesMap, {initialDispatch: false});
+const { reducer, middleware, enhancer, initialDispatch } = connectRoutes(history, routesMap, {
+  initialDispatch: false,
+  // onBeforeChange: (dispatch, getState, action) => {
+  //   if (action.payload && action.payload.appNameSpace && action.payload.appNameSpace !== action.appNameSpace ) {
+  //     const newAction = {
+  //       ...action,
+  //       appNameSpace: action.payload.appNameSpace,
+  //     };
+  //     // dispatch(redirect(newAction))
+  //     dispatch(newAction)
+  //   // } else {
+
+  //   }
+  // }
+});
 
 let allReducers = {
   routeInfos: (state = [], action) => {
@@ -64,12 +78,45 @@ let allReducers = {
   location: reducer,
 };
 
+// `appNameSpace` is an action property
+// various fetching-like actions use it to distinguish which app is doing the fetching
+// redux-first-router also uses its actions, nested in the payload, for its navigation functionality
+// An app's reducers will parse actions for appNameSpace, for fetching-like actions and redux-first-router actions.
+// Rather than have those reducers parse either within the payload property object of an action, or on the root level of the action,
+// the reducer will only need to parse the root level thanks to this middle ware.
+const redundantAppNameSpaceMiddleware = store => next => action => {
+  
+  // for when provided a action.payload.appNameSpace but maybe no action.appNameSpace
+  // make action.appNameSpace match action.payload.appNameSpace
+  if (action.payload && action.payload.appNameSpace && action.payload.appNameSpace !== action.appNameSpace ) {
+    const newAction = {
+      ...action,
+      appNameSpace: action.payload.appNameSpace,
+    };
+    return next(newAction);
+  }
+
+  // when there is a action.appNameSpace and action.payload, but maybe no action.payload.appNameSpace
+  // make action.payload.appNameSpace match action.appNameSpace
+  if (action.payload && action.appNameSpace && action.payload.appNameSpace !== action.appNameSpace ) {
+    const newAction = {
+      ...action,
+      payload: {
+        ...action.payload,
+        appNameSpace: action.appNameSpace,
+      }
+    };
+    return next(newAction);
+  }
+
+  return next(action);
+}
+
 const configureStore = () => {
-  const middlewares = [thunk, middleware];
+  const middlewares = [thunk, middleware, redundantAppNameSpaceMiddleware];
   // if (process.env.NODE_ENV !== 'production') {
     // middlewares.push(createLogger());
   // }
-
   return createStore(
     combineReducers(allReducers),
     compose(enhancer, applyMiddleware(...middlewares))
