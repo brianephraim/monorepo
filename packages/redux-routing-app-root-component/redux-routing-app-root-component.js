@@ -85,6 +85,7 @@ let allReducers = {
 // Rather than have those reducers parse either within the payload property object of an action, or on the root level of the action,
 // the reducer will only need to parse the root level thanks to this middle ware.
 const redundantAppNameSpaceMiddleware = store => next => action => {
+  console.log(action);
   
   // for when provided a action.payload.appNameSpace but maybe no action.appNameSpace
   // make action.appNameSpace match action.payload.appNameSpace

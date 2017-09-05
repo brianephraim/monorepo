@@ -19,7 +19,6 @@ import {appNameSpace} from './constants';
 
 import { paramsIntoCompositeImage } from './compositeImage';
 
-console.log('createConnect',createConnect);
 
 let Dynamic = (props) => {
   const Comp = buttonGroupComponents[props.dynamicScreen];
@@ -146,7 +145,33 @@ routeModes.forEach(homeLayoutPath => {
 routesMap.BERNIE = '/bernie';
 screenNameMap.BERNIE = 'BERNIE_HOME';
 
-const reducers = combineReducers({
+function filterReducers(reducers,check) {
+  // return reducers;
+  return Object.keys(reducers).reduce((accum,key) => {
+    const reducer = reducers[key];
+    accum[key] = (state,action,...args) => {
+      if (check(state,action,...args)) {
+        // nameSpaces match... proceed with reducer.
+        return reducer(state,action,...args);
+      }
+      // pass in empty object as reducer action
+      // this should return the default value of the reducer
+      // because reducers parse action looking for data,
+      // so empty ebject means no data to be found... ergo default value.s
+      return reducer(state,{},...args);
+    };
+    return accum;
+  }, {});
+}
+
+const featured = ['h3', 'h4', 'wg'].map(srcKey => {
+  return {
+    src: `http://s3-us-west-1.amazonaws.com/bernieapp/decorations/${srcKey}.png`,
+    srcKey,
+  };
+});
+
+const reducersToFocus = {
   compositeImageData: (state = {}, action) => {
     if (routesMap[action.type] || action.type === 'BERNIE') {
       const compositeImageData = paramsIntoCompositeImage(action.payload);
@@ -162,13 +187,33 @@ const reducers = combineReducers({
     }
   },
   activeAppScreen: (state = 'BERNIE_HOME', action) => {
-
     if (routesMap[action.type] && action.payload.appNameSpace === appNameSpace) {
-      console.log(action)
       return screenNameMap[action.type];
     }
     return state;
   },
+  facebookPhotos: (state = [], action) => {
+    if (action.type === 'BERNIE_FETCH_FACEBOOK_PHOTOS') {
+      return [...action.images];
+    }
+    return state;
+  },
+  templates: (state = featured, action) => {
+    if (action.type === 'BERNIE_FETCH_TEMPLATES') {
+
+      return [...featured, ...action.images];
+    }
+    return featured;
+  },
+};
+
+const reducers = combineReducers({
+  ...filterReducers(reducersToFocus, (state,action) => {
+    return action.appNameSpace === appNameSpace || action.type === 'BERNIE';
+  }
+),
+  
+  
   responsiveStatusesDict: (state = {}, action) => {
     if (
       action.type === 'UDATE_RESPONSIVE_STATUSES_DICT' &&
@@ -178,25 +223,8 @@ const reducers = combineReducers({
     }
     return state;
   },
-  facebookPhotos: (state = [], action) => {
-    if (action.type === 'BERNIE_FETCH_FACEBOOK_PHOTOS') {
-      console.log(action);
-      return [...action.images];
-    }
-    return state;
-  },
-  templates: (state = [], action) => {
-    const featured = ['h3', 'h4', 'wg'].map(srcKey => {
-      return {
-        src: `http://s3-us-west-1.amazonaws.com/bernieapp/decorations/${srcKey}.png`,
-        srcKey,
-      };
-    });
-    if (action.type === 'BERNIE_FETCH_TEMPLATES') {
-      return [...featured, ...action.images];
-    }
-    return featured;
-  },
+  
+  
 });
 export {
   nameSpace,
