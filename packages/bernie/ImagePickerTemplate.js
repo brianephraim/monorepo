@@ -1,6 +1,6 @@
-import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import appConnect from './appConnect';
 import ImagePicker from './ImagePicker';
 import makeActionFetchTemplates from './makeActionFetchTemplates';
 import { compositeImageIntoParams } from './compositeImage';
@@ -48,11 +48,11 @@ ImagePickerTemplate.defaultProps = {
   limit: Infinity,
   layoutVariation: '',
 };
-export default connect(
-  (state /* , { params }*/) => {
+export default appConnect(
+  (appState /* , { params }*/) => {
     return {
-      images: state.bernie.templates,
-      compositeImageData: state.bernie.compositeImageData,
+      images: appState.templates,
+      compositeImageData: appState.compositeImageData,
     };
   },
   {

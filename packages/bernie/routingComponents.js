@@ -1,6 +1,6 @@
-import { connect } from 'react-redux';
-import React, {Component} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types'; 
+import appConnect from './appConnect';
 import CropperScreen from './CropperScreen';
 import ImagePickerFacebook from './ImagePickerFacebook';
 import ImagePickerTemplate from './ImagePickerTemplate';
@@ -24,7 +24,7 @@ let HomeLayoutWithUploadCallback = (props) => {
 HomeLayoutWithUploadCallback.propTypes = {
   setBackground: PropTypes.func.isRequired,
 };
-HomeLayoutWithUploadCallback = connect(
+HomeLayoutWithUploadCallback = appConnect(
   null,
   {
     setBackground: makeActionSetBackground
@@ -73,10 +73,10 @@ let CropperWithFgBgCompletion = (props) => {
 CropperWithFgBgCompletion.propTypes = {
   compositeImageData: PropTypes.object.isRequired,
 };
-CropperWithFgBgCompletion = connect(
-  (state /* , { params }*/) => {
+CropperWithFgBgCompletion = appConnect(
+  (appState /* , { params }*/) => {
     return {
-      compositeImageData: state.bernie.compositeImageData,
+      compositeImageData: appState.compositeImageData,
     };
   },
 )(CropperWithFgBgCompletion);

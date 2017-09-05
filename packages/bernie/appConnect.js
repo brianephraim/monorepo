@@ -1,17 +1,13 @@
 import { connect } from 'react-redux';
 import {appNameSpace} from './constants'
 
-// const normalConnected = connect((state /* , { params }*/) => {
-//   return {
-//     images: state.bernie.facebookPhotos,
-//   };
-// })(appConnected);
-
-// const normalConnected = appConnect((appObject /* , { params }*/) => {
-//   return {
-//     images: appObject.facebookPhotos,
-//   };
-// })(appConnected);
+// monkey patch of connect
+// namespacing
+// every dispatched action gets an `appNameSpace` property.
+// every mapStateToProps's state argument is crawled on level to the app name space
+// so instead of `state` being passed, `state[appNameSpace]` is passed.
+// can be used compositionally along with vanilla `connect`
+// so `MyComponent = connect(a1,b1)(appConnect(a2,b2)(MyComponent))`
 
 export default function appConnect (mapStateToProps,mapDispatchToProps,...args){
   const mapDispatchToPropsToPass = !mapDispatchToProps ? mapDispatchToProps : Object.keys(mapDispatchToProps).reduce((accum,key) => {

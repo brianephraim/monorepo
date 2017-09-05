@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import appConnect from './appConnect';
 import Upload from './Upload';
 import AppReduxLink from './AppReduxLink';
 
@@ -234,7 +235,7 @@ UploadBackgroundSetter.propTypes = {
 UploadBackgroundSetter.defaultProps = {
   children: null,
 }
-UploadBackgroundSetter = connect(
+UploadBackgroundSetter = appConnect(
   null,
   {
     setBackground: makeActionSetBackground
@@ -401,12 +402,11 @@ AppButtonGroup.defaultProps = {
   buttonsPrepend: () => {},
 };
 
-AppButtonGroup = connect((state /* , { params }*/) => {
+AppButtonGroup = appConnect((appState /* , { params }*/) => {
   return {
-    compositeImageData: state.bernie.compositeImageData,
-    location: state.location,
+    compositeImageData: appState.compositeImageData,
   };
-}, {})(AppButtonGroup);
+})(AppButtonGroup);
 
 const buttonGroupComponents = {};
 function makeButtonGroupComponent(

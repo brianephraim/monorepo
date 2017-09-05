@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import ResponsiveHOC, { generateGiantSquareDetails } from '@defualt/responsive';
+import appConnect from './appConnect';
 import { generateCompositeImgSrcUrl } from './compositeImage';
 import {
   EditDesignButtonGroup,
@@ -175,11 +176,11 @@ AppHero.propTypes = {
   imSrc: PropTypes.string.isRequired,
 };
 
-AppHero = connect((state /* , { params }*/) => {
+AppHero = appConnect((appState /* , { params }*/) => {
   return {
     imSrc:
-      state.bernie && state.bernie.compositeImageData
-        ? generateCompositeImgSrcUrl(state.bernie.compositeImageData)
+      appState && appState.compositeImageData
+        ? generateCompositeImgSrcUrl(appState.compositeImageData)
         : '/images/mock-selfie.png',
     // toBeAssigned: getDetailsOfToBeAssigned(state),
   };

@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import React from 'react';
 import PropTypes from 'prop-types';
+import appConnect from './appConnect';
 import {
   screenComponentMap,
 } from './setup';
@@ -16,10 +17,10 @@ Routing.propTypes = {
   activeAppScreen: PropTypes.string.isRequired,
 };
 
-export default connect(
-  (state /* , { params }*/) => {
+export default appConnect(
+  (appState /* , { params }*/) => {
     return {
-      activeAppScreen: state.bernie.activeAppScreen,
+      activeAppScreen: appState.activeAppScreen,
     };
   }
 )(Routing);
