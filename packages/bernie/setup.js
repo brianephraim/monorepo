@@ -15,7 +15,7 @@ import {
   UrlImportScreenWithWithUploadCallback,
   TemplateUploadScreenWithUploadCallback,
 } from './routingComponents';
-import {appNameSpace} from './constants';
+import {appNameSpace, fgImagePrefix, imageSuffix} from './constants';
 
 import { paramsIntoCompositeImage } from './compositeImage';
 
@@ -36,8 +36,6 @@ Dynamic = connect(
   {}
 )(Dynamic);
 export {Dynamic};
-
-const nameSpace = '/bernie';
 
 const geoPathFrag =
   ':fgX([^/|^_]*)_:fgY([^/|^_]*)_:fgW([^/|^_]*)_:fgH([^/|^_]*)_:bgW([^/|^_]*)_:bgH([^/]*)';
@@ -166,7 +164,7 @@ function filterReducers(reducers,check) {
 
 const featured = ['h3', 'h4', 'wg'].map(srcKey => {
   return {
-    src: `http://s3-us-west-1.amazonaws.com/bernieapp/decorations/${srcKey}.png`,
+    src: `${fgImagePrefix}${srcKey}${imageSuffix}`,
     srcKey,
   };
 });
@@ -227,7 +225,6 @@ const reducers = combineReducers({
   
 });
 export {
-  nameSpace,
   screenComponentMap,
   payloadRefineAction,
   reducers,

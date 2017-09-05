@@ -1,4 +1,5 @@
 export const appNameSpace = 'bernie';
+export const urlAppNameSpace = '/bernie';
 export const tweetUrl = 'https://twitter.com/intent/tweet?url=xXxXxXxXxXxXxXxXxXxXxXxX&via=bernieselfie&hashtags=BernieSanders%2Cfeelthebern%2Cbernieselfie&related=BernieSanders';
 const assetUrlPrefix = 'http://s3-us-west-1.amazonaws.com/bernieapp/'
 export const fgImagePrefix = `${assetUrlPrefix}decorations/`;

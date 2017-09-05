@@ -37,16 +37,7 @@ const standardModes = [
   },
 ];
 module.exports.standardModes = standardModes;
-// module.exports.getStandardModesRegex = function(nameSpace) {
-//   let pipedString = '';
-//   for (let i = 0, l = module.exports.standardModes.length; i < l; i++) {
-//     let mode = module.exports.standardModes[i].mode;
-//     mode = nameSpace ? `${nameSpace}/${mode}` : mode;
-//     console.log('mode', mode);
-//     pipedString += i > 0 ? `|${mode}` : mode;
-//   }
-//   return new RegExp(`^[/](${pipedString})[/](.+)`);
-// };
+
 const standardModesRegexArrayString = module.exports.standardModes
   .map(item => {
     return item.mode;

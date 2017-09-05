@@ -12,8 +12,8 @@ import './app.scss';
 import makeActionSetBackground from './makeActionSetBackground';
 import { formUrl } from './deriveUrlInfo';
 import {
-  nameSpace,
-} from './setup';
+  urlAppNameSpace,
+} from './constants';
 // ========
 // ========
 let HomeLayoutWithUploadCallback = (props) => {
@@ -57,7 +57,7 @@ export function ImagePickerTemplateWithOnClick () {
 
 
 function generateCompletionUrl(activeCompositeImageData) {
-  return `${nameSpace}/${formUrl(activeCompositeImageData)}`;
+  return `${urlAppNameSpace}/${formUrl(activeCompositeImageData)}`;
 }
 let CropperWithFgBgCompletion = (props) => {
   return (
