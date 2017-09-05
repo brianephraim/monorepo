@@ -1,4 +1,4 @@
-import { connect } from 'react-redux';
+import { connect, createConnect } from 'react-redux';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { combineReducers } from 'redux';
@@ -19,7 +19,7 @@ import {appNameSpace} from './constants';
 
 import { paramsIntoCompositeImage } from './compositeImage';
 
-import fbManager from './fb';
+console.log('createConnect',createConnect);
 
 let Dynamic = (props) => {
   const Comp = buttonGroupComponents[props.dynamicScreen];
@@ -179,6 +179,7 @@ const reducers = combineReducers({
   },
   facebookPhotos: (state = [], action) => {
     if (action.type === 'BERNIE_FETCH_FACEBOOK_PHOTOS') {
+      console.log(action);
       return [...action.images];
     }
     return state;
