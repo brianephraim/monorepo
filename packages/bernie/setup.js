@@ -88,7 +88,7 @@ function payloadRefineAction({ type, payload }) {
 
 const routes = [
   {
-    action: 'BERNIE_HOME',
+    action: 'HOME',
     urlEnd: '',
     component: HomeLayoutWithUploadCallback,
   },
@@ -143,7 +143,7 @@ routeModes.forEach(homeLayoutPath => {
   });
 });
 routesMap.BERNIE = '/bernie';
-screenNameMap.BERNIE = 'BERNIE_HOME';
+screenNameMap.BERNIE = 'HOME';
 
 function filterReducers(reducers,check) {
   // return reducers;
@@ -186,20 +186,20 @@ const reducersToFocus = {
         return state;
     }
   },
-  activeAppScreen: (state = 'BERNIE_HOME', action) => {
+  activeAppScreen: (state = 'HOME', action) => {
     if (routesMap[action.type] && action.payload.appNameSpace === appNameSpace) {
       return screenNameMap[action.type];
     }
     return state;
   },
   facebookPhotos: (state = [], action) => {
-    if (action.type === 'BERNIE_FETCH_FACEBOOK_PHOTOS') {
+    if (action.type === 'FETCH_FACEBOOK_PHOTOS') {
       return [...action.images];
     }
     return state;
   },
   templates: (state = featured, action) => {
-    if (action.type === 'BERNIE_FETCH_TEMPLATES') {
+    if (action.type === 'FETCH_TEMPLATES') {
 
       return [...featured, ...action.images];
     }

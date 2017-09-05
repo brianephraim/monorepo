@@ -277,7 +277,7 @@ export function makeActionFetchPhotos() {
           return accum;
         }, []);
         dispatch({
-          type: 'BERNIE_FETCH_FACEBOOK_PHOTOS',
+          type: 'FETCH_FACEBOOK_PHOTOS',
           images,
         });
       }

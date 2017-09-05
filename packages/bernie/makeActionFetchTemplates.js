@@ -21,7 +21,7 @@ export default function makeActionFetchTemplates() {
           return accum;
         }, []);
         dispatch({
-          type: 'BERNIE_FETCH_TEMPLATES',
+          type: 'FETCH_TEMPLATES',
           images,
         });
       }
