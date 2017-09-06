@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import appConnect from './appConnect';
+import {appConnect} from './nameSpacedResponsive';
 import ImagePicker from './ImagePicker';
 import makeActionFetchTemplates from './makeActionFetchTemplates';
 import { compositeImageIntoParams } from './compositeImage';

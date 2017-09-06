@@ -1,7 +1,7 @@
 import { getNormalizedImageInfo } from './s3';
 import { compositeImageIntoParams } from './compositeImage';
 import { payloadRefineAction } from './setup';
-import {appNameSpace} from './constants';
+import constants from './constants';
 
 export default function makeActionSetBackground(imgSrc) {
   imgSrc = typeof imgSrc === 'object' ? imgSrc.src : imgSrc;
@@ -10,7 +10,7 @@ export default function makeActionSetBackground(imgSrc) {
       const action = payloadRefineAction({
         type: 'CROP',
         payload: {
-          ...compositeImageIntoParams(getState()[appNameSpace].compositeImageData),
+          ...compositeImageIntoParams(getState()[constants.appNameSpace].compositeImageData),
           bgSrcKey: response.srcKey,
         },
       });

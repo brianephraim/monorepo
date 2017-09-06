@@ -1,16 +1,16 @@
 // import Routing from './Routing';
 import { routesMap, reducers, Routing } from './setup';
 import { addRoutesToApp } from 'redux-routing-app-root-component';
-import {appNameSpace} from './constants';
+import constants from './constants';
 
 export default function() {
   addRoutesToApp({
     routesMap,
     routeRootComponent: Routing,
-    reducers: { [appNameSpace]: reducers },
+    reducers: { [constants.appNameSpace]: reducers },
     routeInfo: {
-      description: appNameSpace,
-      path: `/${appNameSpace}`,
+      description: constants.appNameSpace,
+      path: `/${constants.appNameSpace}`,
     },
   });
 }

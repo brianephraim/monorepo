@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { makeActionFetchPhotos } from './fb';
 import ImagePicker from './ImagePicker';
 import makeActionSetBackground from './makeActionSetBackground';
-import appConnect from './appConnect';
+import {appConnect} from './nameSpacedResponsive';
 
 
 

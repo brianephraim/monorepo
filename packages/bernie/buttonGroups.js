@@ -2,16 +2,16 @@ import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import appConnect from './appConnect';
+import {appConnect} from './nameSpacedResponsive';
 import Upload from './Upload';
 import AppReduxLink from './AppReduxLink';
 
 import styleConstants from './style-constants';
-import ConnectResponsiveStatusesDictHOC from './ConnectResponsiveStatusesDictHOC';
+import {ConnectResponsiveStatusesDictHOC} from './nameSpacedResponsive';
 import ImagePickerTemplate from './ImagePickerTemplate';
 import ModalScreen from './ModalScreen';
 import makeActionSetBackground from './makeActionSetBackground';
-import {tweetUrl} from './constants';
+import constants from './constants';
 
 import './app.scss';
 
@@ -415,7 +415,9 @@ function makeButtonGroupComponent(
   headline,// shortHeadline, icon, buttons
 }*/
 ) {
+
   function ButtonGroup(props) {
+    options = typeof options === 'function' ? options() : options;
     const ButtonGroup = <AppButtonGroup {...props} {...options} />;
     if (props.isModal) {
       return (
@@ -462,24 +464,26 @@ const ImportButtonGroup = makeButtonGroupComponent({
 });
 buttonGroupComponents.import = ImportButtonGroup;
 
-const ShareButtonGroup = makeButtonGroupComponent({
-  urlFragment: 'share',
-  headline: 'Share this via:',
-  shortHeadline: 'share',
-  icon: 'share',
-  buttons: [
-    {
-      text: 'Facebook photo',
-    },
-    {
-      text: 'Facebook post',
-    },
-    {
-      text: 'Tweet',
-      aHref:
-        tweetUrl,
-    },
-  ],
+const ShareButtonGroup = makeButtonGroupComponent(() => {
+  return {
+    urlFragment: 'share',
+    headline: 'Share this via:',
+    shortHeadline: 'share',
+    icon: 'share',
+    buttons: [
+      {
+        text: 'Facebook photo',
+      },
+      {
+        text: 'Facebook post',
+      },
+      {
+        text: 'Tweet',
+        aHref:
+          constants.tweetUrl,
+      },
+    ],
+  }
 });
 buttonGroupComponents.share = ShareButtonGroup;
 

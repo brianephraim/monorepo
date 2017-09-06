@@ -1,11 +1,11 @@
-import {fgImagePrefix,imageSuffix,backendApiPrefix} from './constants';
+import constants from './constants';
 
 let imagesFromFetchPromise = null;
 export default function makeActionFetchTemplates() {
   return (dispatch /* , getState*/) => {
     imagesFromFetchPromise =
       imagesFromFetchPromise ||
-      fetch(`${backendApiPrefix}/get_template_list`).then(r => {
+      fetch(`${constants.backendApiPrefix}/get_template_list`).then(r => {
         return r.json();
       });
     return imagesFromFetchPromise.then(response => {
@@ -16,7 +16,7 @@ export default function makeActionFetchTemplates() {
               ...accum,
               {
                 srcKey: imageObj.customTemplate,
-                src: `${fgImagePrefix}${imageObj.customTemplate}${imageSuffix}`,
+                src: `${constants.fgImagePrefix}${imageObj.customTemplate}${constants.imageSuffix}`,
               },
             ];
           }

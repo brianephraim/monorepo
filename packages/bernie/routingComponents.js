@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types'; 
-import appConnect from './appConnect';
+import {appConnect} from './nameSpacedResponsive';
 import CropperScreen from './CropperScreen';
 import ImagePickerFacebook from './ImagePickerFacebook';
 import ImagePickerTemplate from './ImagePickerTemplate';
@@ -11,9 +11,7 @@ import ModalScreen from './ModalScreen';
 import './app.scss';
 import makeActionSetBackground from './makeActionSetBackground';
 import { formUrl } from './deriveUrlInfo';
-import {
-  urlAppNameSpace,
-} from './constants';
+import constants from './constants';
 // ========
 // ========
 let HomeLayoutWithUploadCallback = (props) => {
@@ -57,7 +55,7 @@ export function ImagePickerTemplateWithOnClick () {
 
 
 function generateCompletionUrl(activeCompositeImageData) {
-  return `${urlAppNameSpace}/${formUrl(activeCompositeImageData)}`;
+  return `${constants.urlAppNameSpace}/${formUrl(activeCompositeImageData)}`;
 }
 let CropperWithFgBgCompletion = (props) => {
   return (

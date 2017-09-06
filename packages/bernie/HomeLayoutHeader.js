@@ -2,9 +2,9 @@ import React from 'react';
 
 import styled from 'styled-components';
 import styleConstants from './style-constants';
-import ConnectResponsiveStatusesDictHOC from './ConnectResponsiveStatusesDictHOC';
+import {ConnectResponsiveStatusesDictHOC} from './nameSpacedResponsive';
 
-import {tweetUrl,appSubTitle,appTitle} from './constants';
+import constants from './constants';
 
 const StyledLeftPillar = ConnectResponsiveStatusesDictHOC(styled.div`
   ${styleConstants.mixins.leftPillar()} ${props => {
@@ -108,17 +108,17 @@ export default function AppHeader() {
       <StyledLeftPillar className="app_header_leftPillar">
         <StyledBranding className="app_header_leftPillar_branding">
           <StyledBrandingTitle className="app_header_leftPillar_branding_title">
-            {appTitle}
+            {constants.appTitle}
           </StyledBrandingTitle>
           <StyledBrandingSubtitle className="app_header_leftPillar_branding_subtitle">
-            {appSubTitle}
+            {constants.appSubTitle}
           </StyledBrandingSubtitle>
         </StyledBranding>
         <StyledSocialRow className="app_header_leftPillar_socialRow">
           <StyledSocialWidget className="app_header_leftPillar_socialRow_socialWidget">
             <a
               className="twitter-share-button"
-              href={tweetUrl}
+              href={constants.tweetUrl}
             >
               Tweet
             </a>

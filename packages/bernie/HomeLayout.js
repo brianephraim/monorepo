@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { generateGiantSquareDetails } from '@defualt/responsive';
-import {makeNameSpacedResponsiveHOC, makemakeNameSpacedResponsiveReduxMasterHOC} from '@defualt/responsive/nameSpaceResponsive';
-import appConnect from './appConnect';
+import {appConnect} from './nameSpacedResponsive';
 import { generateCompositeImgSrcUrl } from './compositeImage';
 import {
   EditDesignButtonGroup,
@@ -18,12 +17,11 @@ import HomeLayoutHeader from './HomeLayoutHeader';
 
 
 import styleConstants from './style-constants';
-import ConnectResponsiveStatusesDictHOC from './ConnectResponsiveStatusesDictHOC';
 
-import {topBanner,heroImageAltText, appNameSpace} from './constants';
+import constants from './constants';
 
-const ResponsiveHOC = makeNameSpacedResponsiveHOC(appNameSpace);
-const ResponsiveReduxMasterHOC = makemakeNameSpacedResponsiveReduxMasterHOC(appNameSpace);
+
+import {ResponsiveHOC, ResponsiveReduxMasterHOC,ConnectResponsiveStatusesDictHOC} from './nameSpacedResponsive';
 
 const StyledHomeLayout = styled.div`position: relative;`;
 
@@ -61,9 +59,9 @@ function ContributeBanner() {
     <StyledTopBanner className="topBanner">
       <StyledTopBannerLink
         className="topBanner_link"
-        href={topBanner.href}
+        href={constants.topBanner.href}
       >
-        {topBanner.text}&nbsp;{'>>'}
+        {constants.topBanner.text}&nbsp;{'>>'}
       </StyledTopBannerLink>
     </StyledTopBanner>
   );
@@ -174,7 +172,7 @@ let AppHero = class extends Component {
           <StyledSelfie
             className="app_body_leftPillar_selfieFrame_selfie"
             src={this.props.imSrc}
-            alt={heroImageAltText}
+            alt={constants.heroImageAltText}
           />
         </AppMainSelfieFrameResponsive>
       </StyledLeftPillar>

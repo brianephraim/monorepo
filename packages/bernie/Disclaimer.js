@@ -3,7 +3,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import styleConstants from './style-constants';
-import {adminEmail,disclaimerText} from './constants';
+import constants from './constants';
 
 const Styled_Disclaimer = styled.div`
   background: ${styleConstants.colors.grey0};
@@ -30,12 +30,12 @@ function Disclaimer() {
   return (
     <Styled_Disclaimer>
       <Styled_Disclaimer_P>
-        contact: {adminEmail} <br />
+        contact: {constants.adminEmail} <br />
         <a href="/terms">Terms&nbsp;and&nbsp;Conditions</a>
         {' -- '}
         <a href="/privacy">Privacy&nbsp;Policy</a>
         <br />
-        {disclaimerText}
+        {constants.disclaimerText}
       </Styled_Disclaimer_P>
     </Styled_Disclaimer>
   );

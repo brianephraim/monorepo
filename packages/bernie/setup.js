@@ -17,12 +17,11 @@ import {
   UrlImportScreenWithWithUploadCallback,
   TemplateUploadScreenWithUploadCallback,
 } from './routingComponents';
-import {appNameSpace, fgImagePrefix, imageSuffix, urlAppNameSpace} from './constants';
+import constants from './constants';
 
 import { paramsIntoCompositeImage } from './compositeImage';
 
-import appConnect from './appConnect';
-
+import {appConnect} from './nameSpacedResponsive';
 
 let Dynamic = (props) => {
   const Comp = buttonGroupComponents[props.dynamicScreen];
@@ -47,7 +46,7 @@ const geoPathFrag =
 const routeModes = [
   {
     key: 'H3LIKE',
-    urlStart: `/:appNameSpace(${appNameSpace})/:fgSrcKey(${standardModesRegexArrayString})/:bgSrcKey/${geoPathFrag}`,
+    urlStart: `/:appNameSpace(${constants.appNameSpace})/:fgSrcKey(${standardModesRegexArrayString})/:bgSrcKey/${geoPathFrag}`,
     match: payload => {
       return (
         payload.fgSrcKey &&
@@ -59,7 +58,7 @@ const routeModes = [
   },
   {
     key: 'UT',
-    urlStart: `/:appNameSpace(${appNameSpace})/ut/:bgSrcKey/${geoPathFrag}/:fgSrcKey`,
+    urlStart: `/:appNameSpace(${constants.appNameSpace})/ut/:bgSrcKey/${geoPathFrag}/:fgSrcKey`,
     match: payload => {
       return payload.fgSrcKey;
     },
@@ -83,7 +82,7 @@ function payloadRefineAction({ type, payload }) {
     asdf:'zxcv',
     payload:{
       ...payload,
-      appNameSpace,
+      appNameSpace: constants.appNameSpace,
     },
   };
 }
@@ -144,7 +143,7 @@ routeModes.forEach(homeLayoutPath => {
     screenComponentMap[route.action] = route.component;
   });
 });
-routesMap.APP_ROOT = urlAppNameSpace;
+routesMap.APP_ROOT = constants.urlAppNameSpace;
 screenNameMap.APP_ROOT = 'HOME';
 
 function filterReducers(reducers,check) {
@@ -168,7 +167,7 @@ function filterReducers(reducers,check) {
 
 const featured = ['h3', 'h4', 'wg'].map(srcKey => {
   return {
-    src: `${fgImagePrefix}${srcKey}${imageSuffix}`,
+    src: `${constants.fgImagePrefix}${srcKey}${constants.imageSuffix}`,
     srcKey,
   };
 });
@@ -189,7 +188,7 @@ const reducersToFocus = {
     }
   },
   activeAppScreen: (state = 'HOME', action) => {
-    if (routesMap[action.type] && action.payload.appNameSpace === appNameSpace) {
+    if (routesMap[action.type] && action.payload.appNameSpace === constants.appNameSpace) {
       return screenNameMap[action.type];
     }
     return state;
@@ -211,11 +210,11 @@ const reducersToFocus = {
 
 const reducers = combineReducers({
   ...filterReducers(reducersToFocus, (state,action) => {
-    return action.appNameSpace === appNameSpace || action.type === 'APP_ROOT';
+    return action.appNameSpace === constants.appNameSpace || action.type === 'APP_ROOT';
   }),
   
   
-  responsiveStatusesDict: makeNameSpacedResponsiveStatusesDictReducer(appNameSpace,'homeResponsive'),
+  responsiveStatusesDict: makeNameSpacedResponsiveStatusesDictReducer(constants.appNameSpace,'homeResponsive'),
   
   
 });

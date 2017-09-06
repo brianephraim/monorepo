@@ -1,4 +1,4 @@
-import {fgImagePrefix,bgImagePrefix, imageSuffix} from './constants';
+import constants from './constants';
 
 export function generateCompositeImgSrcUrl(compositeImageData) {
   return `/image/${compositeImageData.foreground.srcKey}/${compositeImageData
@@ -40,13 +40,13 @@ export function paramsIntoCompositeImage(params) {
       y: +paramsToUse.fgY,
       width: +paramsToUse.fgW,
       height: +paramsToUse.fgH,
-      src: `${fgImagePrefix}${paramsToUse.fgSrcKey}${imageSuffix}`,
+      src: `${constants.fgImagePrefix}${paramsToUse.fgSrcKey}${constants.imageSuffix}`,
       srcKey: paramsToUse.fgSrcKey,
     },
     background: {
       width: +paramsToUse.bgW,
       height: +paramsToUse.bgH,
-      src: `${bgImagePrefix}${paramsToUse.bgSrcKey}${imageSuffix}`,
+      src: `${constants.bgImagePrefix}${paramsToUse.bgSrcKey}${constants.imageSuffix}`,
       srcKey: paramsToUse.bgSrcKey,
     },
   };
