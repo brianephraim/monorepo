@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import styleConstants from './style-constants';
 import ConnectResponsiveStatusesDictHOC from './ConnectResponsiveStatusesDictHOC';
 
-import {tweetUrl} from './constants';
+import {tweetUrl,appSubTitle,appTitle} from './constants';
 
 const StyledLeftPillar = ConnectResponsiveStatusesDictHOC(styled.div`
   ${styleConstants.mixins.leftPillar()} ${props => {
@@ -102,16 +102,16 @@ const StyledHeader = ConnectResponsiveStatusesDictHOC(styled.div`
   padding: ${styleConstants.appPad}em;
 `);
 
-export default function BernieAppHeader() {
+export default function AppHeader() {
   return (
     <StyledHeader className="app_header">
       <StyledLeftPillar className="app_header_leftPillar">
         <StyledBranding className="app_header_leftPillar_branding">
           <StyledBrandingTitle className="app_header_leftPillar_branding_title">
-            BernieSelfie.com
+            {appTitle}
           </StyledBrandingTitle>
           <StyledBrandingSubtitle className="app_header_leftPillar_branding_subtitle">
-            Support Bernie with your picture
+            {appSubTitle}
           </StyledBrandingSubtitle>
         </StyledBranding>
         <StyledSocialRow className="app_header_leftPillar_socialRow">

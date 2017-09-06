@@ -20,7 +20,7 @@ import styled from 'styled-components';
 import styleConstants from './style-constants';
 import ConnectResponsiveStatusesDictHOC from './ConnectResponsiveStatusesDictHOC';
 import { ResponsiveReduxMasterHOC } from '@defualt/responsive/responsiveRedux';
-import {topBanner} from './constants';
+import {topBanner,heroImageAltText} from './constants';
 
 const StyledHomeLayout = styled.div`position: relative;`;
 
@@ -167,7 +167,7 @@ let AppHero = class extends Component {
           <StyledSelfie
             className="app_body_leftPillar_selfieFrame_selfie"
             src={this.props.imSrc}
-            alt="My BernieSelfie"
+            alt={heroImageAltText}
           />
         </AppMainSelfieFrameResponsive>
       </StyledLeftPillar>

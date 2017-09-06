@@ -15,7 +15,7 @@ import {
   UrlImportScreenWithWithUploadCallback,
   TemplateUploadScreenWithUploadCallback,
 } from './routingComponents';
-import {appNameSpace, fgImagePrefix, imageSuffix} from './constants';
+import {appNameSpace, fgImagePrefix, imageSuffix, urlAppNameSpace} from './constants';
 
 import { paramsIntoCompositeImage } from './compositeImage';
 
@@ -140,8 +140,8 @@ routeModes.forEach(homeLayoutPath => {
     screenComponentMap[route.action] = route.component;
   });
 });
-routesMap.BERNIE = '/bernie';
-screenNameMap.BERNIE = 'HOME';
+routesMap.APP_ROOT = urlAppNameSpace;
+screenNameMap.APP_ROOT = 'HOME';
 
 function filterReducers(reducers,check) {
   // return reducers;
@@ -171,7 +171,7 @@ const featured = ['h3', 'h4', 'wg'].map(srcKey => {
 
 const reducersToFocus = {
   compositeImageData: (state = {}, action) => {
-    if (routesMap[action.type] || action.type === 'BERNIE') {
+    if (routesMap[action.type] || action.type === 'APP_ROOT') {
       const compositeImageData = paramsIntoCompositeImage(action.payload);
       return compositeImageData;
     }
@@ -207,7 +207,7 @@ const reducersToFocus = {
 
 const reducers = combineReducers({
   ...filterReducers(reducersToFocus, (state,action) => {
-    return action.appNameSpace === appNameSpace || action.type === 'BERNIE';
+    return action.appNameSpace === appNameSpace || action.type === 'APP_ROOT';
   }
 ),
   

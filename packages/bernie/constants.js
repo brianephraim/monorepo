@@ -12,4 +12,7 @@ export const topBanner = {
   href: 'http://www.berniesanders.com/',
   text: 'Contribute to Bernie at BernieSanders.com'
 };
-export const backendApiPrefix = '/bernieserver'
+export const backendApiPrefix = '/bernieserver';
+export const heroImageAltText = 'My BernieSelfie';
+export const appSubTitle = 'Support Bernie with your picture';
+export const appTitle = 'BernieSelfie.com';
