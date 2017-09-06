@@ -2,6 +2,8 @@ import { connect, createConnect } from 'react-redux';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { combineReducers } from 'redux';
+import {makeNameSpacedResponsiveStatusesDictReducer} from '@defualt/responsive/nameSpaceResponsive';
+
 import { standardModesRegexArrayString } from './deriveUrlInfo';
 import {
   buttonGroupComponentsRegexArrayString,
@@ -211,15 +213,7 @@ const reducers = combineReducers({
   }),
   
   
-  responsiveStatusesDict: (state = {}, action) => {
-    if (
-      action.type === 'UDATE_RESPONSIVE_STATUSES_DICT' &&
-      action.name === 'bernie'
-    ) {
-      return { ...action.responsiveStatusesDict };
-    }
-    return state;
-  },
+  responsiveStatusesDict: makeNameSpacedResponsiveStatusesDictReducer(appNameSpace,'homeResponsive'),
   
   
 });

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-
-import ResponsiveHOC, { generateGiantSquareDetails } from '@defualt/responsive';
+import styled from 'styled-components';
+import { generateGiantSquareDetails } from '@defualt/responsive';
+import {makeNameSpacedResponsiveHOC, makemakeNameSpacedResponsiveReduxMasterHOC} from '@defualt/responsive/nameSpaceResponsive';
 import appConnect from './appConnect';
 import { generateCompositeImgSrcUrl } from './compositeImage';
 import {
@@ -16,11 +16,14 @@ import {
 import Disclaimer from './Disclaimer';
 import HomeLayoutHeader from './HomeLayoutHeader';
 
-import styled from 'styled-components';
+
 import styleConstants from './style-constants';
 import ConnectResponsiveStatusesDictHOC from './ConnectResponsiveStatusesDictHOC';
-import { ResponsiveReduxMasterHOC } from '@defualt/responsive/responsiveRedux';
-import {topBanner,heroImageAltText} from './constants';
+
+import {topBanner,heroImageAltText, appNameSpace} from './constants';
+
+const ResponsiveHOC = makeNameSpacedResponsiveHOC(appNameSpace);
+const ResponsiveReduxMasterHOC = makemakeNameSpacedResponsiveReduxMasterHOC(appNameSpace);
 
 const StyledHomeLayout = styled.div`position: relative;`;
 
@@ -101,11 +104,11 @@ AppMainSelfieFrame.propTypes = {
 AppMainSelfieFrame.defaultProps = {
   style: null,
 };
-// import {makeNameSpacedResponsiveHOC} from '@defualt/responsive/nameSpaceResponsive';
+
 const AppMainSelfieFrameResponsive = ResponsiveHOC(
   AppMainSelfieFrame,
   {
-    masterName: 'bernie',
+    masterName: 'homeResponsive',
     turns: [
       {
         priority: 1,
@@ -221,7 +224,7 @@ AppBusiness.propTypes = {
 };
 
 AppBusiness = ResponsiveHOC(AppBusiness, {
-  masterName: 'bernie',
+  masterName: 'homeResponsive',
   turns: [
     {
       priority: 2,
@@ -341,5 +344,5 @@ function HomeLayout(props) {
   );
 }
 
-export default ResponsiveReduxMasterHOC(HomeLayout, 'bernie');
+export default ResponsiveReduxMasterHOC(HomeLayout, 'homeResponsive');
 // export default HomeLayout;
