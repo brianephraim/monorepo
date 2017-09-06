@@ -1,17 +1,13 @@
 import { connect } from 'react-redux';
 import {ResponsiveMasterHOC} from './responsive'
 
-const existingComponents = {};
 export function makeNamespacedReduxConnectHocForResponsiveStatusesDict(appNameSpace) {
-  appNameSpace = typeof appNameSpace === 'function' ? appNameSpace() : appNameSpace;
-  if (!existingComponents[appNameSpace]){
-    existingComponents[appNameSpace] = connect((state /* , { params }*/) => {
-      return {
-        responsiveStatusesDict: state[appNameSpace].responsiveStatusesDict,
-      };
-    });
-  }
-  return existingComponents[appNameSpace];
+  return connect((state /* , { params }*/) => {
+    appNameSpace = typeof appNameSpace === 'function' ? appNameSpace() : appNameSpace;
+    return {
+      responsiveStatusesDict: state[appNameSpace].responsiveStatusesDict,
+    };
+  });
 }
 // ResponsiveReduxMasterHOC(Comp, `${appNameSpace}${splitter}${masterName}`,appNameSpaceOriginal,splitter,masterName)
 export function ResponsiveReduxMasterHOC(Comp, options) {

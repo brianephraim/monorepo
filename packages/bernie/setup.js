@@ -214,7 +214,7 @@ const reducers = combineReducers({
   }),
   
   
-  responsiveStatusesDict: makeNameSpacedResponsiveStatusesDictReducer(constants.appNameSpace,'homeResponsive'),
+  responsiveStatusesDict: makeNameSpacedResponsiveStatusesDictReducer(() => { return constants.appNameSpace; },'homeResponsive'),
   
   
 });

@@ -7,20 +7,10 @@ const ResponsiveHOC = makeNameSpacedResponsiveHOC(() => { return constants.appNa
 
 const ResponsiveReduxMasterHOC = makemakeNameSpacedResponsiveReduxMasterHOC(() => { return constants.appNameSpace; });
 
-
-
-
-const ConnectResponsiveStatusesDictHOC = makeNamespacedReduxConnectHocForResponsiveStatusesDict(constants.appNameSpace);
-
-
-
-
+const ConnectResponsiveStatusesDictHOC = makeNamespacedReduxConnectHocForResponsiveStatusesDict(() => { return constants.appNameSpace; });
 
 const appConnect = nameSpaceConnect(() => { return constants.appNameSpace; });
 
-
-
 export {ResponsiveHOC, ResponsiveReduxMasterHOC,ConnectResponsiveStatusesDictHOC,appConnect};
-
 
 export default {ResponsiveHOC, ResponsiveReduxMasterHOC,ConnectResponsiveStatusesDictHOC,appConnect};
