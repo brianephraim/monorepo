@@ -208,8 +208,7 @@ const reducersToFocus = {
 const reducers = combineReducers({
   ...filterReducers(reducersToFocus, (state,action) => {
     return action.appNameSpace === appNameSpace || action.type === 'APP_ROOT';
-  }
-),
+  }),
   
   
   responsiveStatusesDict: (state = {}, action) => {

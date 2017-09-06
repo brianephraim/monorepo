@@ -101,9 +101,25 @@ AppMainSelfieFrame.propTypes = {
 AppMainSelfieFrame.defaultProps = {
   style: null,
 };
-
+// import {makeNameSpacedResponsiveHOC} from '@defualt/responsive/nameSpaceResponsive';
 const AppMainSelfieFrameResponsive = ResponsiveHOC(
-  AppMainSelfieFrame
+  AppMainSelfieFrame,
+  {
+    masterName: 'bernie',
+    turns: [
+      {
+        priority: 1,
+        magicSquareName: generateGiantSquareDetails,
+      },
+      {
+        priority: 3,
+        magicSquareName: (el, masterClasses) => {
+          const gapAtBottomViaMargin = masterClasses.noFloat ? 75 : 0;
+          return generateGiantSquareDetails(el, gapAtBottomViaMargin);
+        },
+      },
+    ]
+  }
 );
 
 const StyledInstructions = styled.div`
@@ -142,23 +158,11 @@ let AppHero = class extends Component {
     };
   }
   render() {
-    const turns = [
-      {
-        priority: 1,
-        magicSquareName: generateGiantSquareDetails,
-      },
-      {
-        priority: 3,
-        magicSquareName: (el, masterClasses) => {
-          const gapAtBottomViaMargin = masterClasses.noFloat ? 75 : 0;
-          return generateGiantSquareDetails(el, gapAtBottomViaMargin);
-        },
-      },
-    ];
+    
 
     return (
       <StyledLeftPillar className="app_body_leftPillar">
-        <AppMainSelfieFrameResponsive turns={turns} masterName="bernie">
+        <AppMainSelfieFrameResponsive>
           <StyledInstructions className="app_body_leftPillar_selfieFrame_instructions ">
             <span className="selfieFrame_instructions_text">
               Right click to save{this.state.measurement}

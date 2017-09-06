@@ -13,6 +13,9 @@ import { connect } from 'react-redux';
 
 
 const ResponsiveHOC = (ComponentToWrap, defaults) => {
+  if (!defaults || !defaults.masterName) {
+    throw new Error('second argument must be object with a `masterName` property ');
+  }
   class Responsive extends Component {
     constructor() {
       super();
@@ -21,7 +24,7 @@ const ResponsiveHOC = (ComponentToWrap, defaults) => {
       this.unregisters = [];
     }
     componentDidMount() {
-      const masterName = this.props.masterName || defaults.masterName;
+      const masterName = defaults.masterName;
       const turns = this.props.turns || defaults.turns;
       turns.forEach((turn) => {
         const instance = makeResponsive(
@@ -55,7 +58,6 @@ const ResponsiveHOC = (ComponentToWrap, defaults) => {
     }
   }
   Responsive.propTypes = {
-    masterName: PropTypes.string,
     children: PropTypes.array,
     priority: PropTypes.number,
     statusIncrementsRoundUp: PropTypes.object,

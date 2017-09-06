@@ -86,7 +86,7 @@ class ResponsiveElRecords {
   registerResponsiveAssessment(
     masterName, priority, assessmentFunction, nukeStatus
   ) {
-    const assessmentGroup = this.record(masterName, priority, {
+    this.record(masterName, priority, {
       assessmentFunction,
       nukeStatus,
     });
