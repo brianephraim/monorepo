@@ -1,0 +1,16 @@
+{
+  "name": "@defualt/name-space-connect",
+  "version": "0.0.1",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "start": "devenv"
+  },
+  "dependencies": {
+    "react-redux": "^4.4.5"
+  },
+  "devDependencies": {
+    "@defualt/dev_env": "^0.0.14"
+  }
+}

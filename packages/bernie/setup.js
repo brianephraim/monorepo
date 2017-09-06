@@ -21,6 +21,8 @@ import {appNameSpace, fgImagePrefix, imageSuffix, urlAppNameSpace} from './const
 
 import { paramsIntoCompositeImage } from './compositeImage';
 
+import appConnect from './appConnect';
+
 
 let Dynamic = (props) => {
   const Comp = buttonGroupComponents[props.dynamicScreen];
@@ -217,9 +219,34 @@ const reducers = combineReducers({
   
   
 });
+
+
+
+
+
+let Routing = (props) => {
+  const Comp = screenComponentMap[props.activeAppScreen];
+  return (
+    <Comp />
+  );
+};
+Routing.propTypes = {
+  activeAppScreen: PropTypes.string.isRequired,
+};
+
+Routing = appConnect(
+  (appState /* , { params }*/) => {
+    return {
+      activeAppScreen: appState.activeAppScreen,
+    };
+  }
+)(Routing);
+
+
+
 export {
-  screenComponentMap,
   payloadRefineAction,
   reducers,
   routesMap,
+  Routing,
 };

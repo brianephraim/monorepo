@@ -1,6 +1,6 @@
 export const appNameSpace = 'bernie';
-export const urlAppNameSpace = '/bernie';
-export const tweetUrl = 'https://twitter.com/intent/tweet?url=xXxXxXxXxXxXxXxXxXxXxXxX&via=bernieselfie&hashtags=BernieSanders%2Cfeelthebern%2Cbernieselfie&related=BernieSanders';
+export const urlAppNameSpace = `/${appNameSpace}`;
+export const tweetUrl = `https://twitter.com/intent/tweet?url=xXxXxXxXxXxXxXxXxXxXxXxX&via=bernieselfie&hashtags=BernieSanders%2Cfeelthebern%2Cbernieselfie&related=BernieSanders`;
 const assetUrlPrefix = 'http://s3-us-west-1.amazonaws.com/bernieapp/'
 export const fgImagePrefix = `${assetUrlPrefix}decorations/`;
 export const bgImagePrefix = `${assetUrlPrefix}selfies/`;
@@ -16,3 +16,20 @@ export const backendApiPrefix = '/bernieserver';
 export const heroImageAltText = 'My BernieSelfie';
 export const appSubTitle = 'Support Bernie with your picture';
 export const appTitle = 'BernieSelfie.com';
+
+const constants = {
+  appNameSpace,
+  urlAppNameSpace,
+  tweetUrl,
+  fgImagePrefix,
+  bgImagePrefix,
+  imageSuffix,
+  adminEmail,
+  disclaimerText,
+  topBanner,
+  backendApiPrefix,
+  heroImageAltText,
+  appSubTitle,
+  appTitle,
+};
+export default constants;

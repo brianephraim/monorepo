@@ -6,6 +6,7 @@
   "dependencies": {
     "@defualt/bind_here": "^0.0.19",
     "@defualt/make-binder": "^0.0.1",
+    "@defualt/name-space-connect": "^0.0.1",
     "@defualt/responsive": "^0.0.1",
     "@defualt/vanilla": "^0.0.1",
     "@defualt/whitelist-filter-props": "^0.0.1",

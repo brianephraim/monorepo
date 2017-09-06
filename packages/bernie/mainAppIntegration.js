@@ -1,5 +1,5 @@
-import Routing from './Routing';
-import { routesMap, reducers } from './setup';
+// import Routing from './Routing';
+import { routesMap, reducers, Routing } from './setup';
 import { addRoutesToApp } from 'redux-routing-app-root-component';
 import {appNameSpace} from './constants';
 
