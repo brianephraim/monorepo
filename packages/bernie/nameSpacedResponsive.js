@@ -3,10 +3,18 @@ import constants from './constants';
 import {makeNamespacedReduxConnectHocForResponsiveStatusesDict} from '@defualt/responsive/responsiveRedux';
 import nameSpaceConnect from '@defualt/name-space-connect';
 
+const ResponsiveHOC = makeNameSpacedResponsiveHOC(() => { return constants.appNameSpace; });
+
+const ResponsiveReduxMasterHOC = makemakeNameSpacedResponsiveReduxMasterHOC(() => { return constants.appNameSpace; });
+
+
+
+
 const ConnectResponsiveStatusesDictHOC = makeNamespacedReduxConnectHocForResponsiveStatusesDict(constants.appNameSpace);
 
-const ResponsiveHOC = makeNameSpacedResponsiveHOC(() => { return constants.appNameSpace; });
-const ResponsiveReduxMasterHOC = makemakeNameSpacedResponsiveReduxMasterHOC(() => { return constants.appNameSpace; });
+
+
+
 
 const appConnect = nameSpaceConnect(() => { return constants.appNameSpace; });
 

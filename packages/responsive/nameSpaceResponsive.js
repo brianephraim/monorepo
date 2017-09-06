@@ -20,8 +20,7 @@ export function makeNameSpacedResponsiveHOC(appNameSpace) {
 
 export function makemakeNameSpacedResponsiveReduxMasterHOC(appNameSpace) {
   return (Comp, masterName) => {
-    appNameSpace = typeof appNameSpace === 'function' ? appNameSpace() : appNameSpace;
-    return ResponsiveReduxMasterHOC(Comp, `${appNameSpace}${splitter}${masterName}`)
+    return ResponsiveReduxMasterHOC(Comp, {appNameSpace,splitter,masterName})
   }
 }
 

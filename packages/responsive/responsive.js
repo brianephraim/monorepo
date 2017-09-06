@@ -74,9 +74,10 @@ const ResponsiveHOC = (ComponentToWrap, defaults) => {
 export default ResponsiveHOC;
 
 /* eslint-disable react/no-multi-comp */
-function ResponsiveMasterHOC(Comp, hocName = '') {
+function ResponsiveMasterHOC(Comp, options) {
+  
   class ResponsiveMaster extends Component {
-    constructor(props) {
+    constructor() {
       super();
       // this.initComponentInternalState(props);
     }
@@ -84,8 +85,12 @@ function ResponsiveMasterHOC(Comp, hocName = '') {
       this.initComponentInternalState(this.props);
     }
     componentDidMount() {
+      let {appNameSpace} = options;
+      const {splitter,masterName} = options;
+      appNameSpace = typeof appNameSpace === 'function' ? appNameSpace() : appNameSpace;
+      const name = `${appNameSpace}${splitter}${masterName}`;
       this.unregisterResponsiveRefresh = registerResponsiveRefresh({
-        name: this.props.name,
+        name,
         updateMasterClasses: (...args) => { return this.updateMasterClasses(...args); },
         nukeActiveStatusRegistryOnMaster: () => {
           this.initComponentInternalState(this.props);
@@ -137,12 +142,10 @@ function ResponsiveMasterHOC(Comp, hocName = '') {
     }
   }
   ResponsiveMaster.propTypes = {
-    name: PropTypes.string,
     children: PropTypes.node,
     onResponsiveUpdate: PropTypes.func,
   };
   ResponsiveMaster.defaultProps = {
-    name: hocName,
     onResponsiveUpdate: () => {},
     children: null,
   };

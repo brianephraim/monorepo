@@ -13,18 +13,21 @@ export function makeNamespacedReduxConnectHocForResponsiveStatusesDict(appNameSp
   }
   return existingComponents[appNameSpace];
 }
-
-export function ResponsiveReduxMasterHOC(Comp, nameSpace) {
-
-  let ResponsiveMaster = ResponsiveMasterHOC(Comp, nameSpace);
+// ResponsiveReduxMasterHOC(Comp, `${appNameSpace}${splitter}${masterName}`,appNameSpaceOriginal,splitter,masterName)
+export function ResponsiveReduxMasterHOC(Comp, options) {
+  let ResponsiveMaster = ResponsiveMasterHOC(Comp, options);
   ResponsiveMaster = connect(
     () => {
       return {};
     },
     {
       onResponsiveUpdate: responsiveStatusesDict => {
+        const {splitter,masterName} = options;
+        let {appNameSpace} = options;
+        appNameSpace = typeof appNameSpace === 'function' ? appNameSpace() : appNameSpace;
+        appNameSpace = `${appNameSpace}${splitter}${masterName}`;
         return {
-          name: nameSpace,
+          name: appNameSpace,
           responsiveStatusesDict,
           type: 'UDATE_RESPONSIVE_STATUSES_DICT',
         };
