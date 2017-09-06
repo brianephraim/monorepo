@@ -290,6 +290,7 @@ const StyledApp = ConnectResponsiveStatusesDictHOC(styled.div`
   box-sizing: border-box;
 
   ${props => {
+    console.log(props.responsiveStatusesDict);
     if (props.responsiveStatusesDict.homeResponsive.singleCol) {
       return `
         padding-bottom:${styleConstants.appPad}em;

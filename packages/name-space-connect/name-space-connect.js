@@ -16,6 +16,7 @@ export default function nameSpaceConnect(appNameSpace) {
         if (typeof oldSomeAction === 'function'){
           return (dispatch,...args2) => {
             const newDispatch = (action,...args3) => {
+              appNameSpace = typeof appNameSpace === 'function' ? appNameSpace() : appNameSpace;
               const newAction = {
                 ...action,
                 appNameSpace,
@@ -32,6 +33,7 @@ export default function nameSpaceConnect(appNameSpace) {
     },{});
 
     const mapStateToPropsToPass = !mapStateToProps ? mapStateToProps : (state, ...args) => {
+      appNameSpace = typeof appNameSpace === 'function' ? appNameSpace() : appNameSpace;
       return mapStateToProps(state[appNameSpace], ...args);
     };
     return connect(mapStateToPropsToPass, mapDispatchToPropsToPass, ...args);

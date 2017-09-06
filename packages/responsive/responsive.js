@@ -24,7 +24,9 @@ const ResponsiveHOC = (ComponentToWrap, defaults) => {
       this.unregisters = [];
     }
     componentDidMount() {
-      const masterName = defaults.masterName;
+      const splitter = defaults.splitter || '';
+      const appNameSpace = typeof defaults.appNameSpace === 'function' ? defaults.appNameSpace() : (defaults.appNameSpace || '');
+      const masterName = `${appNameSpace}${splitter}${defaults.masterName}`;
       const turns = this.props.turns || defaults.turns;
       turns.forEach((turn) => {
         const instance = makeResponsive(

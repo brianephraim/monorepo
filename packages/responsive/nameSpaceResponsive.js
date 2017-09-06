@@ -8,33 +8,26 @@ export function makeNameSpacedResponsiveHOC(appNameSpace) {
     if (!defaults || !defaults.masterName) {
       throw new Error('second argument must be object with a `masterName` property ');
     }
+
     return ResponsiveHOC(Comp, {
       ...defaults,
-      masterName: `${appNameSpace}${splitter}${defaults.masterName}`
+      masterName: defaults.masterName,
+      appNameSpace: appNameSpace,
+      splitter: splitter,
     })
   }
 }
 
 export function makemakeNameSpacedResponsiveReduxMasterHOC(appNameSpace) {
   return (Comp, masterName) => {
+    appNameSpace = typeof appNameSpace === 'function' ? appNameSpace() : appNameSpace;
     return ResponsiveReduxMasterHOC(Comp, `${appNameSpace}${splitter}${masterName}`)
   }
 }
 
-export function makeNameSpacedResponsiveStatusesDictReducerXXXXXX(appNameSpace,masterName){
-  return (state = {}, action) => {
-    if (
-      action.type === 'UDATE_RESPONSIVE_STATUSES_DICT' &&
-      action.name === `${appNameSpace}${splitter}${masterName}`
-    ) {
-      return { ...action.responsiveStatusesDict };
-    }
-    return state;
-  };
-}
-
 export function makeNameSpacedResponsiveStatusesDictReducer(appNameSpace,masterName){
   return (state = {}, action) => {
+    appNameSpace = typeof appNameSpace === 'function' ? appNameSpace() : appNameSpace;
     if (
       action.type === 'UDATE_RESPONSIVE_STATUSES_DICT' &&
       action.name.indexOf(`${appNameSpace}${splitter}`) === 0 

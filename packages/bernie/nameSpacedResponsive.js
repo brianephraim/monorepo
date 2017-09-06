@@ -5,10 +5,10 @@ import nameSpaceConnect from '@defualt/name-space-connect';
 
 const ConnectResponsiveStatusesDictHOC = makeNamespacedReduxConnectHocForResponsiveStatusesDict(constants.appNameSpace);
 
-const ResponsiveHOC = makeNameSpacedResponsiveHOC(constants.appNameSpace);
-const ResponsiveReduxMasterHOC = makemakeNameSpacedResponsiveReduxMasterHOC(constants.appNameSpace);
+const ResponsiveHOC = makeNameSpacedResponsiveHOC(() => { return constants.appNameSpace; });
+const ResponsiveReduxMasterHOC = makemakeNameSpacedResponsiveReduxMasterHOC(() => { return constants.appNameSpace; });
 
-const appConnect = nameSpaceConnect(constants.appNameSpace);
+const appConnect = nameSpaceConnect(() => { return constants.appNameSpace; });
 
 
 
