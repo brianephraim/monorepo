@@ -34,7 +34,7 @@ const StyledTopBanner = ConnectResponsiveStatusesDictHOC(styled.div`
     width: 100%;
     padding-top: ${styleConstants.appPad}em;
     ${props => {
-      if (props.responsiveStatusesDict.windowVerticalTooSmall) {
+      if (props.responsiveStatusesDict.homeResponsive.windowVerticalTooSmall) {
         return `
           padding-top:0;
           position:static;
@@ -74,7 +74,7 @@ const StyledSelfieFrame = ConnectResponsiveStatusesDictHOC(styled.div`
   padding: ${styleConstants.appPad}em ${styleConstants.appPad}em
     ${styleConstants.appPad}em ${styleConstants.appPad}em;
   ${props => {
-    if (props.responsiveStatusesDict.noFloat) {
+    if (props.responsiveStatusesDict.homeResponsive.noFloat) {
       return `
         margin: 0 auto;
         padding:${styleConstants.appPad}em;
@@ -142,7 +142,7 @@ const StyledSelfie = styled.img`
 const StyledLeftPillar = ConnectResponsiveStatusesDictHOC(styled.div`
   ${styleConstants.mixins.leftPillar()} position: relative;
   ${props => {
-    if (props.responsiveStatusesDict.noFloat) {
+    if (props.responsiveStatusesDict.homeResponsive.noFloat) {
       return `
         float:none;
       `;
@@ -199,7 +199,7 @@ const StyledRightPillar = ConnectResponsiveStatusesDictHOC(styled.div`
   ${styleConstants.mixins.rightPillar()}
   padding-top:${styleConstants.appPad}em;
   ${props => {
-    if (props.responsiveStatusesDict.noFloat) {
+    if (props.responsiveStatusesDict.homeResponsive.noFloat) {
       return `
         margin-left:${styleConstants.appPad}em;
         position: relative;
@@ -251,18 +251,18 @@ const StyledSection = ConnectResponsiveStatusesDictHOC(styled.div`
     let toReturn = '';
     if (props.section === 'share') {
       toReturn += 'float:right;';
-      if (props.responsiveStatusesDict.singleCol) {
+      if (props.responsiveStatusesDict.homeResponsive.singleCol) {
         toReturn += 'float: none;';
       }
     } else if (props.section === 'photo') {
       toReturn += 'float:left;';
-      if (props.responsiveStatusesDict.doubleCol) {
+      if (props.responsiveStatusesDict.homeResponsive.doubleCol) {
         toReturn += 'float: none;';
       }
     }
     return toReturn;
   }} ${props => {
-      if (props.responsiveStatusesDict.doubleCol) {
+      if (props.responsiveStatusesDict.homeResponsive.doubleCol) {
         return `
         width:50%;
       `;
@@ -270,12 +270,12 @@ const StyledSection = ConnectResponsiveStatusesDictHOC(styled.div`
       return '';
     }} ${props => {
       let toReturn = '';
-      if (props.responsiveStatusesDict.singleCol) {
+      if (props.responsiveStatusesDict.homeResponsive.singleCol) {
         toReturn += `
         float:none;
         width:auto;
       `;
-        if (props.responsiveStatusesDict.noFloat) {
+        if (props.responsiveStatusesDict.homeResponsive.noFloat) {
           toReturn += `
           float:left;
           width:33.3333%;
@@ -292,7 +292,7 @@ const StyledApp = ConnectResponsiveStatusesDictHOC(styled.div`
   box-sizing: border-box;
 
   ${props => {
-    if (props.responsiveStatusesDict.singleCol) {
+    if (props.responsiveStatusesDict.homeResponsive.singleCol) {
       return `
         padding-bottom:${styleConstants.appPad}em;
       `;

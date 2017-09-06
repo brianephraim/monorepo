@@ -21,13 +21,31 @@ export function makemakeNameSpacedResponsiveReduxMasterHOC(appNameSpace) {
   }
 }
 
-export function makeNameSpacedResponsiveStatusesDictReducer(appNameSpace,masterName){
+export function makeNameSpacedResponsiveStatusesDictReducerXXXXXX(appNameSpace,masterName){
   return (state = {}, action) => {
     if (
       action.type === 'UDATE_RESPONSIVE_STATUSES_DICT' &&
       action.name === `${appNameSpace}${splitter}${masterName}`
     ) {
       return { ...action.responsiveStatusesDict };
+    }
+    return state;
+  };
+}
+
+export function makeNameSpacedResponsiveStatusesDictReducer(appNameSpace,masterName){
+  return (state = {}, action) => {
+    if (
+      action.type === 'UDATE_RESPONSIVE_STATUSES_DICT' &&
+      action.name.indexOf(`${appNameSpace}${splitter}`) === 0 
+    ) {
+      // is within appNameSpace
+      const actionNameSplit = action.name.split(splitter);
+      const derivedMasterName = actionNameSplit[1];
+      return {
+        ...state,
+        [derivedMasterName]: action.responsiveStatusesDict,
+      };
     }
     return state;
   };

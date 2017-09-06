@@ -8,7 +8,7 @@ import {tweetUrl,appSubTitle,appTitle} from './constants';
 
 const StyledLeftPillar = ConnectResponsiveStatusesDictHOC(styled.div`
   ${styleConstants.mixins.leftPillar()} ${props => {
-      return props.responsiveStatusesDict.windowVerticalTooSmall
+      return props.responsiveStatusesDict.homeResponsive.windowVerticalTooSmall
         ? 'float: none;'
         : '';
     }} @media (max-width: 700px) {
@@ -20,7 +20,7 @@ const StyledLeftPillar = ConnectResponsiveStatusesDictHOC(styled.div`
 const StyledBranding = ConnectResponsiveStatusesDictHOC(styled.div`
   height: ${styleConstants.headerTopHeight}em;
   ${props => {
-    return props.responsiveStatusesDict.windowVerticalTooSmall
+    return props.responsiveStatusesDict.homeResponsive.windowVerticalTooSmall
       ? 'height: auto;'
       : '';
   }};
@@ -30,7 +30,7 @@ const StyledBrandingTitle = ConnectResponsiveStatusesDictHOC(styled.div`
   font-family: ${styleConstants.font1};
   font-size: ${styleConstants.appPad * 2}em;
   ${props => {
-    return props.responsiveStatusesDict.windowVerticalTooSmall
+    return props.responsiveStatusesDict.homeResponsive.windowVerticalTooSmall
       ? 'text-align: center;'
       : '';
   }};
@@ -39,7 +39,7 @@ const StyledBrandingTitle = ConnectResponsiveStatusesDictHOC(styled.div`
 const StyledBrandingSubtitle = ConnectResponsiveStatusesDictHOC(styled.div`
   font-size: ${styleConstants.appPad * 1.5}em;
   ${props => {
-    return props.responsiveStatusesDict.windowVerticalTooSmall
+    return props.responsiveStatusesDict.homeResponsive.windowVerticalTooSmall
       ? 'display: none;'
       : '';
   }} @media (max-width: 400px) {
@@ -54,21 +54,21 @@ const StyledBrandingSubtitle = ConnectResponsiveStatusesDictHOC(styled.div`
 const StyledSocialRow = ConnectResponsiveStatusesDictHOC(styled.div`
   ${props => {
     return styleConstants.mixins.socialRow_left(
-      props.responsiveStatusesDict.windowVerticalTooSmall
+      props.responsiveStatusesDict.homeResponsive.windowVerticalTooSmall
     );
   }} ${styleConstants.mixins.socialRowClass()};
 `);
 const StyledSocialWidget = ConnectResponsiveStatusesDictHOC(styled.div`
   ${props => {
     return styleConstants.mixins.socialWidget_left(
-      props.responsiveStatusesDict.windowVerticalTooSmall
+      props.responsiveStatusesDict.homeResponsive.windowVerticalTooSmall
     );
   }} ${styleConstants.mixins.socialWidgetClass()};
 `);
 
 const StyledRightPillar = ConnectResponsiveStatusesDictHOC(styled.div`
   ${styleConstants.mixins.rightPillar()} ${props => {
-      if (props.responsiveStatusesDict.windowVerticalTooSmall) {
+      if (props.responsiveStatusesDict.homeResponsive.windowVerticalTooSmall) {
         return `
         ${styleConstants.mixins.socialAtBottom()}
         padding-bottom:0;

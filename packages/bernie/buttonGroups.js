@@ -20,7 +20,7 @@ const StyledSubsection = ConnectResponsiveStatusesDictHOC(styled.div`
   ${props => {
     let toReturn = '';
     // singleColHome
-    if (!props.isModal && props.responsiveStatusesDict.singleCol) {
+    if (!props.isModal && props.responsiveStatusesDict.homeResponsive.singleCol) {
       toReturn += `
         float:none;
         margin:0 auto;
@@ -37,7 +37,7 @@ const StyledSubsection = ConnectResponsiveStatusesDictHOC(styled.div`
       toReturn += `
         display:none;
       `;
-      if (!props.isModal && props.responsiveStatusesDict.singleCol) {
+      if (!props.isModal && props.responsiveStatusesDict.homeResponsive.singleCol) {
         toReturn += `
           display:block;
         `;
@@ -67,7 +67,7 @@ const StyledIconWrapper = ConnectResponsiveStatusesDictHOC(styled.div`
   float: left;
   ${props => {
     // singleColHome
-    if (!props.isModal && props.responsiveStatusesDict.singleCol) {
+    if (!props.isModal && props.responsiveStatusesDict.homeResponsive.singleCol) {
       return `
         float:none;
         margin:0 auto;
@@ -106,7 +106,7 @@ const StyledMicroText = ConnectResponsiveStatusesDictHOC(styled.div`
   padding-bottom: ${styleConstants.appPad}em;
   ${props => {
     // singleColHome
-    if (!props.isModal && props.responsiveStatusesDict.singleCol) {
+    if (!props.isModal && props.responsiveStatusesDict.homeResponsive.singleCol) {
       return `
         display:block;
       `;
@@ -120,7 +120,7 @@ const StyledText = ConnectResponsiveStatusesDictHOC(styled.div`
   overflow: hidden;
   ${props => {
     // singleColHome
-    if (!props.isModal && props.responsiveStatusesDict.singleCol) {
+    if (!props.isModal && props.responsiveStatusesDict.homeResponsive.singleCol) {
       return `
         width:0;
         white-space: nowrap;
@@ -137,7 +137,7 @@ const StyledButtonGroup = ConnectResponsiveStatusesDictHOC(styled.div`
     2}em ${styleConstants.appPad}em 0 ${styleConstants.appPad}em;
   ${props => {
     // singleColHome
-    if (!props.isModal && props.responsiveStatusesDict.singleCol) {
+    if (!props.isModal && props.responsiveStatusesDict.homeResponsive.singleCol) {
       return `
         padding: ${styleConstants.appPad / 2}em 0 0 0;
         cursor:pointer;
@@ -170,7 +170,7 @@ const StyledButtonGroupButtons = ConnectResponsiveStatusesDictHOC(styled.div`
   ${props => {
     // singleColHome
 
-    if (!props.isModal && props.responsiveStatusesDict.singleCol) {
+    if (!props.isModal && props.responsiveStatusesDict.homeResponsive.singleCol) {
       return `
         display:none;
       `;
