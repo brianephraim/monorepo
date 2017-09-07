@@ -5,8 +5,8 @@
   "version": "0.0.0",
   "description": "Redux ToDos example",
   "scripts": {
-    "prettier": "./node_modules/.bin/prettier --single-quote --trailing-comma es5 --write \"packages/bernie/**/*.js\"",
-    "eslintfix": "./node_modules/.bin/eslint --fix  packages/bernie",
+    "prettier": "./node_modules/.bin/prettier --single-quote --trailing-comma es5 --write \"packages/profile-framer-frontend/**/*.js\"",
+    "eslintfix": "./node_modules/.bin/eslint --fix  packages/profile-framer-frontend",
     "mono": "./packages/mono-to-multirepo/bin/mono-to-multirepo.js --i",
     "testpackages": "./packages/dev_env/bin/devenv.js --env=test",
     "test": "./packages/dev_env/bin/devenv.js --env=test --testdevenv",

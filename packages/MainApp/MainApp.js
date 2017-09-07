@@ -1,6 +1,6 @@
 import renderReactRoot from '@defualt/render-react-root';
 import Routing, {addRoutesToApp} from 'redux-routing-app-root-component';
-import integrateBernie from 'bernie/setup'
+import integrateBernie from 'profile-framer-frontend/setup'
 import integrateToDoApp from 'todo_app/mainAppIntegration'
 import integrateBattleship from 'battleship/mainAppIntegration'
 import RouteLinksList from './RouteLinksList';
