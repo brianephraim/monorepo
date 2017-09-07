@@ -2,7 +2,6 @@ import { connect, createConnect } from 'react-redux';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { combineReducers } from 'redux';
-import {makeNameSpacedResponsiveStatusesDictReducer} from '@defualt/responsive/nameSpaceResponsive';
 import { addRoutesToApp } from 'redux-routing-app-root-component';
 import { standardModesRegexArrayString } from './deriveUrlInfo';
 import {
@@ -22,7 +21,7 @@ import constants, {registerConstants} from './constants';
 
 import { paramsIntoCompositeImage } from './compositeImage';
 
-import {appConnect} from './nameSpacedResponsive';
+import {appConnect, nameSpacedResponsiveStatusesDictReducer} from './nameSpacedResponsive';
 
 let payloadRefineActionGetsRedefined = () => {};
 function payloadRefineAction(...args) {
@@ -232,7 +231,7 @@ export default function(constantsInjection) {
     }),
     
     
-    responsiveStatusesDict: makeNameSpacedResponsiveStatusesDictReducer(() => { return constants.appNameSpace; },'homeResponsive'),
+    responsiveStatusesDict: nameSpacedResponsiveStatusesDictReducer,
     
     
   });
