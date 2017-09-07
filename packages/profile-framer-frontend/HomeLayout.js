@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { generateGiantSquareDetails } from '@defualt/responsive';
-import {appConnect} from './nameSpacedResponsive';
 import { generateCompositeImgSrcUrl } from './compositeImage';
 import {
   EditDesignButtonGroup,
@@ -21,7 +20,7 @@ import styleConstants from './style-constants';
 import constants from './constants';
 
 
-import {ResponsiveHOC, ResponsiveReduxMasterHOC,ConnectResponsiveStatusesDictHOC} from './nameSpacedResponsive';
+import {ResponsiveHOC, ResponsiveReduxMasterHOC,ConnectResponsiveStatusesDictHOC,appConnect} from './nameSpacedResponsive';
 
 const StyledHomeLayout = styled.div`position: relative;`;
 
@@ -290,7 +289,6 @@ const StyledApp = ConnectResponsiveStatusesDictHOC(styled.div`
   box-sizing: border-box;
 
   ${props => {
-    console.log(props.responsiveStatusesDict);
     if (props.responsiveStatusesDict.homeResponsive.singleCol) {
       return `
         padding-bottom:${styleConstants.appPad}em;

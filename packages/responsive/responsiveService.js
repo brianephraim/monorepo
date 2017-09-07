@@ -147,7 +147,6 @@ class ResizeRegistry {
   registerResponsiveRefresh({
     name, nukeActiveStatusRegistryOnMaster, updateMasterClasses,
   }) {
-    console.log(name);
     this.cache[name] = {
       assessResponsiveEls: () => {
         responsiveElRecords.purge(name);

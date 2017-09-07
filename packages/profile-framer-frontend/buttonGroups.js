@@ -1,13 +1,11 @@
-import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import {appConnect} from './nameSpacedResponsive';
 import Upload from './Upload';
 import AppReduxLink from './AppReduxLink';
 
 import styleConstants from './style-constants';
-import {ConnectResponsiveStatusesDictHOC} from './nameSpacedResponsive';
+import {ConnectResponsiveStatusesDictHOC, appConnect} from './nameSpacedResponsive';
 import ImagePickerTemplate from './ImagePickerTemplate';
 import ModalScreen from './ModalScreen';
 import makeActionSetBackground from './makeActionSetBackground';
@@ -20,7 +18,7 @@ const StyledSubsection = ConnectResponsiveStatusesDictHOC(styled.div`
   ${props => {
     let toReturn = '';
     // singleColHome
-    if (!props.isModal && props.responsiveStatusesDict.homeResponsive.singleCol) {
+    if (!props.isModal && props.responsiveStatusesDict.homeResponsive && props.responsiveStatusesDict.homeResponsive.singleCol) {
       toReturn += `
         float:none;
         margin:0 auto;
@@ -44,20 +42,22 @@ const StyledSubsection = ConnectResponsiveStatusesDictHOC(styled.div`
       }
     }
     return toReturn;
-  }} ${props => {
+  }} ${(props) => {
       if (props.layoutVariation === 'header') {
         return `
         display: inline-block;
         padding-bottom: 0;
       `;
       }
-    }} ${props => {
+      return '';
+    }} ${(props) => {
       if (props.hasLeftBorder) {
         return `
         border-left: ${styleConstants.appPad * 0.5}em solid ${styleConstants
           .colors.red};
       `;
       }
+      return '';
     }};
 `);
 
@@ -67,7 +67,7 @@ const StyledIconWrapper = ConnectResponsiveStatusesDictHOC(styled.div`
   float: left;
   ${props => {
     // singleColHome
-    if (!props.isModal && props.responsiveStatusesDict.homeResponsive.singleCol) {
+    if (!props.isModal && props.responsiveStatusesDict.homeResponsive && props.responsiveStatusesDict.homeResponsive.singleCol) {
       return `
         float:none;
         margin:0 auto;
@@ -88,12 +88,13 @@ const headerStyle = `
 `;
 const StyledHeaderLink = styled(AppReduxLink)`
   ${headerStyle}
-  ${props => {
+  ${(props) => {
     if (props.layoutVariation === 'header') {
       return `
         color: ${styleConstants.colors.red};
       `;
     }
+    return '';
   }}
 `;
 const StyledHeaderDiv = styled.div`${headerStyle};`;
@@ -106,7 +107,7 @@ const StyledMicroText = ConnectResponsiveStatusesDictHOC(styled.div`
   padding-bottom: ${styleConstants.appPad}em;
   ${props => {
     // singleColHome
-    if (!props.isModal && props.responsiveStatusesDict.homeResponsive.singleCol) {
+    if (!props.isModal && props.responsiveStatusesDict.homeResponsive && props.responsiveStatusesDict.homeResponsive.singleCol) {
       return `
         display:block;
       `;
@@ -120,7 +121,7 @@ const StyledText = ConnectResponsiveStatusesDictHOC(styled.div`
   overflow: hidden;
   ${props => {
     // singleColHome
-    if (!props.isModal && props.responsiveStatusesDict.homeResponsive.singleCol) {
+    if (!props.isModal && props.responsiveStatusesDict.homeResponsive && props.responsiveStatusesDict.homeResponsive.singleCol) {
       return `
         width:0;
         white-space: nowrap;
@@ -137,7 +138,7 @@ const StyledButtonGroup = ConnectResponsiveStatusesDictHOC(styled.div`
     2}em ${styleConstants.appPad}em 0 ${styleConstants.appPad}em;
   ${props => {
     // singleColHome
-    if (!props.isModal && props.responsiveStatusesDict.homeResponsive.singleCol) {
+    if (!props.isModal && props.responsiveStatusesDict.homeResponsive && props.responsiveStatusesDict.homeResponsive.singleCol) {
       return `
         padding: ${styleConstants.appPad / 2}em 0 0 0;
         cursor:pointer;
@@ -146,31 +147,33 @@ const StyledButtonGroup = ConnectResponsiveStatusesDictHOC(styled.div`
     return '';
   }}
   background:${styleConstants.colors.red};
-  ${props => {
+  ${(props) => {
     if (props.layoutVariation === 'header') {
       return `
         background: ${styleConstants.colors.white};
         padding-right: 0;
       `;
     }
+    return '';
   }}
 
-  ${props => {
+  ${(props) => {
     if (props.noLeftPadding) {
       return `
         padding-left: 0;
       `;
     }
+    return '';
   }}
 
   noLeftPadding
 `);
 
 const StyledButtonGroupButtons = ConnectResponsiveStatusesDictHOC(styled.div`
-  ${props => {
+  ${(props) => {
     // singleColHome
 
-    if (!props.isModal && props.responsiveStatusesDict.homeResponsive.singleCol) {
+    if (!props.isModal && props.responsiveStatusesDict.homeResponsive && props.responsiveStatusesDict.homeResponsive.singleCol) {
       return `
         display:none;
       `;
@@ -189,10 +192,11 @@ const headerButtonsStyles = `
 const StyledButton = styled.div`
   ${styleConstants.mixins.button()};
   color: ${styleConstants.colors.red};
-  ${props => {
+  ${(props) => {
     if (props.layoutVariation === 'header') {
       return headerButtonsStyles;
     }
+    return '';
   }};
 `;
 
@@ -203,7 +207,7 @@ const StyledButtonInnerAnchor = styled.a`
 const StyledButtonInnerAppReduxLink = styled(AppReduxLink)`
   ${styleConstants.mixins.buttonInner()}
   background: ${styleConstants.colors.white};
-  ${props => {
+  ${(props) => {
     if (props.layoutVariation === 'header') {
       return `
         ${styleConstants.mixins.buttonInner()}
@@ -215,6 +219,7 @@ const StyledButtonInnerAppReduxLink = styled(AppReduxLink)`
         cursor: normal;
       `;
     }
+    return '';
   }}
 `;
 const StyledButtonInnerSpan = styled.span`
@@ -278,13 +283,14 @@ let AppButtonGroup = class extends Component {
         </span>
       </StyledText>;
     const buttons = this.props.filter(this.props.buttons);
+    const ComponentPrepended = this.props.buttonsPrepend;
     const buttonComponents =
       buttons &&
       <StyledButtonGroupButtons
         isModal={this.props.isModal}
         filter={this.props.filter}
       >
-        {!this.props.hideExtras && this.props.buttonsPrepend(this.props)}
+        {!this.props.hideExtras && (<ComponentPrepended {...this.props} />)}
         {buttons.map(btnDetails => {
           let btnInner;
           if (btnDetails.isUploadBackgroundSetter) {
@@ -382,9 +388,12 @@ AppButtonGroup.propTypes = {
   buttons: PropTypes.array,
   urlFragment: PropTypes.string,
   compositeImageData: PropTypes.object.isRequired,
-  isUploadBackgroundSetter: PropTypes.bool,
+  hideExtras: PropTypes.bool,
+  noLeftPadding: PropTypes.bool,
+  hasLeftBorder: PropTypes.bool,
   isModal: PropTypes.bool,
   themex: PropTypes.string,
+  layoutVariation: PropTypes.string,
   filter: PropTypes.func,
   buttonsPrepend: PropTypes.func,
 };
@@ -394,13 +403,16 @@ AppButtonGroup.defaultProps = {
   headline: '',
   buttons: [],
   urlFragment: '',
-  isUploadBackgroundSetter: false,
+  hideExtras: false,
+  noLeftPadding: false,
+  hasLeftBorder: false,
   isModal: false,
   themex: '',
-  filter: buttons => {
+  layoutVariation: '',
+  filter: (buttons) => {
     return buttons;
   },
-  buttonsPrepend: () => {},
+  buttonsPrepend: () => {return null},
 };
 
 AppButtonGroup = appConnect((appState /* , { params }*/) => {
@@ -511,17 +523,22 @@ const EditSizeButtonGroup = makeButtonGroupComponent({
 });
 buttonGroupComponents.editSize = EditSizeButtonGroup;
 
+function ImagePickerTemplateConfigured(props) {
+  return (<ImagePickerTemplate limit={3} layoutVariation={props.layoutVariation} />);
+}
+ImagePickerTemplateConfigured.propTypes = {
+  layoutVariation: PropTypes.string
+};
+ImagePickerTemplateConfigured.defaultProps = {
+  layoutVariation: ''
+};
 const EditDesignButtonGroup = makeButtonGroupComponent({
   urlFragment: 'editDesign',
   themex: 'designSubsection',
   shortHeadline: 'edit',
   headline: 'Change design:',
   icon: 'brush',
-  buttonsPrepend: props => {
-    return (
-      <ImagePickerTemplate limit={3} layoutVariation={props.layoutVariation} />
-    );
-  },
+  buttonsPrepend: ImagePickerTemplateConfigured,
   buttons: [
     {
       text: 'more options',
@@ -549,9 +566,7 @@ const GetPhotoMinimalButtonGroup = makeButtonGroupComponent({
   // shortHeadline: 'edit',
   headline: '\u00A0',
   // icon: 'brush',
-  buttonsPrepend: () => {
-    return <ImageNeighborCompensator />;
-  },
+  buttonsPrepend: ImageNeighborCompensator,
   buttons: [
     {
       text: 'get photo',
