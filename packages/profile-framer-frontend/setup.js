@@ -1,5 +1,5 @@
 import { connect, createConnect } from 'react-redux';
-import React from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import { combineReducers } from 'redux';
 import { addRoutesToApp } from 'redux-routing-app-root-component';
@@ -240,14 +240,24 @@ export default function(constantsInjection) {
 
 
 
-  let Routing = (props) => {
-    const Comp = screenComponentMap[props.activeAppScreen];
-    return (
-      <Comp />
-    );
+  let Routing = class extends Component {
+    getChildContext() {
+      return {
+        constants: constantsInjection,
+      };
+    }
+    render(){
+      const Comp = screenComponentMap[this.props.activeAppScreen];
+      return (
+        <Comp />
+      );
+    }
   };
   Routing.propTypes = {
     activeAppScreen: PropTypes.string.isRequired,
+  };
+  Routing.childContextTypes = {
+    constants: PropTypes.object,
   };
 
   Routing = appConnect(

@@ -9,7 +9,6 @@ import {ConnectResponsiveStatusesDictHOC, appConnect} from './nameSpacedResponsi
 import ImagePickerTemplate from './ImagePickerTemplate';
 import ModalScreen from './ModalScreen';
 import makeActionSetBackground from './makeActionSetBackground';
-import constants from './constants';
 
 import './app.scss';
 
@@ -428,8 +427,8 @@ function makeButtonGroupComponent(
 }*/
 ) {
 
-  function ButtonGroup(props) {
-    options = typeof options === 'function' ? options() : options;
+  function ButtonGroup(props,context) {
+    options = typeof options === 'function' ? options(context.constants) : options;
     const ButtonGroup = <AppButtonGroup {...props} {...options} />;
     if (props.isModal) {
       return (
@@ -445,6 +444,9 @@ function makeButtonGroupComponent(
   };
   ButtonGroup.defaultProps = {
     isModal: false,
+  };
+  ButtonGroup.contextTypes = {
+    constants: PropTypes.object
   };
   return ButtonGroup;
 }
@@ -476,7 +478,7 @@ const ImportButtonGroup = makeButtonGroupComponent({
 });
 buttonGroupComponents.import = ImportButtonGroup;
 
-const ShareButtonGroup = makeButtonGroupComponent(() => {
+const ShareButtonGroup = makeButtonGroupComponent((constants) => {
   return {
     urlFragment: 'share',
     headline: 'Share this via:',

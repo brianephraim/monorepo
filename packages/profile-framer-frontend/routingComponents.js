@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types'; 
 import {appConnect} from './nameSpacedResponsive';
 import CropperScreen from './CropperScreen';
@@ -54,22 +54,31 @@ export function ImagePickerTemplateWithOnClick () {
 
 
 
-function generateCompletionUrl(activeCompositeImageData) {
-  return `${constants.urlAppNameSpace}/${formUrl(activeCompositeImageData)}`;
-}
-let CropperWithFgBgCompletion = (props) => {
-  return (
-    <ModalScreen hasCloseButton>
-      <CropperScreen
-        foreground={props.compositeImageData.foreground}
-        background={props.compositeImageData.background}
-        generateCompletionUrl={generateCompletionUrl}
-      />
-    </ModalScreen>
-  );
+let CropperWithFgBgCompletion = class extends Component {
+  constructor(){
+    super();
+    this.generateCompletionUrl = this.generateCompletionUrl.bind(this);
+  }
+  generateCompletionUrl(activeCompositeImageData) {
+    return `${this.context.constants.urlAppNameSpace}/${formUrl(activeCompositeImageData)}`;
+  }
+  render(){
+    return (
+      <ModalScreen hasCloseButton>
+        <CropperScreen
+          foreground={this.props.compositeImageData.foreground}
+          background={this.props.compositeImageData.background}
+          generateCompletionUrl={this.generateCompletionUrl}
+        />
+      </ModalScreen>
+    );
+  }
 }
 CropperWithFgBgCompletion.propTypes = {
   compositeImageData: PropTypes.object.isRequired,
+};
+CropperWithFgBgCompletion.contextTypes = {
+  constants: PropTypes.object
 };
 CropperWithFgBgCompletion = appConnect(
   (appState /* , { params }*/) => {
