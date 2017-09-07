@@ -6,7 +6,7 @@ import integrateBattleship from 'battleship/mainAppIntegration'
 import RouteLinksList from './RouteLinksList';
 import './reset.css';
 
-const appNameSpace = 'bernie';
+const appNameSpace = 'boomer';
 const urlAppNameSpace = `/${appNameSpace}`;
 const tweetUrl = `https://twitter.com/intent/tweet?url=xXxXxXxXxXxXxXxXxXxXxXxX&via=bernieselfie&hashtags=BernieSanders%2Cfeelthebern%2Cbernieselfie&related=BernieSanders`;
 const assetUrlPrefix = 'http://s3-us-west-1.amazonaws.com/bernieapp/'
