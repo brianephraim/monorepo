@@ -1,7 +1,7 @@
 import {makeNameSpacedResponsiveHOC, makemakeNameSpacedResponsiveReduxMasterHOC} from '@defualt/responsive/nameSpaceResponsive';
-import constants from './constants';
-import {makeNamespacedReduxConnectHocForResponsiveStatusesDict} from '@defualt/responsive/responsiveRedux';
 import nameSpaceConnect from '@defualt/name-space-connect';
+import {makeNamespacedReduxConnectHocForResponsiveStatusesDict} from '@defualt/responsive/responsiveRedux';
+import constants from './constants';
 
 const ResponsiveHOC = makeNameSpacedResponsiveHOC(() => { return constants.appNameSpace; });
 

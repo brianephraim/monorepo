@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import styleConstants from './style-constants';
@@ -20,15 +20,6 @@ const StyledH2 = styled.h2`
   font-size: ${styleConstants.appPad * 2}em;
 `;
 
-const StyledButtonInnerSpan = styled.span`
-  ${styleConstants.mixins.buttonInner()} background: ${styleConstants.colors
-      .red};
-  width: ${styleConstants.appPad * 3}em;
-  ${styleConstants.mixins.button()} position:absolute;
-  right: 0;
-  width: ${styleConstants.appPad * 3}em;
-`;
-
 export default function ModalScreen(props) {
   return (
     <StyledWrap>
@@ -41,3 +32,13 @@ export default function ModalScreen(props) {
     </StyledWrap>
   );
 }
+ModalScreen.propTypes = {
+  hasCloseButton: PropTypes.bool,
+  children: PropTypes.node,
+  headerText: PropTypes.string,
+};
+ModalScreen.defaultProps = {
+  hasCloseButton: false,
+  headerText: '',
+  children: null,
+};

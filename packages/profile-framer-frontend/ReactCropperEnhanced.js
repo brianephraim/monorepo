@@ -53,7 +53,6 @@ class ReactCropperEnhanced extends Component {
     }
   }
   componentWillUnmount() {
-    console.log('componentWillUnmount')
     if (this.removeWindowSizerCb) {
       this.removeWindowSizerCb();
       delete this.removeWindowSizerCb;
