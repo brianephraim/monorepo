@@ -173,7 +173,7 @@ class ResizeRegistry {
   }
   recurseAssessmentFunctions(masterName, cb) {
     if (!responsiveElRecords.cache[masterName]) {
-      console.warn('why am i trying to recurseAssessmentFunctions ', masterName, 'from', responsiveElRecords.cache,'.seems occur on "modals" but not the base bernie page.');
+      console.warn('why am i trying to recurseAssessmentFunctions ', masterName, 'from', responsiveElRecords.cache);
 
     } else {
       const prioritySorted = responsiveElRecords.cache[masterName].prioritySorted;

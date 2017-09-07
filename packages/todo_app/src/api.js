@@ -36,16 +36,6 @@ const fakeDatabase = JSON.parse(storage.getItem('fakeDatabase')) || {
       name: 'Mr. Z',
     },
   ],
-  bernie: [
-    {
-      id: v4(),
-      name: 'Boomer',
-    },
-    {
-      id: v4(),
-      name: 'Mr. Z',
-    },
-  ],
 };
 
 const updateFakeDatabaseStorage = () => {
