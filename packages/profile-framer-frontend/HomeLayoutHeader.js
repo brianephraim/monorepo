@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import styleConstants from './style-constants';
 import {ConnectResponsiveStatusesDictHOC} from './nameSpacedResponsive';
+import ancestorConstantsHoc from './ancestorConstantsHoc';
 
 const StyledLeftPillar = ConnectResponsiveStatusesDictHOC(styled.div`
   ${styleConstants.mixins.leftPillar()} ${props => {
@@ -100,23 +101,23 @@ const StyledHeader = ConnectResponsiveStatusesDictHOC(styled.div`
   padding: ${styleConstants.appPad}em;
 `);
 
-export default function AppHeader(props, context) {
+function AppHeader(props) {
   return (
     <StyledHeader className="app_header">
       <StyledLeftPillar className="app_header_leftPillar">
         <StyledBranding className="app_header_leftPillar_branding">
           <StyledBrandingTitle className="app_header_leftPillar_branding_title">
-            {context.constants.appTitle}
+            {props.constants.appTitle}
           </StyledBrandingTitle>
           <StyledBrandingSubtitle className="app_header_leftPillar_branding_subtitle">
-            {context.constants.appSubTitle}
+            {props.constants.appSubTitle}
           </StyledBrandingSubtitle>
         </StyledBranding>
         <StyledSocialRow className="app_header_leftPillar_socialRow">
           <StyledSocialWidget className="app_header_leftPillar_socialRow_socialWidget">
             <a
               className="twitter-share-button"
-              href={context.constants.tweetUrl}
+              href={props.constants.tweetUrl}
             >
               Tweet
             </a>
@@ -173,6 +174,8 @@ export default function AppHeader(props, context) {
     </StyledHeader>
   );
 }
-AppHeader.contextTypes = {
-  constants: PropTypes.object
+AppHeader.propTypes = {
+  constants: PropTypes.object.isRequired
 };
+
+export default ancestorConstantsHoc(AppHeader);

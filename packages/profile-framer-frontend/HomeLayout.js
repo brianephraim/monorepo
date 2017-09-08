@@ -10,6 +10,7 @@ import {
   ShareButtonGroup,
   ImportButtonGroup,
 } from './buttonGroups';
+import ancestorConstantsHoc from './ancestorConstantsHoc';
 
 import Disclaimer from './Disclaimer';
 import HomeLayoutHeader from './HomeLayoutHeader';
@@ -50,21 +51,23 @@ const StyledTopBannerLink = styled.a`
 `;
 
 
-function ContributeBanner(props,context) {
+let ContributeBanner = (props) => {
   return (
     <StyledTopBanner className="topBanner">
       <StyledTopBannerLink
         className="topBanner_link"
-        href={context.constants.topBanner.href}
+        href={props.constants.topBanner.href}
       >
-        {context.constants.topBanner.text}&nbsp;{'>>'}
+        {props.constants.topBanner.text}&nbsp;{'>>'}
       </StyledTopBannerLink>
     </StyledTopBanner>
   );
 }
-ContributeBanner.contextTypes = {
-  constants: PropTypes.object
+ContributeBanner.propTypes = {
+  constants: PropTypes.object.isRequired
 };
+ContributeBanner = ancestorConstantsHoc(ContributeBanner);
+
 
 const StyledSelfieFrame = ConnectResponsiveStatusesDictHOC(styled.div`
   background: ${styleConstants.colors.white};
@@ -171,21 +174,20 @@ let AppHero = class extends Component {
           <StyledSelfie
             className="app_body_leftPillar_selfieFrame_selfie"
             src={this.props.imSrc}
-            alt={this.context.constants.heroImageAltText}
+            alt={this.props.constants.heroImageAltText}
           />
         </AppMainSelfieFrameResponsive>
       </StyledLeftPillar>
     );
   }
 };
-AppHero.contextTypes = {
-  constants: PropTypes.object
-};
+
 AppHero.propTypes = {
   imSrc: PropTypes.string.isRequired,
+  constants: PropTypes.object.isRequired
 };
 
-AppHero = appConnect((appState /* , { params }*/) => {
+AppHero = ancestorConstantsHoc(appConnect((appState /* , { params }*/) => {
   return {
     imSrc:
       appState && appState.compositeImageData
@@ -193,7 +195,7 @@ AppHero = appConnect((appState /* , { params }*/) => {
         : '/images/mock-selfie.png',
     // toBeAssigned: getDetailsOfToBeAssigned(state),
   };
-}, {})(AppHero);
+}, {})(AppHero));
 
 const StyledRightPillar = ConnectResponsiveStatusesDictHOC(styled.div`
   ${styleConstants.mixins.rightPillar()}
