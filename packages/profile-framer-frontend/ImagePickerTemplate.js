@@ -4,6 +4,7 @@ import {appConnect} from './nameSpacedResponsive';
 import ImagePicker from './ImagePicker';
 import makeActionFetchTemplates from './makeActionFetchTemplates';
 import { compositeImageIntoParams } from './compositeImage';
+import ancestorConstantsHoc from './ancestorConstantsHoc';
 
 class ImagePickerTemplate extends Component {
   constructor() {
@@ -12,7 +13,7 @@ class ImagePickerTemplate extends Component {
   }
   componentWillMount() {
     if (this.props.limit > 3) {
-      this.props.fetchTemplates(this.context.constants);
+      this.props.fetchTemplates(this.props.constants);
     }
   }
   generateLinkTo(imgSrcObj) {
@@ -35,10 +36,9 @@ class ImagePickerTemplate extends Component {
     );
   }
 }
-ImagePickerTemplate.contextTypes = {
-  constants: PropTypes.object
-};
+
 ImagePickerTemplate.propTypes = {
+  constants: PropTypes.object.isRequired,
   fetchTemplates: PropTypes.func.isRequired,
   images: PropTypes.array,
   limit: PropTypes.number,
@@ -51,7 +51,7 @@ ImagePickerTemplate.defaultProps = {
   limit: Infinity,
   layoutVariation: '',
 };
-export default appConnect(
+export default ancestorConstantsHoc(appConnect(
   (appState /* , { params }*/) => {
     return {
       images: appState.templates,
@@ -61,4 +61,4 @@ export default appConnect(
   {
     fetchTemplates: makeActionFetchTemplates,
   }
-)(ImagePickerTemplate);
+)(ImagePickerTemplate));
