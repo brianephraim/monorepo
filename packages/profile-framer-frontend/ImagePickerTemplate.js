@@ -12,7 +12,7 @@ class ImagePickerTemplate extends Component {
   }
   componentWillMount() {
     if (this.props.limit > 3) {
-      this.props.fetchTemplates();
+      this.props.fetchTemplates(this.context.constants);
     }
   }
   generateLinkTo(imgSrcObj) {
@@ -35,6 +35,9 @@ class ImagePickerTemplate extends Component {
     );
   }
 }
+ImagePickerTemplate.contextTypes = {
+  constants: PropTypes.object
+};
 ImagePickerTemplate.propTypes = {
   fetchTemplates: PropTypes.func.isRequired,
   images: PropTypes.array,
