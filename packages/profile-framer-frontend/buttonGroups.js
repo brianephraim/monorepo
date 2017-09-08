@@ -9,6 +9,7 @@ import {ConnectResponsiveStatusesDictHOC, appConnect} from './nameSpacedResponsi
 import ImagePickerTemplate from './ImagePickerTemplate';
 import ModalScreen from './ModalScreen';
 import makeActionSetBackground from './makeActionSetBackground';
+import ancestorConstantsHoc from './ancestorConstantsHoc';
 
 import './app.scss';
 
@@ -427,8 +428,8 @@ function makeButtonGroupComponent(
 }*/
 ) {
 
-  function ButtonGroup(props,context) {
-    options = typeof options === 'function' ? options(context.constants) : options;
+  function ButtonGroup(props) {
+    options = typeof options === 'function' ? options(props.constants) : options;
     const ButtonGroup = <AppButtonGroup {...props} {...options} />;
     if (props.isModal) {
       return (
@@ -441,14 +442,13 @@ function makeButtonGroupComponent(
   }
   ButtonGroup.propTypes = {
     isModal: PropTypes.bool,
+    constants: PropTypes.object.isRequired,
   };
   ButtonGroup.defaultProps = {
     isModal: false,
   };
-  ButtonGroup.contextTypes = {
-    constants: PropTypes.object
-  };
-  return ButtonGroup;
+
+  return ancestorConstantsHoc(ButtonGroup);
 }
 
 const ImportButtonGroup = makeButtonGroupComponent({

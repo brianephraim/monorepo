@@ -11,7 +11,7 @@ import ModalScreen from './ModalScreen';
 import './app.scss';
 import makeActionSetBackground from './makeActionSetBackground';
 import { formUrl } from './deriveUrlInfo';
-import constants from './constants';
+import ancestorConstantsHoc from './ancestorConstantsHoc';
 // ========
 // ========
 let HomeLayoutWithUploadCallback = (props) => {
@@ -60,7 +60,7 @@ let CropperWithFgBgCompletion = class extends Component {
     this.generateCompletionUrl = this.generateCompletionUrl.bind(this);
   }
   generateCompletionUrl(activeCompositeImageData) {
-    return `${this.context.constants.urlAppNameSpace}/${formUrl(activeCompositeImageData)}`;
+    return `${this.props.constants.urlAppNameSpace}/${formUrl(activeCompositeImageData)}`;
   }
   render(){
     return (
@@ -76,17 +76,15 @@ let CropperWithFgBgCompletion = class extends Component {
 }
 CropperWithFgBgCompletion.propTypes = {
   compositeImageData: PropTypes.object.isRequired,
+  constants: PropTypes.object.isRequired,
 };
-CropperWithFgBgCompletion.contextTypes = {
-  constants: PropTypes.object
-};
-CropperWithFgBgCompletion = appConnect(
+CropperWithFgBgCompletion = ancestorConstantsHoc(appConnect(
   (appState /* , { params }*/) => {
     return {
       compositeImageData: appState.compositeImageData,
     };
   },
-)(CropperWithFgBgCompletion);
+)(CropperWithFgBgCompletion));
 export {CropperWithFgBgCompletion};
 
 
