@@ -186,7 +186,7 @@ export default function(constantsInjection) {
   const reducersToFocus = {
     compositeImageData: (state = {}, action) => {
       if (routesMap[action.type] || action.type === 'APP_ROOT') {
-        const compositeImageData = paramsIntoCompositeImage(action.payload);
+        const compositeImageData = paramsIntoCompositeImage(action.payload, constantsInjection);
         return compositeImageData;
       }
       switch (action.type) {

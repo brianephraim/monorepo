@@ -17,9 +17,6 @@ import HomeLayoutHeader from './HomeLayoutHeader';
 
 import styleConstants from './style-constants';
 
-import constants from './constants';
-
-
 import {ResponsiveHOC, ResponsiveReduxMasterHOC,ConnectResponsiveStatusesDictHOC,appConnect} from './nameSpacedResponsive';
 
 const StyledHomeLayout = styled.div`position: relative;`;
@@ -53,18 +50,21 @@ const StyledTopBannerLink = styled.a`
 `;
 
 
-function ContributeBanner() {
+function ContributeBanner(props,context) {
   return (
     <StyledTopBanner className="topBanner">
       <StyledTopBannerLink
         className="topBanner_link"
-        href={constants.topBanner.href}
+        href={context.constants.topBanner.href}
       >
-        {constants.topBanner.text}&nbsp;{'>>'}
+        {context.constants.topBanner.text}&nbsp;{'>>'}
       </StyledTopBannerLink>
     </StyledTopBanner>
   );
 }
+ContributeBanner.contextTypes = {
+  constants: PropTypes.object
+};
 
 const StyledSelfieFrame = ConnectResponsiveStatusesDictHOC(styled.div`
   background: ${styleConstants.colors.white};
@@ -171,12 +171,15 @@ let AppHero = class extends Component {
           <StyledSelfie
             className="app_body_leftPillar_selfieFrame_selfie"
             src={this.props.imSrc}
-            alt={constants.heroImageAltText}
+            alt={this.context.constants.heroImageAltText}
           />
         </AppMainSelfieFrameResponsive>
       </StyledLeftPillar>
     );
   }
+};
+AppHero.contextTypes = {
+  constants: PropTypes.object
 };
 AppHero.propTypes = {
   imSrc: PropTypes.string.isRequired,

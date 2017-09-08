@@ -1,5 +1,3 @@
-import constants from './constants';
-
 export function generateCompositeImgSrcUrl(compositeImageData) {
   return `/image/${compositeImageData.foreground.srcKey}/${compositeImageData
     .background.srcKey}_${compositeImageData.foreground
@@ -19,7 +17,7 @@ export function compositeImageIntoParams(compositeImageData) {
     fgSrcKey: compositeImageData.foreground.srcKey,
   };
 }
-export function paramsIntoCompositeImage(params) {
+export function paramsIntoCompositeImage(params, constants) {
   const placeholder = {
     fgX: 142,
     fgY: 98,
