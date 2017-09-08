@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
 export default function ancestorConstantsHoc (Comp) {
@@ -15,3 +15,26 @@ export default function ancestorConstantsHoc (Comp) {
   };
   return HasContextConstantsAsProps;
 }
+
+
+export function setAncestorConstantsHoc (Comp, constantsInjection) {
+  class ConstantsAncestorSetter extends Component {
+    getChildContext() {
+      return {
+        constants: constantsInjection,
+      };
+    }
+    render(){
+      return (
+        <Comp />
+      );
+    }
+  };
+  ConstantsAncestorSetter.propTypes = {
+  };
+  ConstantsAncestorSetter.childContextTypes = {
+    constants: PropTypes.object,
+  };
+  return ConstantsAncestorSetter;
+}
+

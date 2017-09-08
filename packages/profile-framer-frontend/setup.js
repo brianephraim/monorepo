@@ -23,6 +23,9 @@ import { paramsIntoCompositeImage } from './compositeImage';
 
 import {appConnect, nameSpacedResponsiveStatusesDictReducer} from './nameSpacedResponsive';
 
+import {setAncestorConstantsHoc} from './ancestorConstantsHoc'; 
+
+
 let payloadRefineActionGetsRedefined = () => {};
 function payloadRefineAction(...args) {
   return payloadRefineActionGetsRedefined(...args);
@@ -241,11 +244,6 @@ export default function(constantsInjection) {
 
 
   let Routing = class extends Component {
-    getChildContext() {
-      return {
-        constants: constantsInjection,
-      };
-    }
     render(){
       const Comp = screenComponentMap[this.props.activeAppScreen];
       return (
@@ -256,10 +254,6 @@ export default function(constantsInjection) {
   Routing.propTypes = {
     activeAppScreen: PropTypes.string.isRequired,
   };
-  Routing.childContextTypes = {
-    constants: PropTypes.object,
-  };
-
   Routing = appConnect(
     (appState /* , { params }*/) => {
       return {
@@ -267,13 +261,7 @@ export default function(constantsInjection) {
       };
     }
   )(Routing);
-
-
-
-
-
-  // import { routesMap, reducers, Routing } from './setup';
-
+  Routing = setAncestorConstantsHoc(Routing, constantsInjection);
 
 
   addRoutesToApp({
