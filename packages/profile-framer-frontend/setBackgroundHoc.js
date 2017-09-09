@@ -39,16 +39,15 @@ export default function setBackgroundHoc(Comp){
   return ancestorConstantsHoc(appConnect(
     null,
     {
-      setBackground: (imgSrc,constants) => {
-        console.log('constants WOOOOO',constants);
+      setBackground: (imgSrc,ownProps) => {
         imgSrc = typeof imgSrc === 'object' ? imgSrc.src : imgSrc;
         return (dispatch, getState,...args) => {
-          console.log('argsargs',args)
+          console.log('getState',getState()[ownProps.constants.appNameSpace].compositeImageData)
           return getNormalizedImageInfo(imgSrc).then(response => {
             const action = payloadRefineAction({
               type: 'CROP',
               payload: {
-                ...compositeImageIntoParams(getState()[constants.appNameSpace].compositeImageData),
+                ...compositeImageIntoParams(getState()[ownProps.constants.appNameSpace].compositeImageData),
                 bgSrcKey: response.srcKey,
               },
             });

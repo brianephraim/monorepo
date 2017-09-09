@@ -9,19 +9,17 @@ import { connect } from 'react-redux';
 // so `MyComponent = connect(a1,b1)(appConnect(a2,b2)(MyComponent))`
 export default function nameSpaceConnect(appNameSpace) {
   function appConnect (mapStateToProps,mapDispatchToProps,mergeProps,...args){
-    console.log('mapDispatchToProps',mapDispatchToProps);
     const mapDispatchToPropsToPass = !mapDispatchToProps ? mapDispatchToProps : Object.keys(mapDispatchToProps).reduce((accum,key) => {
-      console.log('x');
       const oldMakeSomeAction = mapDispatchToProps[key];
+      
       const newMakeSomeAction = (...args0) => {
-        console.log(args0);
+        // ownProps is last argument of args0 thanks to mergeProps toPass
+        const ownProps = args0[args0.length - 1];
         const oldSomeAction = oldMakeSomeAction(...args0);
         if (typeof oldSomeAction === 'function'){
           return (dispatch,getState,...args2) => {
-            console.log('getState()',getState())
-            console.log('args2',args2);
             const newDispatch = (action,...args3) => {
-              appNameSpace = typeof appNameSpace === 'function' ? appNameSpace() : appNameSpace;
+              appNameSpace = typeof appNameSpace === 'function' ? appNameSpace(ownProps) : appNameSpace;
               const newAction = {
                 ...action,
                 appNameSpace,
@@ -56,14 +54,6 @@ export default function nameSpaceConnect(appNameSpace) {
         return  mergeProps(stateProps, newDispatchProps, ownProps);
       }
       return Object.assign({}, ownProps, stateProps, newDispatchProps);
-
-      // const newDispatchProps = {
-      //   ...dispatchProps,
-      //   setBackground: (...args) => {
-      //     originalSetBackground(...args, ownProps.constants);
-      //   },
-      // }
-
     };
     return connect(mapStateToPropsToPass, mapDispatchToPropsToPass, mergePropsToPass, ...args);
   }

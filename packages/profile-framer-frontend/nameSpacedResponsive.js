@@ -38,6 +38,7 @@ console.log('nneed to wrap in ancestorConstantsHoc or somethings');
 const appConnect = (...args) => {
   const nameSpacedConnect = nameSpaceConnect(
     (props) => {
+      console.log('props',props);
       if (!props || !props.constants) {
         console.trace();
       }
