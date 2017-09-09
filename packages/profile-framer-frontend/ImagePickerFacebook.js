@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { makeActionFetchPhotos } from './fb';
 import ImagePicker from './ImagePicker';
-import makeActionSetBackground from './makeActionSetBackground';
 import {appConnect} from './nameSpacedResponsive';
+import setBackgroundHoc from './setBackgroundHoc';
 
 
 
@@ -21,7 +21,7 @@ ImagePickerFacebook.propTypes = {
   fetchFacebookPhotos: PropTypes.func.isRequired,
 };
 
-const appConnected = appConnect(
+const appConnected = setBackgroundHoc(appConnect(
   (appState /* , { params }*/) => {
     return {
       images: appState.facebookPhotos,
@@ -29,7 +29,6 @@ const appConnected = appConnect(
   },
   {
     fetchFacebookPhotos: makeActionFetchPhotos,
-    setBackground: makeActionSetBackground
   }
-)(ImagePickerFacebook);
+)(ImagePickerFacebook));
 export default appConnected;

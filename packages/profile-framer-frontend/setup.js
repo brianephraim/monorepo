@@ -226,17 +226,20 @@ export default function(constantsInjection) {
       }
       return featured;
     },
+    
   };
 
   const reducers = combineReducers({
     ...filterReducers(reducersToFocus, (state,action) => {
       return action.appNameSpace === constants.appNameSpace || action.type === 'APP_ROOT';
-    }),
-    
-    
+    }),    
     responsiveStatusesDict: nameSpacedResponsiveStatusesDictReducer,
-    
-    
+    constants: (state = {}, action) => {
+      if (action.type === 'SET_CONSTANTS') {
+        return {...action.constants};
+      }
+      return state;
+    },
   });
 
 
@@ -244,6 +247,9 @@ export default function(constantsInjection) {
 
 
   let Routing = class extends Component {
+    componentWillMount() {
+      this.props.setConstants(constantsInjection);
+    }
     render(){
       const Comp = screenComponentMap[this.props.activeAppScreen];
       return (
@@ -253,12 +259,20 @@ export default function(constantsInjection) {
   };
   Routing.propTypes = {
     activeAppScreen: PropTypes.string.isRequired,
+    setConstants: PropTypes.func.isRequired
   };
-  Routing = appConnect(
-    (appState /* , { params }*/) => {
+  Routing = connect(
+    (state /* , { params }*/) => {
       return {
-        activeAppScreen: appState.activeAppScreen,
+        activeAppScreen: state[constantsInjection.appNameSpace].activeAppScreen,
       };
+    }, {
+      setConstants: (constants) => {
+        return {
+          type: 'SET_CONSTANTS',
+          constants,
+        };
+      }
     }
   )(Routing);
   Routing = setAncestorConstantsHoc(Routing, constantsInjection);

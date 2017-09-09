@@ -61,7 +61,6 @@ class Upload extends Component {
     let myAjax;
     if (!offline) {
       myAjax = initUpload(file, self.folder, self.mustBeSquare);
-      console.log('xonSuccess',this.props.onSuccess)
       if (this.props.onSuccess) {
         myAjax.then(this.props.onSuccess);
       }

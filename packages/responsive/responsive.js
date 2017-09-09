@@ -25,7 +25,7 @@ const ResponsiveHOC = (ComponentToWrap, defaults) => {
     }
     componentDidMount() {
       const splitter = defaults.splitter || '';
-      const appNameSpace = typeof defaults.appNameSpace === 'function' ? defaults.appNameSpace() : (defaults.appNameSpace || '');
+      const appNameSpace = typeof defaults.appNameSpace === 'function' ? defaults.appNameSpace(this.props) : (defaults.appNameSpace || '');
       const masterName = `${appNameSpace}${splitter}${defaults.masterName}`;
       const turns = this.props.turns || defaults.turns;
       turns.forEach((turn) => {
@@ -87,7 +87,7 @@ function ResponsiveMasterHOC(Comp, options) {
     componentDidMount() {
       let {appNameSpace} = options;
       const {splitter,masterName} = options;
-      appNameSpace = typeof appNameSpace === 'function' ? appNameSpace() : appNameSpace;
+      appNameSpace = typeof appNameSpace === 'function' ? appNameSpace(this.props) : appNameSpace;
       const name = `${appNameSpace}${splitter}${masterName}`;
       this.unregisterResponsiveRefresh = registerResponsiveRefresh({
         name,

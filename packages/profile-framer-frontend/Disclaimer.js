@@ -1,9 +1,10 @@
 /* eslint-disable camelcase */
 /* eslint-disable react/jsx-pascal-case */
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import styleConstants from './style-constants';
-import constants from './constants';
+import ancestorConstantsHoc from './ancestorConstantsHoc';
 
 const Styled_Disclaimer = styled.div`
   background: ${styleConstants.colors.grey0};
@@ -26,19 +27,21 @@ const Styled_Disclaimer_P = styled.p`
   color: ${styleConstants.colors.grey2};
 `;
 // This adds padding to the bottom and serves as disclaimer.
-function Disclaimer() {
+function Disclaimer(props) {
   return (
     <Styled_Disclaimer>
       <Styled_Disclaimer_P>
-        contact: {constants.adminEmail} <br />
+        contact: {props.constants.adminEmail} <br />
         <a href="/terms">Terms&nbsp;and&nbsp;Conditions</a>
         {' -- '}
         <a href="/privacy">Privacy&nbsp;Policy</a>
         <br />
-        {constants.disclaimerText}
+        {props.constants.disclaimerText}
       </Styled_Disclaimer_P>
     </Styled_Disclaimer>
   );
 }
-
-export default Disclaimer;
+Disclaimer.propTypes = {
+  constants: PropTypes.object.isRequired,
+};
+export default ancestorConstantsHoc(Disclaimer);

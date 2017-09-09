@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import {appConnect} from './nameSpacedResponsive';
 import styleConstants from './style-constants';
-import makeActionSetBackground from './makeActionSetBackground';
+import setBackgroundHoc from './setBackgroundHoc';
 
 const StyledButtonWrap = styled.div`
   padding-left: ${styleConstants.appPad}em;
@@ -61,11 +61,5 @@ class UrlImportScreen extends Component {
 UrlImportScreen.propTypes = {
   setBackground: PropTypes.func.isRequired,
 }
-// import makeActionSetBackground from './makeActionSetBackground';
 
-export default appConnect(
-  null,
-  {
-    setBackground: makeActionSetBackground
-  }
-)(UrlImportScreen);
+export default setBackgroundHoc(UrlImportScreen);

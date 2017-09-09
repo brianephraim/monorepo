@@ -2,17 +2,68 @@ import {makeNameSpacedResponsiveHOC, makemakeNameSpacedResponsiveReduxMasterHOC,
 import nameSpaceConnect from '@defualt/name-space-connect';
 import {makeNamespacedReduxConnectHocForResponsiveStatusesDict} from '@defualt/responsive/responsiveRedux';
 
-import constants from './constants';
+import ancestorConstantsHoc from './ancestorConstantsHoc';
 
-const ResponsiveHOC = makeNameSpacedResponsiveHOC(() => { return constants.appNameSpace; });
+import constantsX from './constants';
 
-const ResponsiveReduxMasterHOC = makemakeNameSpacedResponsiveReduxMasterHOC(() => { return constants.appNameSpace; });
+const ResponsiveHOC = (...args) => {
+  return ancestorConstantsHoc(
+    makeNameSpacedResponsiveHOC(({constants}) => {
+      return constants.appNameSpace;
+    })(...args)
+  );
+};;
 
-const ConnectResponsiveStatusesDictHOC = makeNamespacedReduxConnectHocForResponsiveStatusesDict(() => { return constants.appNameSpace; });
+const ResponsiveReduxMasterHOC = (...args) => {
+  return ancestorConstantsHoc(
+    makemakeNameSpacedResponsiveReduxMasterHOC(
+      ({constants}) => {
+        return constants.appNameSpace;
+      }
+    )(...args)
+  );
+};
 
-const appConnect = nameSpaceConnect(() => { return constants.appNameSpace; });
+const ConnectResponsiveStatusesDictHOC = (...args) => {
+  return ancestorConstantsHoc(
+    makeNamespacedReduxConnectHocForResponsiveStatusesDict(
+      ({constants}) => {
+        return constants.appNameSpace;
+      }
+    )(...args)
+  );
+};
 
-const nameSpacedResponsiveStatusesDictReducer = makeNameSpacedResponsiveStatusesDictReducer(() => { return constants.appNameSpace; },'homeResponsive');
+console.log('nneed to wrap in ancestorConstantsHoc or somethings');
+const appConnect = (...args) => {
+  const nameSpacedConnect = nameSpaceConnect(
+    (props) => {
+      if (!props || !props.constants) {
+        console.trace();
+      }
+      return props.constants.appNameSpace;
+    }
+  )(...args);
+  return (...args2) => {
+    return ancestorConstantsHoc(nameSpacedConnect(...args2));
+  };
+
+};
+// const appConnect = () => {
+//   return nameSpaceConnect(() => { return constantsX.appNameSpace; })();
+// };
+// const appConnect = (...args) => {
+//   return ancestorConstantsHoc(
+//     nameSpaceConnect(
+//       (/*{constants}*/) => {
+//         return constantsX.appNameSpace;
+//         return constants.appNameSpace;
+//       }
+//     )(...args)
+//   );
+// };
+
+const nameSpacedResponsiveStatusesDictReducer = makeNameSpacedResponsiveStatusesDictReducer(() => { return constantsX.appNameSpace; },'homeResponsive');
 
 export {ResponsiveHOC, ResponsiveReduxMasterHOC,ConnectResponsiveStatusesDictHOC,appConnect,nameSpacedResponsiveStatusesDictReducer};
 

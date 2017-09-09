@@ -8,7 +8,7 @@ import styleConstants from './style-constants';
 import {ConnectResponsiveStatusesDictHOC, appConnect} from './nameSpacedResponsive';
 import ImagePickerTemplate from './ImagePickerTemplate';
 import ModalScreen from './ModalScreen';
-import makeActionSetBackground from './makeActionSetBackground';
+import setBackgroundHoc from './setBackgroundHoc';
 import ancestorConstantsHoc from './ancestorConstantsHoc';
 
 import './app.scss';
@@ -241,12 +241,7 @@ UploadBackgroundSetter.propTypes = {
 UploadBackgroundSetter.defaultProps = {
   children: null,
 }
-UploadBackgroundSetter = appConnect(
-  null,
-  {
-    setBackground: makeActionSetBackground
-  }
-)(UploadBackgroundSetter);
+UploadBackgroundSetter = setBackgroundHoc(UploadBackgroundSetter);
 
 let AppButtonGroup = class extends Component {
   constructor() {

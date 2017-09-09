@@ -9,7 +9,7 @@ import UrlImportScreen from './UrlImportScreen';
 import TemplateUploadScreen from './TemplateUploadScreen';
 import ModalScreen from './ModalScreen';
 import './app.scss';
-import makeActionSetBackground from './makeActionSetBackground';
+import setBackgroundHoc from './setBackgroundHoc';
 import { formUrl } from './deriveUrlInfo';
 import ancestorConstantsHoc from './ancestorConstantsHoc';
 // ========
@@ -22,12 +22,7 @@ let HomeLayoutWithUploadCallback = (props) => {
 HomeLayoutWithUploadCallback.propTypes = {
   setBackground: PropTypes.func.isRequired,
 };
-HomeLayoutWithUploadCallback = appConnect(
-  null,
-  {
-    setBackground: makeActionSetBackground
-  }
-)(HomeLayoutWithUploadCallback);
+HomeLayoutWithUploadCallback = setBackgroundHoc(HomeLayoutWithUploadCallback);
 
 export {HomeLayoutWithUploadCallback};
 
