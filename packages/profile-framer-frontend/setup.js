@@ -3,6 +3,8 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import { combineReducers } from 'redux';
 import { addRoutesToApp } from 'redux-routing-app-root-component';
+import {makeNameSpacedResponsiveStatusesDictReducer} from '@defualt/responsive/nameSpaceResponsive';
+
 import { standardModesRegexArrayString } from './deriveUrlInfo';
 import {
   buttonGroupComponentsRegexArrayString,
@@ -20,8 +22,6 @@ import {
 import constants, {registerConstants} from './constants';
 
 import { paramsIntoCompositeImage } from './compositeImage';
-
-import {appConnect, nameSpacedResponsiveStatusesDictReducer} from './nameSpacedResponsive';
 
 import {setAncestorConstantsHoc} from './ancestorConstantsHoc'; 
 
@@ -228,6 +228,9 @@ export default function(constantsInjection) {
     },
     
   };
+
+  const nameSpacedResponsiveStatusesDictReducer = makeNameSpacedResponsiveStatusesDictReducer(() => { return constants.appNameSpace; },'homeResponsive');
+
 
   const reducers = combineReducers({
     ...filterReducers(reducersToFocus, (state,action) => {

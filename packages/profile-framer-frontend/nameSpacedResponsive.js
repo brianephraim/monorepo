@@ -1,10 +1,8 @@
-import {makeNameSpacedResponsiveHOC, makemakeNameSpacedResponsiveReduxMasterHOC,makeNameSpacedResponsiveStatusesDictReducer} from '@defualt/responsive/nameSpaceResponsive';
+import {makeNameSpacedResponsiveHOC, makemakeNameSpacedResponsiveReduxMasterHOC} from '@defualt/responsive/nameSpaceResponsive';
 import nameSpaceConnect from '@defualt/name-space-connect';
 import {makeNamespacedReduxConnectHocForResponsiveStatusesDict} from '@defualt/responsive/responsiveRedux';
 
 import ancestorConstantsHoc from './ancestorConstantsHoc';
-
-import constantsX from './constants';
 
 const ResponsiveHOC = (...args) => {
   return ancestorConstantsHoc(
@@ -47,8 +45,7 @@ const appConnect = (...args) => {
   };
 };
 
-const nameSpacedResponsiveStatusesDictReducer = makeNameSpacedResponsiveStatusesDictReducer(() => { return constantsX.appNameSpace; },'homeResponsive');
 
-export {ResponsiveHOC, ResponsiveReduxMasterHOC,ConnectResponsiveStatusesDictHOC,appConnect,nameSpacedResponsiveStatusesDictReducer};
+export {ResponsiveHOC, ResponsiveReduxMasterHOC,ConnectResponsiveStatusesDictHOC,appConnect};
 
-export default {ResponsiveHOC, ResponsiveReduxMasterHOC,ConnectResponsiveStatusesDictHOC,appConnect,nameSpacedResponsiveStatusesDictReducer};
+export default {ResponsiveHOC, ResponsiveReduxMasterHOC,ConnectResponsiveStatusesDictHOC,appConnect};

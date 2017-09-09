@@ -24,7 +24,7 @@ export function makemakeNameSpacedResponsiveReduxMasterHOC(appNameSpace) {
   }
 }
 
-export function makeNameSpacedResponsiveStatusesDictReducer(appNameSpace,masterName){
+export function makeNameSpacedResponsiveStatusesDictReducer(appNameSpace){
   return (state = {}, action) => {
     appNameSpace = typeof appNameSpace === 'function' ? appNameSpace() : appNameSpace;
     if (
