@@ -35,11 +35,17 @@ export {
 };
 
 let Dynamic = (props) => {
-  const Comp = buttonGroupComponents[props.dynamicScreen];
-  return <Comp isModal />;
+  if(props.dynamicScreen){
+    const Comp = buttonGroupComponents[props.dynamicScreen];
+    return <Comp isModal />;
+  }
+  return null;
 }
 Dynamic.propTypes = {
   dynamicScreen: PropTypes.string.isRequired,
+};
+Dynamic.defaultProps = {
+  dynamicScreen: '',
 };
 Dynamic = connect(
   (state /* , { params }*/) => {
