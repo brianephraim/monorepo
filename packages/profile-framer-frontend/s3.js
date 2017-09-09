@@ -1,5 +1,3 @@
-import constants from './constants';
-
 function uploadFile(file, signedRequest, url) {
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
@@ -21,7 +19,7 @@ function uploadFile(file, signedRequest, url) {
 }
 
 function makeGetNormalizedImageInfo(mustBeSquare) {
-  return imageUrl => {
+  return (imageUrl,backendApiPrefix) => {
     return new Promise((resolve, reject) => {
       if (!imageUrl) {
         reject(new Error('No image url passed.'));
@@ -29,7 +27,7 @@ function makeGetNormalizedImageInfo(mustBeSquare) {
       const xhr = new XMLHttpRequest();
       xhr.open(
         'GET',
-        `${constants.backendApiPrefix}/get_normalized_image_info?image_url=${encodeURIComponent(
+        `${backendApiPrefix}/get_normalized_image_info?image_url=${encodeURIComponent(
           imageUrl
         )}&must_be_square=${mustBeSquare}`
       );
@@ -74,7 +72,7 @@ function makeGetNormalizedImageInfo(mustBeSquare) {
     If request successful, continue to upload the file using this signed
     request.
 */
-function getSignedRequest(file, folder, mustBeSquare) {
+function getSignedRequest(file, folder, mustBeSquare, backendApiPrefix) {
   folder = folder || 'selfies';
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
@@ -82,14 +80,17 @@ function getSignedRequest(file, folder, mustBeSquare) {
     filename = `${folder}/${filename}`;
     xhr.open(
       'GET',
-      `${constants.backendApiPrefix}/get_s3_signed_upload_url?file_name=${filename}&file_type=${file.type}`
+      `${backendApiPrefix}/get_s3_signed_upload_url?file_name=${filename}&file_type=${file.type}`
     );
     xhr.onreadystatechange = () => {
       if (xhr.readyState === 4) {
         if (xhr.status === 200) {
+          const getNormalizedImageInfo = makeGetNormalizedImageInfo(mustBeSquare);
           const response = JSON.parse(xhr.responseText);
           uploadFile(file, response.signed_request, response.url, response)
-            .then(makeGetNormalizedImageInfo(mustBeSquare))
+            .then((imageUrl) => {
+              return getNormalizedImageInfo(imageUrl, backendApiPrefix);
+            })
             .then(resolve);
         } else {
           const response = JSON.parse(xhr.responseText);
@@ -108,11 +109,12 @@ function getSignedRequest(file, folder, mustBeSquare) {
    Function called when file input updated. If there is a file selected, then
    start upload procedure by asking for a signed request from the app.
 */
-function initUpload(file, folder, mustBeSquare) {
+function initUpload(file, folder, mustBeSquare, backendApiPrefix) {
+  
   if (!file) {
     return Promise.reject(new Error('No file selected.'));
   }
-  return getSignedRequest(file, folder, mustBeSquare);
+  return getSignedRequest(file, folder, mustBeSquare, backendApiPrefix);
 }
 const getNormalizedImageInfo = makeGetNormalizedImageInfo(false);
 export { initUpload, getNormalizedImageInfo };

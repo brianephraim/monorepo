@@ -60,7 +60,7 @@ class Upload extends Component {
     bs.loader.load();
     let myAjax;
     if (!offline) {
-      myAjax = initUpload(file, self.folder, self.mustBeSquare);
+      myAjax = initUpload(file, self.folder, self.mustBeSquare,this.props.backendApiPrefix);
       if (this.props.onSuccess) {
         myAjax.then(this.props.onSuccess);
       }

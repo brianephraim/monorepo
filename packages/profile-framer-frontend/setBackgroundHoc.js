@@ -41,9 +41,8 @@ export default function setBackgroundHoc(Comp){
     {
       setBackground: (imgSrc,ownProps) => {
         imgSrc = typeof imgSrc === 'object' ? imgSrc.src : imgSrc;
-        return (dispatch, getState,...args) => {
-          console.log('getState',getState()[ownProps.constants.appNameSpace].compositeImageData)
-          return getNormalizedImageInfo(imgSrc).then(response => {
+        return (dispatch, getState) => {
+          return getNormalizedImageInfo(imgSrc,ownProps.constants.backendApiPrefix).then(response => {
             const action = payloadRefineAction({
               type: 'CROP',
               payload: {

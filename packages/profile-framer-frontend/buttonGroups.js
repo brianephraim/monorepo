@@ -229,7 +229,7 @@ const StyledButtonInnerSpan = styled.span`
 
 let UploadBackgroundSetter = (props) => {
   return (
-    <Upload onSuccess={props.setBackground}>
+    <Upload onSuccess={props.setBackground} backendApiPrefix={props.constants.backendApiPrefix}>
       {props.children}
     </Upload>
   );
@@ -241,7 +241,7 @@ UploadBackgroundSetter.propTypes = {
 UploadBackgroundSetter.defaultProps = {
   children: null,
 }
-UploadBackgroundSetter = setBackgroundHoc(UploadBackgroundSetter);
+UploadBackgroundSetter = ancestorConstantsHoc(setBackgroundHoc(UploadBackgroundSetter));
 
 let AppButtonGroup = class extends Component {
   constructor() {
