@@ -58,10 +58,7 @@ Dynamic = connect(
 export {Dynamic};
 
 
-export default function(constantsInjection) {
-  
-  registerConstants(constantsInjection);
-
+export default function(constants) {
 
   const geoPathFrag =
     ':fgX([^/|^_]*)_:fgY([^/|^_]*)_:fgW([^/|^_]*)_:fgH([^/|^_]*)_:bgW([^/|^_]*)_:bgH([^/]*)';
@@ -195,7 +192,7 @@ export default function(constantsInjection) {
   const reducersToFocus = {
     compositeImageData: (state = {}, action) => {
       if (routesMap[action.type] || action.type === 'APP_ROOT') {
-        const compositeImageData = paramsIntoCompositeImage(action.payload, constantsInjection);
+        const compositeImageData = paramsIntoCompositeImage(action.payload, constants);
         return compositeImageData;
       }
       switch (action.type) {
@@ -257,7 +254,7 @@ export default function(constantsInjection) {
 
   let Routing = class extends Component {
     componentWillMount() {
-      this.props.setConstants(constantsInjection);
+      this.props.setConstants(constants);
     }
     render(){
       const Comp = screenComponentMap[this.props.activeAppScreen];
@@ -273,7 +270,7 @@ export default function(constantsInjection) {
   Routing = connect(
     (state /* , { params }*/) => {
       return {
-        activeAppScreen: state[constantsInjection.appNameSpace].activeAppScreen,
+        activeAppScreen: state[constants.appNameSpace].activeAppScreen,
       };
     }, {
       setConstants: (constants) => {
@@ -284,7 +281,7 @@ export default function(constantsInjection) {
       }
     }
   )(Routing);
-  Routing = setAncestorConstantsHoc(Routing, constantsInjection);
+  Routing = setAncestorConstantsHoc(Routing, constants);
 
 
   addRoutesToApp({
