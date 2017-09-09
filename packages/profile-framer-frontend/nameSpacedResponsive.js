@@ -34,35 +34,18 @@ const ConnectResponsiveStatusesDictHOC = (...args) => {
   );
 };
 
-console.log('nneed to wrap in ancestorConstantsHoc or somethings');
 const appConnect = (...args) => {
-  const nameSpacedConnect = nameSpaceConnect(
-    (props) => {
-      console.log('props',props);
-      if (!props || !props.constants) {
-        console.trace();
-      }
-      return props.constants.appNameSpace;
+  const connected = nameSpaceConnect(
+    ({constants}) => {
+      return constants.appNameSpace;
     }
   )(...args);
   return (...args2) => {
-    return ancestorConstantsHoc(nameSpacedConnect(...args2));
+    return ancestorConstantsHoc(
+      connected(...args2)
+    );
   };
-
 };
-// const appConnect = () => {
-//   return nameSpaceConnect(() => { return constantsX.appNameSpace; })();
-// };
-// const appConnect = (...args) => {
-//   return ancestorConstantsHoc(
-//     nameSpaceConnect(
-//       (/*{constants}*/) => {
-//         return constantsX.appNameSpace;
-//         return constants.appNameSpace;
-//       }
-//     )(...args)
-//   );
-// };
 
 const nameSpacedResponsiveStatusesDictReducer = makeNameSpacedResponsiveStatusesDictReducer(() => { return constantsX.appNameSpace; },'homeResponsive');
 
