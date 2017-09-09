@@ -6,7 +6,8 @@ function fetchTemplatesHoc(Comp){
   return ancestorConstantsHoc(appConnect(
     null,
     {
-      fetchTemplates: ({backendApiPrefix, fgImagePrefix, imageSuffix}) => {
+      fetchTemplates: ({constants}) => {
+        const {backendApiPrefix, fgImagePrefix, imageSuffix} = constants;
         return (dispatch /* , getState*/) => {
           imagesFromFetchPromise =
             imagesFromFetchPromise ||
@@ -35,17 +36,6 @@ function fetchTemplatesHoc(Comp){
           });
         };
       },
-    },
-    (stateProps, dispatchProps, ownProps) => {
-      console.log('I CAN REMOVE THIS function ... seet setBackgroundHoc');
-      const originalFetchTemplates = dispatchProps.fetchTemplates;
-      const newDispatchProps = {
-        ...dispatchProps,
-        fetchTemplates: (...args) => {
-          originalFetchTemplates(...args, ownProps.constants);
-        },
-      }
-      return Object.assign({}, ownProps, stateProps, newDispatchProps);
     }
   )(Comp));
 }
