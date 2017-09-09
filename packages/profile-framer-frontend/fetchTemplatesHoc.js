@@ -1,16 +1,20 @@
 import {appConnect} from './nameSpacedResponsive';
 import ancestorConstantsHoc from './ancestorConstantsHoc';
 
-let imagesFromFetchPromise = null;
+// if already fetching, or fetching already done, be efficient.
+// But accomodate namespace.
+// Different namespaces can have simultaneous fetching,
+// but each namespace on does one fetch.
+const imagesFromFetchPromises = {};
 function fetchTemplatesHoc(Comp){
   return ancestorConstantsHoc(appConnect(
     null,
     {
       fetchTemplates: ({constants}) => {
         const {backendApiPrefix, fgImagePrefix, imageSuffix} = constants;
-        return (dispatch /* , getState*/) => {
-          imagesFromFetchPromise =
-            imagesFromFetchPromise ||
+        return (dispatch) => {
+          const imagesFromFetchPromise =
+            imagesFromFetchPromises[constants.appNameSpace] ||
             fetch(`${backendApiPrefix}/get_template_list`).then(r => {
               return r.json();
             });
