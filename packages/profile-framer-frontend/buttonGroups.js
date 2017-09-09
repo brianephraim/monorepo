@@ -236,6 +236,7 @@ let UploadBackgroundSetter = (props) => {
 };
 UploadBackgroundSetter.propTypes = {
   setBackground: PropTypes.func.isRequired,
+  constants: PropTypes.object.isRequired,
   children: PropTypes.node
 };
 UploadBackgroundSetter.defaultProps = {

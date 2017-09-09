@@ -1,4 +1,4 @@
-import { connect, createConnect } from 'react-redux';
+import { connect } from 'react-redux';
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import { combineReducers } from 'redux';
@@ -19,7 +19,6 @@ import {
   TemplateUploadScreenWithUploadCallback,
 } from './routingComponents';
 
-import constants, {registerConstants} from './constants';
 
 import { paramsIntoCompositeImage } from './compositeImage';
 

@@ -37,6 +37,7 @@ function fetchTemplatesHoc(Comp){
       },
     },
     (stateProps, dispatchProps, ownProps) => {
+      console.log('I CAN REMOVE THIS function ... seet setBackgroundHoc');
       const originalFetchTemplates = dispatchProps.fetchTemplates;
       const newDispatchProps = {
         ...dispatchProps,
