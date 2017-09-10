@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import { combineReducers } from 'redux';
-import { addRoutesToApp } from 'redux-routing-app-root-component';
+import { addRoutesToApp } from '@defualt/redux-routing-app-root-component';
 import {makeNameSpacedResponsiveStatusesDictReducer} from '@defualt/responsive/nameSpaceResponsive';
 
 import { standardModesRegexArrayString } from './deriveUrlInfo';
@@ -23,8 +23,6 @@ import {
 import { paramsIntoCompositeImage } from './compositeImage';
 
 import {setAncestorConstantsHoc} from './ancestorConstantsHoc'; 
-
-
 
 
 let Dynamic = (props) => {
@@ -48,7 +46,6 @@ Dynamic = connect(
   },
   {}
 )(Dynamic);
-export {Dynamic};
 
 const geoPathFrag =
   ':fgX([^/|^_]*)_:fgY([^/|^_]*)_:fgW([^/|^_]*)_:fgH([^/|^_]*)_:bgW([^/|^_]*)_:bgH([^/]*)';
@@ -98,50 +95,46 @@ export function payloadRefineAction({ type, payload }, appNameSpace) {
   };
 }
 
+const routes = [
+  {
+    action: 'HOME',
+    urlEnd: '',
+    component: HomeLayoutWithUploadCallback,
+  },
+  {
+    action: 'IMPORT_FACEBOOK',
+    urlEnd: 'import-photo-from-facebook',
+    component: ImagePickerFacebookWithOnClick,
+  },
+  {
+    action: 'IMPORT_URL',
+    urlEnd: 'import-url',
+    component: UrlImportScreenWithWithUploadCallback,
+  },
+  {
+    action: 'UPLOAD_TEMPLATE',
+    urlEnd: 'upload-template',
+    component: TemplateUploadScreenWithUploadCallback,
+  },
+
+  {
+    action: 'SELECT_TEMPLATE',
+    urlEnd: 'select-template',
+    component: ImagePickerTemplateWithOnClick,
+  },
+  {
+    action: 'CROP',
+    urlEnd: 'crop',
+    component: CropperWithFgBgCompletion,
+  },
+  {
+    action: 'DYNAMIC',
+    urlEnd: `:dynamicScreen(${buttonGroupComponentsRegexArrayString})`,
+    component: Dynamic,
+  },
+];
+
 export default function(constants) {
-
-
-
-
-  const routes = [
-    {
-      action: 'HOME',
-      urlEnd: '',
-      component: HomeLayoutWithUploadCallback,
-    },
-    {
-      action: 'IMPORT_FACEBOOK',
-      urlEnd: 'import-photo-from-facebook',
-      component: ImagePickerFacebookWithOnClick,
-    },
-    {
-      action: 'IMPORT_URL',
-      urlEnd: 'import-url',
-      component: UrlImportScreenWithWithUploadCallback,
-    },
-    {
-      action: 'UPLOAD_TEMPLATE',
-      urlEnd: 'upload-template',
-      component: TemplateUploadScreenWithUploadCallback,
-    },
-
-    {
-      action: 'SELECT_TEMPLATE',
-      urlEnd: 'select-template',
-      component: ImagePickerTemplateWithOnClick,
-    },
-    {
-      action: 'CROP',
-      urlEnd: 'crop',
-      component: CropperWithFgBgCompletion,
-    },
-    {
-      action: 'DYNAMIC',
-      urlEnd: `:dynamicScreen(${buttonGroupComponentsRegexArrayString})`,
-      component: Dynamic,
-    },
-  ];
-
   const routesMap = {};
   const screenNameMap = {};
   const screenComponentMap = {};
