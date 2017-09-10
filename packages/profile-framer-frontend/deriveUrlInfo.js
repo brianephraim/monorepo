@@ -36,18 +36,28 @@ const standardModes = [
     featured: true,
   },
 ];
-module.exports.standardModes = standardModes;
+export {standardModes};
 
-const standardModesRegexArrayString = module.exports.standardModes
+const standardModesRegexArrayString = standardModes
   .map(item => {
     return item.mode;
   })
   .join('|');
-module.exports.standardModesRegexArrayString = standardModesRegexArrayString;
-const standardModesDict = module.exports.standardModes.reduce((accum, item) => {
+export {standardModesRegexArrayString};
+const standardModesDict = standardModes.reduce((accum, item) => {
   accum[item.mode] = true;
   return accum;
 }, {});
+export {standardModesDict};
+
+export function formUrl(compositeImageData) {
+  const fg = compositeImageData.foreground;
+  const bg = compositeImageData.background;
+  const mode = standardModesDict[fg.srcKey] ? fg.srcKey : 'ut';
+  const maybeFgSrcKeyRoute = mode === 'ut' ? `/${fg.srcKey}` : '';
+  const url = `${mode}/${bg.srcKey}/${fg.x}_${fg.y}_${fg.width}_${fg.height}_${bg.width}_${bg.height}${maybeFgSrcKeyRoute}`;
+  return url;
+}
 
 // module.exports.oldModes = (function() {
 //   const a = [];
@@ -79,12 +89,3 @@ const standardModesDict = module.exports.standardModes.reduce((accum, item) => {
 //   }
 //   return containsStardardModeCache[url];
 // };
-
-module.exports.formUrl = compositeImageData => {
-  const fg = compositeImageData.foreground;
-  const bg = compositeImageData.background;
-  const mode = standardModesDict[fg.srcKey] ? fg.srcKey : 'ut';
-  const maybeFgSrcKeyRoute = mode === 'ut' ? `/${fg.srcKey}` : '';
-  const url = `${mode}/${bg.srcKey}/${fg.x}_${fg.y}_${fg.width}_${fg.height}_${bg.width}_${bg.height}${maybeFgSrcKeyRoute}`;
-  return url;
-};

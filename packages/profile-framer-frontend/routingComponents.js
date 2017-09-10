@@ -10,8 +10,10 @@ import TemplateUploadScreen from './TemplateUploadScreen';
 import ModalScreen from './ModalScreen';
 import './app.scss';
 import setBackgroundHoc from './setBackgroundHoc';
-import { formUrl } from './deriveUrlInfo';
 import ancestorConstantsHoc from './ancestorConstantsHoc';
+
+import {formUrl} from './deriveUrlInfo';
+
 // ========
 // ========
 let HomeLayoutWithUploadCallback = (props) => {
