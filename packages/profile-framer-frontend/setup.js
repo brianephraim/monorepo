@@ -94,6 +94,7 @@ export default function(constants) {
         found = `${type}_${homeLayoutObject.key}`;
       }
     }
+    console.log('routeModes',routeModes);
 
     if (!found) {
       found = `${type}_${'UT'}`;
