@@ -32,6 +32,7 @@ function makeProfileFrameConstants(namingBasis) {
   const appTitle = `${NamingBasis}Selfie.com`;
   return {
     appNameSpace,
+    APPNAMESPACE,
     urlAppNameSpace,
     tweetUrl,
     fgImagePrefix,

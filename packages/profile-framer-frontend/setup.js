@@ -193,7 +193,11 @@ export default function(constants) {
       }
     },
     activeAppScreen: (state = 'HOME', action) => {
-      if (routesMap[action.type] && action.payload.appNameSpace === constants.appNameSpace) {
+      if (
+        (routesMap[action.type] && action.payload.appNameSpace === constants.appNameSpace)
+        ||
+        (action.type === appRootActionType) // in this case, there is no payload... like when the url is just /bernie
+      ) {
         return screenNameMap[action.type];
       }
       return state;
