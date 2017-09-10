@@ -78,7 +78,7 @@ export function payloadRefineAction({ type, payload }, appNameSpace) {
   while (!found && i < routeModes.length) {
     const homeLayoutObject = routeModes[i++];
     if (homeLayoutObject.match(payload)) {
-      found = `${type}_${homeLayoutObject.key}`;
+      found = `${type}_${homeLayoutObject.key}_${appNameSpace.toUpperCase()}`;
     }
   }
 
@@ -146,14 +146,15 @@ export default function(constants) {
       let urlEnd = route.urlEnd;
       urlEnd = urlEnd ? `/${urlEnd}` : '';
       const path = `${urlStart}${urlEnd}`;
-      const routesMapKey = `${route.action}_${key}`;
+      const routesMapKey = `${route.action}_${key}_${constants.appNameSpace.toUpperCase()}`;
       routesMap[routesMapKey] = path;
       screenNameMap[routesMapKey] = route.action;
       screenComponentMap[route.action] = route.component;
     });
   });
-  routesMap.APP_ROOT = constants.urlAppNameSpace;
-  screenNameMap.APP_ROOT = 'HOME';
+  const appRootActionType = `APP_ROOT_${constants.urlAppNameSpace.toUpperCase()}`
+  routesMap[appRootActionType] = constants.urlAppNameSpace;
+  screenNameMap[appRootActionType] = 'HOME';
 
   function filterReducers(reducers,check) {
     // return reducers;
@@ -178,7 +179,7 @@ export default function(constants) {
 
   const reducersToFocus = {
     compositeImageData: (state = {}, action) => {
-      if (routesMap[action.type] || action.type === 'APP_ROOT') {
+      if (routesMap[action.type] || action.type === appRootActionType) {
         const compositeImageData = paramsIntoCompositeImage(action.payload, constants);
         return compositeImageData;
       }
@@ -224,7 +225,7 @@ export default function(constants) {
 
   const reducers = combineReducers({
     ...filterReducers(reducersToFocus, (state,action) => {
-      return action.appNameSpace === constants.appNameSpace || action.type === 'APP_ROOT';
+      return action.appNameSpace === constants.appNameSpace || action.type === appRootActionType;
     }),    
     responsiveStatusesDict: nameSpacedResponsiveStatusesDictReducer,
     constants: (state = {}, action) => {
@@ -269,7 +270,6 @@ export default function(constants) {
     }
   )(Routing);
   Routing = setAncestorConstantsHoc(Routing, constants);
-
 
   addRoutesToApp({
     routesMap,
