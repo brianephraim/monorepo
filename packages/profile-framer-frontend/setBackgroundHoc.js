@@ -18,7 +18,7 @@ export default function setBackgroundHoc(Comp){
                 ...compositeImageIntoParams(getState()[ownProps.constants.appNameSpace].compositeImageData),
                 bgSrcKey: response.srcKey,
               },
-            });
+            },ownProps.constants.appNameSpace);
             dispatch(action);
           });
         };

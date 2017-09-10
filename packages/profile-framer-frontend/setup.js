@@ -25,14 +25,7 @@ import { paramsIntoCompositeImage } from './compositeImage';
 import {setAncestorConstantsHoc} from './ancestorConstantsHoc'; 
 
 
-console.log('hmmmm');
-let payloadRefineActionGetsRedefined = () => {};
-function payloadRefineAction(...args) {
-  return payloadRefineActionGetsRedefined(...args);
-}
-export {
-  payloadRefineAction,
-};
+
 
 let Dynamic = (props) => {
   if(props.dynamicScreen){
@@ -57,57 +50,57 @@ Dynamic = connect(
 )(Dynamic);
 export {Dynamic};
 
+const geoPathFrag =
+  ':fgX([^/|^_]*)_:fgY([^/|^_]*)_:fgW([^/|^_]*)_:fgH([^/|^_]*)_:bgW([^/|^_]*)_:bgH([^/]*)';
+
+const routeModes = [
+  {
+    key: 'H3LIKE',
+    getUrlStart: (appNameSpace) => {return `/:appNameSpace(${appNameSpace})/:fgSrcKey(${standardModesRegexArrayString})/:bgSrcKey/${geoPathFrag}`;},
+    match: payload => {
+      return (
+        payload.fgSrcKey &&
+        payload.fgSrcKey.match(
+          new RegExp(`^(${standardModesRegexArrayString})$`)
+        )
+      );
+    },
+  },
+  {
+    key: 'UT',
+    getUrlStart: (appNameSpace) => {return `/:appNameSpace(${appNameSpace})/ut/:bgSrcKey/${geoPathFrag}/:fgSrcKey`;},
+    match: payload => {
+      return payload.fgSrcKey;
+    },
+  },
+];
+
+export function payloadRefineAction({ type, payload }, appNameSpace) {
+  let found = false;
+  let i = 0;
+  while (!found && i < routeModes.length) {
+    const homeLayoutObject = routeModes[i++];
+    if (homeLayoutObject.match(payload)) {
+      found = `${type}_${homeLayoutObject.key}`;
+    }
+  }
+
+  if (!found) {
+    found = `${type}_${'UT'}`;
+  }
+  return {
+    type: found,
+    asdf:'zxcv',
+    payload:{
+      ...payload,
+      appNameSpace,
+    },
+  };
+}
 
 export default function(constants) {
 
-  const geoPathFrag =
-    ':fgX([^/|^_]*)_:fgY([^/|^_]*)_:fgW([^/|^_]*)_:fgH([^/|^_]*)_:bgW([^/|^_]*)_:bgH([^/]*)';
 
-  const routeModes = [
-    {
-      key: 'H3LIKE',
-      urlStart: `/:appNameSpace(${constants.appNameSpace})/:fgSrcKey(${standardModesRegexArrayString})/:bgSrcKey/${geoPathFrag}`,
-      match: payload => {
-        return (
-          payload.fgSrcKey &&
-          payload.fgSrcKey.match(
-            new RegExp(`^(${standardModesRegexArrayString})$`)
-          )
-        );
-      },
-    },
-    {
-      key: 'UT',
-      urlStart: `/:appNameSpace(${constants.appNameSpace})/ut/:bgSrcKey/${geoPathFrag}/:fgSrcKey`,
-      match: payload => {
-        return payload.fgSrcKey;
-      },
-    },
-  ];
-
-  payloadRefineActionGetsRedefined = ({ type, payload }) => {
-    let found = false;
-    let i = 0;
-    while (!found && i < routeModes.length) {
-      const homeLayoutObject = routeModes[i++];
-      if (homeLayoutObject.match(payload)) {
-        found = `${type}_${homeLayoutObject.key}`;
-      }
-    }
-    console.log('routeModes',routeModes);
-
-    if (!found) {
-      found = `${type}_${'UT'}`;
-    }
-    return {
-      type: found,
-      asdf:'zxcv',
-      payload:{
-        ...payload,
-        appNameSpace: constants.appNameSpace,
-      },
-    };
-  }
 
 
   const routes = [
@@ -154,7 +147,7 @@ export default function(constants) {
   const screenComponentMap = {};
   routeModes.forEach(homeLayoutPath => {
     const key = homeLayoutPath.key;
-    const urlStart = homeLayoutPath.urlStart;
+    const urlStart = homeLayoutPath.getUrlStart(constants.appNameSpace);
     // const urlStart = routeModes[key];
     routes.forEach(route => {
       let urlEnd = route.urlEnd;
