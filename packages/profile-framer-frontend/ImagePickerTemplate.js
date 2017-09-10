@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import {appConnect} from './nameSpacedResponsive';
 import ImagePicker from './ImagePicker';
 import { compositeImageIntoParams } from './compositeImage';
-import ancestorConstantsHoc from './ancestorConstantsHoc';
 import fetchTemplatesHoc from './fetchTemplatesHoc';
 
 class ImagePickerTemplate extends Component {

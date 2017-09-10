@@ -25,6 +25,7 @@ import { paramsIntoCompositeImage } from './compositeImage';
 import {setAncestorConstantsHoc} from './ancestorConstantsHoc'; 
 
 
+console.log('hmmmm');
 let payloadRefineActionGetsRedefined = () => {};
 function payloadRefineAction(...args) {
   return payloadRefineActionGetsRedefined(...args);

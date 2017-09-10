@@ -18,6 +18,7 @@ function fetchTemplatesHoc(Comp){
             fetch(`${backendApiPrefix}/get_template_list`).then(r => {
               return r.json();
             });
+          imagesFromFetchPromises[constants.appNameSpace] = imagesFromFetchPromise;
           return imagesFromFetchPromise.then(response => {
             if (response && response.userTemplates && response.userTemplates.length) {
               const images = response.userTemplates.reduce((accum, imageObj) => {

@@ -254,10 +254,11 @@ class FbManager {
 const fbManager = new FbManager();
 export default fbManager;
 
-let imagesFromFBPromise = null;
-export function makeActionFetchPhotos() {
+const  imagesFromFBPromises = {};
+export function makeActionFetchPhotos(ownProps) {
   return (dispatch /* , getState*/) => {
-    imagesFromFBPromise = imagesFromFBPromise || fbManager.importStuff();
+    const imagesFromFBPromise = imagesFromFBPromises[ownProps.constants.appNameSpace] || fbManager.importStuff();
+    imagesFromFBPromises[ownProps.constants.appNameSpace] = imagesFromFBPromise;
     return imagesFromFBPromise.then(response => {
       if (response && response.data && response.data.length) {
         const images = response.data.reduce((accum, imageObj) => {
