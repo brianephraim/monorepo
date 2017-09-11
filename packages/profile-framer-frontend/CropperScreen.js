@@ -1,5 +1,3 @@
-/* eslint-disable react/no-multi-comp */
-
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import whitelistFilterProps from '@defualt/whitelist-filter-props';

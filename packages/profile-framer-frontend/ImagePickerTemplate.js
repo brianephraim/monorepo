@@ -1,4 +1,3 @@
-/* eslint-disable import/no-mutable-exports */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { appConnect } from './nameSpacedResponsive';
@@ -50,13 +49,9 @@ ImagePickerTemplate.defaultProps = {
   limit: Infinity,
   layoutVariation: '',
 };
-let toExport = appConnect((appState /* , { params }*/) => {
+export default fetchTemplatesHoc(appConnect((appState) => {
   return {
     images: appState.templates,
     compositeImageData: appState.compositeImageData,
   };
-})(ImagePickerTemplate);
-
-toExport = fetchTemplatesHoc(toExport);
-
-export default toExport;
+})(ImagePickerTemplate));
