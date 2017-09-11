@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import styleConstants from './style-constants';
-import {ConnectResponsiveStatusesDictHOC} from './nameSpacedResponsive';
+import { ConnectResponsiveStatusesDictHOC } from './nameSpacedResponsive';
 import ancestorConstantsHoc from './ancestorConstantsHoc';
 
 const StyledLeftPillar = ConnectResponsiveStatusesDictHOC(styled.div`
@@ -115,10 +115,7 @@ function AppHeader(props) {
         </StyledBranding>
         <StyledSocialRow className="app_header_leftPillar_socialRow">
           <StyledSocialWidget className="app_header_leftPillar_socialRow_socialWidget">
-            <a
-              className="twitter-share-button"
-              href={props.constants.tweetUrl}
-            >
+            <a className="twitter-share-button" href={props.constants.tweetUrl}>
               Tweet
             </a>
           </StyledSocialWidget>
@@ -175,7 +172,7 @@ function AppHeader(props) {
   );
 }
 AppHeader.propTypes = {
-  constants: PropTypes.object.isRequired
+  constants: PropTypes.object.isRequired,
 };
 
 export default ancestorConstantsHoc(AppHeader);

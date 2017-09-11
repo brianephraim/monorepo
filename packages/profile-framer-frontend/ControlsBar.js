@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
@@ -36,7 +35,8 @@ class ControlsBar extends Component {
     }, []);
   }
   render() {
-    const hideExtras = this.props.windowWidth <= styleConstants.breakpoints.compact;
+    const hideExtras =
+      this.props.windowWidth <= styleConstants.breakpoints.compact;
     return (
       <StyledControlsBarWrap>
         <EditDesignButtonGroup
@@ -66,4 +66,4 @@ const controlsBarHeights = {
   shrink: 96,
   compact: 50,
 };
-export {controlsBarHeights};
+export { controlsBarHeights };

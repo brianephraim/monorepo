@@ -1,6 +1,7 @@
-import React, {Component} from 'react';
-import PropTypes from 'prop-types'; 
-import {appConnect} from './nameSpacedResponsive';
+/* eslint-disable import/no-mutable-exports */
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { appConnect } from './nameSpacedResponsive';
 import CropperScreen from './CropperScreen';
 import ImagePickerFacebook from './ImagePickerFacebook';
 import ImagePickerTemplate from './ImagePickerTemplate';
@@ -12,26 +13,23 @@ import './app.scss';
 import setBackgroundHoc from './setBackgroundHoc';
 import ancestorConstantsHoc from './ancestorConstantsHoc';
 
-import {formUrl} from './deriveUrlInfo';
+import { formUrl } from './deriveUrlInfo';
 
 // ========
 // ========
-let HomeLayoutWithUploadCallback = (props) => {
-  return (
-    <HomeLayout onUploadSuccess={props.setBackground} />
-  );
-}
+console.log('can this be cleaned up');
+let HomeLayoutWithUploadCallback = props => {
+  return <HomeLayout onUploadSuccess={props.setBackground} />;
+};
 HomeLayoutWithUploadCallback.propTypes = {
   setBackground: PropTypes.func.isRequired,
 };
 HomeLayoutWithUploadCallback = setBackgroundHoc(HomeLayoutWithUploadCallback);
 
-export {HomeLayoutWithUploadCallback};
+export { HomeLayoutWithUploadCallback };
 
-
-
-// let ImagePickerFacebookWithOnClick = 
-export function ImagePickerFacebookWithOnClick () {
+// let ImagePickerFacebookWithOnClick =
+export function ImagePickerFacebookWithOnClick() {
   return (
     <ModalScreen hasCloseButton headerText="Pick a photo">
       <ImagePickerFacebook />
@@ -41,7 +39,7 @@ export function ImagePickerFacebookWithOnClick () {
 
 // ===
 
-export function ImagePickerTemplateWithOnClick () {
+export function ImagePickerTemplateWithOnClick() {
   return (
     <ModalScreen hasCloseButton headerText="Pick a design">
       <ImagePickerTemplate />
@@ -49,17 +47,17 @@ export function ImagePickerTemplateWithOnClick () {
   );
 }
 
-
-
 let CropperWithFgBgCompletion = class extends Component {
-  constructor(){
+  constructor() {
     super();
     this.generateCompletionUrl = this.generateCompletionUrl.bind(this);
   }
   generateCompletionUrl(activeCompositeImageData) {
-    return `${this.props.constants.urlAppNameSpace}/${formUrl(activeCompositeImageData)}`;
+    return `${this.props.constants.urlAppNameSpace}/${formUrl(
+      activeCompositeImageData
+    )}`;
   }
-  render(){
+  render() {
     return (
       <ModalScreen hasCloseButton>
         <CropperScreen
@@ -70,22 +68,19 @@ let CropperWithFgBgCompletion = class extends Component {
       </ModalScreen>
     );
   }
-}
+};
 CropperWithFgBgCompletion.propTypes = {
   compositeImageData: PropTypes.object.isRequired,
   constants: PropTypes.object.isRequired,
 };
-CropperWithFgBgCompletion = ancestorConstantsHoc(appConnect(
-  (appState /* , { params }*/) => {
+CropperWithFgBgCompletion = ancestorConstantsHoc(
+  appConnect((appState /* , { params }*/) => {
     return {
       compositeImageData: appState.compositeImageData,
     };
-  },
-)(CropperWithFgBgCompletion));
-export {CropperWithFgBgCompletion};
-
-
-
+  })(CropperWithFgBgCompletion)
+);
+export { CropperWithFgBgCompletion };
 
 export function UrlImportScreenWithWithUploadCallback() {
   return (

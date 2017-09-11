@@ -2,17 +2,21 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { makeActionFetchPhotos } from './fb';
 import ImagePicker from './ImagePicker';
-import {appConnect} from './nameSpacedResponsive';
+import { appConnect } from './nameSpacedResponsive';
 import setBackgroundHoc from './setBackgroundHoc';
-
-
 
 class ImagePickerFacebook extends Component {
   componentWillMount() {
     this.props.fetchFacebookPhotos();
   }
   render() {
-    return <ImagePicker images={this.props.images} onClick={this.props.setBackground} {...this.props} />;
+    return (
+      <ImagePicker
+        images={this.props.images}
+        onClick={this.props.setBackground}
+        {...this.props}
+      />
+    );
   }
 }
 ImagePickerFacebook.propTypes = {
@@ -21,14 +25,16 @@ ImagePickerFacebook.propTypes = {
   fetchFacebookPhotos: PropTypes.func.isRequired,
 };
 
-const appConnected = setBackgroundHoc(appConnect(
-  (appState /* , { params }*/) => {
-    return {
-      images: appState.facebookPhotos,
-    };
-  },
-  {
-    fetchFacebookPhotos: makeActionFetchPhotos,
-  }
-)(ImagePickerFacebook));
+const appConnected = setBackgroundHoc(
+  appConnect(
+    (appState /* , { params }*/) => {
+      return {
+        images: appState.facebookPhotos,
+      };
+    },
+    {
+      fetchFacebookPhotos: makeActionFetchPhotos,
+    }
+  )(ImagePickerFacebook)
+);
 export default appConnected;

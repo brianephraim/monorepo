@@ -1,9 +1,9 @@
 import { connect } from 'react-redux';
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { combineReducers } from 'redux';
 import { addRoutesToApp } from '@defualt/redux-routing-app-root-component';
-import {makeNameSpacedResponsiveStatusesDictReducer} from '@defualt/responsive/nameSpaceResponsive';
+import { makeNameSpacedResponsiveStatusesDictReducer } from '@defualt/responsive/nameSpaceResponsive';
 
 import { standardModesRegexArrayString } from './deriveUrlInfo';
 import {
@@ -19,33 +19,28 @@ import {
   TemplateUploadScreenWithUploadCallback,
 } from './routingComponents';
 
-
 import { paramsIntoCompositeImage } from './compositeImage';
 
-import {setAncestorConstantsHoc} from './ancestorConstantsHoc'; 
+import { setAncestorConstantsHoc } from './ancestorConstantsHoc';
 
-
-let Dynamic = (props) => {
-  if(props.dynamicScreen){
+let Dynamic = props => {
+  if (props.dynamicScreen) {
     const Comp = buttonGroupComponents[props.dynamicScreen];
     return <Comp isModal />;
   }
   return null;
-}
+};
 Dynamic.propTypes = {
   dynamicScreen: PropTypes.string.isRequired,
 };
 Dynamic.defaultProps = {
   dynamicScreen: '',
 };
-Dynamic = connect(
-  (state /* , { params }*/) => {
-    return {
-      dynamicScreen: state.location.payload.dynamicScreen,
-    };
-  },
-  {}
-)(Dynamic);
+Dynamic = connect((state /* , { params }*/) => {
+  return {
+    dynamicScreen: state.location.payload.dynamicScreen,
+  };
+}, {})(Dynamic);
 
 const geoPathFrag =
   ':fgX([^/|^_]*)_:fgY([^/|^_]*)_:fgW([^/|^_]*)_:fgH([^/|^_]*)_:bgW([^/|^_]*)_:bgH([^/]*)';
@@ -53,7 +48,9 @@ const geoPathFrag =
 const routeModes = [
   {
     key: 'H3LIKE',
-    getUrlStart: (appNameSpace) => {return `/:appNameSpace(${appNameSpace})/:fgSrcKey(${standardModesRegexArrayString})/:bgSrcKey/${geoPathFrag}`;},
+    getUrlStart: appNameSpace => {
+      return `/:appNameSpace(${appNameSpace})/:fgSrcKey(${standardModesRegexArrayString})/:bgSrcKey/${geoPathFrag}`;
+    },
     match: payload => {
       return (
         payload.fgSrcKey &&
@@ -65,7 +62,9 @@ const routeModes = [
   },
   {
     key: 'UT',
-    getUrlStart: (appNameSpace) => {return `/:appNameSpace(${appNameSpace})/ut/:bgSrcKey/${geoPathFrag}/:fgSrcKey`;},
+    getUrlStart: appNameSpace => {
+      return `/:appNameSpace(${appNameSpace})/ut/:bgSrcKey/${geoPathFrag}/:fgSrcKey`;
+    },
     match: payload => {
       return payload.fgSrcKey;
     },
@@ -87,8 +86,8 @@ export function payloadRefineAction({ type, payload }, appNameSpace) {
   }
   return {
     type: found,
-    asdf:'zxcv',
-    payload:{
+    asdf: 'zxcv',
+    payload: {
       ...payload,
       appNameSpace,
     },
@@ -152,35 +151,36 @@ export default function(constants) {
       screenComponentMap[route.action] = route.component;
     });
   });
-  const appRootActionType = `APP_ROOT_${constants.urlAppNameSpace.toUpperCase()}`
+  const appRootActionType = `APP_ROOT_${constants.urlAppNameSpace.toUpperCase()}`;
   routesMap[appRootActionType] = constants.urlAppNameSpace;
   screenNameMap[appRootActionType] = 'HOME';
 
-  function filterReducers(reducers,check) {
+  function filterReducers(reducers, check) {
     // return reducers;
-    return Object.keys(reducers).reduce((accum,key) => {
+    return Object.keys(reducers).reduce((accum, key) => {
       const reducer = reducers[key];
-      accum[key] = (state,action,...args) => {
-        if (check(state,action,...args)) {
+      accum[key] = (state, action, ...args) => {
+        if (check(state, action, ...args)) {
           // nameSpaces match... proceed with reducer.
-          return reducer(state,action,...args);
+          return reducer(state, action, ...args);
         }
         // pass in empty object as reducer action
         // this should return the default value of the reducer
         // because reducers parse action looking for data,
         // so empty ebject means no data to be found... ergo default value.s
-        return reducer(state,{},...args);
+        return reducer(state, {}, ...args);
       };
       return accum;
     }, {});
   }
 
-
-
   const reducersToFocus = {
     compositeImageData: (state = {}, action) => {
       if (routesMap[action.type] || action.type === appRootActionType) {
-        const compositeImageData = paramsIntoCompositeImage(action.payload, constants);
+        const compositeImageData = paramsIntoCompositeImage(
+          action.payload,
+          constants
+        );
         return compositeImageData;
       }
       switch (action.type) {
@@ -194,9 +194,9 @@ export default function(constants) {
     },
     activeAppScreen: (state = 'HOME', action) => {
       if (
-        (routesMap[action.type] && action.payload.appNameSpace === constants.appNameSpace)
-        ||
-        (action.type === appRootActionType) // in this case, there is no payload... like when the url is just /bernie
+        (routesMap[action.type] &&
+          action.payload.appNameSpace === constants.appNameSpace) ||
+        action.type === appRootActionType // in this case, there is no payload... like when the url is just /bernie
       ) {
         return screenNameMap[action.type];
       }
@@ -216,61 +216,61 @@ export default function(constants) {
         };
       });
       if (action.type === 'FETCH_TEMPLATES') {
-
         return [...featured, ...action.images];
       }
       return featured;
     },
-    
   };
 
-  const nameSpacedResponsiveStatusesDictReducer = makeNameSpacedResponsiveStatusesDictReducer(() => { return constants.appNameSpace; },'homeResponsive');
-
+  const nameSpacedResponsiveStatusesDictReducer = makeNameSpacedResponsiveStatusesDictReducer(
+    () => {
+      return constants.appNameSpace;
+    },
+    'homeResponsive'
+  );
 
   const reducers = combineReducers({
-    ...filterReducers(reducersToFocus, (state,action) => {
-      return action.appNameSpace === constants.appNameSpace || action.type === appRootActionType;
-    }),    
+    ...filterReducers(reducersToFocus, (state, action) => {
+      return (
+        action.appNameSpace === constants.appNameSpace ||
+        action.type === appRootActionType
+      );
+    }),
     responsiveStatusesDict: nameSpacedResponsiveStatusesDictReducer,
     constants: (state = {}, action) => {
       if (action.type === 'SET_CONSTANTS') {
-        return {...action.constants};
+        return { ...action.constants };
       }
       return state;
     },
   });
 
-
-
-
-
   let Routing = class extends Component {
     componentWillMount() {
       this.props.setConstants(constants);
     }
-    render(){
+    render() {
       const Comp = screenComponentMap[this.props.activeAppScreen];
-      return (
-        <Comp />
-      );
+      return <Comp />;
     }
   };
   Routing.propTypes = {
     activeAppScreen: PropTypes.string.isRequired,
-    setConstants: PropTypes.func.isRequired
+    setConstants: PropTypes.func.isRequired,
   };
   Routing = connect(
     (state /* , { params }*/) => {
       return {
         activeAppScreen: state[constants.appNameSpace].activeAppScreen,
       };
-    }, {
-      setConstants: (constants) => {
+    },
+    {
+      setConstants: constants => {
         return {
           type: 'SET_CONSTANTS',
           constants,
         };
-      }
+      },
     }
   )(Routing);
   Routing = setAncestorConstantsHoc(Routing, constants);

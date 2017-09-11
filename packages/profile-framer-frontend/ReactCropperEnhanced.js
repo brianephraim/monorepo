@@ -47,7 +47,7 @@ class ReactCropperEnhanced extends Component {
       this.refreshCropper();
     });
   }
-  componentWillReceiveProps(nextProps){
+  componentWillReceiveProps(nextProps) {
     if (nextProps.cropSrc !== this.props.cropSrc) {
       this.refreshCropper();
     }

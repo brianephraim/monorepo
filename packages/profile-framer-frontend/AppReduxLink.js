@@ -18,7 +18,10 @@ function AppReduxLink(props) {
     };
   }
   return (
-    <Link className={props.className} to={payloadRefineAction(to,props.constants.appNameSpace)}>
+    <Link
+      className={props.className}
+      to={payloadRefineAction(to, props.constants.appNameSpace)}
+    >
       {props.children}
     </Link>
   );
@@ -28,7 +31,6 @@ AppReduxLink.propTypes = {
   to: PropTypes.object.isRequired,
   children: PropTypes.node.isRequired,
   constants: PropTypes.object.isRequired,
-
 };
 AppReduxLink.defaultProps = {
   className: '',

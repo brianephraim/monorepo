@@ -42,8 +42,8 @@ CompletionInterface.propTypes = {
 export default CompletionInterface;
 
 const completionInterfaceHeights = {
-      normal: 128,
-      shrink: 88,
-      compact: 88,
-    };
-export {completionInterfaceHeights};
+  normal: 128,
+  shrink: 88,
+  compact: 88,
+};
+export { completionInterfaceHeights };

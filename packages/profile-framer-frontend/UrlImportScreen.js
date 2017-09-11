@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import {appConnect} from './nameSpacedResponsive';
 import styleConstants from './style-constants';
 import setBackgroundHoc from './setBackgroundHoc';
 
@@ -27,7 +26,7 @@ const StyledInput = styled.input`
 `;
 
 class UrlImportScreen extends Component {
-  constructor(){
+  constructor() {
     super();
     this.onSubmit = this.onSubmit.bind(this);
     this.inputRef = this.inputRef.bind(this);
@@ -37,7 +36,7 @@ class UrlImportScreen extends Component {
     if (!this.input.value.trim()) {
       return;
     }
-    this.props.setBackground({src:this.input.value});
+    this.props.setBackground({ src: this.input.value });
     this.input.value = '';
   }
   inputRef(node) {
@@ -47,10 +46,16 @@ class UrlImportScreen extends Component {
     return (
       <form onSubmit={this.onSubmit}>
         <StyledInputContainer className="inputContainer">
-          <StyledInput className="textInput urlInput" innerRef={this.inputRef} />
+          <StyledInput
+            className="textInput urlInput"
+            innerRef={this.inputRef}
+          />
         </StyledInputContainer>
         <StyledButtonWrap>
-          <StyledButton className="button mainButton urlUploadizerDone" type="submit">
+          <StyledButton
+            className="button mainButton urlUploadizerDone"
+            type="submit"
+          >
             <StyledButtonInner>Done</StyledButtonInner>
           </StyledButton>
         </StyledButtonWrap>
@@ -60,6 +65,6 @@ class UrlImportScreen extends Component {
 }
 UrlImportScreen.propTypes = {
   setBackground: PropTypes.func.isRequired,
-}
+};
 
 export default setBackgroundHoc(UrlImportScreen);

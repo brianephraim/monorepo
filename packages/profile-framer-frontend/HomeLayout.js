@@ -15,10 +15,14 @@ import ancestorConstantsHoc from './ancestorConstantsHoc';
 import Disclaimer from './Disclaimer';
 import HomeLayoutHeader from './HomeLayoutHeader';
 
-
 import styleConstants from './style-constants';
 
-import {ResponsiveHOC, ResponsiveReduxMasterHOC,ConnectResponsiveStatusesDictHOC,appConnect} from './nameSpacedResponsive';
+import {
+  ResponsiveHOC,
+  ResponsiveReduxMasterHOC,
+  ConnectResponsiveStatusesDictHOC,
+  appConnect,
+} from './nameSpacedResponsive';
 
 const StyledHomeLayout = styled.div`position: relative;`;
 
@@ -50,8 +54,7 @@ const StyledTopBannerLink = styled.a`
   font-weight: bold;
 `;
 
-
-let ContributeBanner = (props) => {
+let ContributeBanner = props => {
   return (
     <StyledTopBanner className="topBanner">
       <StyledTopBannerLink
@@ -62,12 +65,11 @@ let ContributeBanner = (props) => {
       </StyledTopBannerLink>
     </StyledTopBanner>
   );
-}
+};
 ContributeBanner.propTypes = {
-  constants: PropTypes.object.isRequired
+  constants: PropTypes.object.isRequired,
 };
 ContributeBanner = ancestorConstantsHoc(ContributeBanner);
-
 
 const StyledSelfieFrame = ConnectResponsiveStatusesDictHOC(styled.div`
   background: ${styleConstants.colors.white};
@@ -105,25 +107,22 @@ AppMainSelfieFrame.defaultProps = {
   style: null,
 };
 
-const AppMainSelfieFrameResponsive = ResponsiveHOC(
-  AppMainSelfieFrame,
-  {
-    masterName: 'homeResponsive',
-    turns: [
-      {
-        priority: 1,
-        magicSquareName: generateGiantSquareDetails,
+const AppMainSelfieFrameResponsive = ResponsiveHOC(AppMainSelfieFrame, {
+  masterName: 'homeResponsive',
+  turns: [
+    {
+      priority: 1,
+      magicSquareName: generateGiantSquareDetails,
+    },
+    {
+      priority: 3,
+      magicSquareName: (el, masterClasses) => {
+        const gapAtBottomViaMargin = masterClasses.noFloat ? 75 : 0;
+        return generateGiantSquareDetails(el, gapAtBottomViaMargin);
       },
-      {
-        priority: 3,
-        magicSquareName: (el, masterClasses) => {
-          const gapAtBottomViaMargin = masterClasses.noFloat ? 75 : 0;
-          return generateGiantSquareDetails(el, gapAtBottomViaMargin);
-        },
-      },
-    ]
-  }
-);
+    },
+  ],
+});
 
 const StyledInstructions = styled.div`
   text-align: center;
@@ -161,8 +160,6 @@ let AppHero = class extends Component {
     };
   }
   render() {
-    
-
     return (
       <StyledLeftPillar className="app_body_leftPillar">
         <AppMainSelfieFrameResponsive>
@@ -184,18 +181,20 @@ let AppHero = class extends Component {
 
 AppHero.propTypes = {
   imSrc: PropTypes.string.isRequired,
-  constants: PropTypes.object.isRequired
+  constants: PropTypes.object.isRequired,
 };
 
-AppHero = ancestorConstantsHoc(appConnect((appState /* , { params }*/) => {
-  return {
-    imSrc:
-      appState && appState.compositeImageData
-        ? generateCompositeImgSrcUrl(appState.compositeImageData)
-        : '/images/mock-selfie.png',
-    // toBeAssigned: getDetailsOfToBeAssigned(state),
-  };
-}, {})(AppHero));
+AppHero = ancestorConstantsHoc(
+  appConnect((appState /* , { params }*/) => {
+    return {
+      imSrc:
+        appState && appState.compositeImageData
+          ? generateCompositeImgSrcUrl(appState.compositeImageData)
+          : '/images/mock-selfie.png',
+      // toBeAssigned: getDetailsOfToBeAssigned(state),
+    };
+  }, {})(AppHero)
+);
 
 const StyledRightPillar = ConnectResponsiveStatusesDictHOC(styled.div`
   ${styleConstants.mixins.rightPillar()}

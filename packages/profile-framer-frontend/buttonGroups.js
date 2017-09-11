@@ -5,7 +5,10 @@ import Upload from './Upload';
 import AppReduxLink from './AppReduxLink';
 
 import styleConstants from './style-constants';
-import {ConnectResponsiveStatusesDictHOC, appConnect} from './nameSpacedResponsive';
+import {
+  ConnectResponsiveStatusesDictHOC,
+  appConnect,
+} from './nameSpacedResponsive';
 import ImagePickerTemplate from './ImagePickerTemplate';
 import ModalScreen from './ModalScreen';
 import setBackgroundHoc from './setBackgroundHoc';
@@ -18,7 +21,11 @@ const StyledSubsection = ConnectResponsiveStatusesDictHOC(styled.div`
   ${props => {
     let toReturn = '';
     // singleColHome
-    if (!props.isModal && props.responsiveStatusesDict.homeResponsive && props.responsiveStatusesDict.homeResponsive.singleCol) {
+    if (
+      !props.isModal &&
+      props.responsiveStatusesDict.homeResponsive &&
+      props.responsiveStatusesDict.homeResponsive.singleCol
+    ) {
       toReturn += `
         float:none;
         margin:0 auto;
@@ -35,14 +42,17 @@ const StyledSubsection = ConnectResponsiveStatusesDictHOC(styled.div`
       toReturn += `
         display:none;
       `;
-      if (!props.isModal && props.responsiveStatusesDict.homeResponsive.singleCol) {
+      if (
+        !props.isModal &&
+        props.responsiveStatusesDict.homeResponsive.singleCol
+      ) {
         toReturn += `
           display:block;
         `;
       }
     }
     return toReturn;
-  }} ${(props) => {
+  }} ${props => {
       if (props.layoutVariation === 'header') {
         return `
         display: inline-block;
@@ -50,7 +60,7 @@ const StyledSubsection = ConnectResponsiveStatusesDictHOC(styled.div`
       `;
       }
       return '';
-    }} ${(props) => {
+    }} ${props => {
       if (props.hasLeftBorder) {
         return `
         border-left: ${styleConstants.appPad * 0.5}em solid ${styleConstants
@@ -67,7 +77,11 @@ const StyledIconWrapper = ConnectResponsiveStatusesDictHOC(styled.div`
   float: left;
   ${props => {
     // singleColHome
-    if (!props.isModal && props.responsiveStatusesDict.homeResponsive && props.responsiveStatusesDict.homeResponsive.singleCol) {
+    if (
+      !props.isModal &&
+      props.responsiveStatusesDict.homeResponsive &&
+      props.responsiveStatusesDict.homeResponsive.singleCol
+    ) {
       return `
         float:none;
         margin:0 auto;
@@ -88,7 +102,7 @@ const headerStyle = `
 `;
 const StyledHeaderLink = styled(AppReduxLink)`
   ${headerStyle}
-  ${(props) => {
+  ${props => {
     if (props.layoutVariation === 'header') {
       return `
         color: ${styleConstants.colors.red};
@@ -107,7 +121,11 @@ const StyledMicroText = ConnectResponsiveStatusesDictHOC(styled.div`
   padding-bottom: ${styleConstants.appPad}em;
   ${props => {
     // singleColHome
-    if (!props.isModal && props.responsiveStatusesDict.homeResponsive && props.responsiveStatusesDict.homeResponsive.singleCol) {
+    if (
+      !props.isModal &&
+      props.responsiveStatusesDict.homeResponsive &&
+      props.responsiveStatusesDict.homeResponsive.singleCol
+    ) {
       return `
         display:block;
       `;
@@ -121,7 +139,11 @@ const StyledText = ConnectResponsiveStatusesDictHOC(styled.div`
   overflow: hidden;
   ${props => {
     // singleColHome
-    if (!props.isModal && props.responsiveStatusesDict.homeResponsive && props.responsiveStatusesDict.homeResponsive.singleCol) {
+    if (
+      !props.isModal &&
+      props.responsiveStatusesDict.homeResponsive &&
+      props.responsiveStatusesDict.homeResponsive.singleCol
+    ) {
       return `
         width:0;
         white-space: nowrap;
@@ -138,7 +160,11 @@ const StyledButtonGroup = ConnectResponsiveStatusesDictHOC(styled.div`
     2}em ${styleConstants.appPad}em 0 ${styleConstants.appPad}em;
   ${props => {
     // singleColHome
-    if (!props.isModal && props.responsiveStatusesDict.homeResponsive && props.responsiveStatusesDict.homeResponsive.singleCol) {
+    if (
+      !props.isModal &&
+      props.responsiveStatusesDict.homeResponsive &&
+      props.responsiveStatusesDict.homeResponsive.singleCol
+    ) {
       return `
         padding: ${styleConstants.appPad / 2}em 0 0 0;
         cursor:pointer;
@@ -147,7 +173,7 @@ const StyledButtonGroup = ConnectResponsiveStatusesDictHOC(styled.div`
     return '';
   }}
   background:${styleConstants.colors.red};
-  ${(props) => {
+  ${props => {
     if (props.layoutVariation === 'header') {
       return `
         background: ${styleConstants.colors.white};
@@ -157,7 +183,7 @@ const StyledButtonGroup = ConnectResponsiveStatusesDictHOC(styled.div`
     return '';
   }}
 
-  ${(props) => {
+  ${props => {
     if (props.noLeftPadding) {
       return `
         padding-left: 0;
@@ -170,10 +196,14 @@ const StyledButtonGroup = ConnectResponsiveStatusesDictHOC(styled.div`
 `);
 
 const StyledButtonGroupButtons = ConnectResponsiveStatusesDictHOC(styled.div`
-  ${(props) => {
+  ${props => {
     // singleColHome
 
-    if (!props.isModal && props.responsiveStatusesDict.homeResponsive && props.responsiveStatusesDict.homeResponsive.singleCol) {
+    if (
+      !props.isModal &&
+      props.responsiveStatusesDict.homeResponsive &&
+      props.responsiveStatusesDict.homeResponsive.singleCol
+    ) {
       return `
         display:none;
       `;
@@ -192,7 +222,7 @@ const headerButtonsStyles = `
 const StyledButton = styled.div`
   ${styleConstants.mixins.button()};
   color: ${styleConstants.colors.red};
-  ${(props) => {
+  ${props => {
     if (props.layoutVariation === 'header') {
       return headerButtonsStyles;
     }
@@ -207,7 +237,7 @@ const StyledButtonInnerAnchor = styled.a`
 const StyledButtonInnerAppReduxLink = styled(AppReduxLink)`
   ${styleConstants.mixins.buttonInner()}
   background: ${styleConstants.colors.white};
-  ${(props) => {
+  ${props => {
     if (props.layoutVariation === 'header') {
       return `
         ${styleConstants.mixins.buttonInner()}
@@ -227,9 +257,12 @@ const StyledButtonInnerSpan = styled.span`
       .white};
 `;
 
-let UploadBackgroundSetter = (props) => {
+let UploadBackgroundSetter = props => {
   return (
-    <Upload onSuccess={props.setBackground} backendApiPrefix={props.constants.backendApiPrefix}>
+    <Upload
+      onSuccess={props.setBackground}
+      backendApiPrefix={props.constants.backendApiPrefix}
+    >
       {props.children}
     </Upload>
   );
@@ -237,12 +270,14 @@ let UploadBackgroundSetter = (props) => {
 UploadBackgroundSetter.propTypes = {
   setBackground: PropTypes.func.isRequired,
   constants: PropTypes.object.isRequired,
-  children: PropTypes.node
+  children: PropTypes.node,
 };
 UploadBackgroundSetter.defaultProps = {
   children: null,
-}
-UploadBackgroundSetter = ancestorConstantsHoc(setBackgroundHoc(UploadBackgroundSetter));
+};
+UploadBackgroundSetter = ancestorConstantsHoc(
+  setBackgroundHoc(UploadBackgroundSetter)
+);
 
 let AppButtonGroup = class extends Component {
   constructor() {
@@ -286,7 +321,7 @@ let AppButtonGroup = class extends Component {
         isModal={this.props.isModal}
         filter={this.props.filter}
       >
-        {!this.props.hideExtras && (<ComponentPrepended {...this.props} />)}
+        {!this.props.hideExtras && <ComponentPrepended {...this.props} />}
         {buttons.map(btnDetails => {
           let btnInner;
           if (btnDetails.isUploadBackgroundSetter) {
@@ -405,10 +440,12 @@ AppButtonGroup.defaultProps = {
   isModal: false,
   themex: '',
   layoutVariation: '',
-  filter: (buttons) => {
+  filter: buttons => {
     return buttons;
   },
-  buttonsPrepend: () => {return null},
+  buttonsPrepend: () => {
+    return null;
+  },
 };
 
 AppButtonGroup = appConnect((appState /* , { params }*/) => {
@@ -423,9 +460,9 @@ function makeButtonGroupComponent(
   headline,// shortHeadline, icon, buttons
 }*/
 ) {
-
   function ButtonGroup(props) {
-    options = typeof options === 'function' ? options(props.constants) : options;
+    options =
+      typeof options === 'function' ? options(props.constants) : options;
     const ButtonGroup = <AppButtonGroup {...props} {...options} />;
     if (props.isModal) {
       return (
@@ -474,7 +511,7 @@ const ImportButtonGroup = makeButtonGroupComponent({
 });
 buttonGroupComponents.import = ImportButtonGroup;
 
-const ShareButtonGroup = makeButtonGroupComponent((constants) => {
+const ShareButtonGroup = makeButtonGroupComponent(constants => {
   return {
     urlFragment: 'share',
     headline: 'Share this via:',
@@ -489,11 +526,10 @@ const ShareButtonGroup = makeButtonGroupComponent((constants) => {
       },
       {
         text: 'Tweet',
-        aHref:
-          constants.tweetUrl,
+        aHref: constants.tweetUrl,
       },
     ],
-  }
+  };
 });
 buttonGroupComponents.share = ShareButtonGroup;
 
@@ -522,13 +558,15 @@ const EditSizeButtonGroup = makeButtonGroupComponent({
 buttonGroupComponents.editSize = EditSizeButtonGroup;
 
 function ImagePickerTemplateConfigured(props) {
-  return (<ImagePickerTemplate limit={3} layoutVariation={props.layoutVariation} />);
+  return (
+    <ImagePickerTemplate limit={3} layoutVariation={props.layoutVariation} />
+  );
 }
 ImagePickerTemplateConfigured.propTypes = {
-  layoutVariation: PropTypes.string
+  layoutVariation: PropTypes.string,
 };
 ImagePickerTemplateConfigured.defaultProps = {
-  layoutVariation: ''
+  layoutVariation: '',
 };
 const EditDesignButtonGroup = makeButtonGroupComponent({
   urlFragment: 'editDesign',

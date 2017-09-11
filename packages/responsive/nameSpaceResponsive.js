@@ -12,8 +12,8 @@ export function makeNameSpacedResponsiveHOC(appNameSpace) {
     return ResponsiveHOC(Comp, {
       ...defaults,
       masterName: defaults.masterName,
-      appNameSpace: appNameSpace,
-      splitter: splitter,
+      appNameSpace,
+      splitter,
     })
   }
 }

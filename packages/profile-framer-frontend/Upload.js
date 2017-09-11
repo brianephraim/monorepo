@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 import bindHere from '@defualt/bind_here';
 import { initUpload } from './s3';
 import './app.scss';
 
-import styled from 'styled-components';
 import styleConstants from './style-constants';
 
 const StyledFileInput = styled.input`
@@ -12,9 +12,7 @@ const StyledFileInput = styled.input`
   visibility: hidden;
 `;
 
-const StyledLabel = styled.label`
-  ${styleConstants.mixins.buttonInner()};
-`;
+const StyledLabel = styled.label`${styleConstants.mixins.buttonInner()};`;
 
 const bs = {
   loader: {
@@ -60,7 +58,12 @@ class Upload extends Component {
     bs.loader.load();
     let myAjax;
     if (!offline) {
-      myAjax = initUpload(file, self.folder, self.mustBeSquare,this.props.backendApiPrefix);
+      myAjax = initUpload(
+        file,
+        self.folder,
+        self.mustBeSquare,
+        this.props.backendApiPrefix
+      );
       if (this.props.onSuccess) {
         myAjax.then(this.props.onSuccess);
       }
@@ -129,6 +132,7 @@ Upload.propTypes = {
   children: PropTypes.node.isRequired,
   onSuccess: PropTypes.func,
   onError: PropTypes.func,
+  backendApiPrefix: PropTypes.string.isRequired,
 };
 Upload.defaultProps = {
   onSuccess: () => {},

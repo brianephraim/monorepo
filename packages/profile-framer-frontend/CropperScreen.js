@@ -6,8 +6,10 @@ import whitelistFilterProps from '@defualt/whitelist-filter-props';
 import windowSizer from '@defualt/window-sizer';
 import ReactCropperEnhanced from './ReactCropperEnhanced';
 import styleConstants from './style-constants';
-import ControlsBar, {controlsBarHeights} from './ControlsBar';
-import CompletionInterface, {completionInterfaceHeights} from './CompletionInterface';
+import ControlsBar, { controlsBarHeights } from './ControlsBar';
+import CompletionInterface, {
+  completionInterfaceHeights,
+} from './CompletionInterface';
 
 const isTouchDevice = 'ontouchstart' in document.documentElement;
 
@@ -24,7 +26,7 @@ class CropperScreen extends Component {
     };
     this.crop = this.crop.bind(this);
   }
-  
+
   componentWillMount() {
     // When window resizes, flicker cropperExists.
     // cropperExists determines whether or not <ReactCropper> renders.
@@ -38,14 +40,14 @@ class CropperScreen extends Component {
     });
   }
 
-  componentWillReceiveProps(nextProps){
+  componentWillReceiveProps(nextProps) {
     if (nextProps.foreground.src !== this.state.foreground.src) {
       this.setState({
         foreground: {
           ...this.state.foreground,
           src: nextProps.foreground.src,
-          srcKey: nextProps.foreground.srcKey
-        }
+          srcKey: nextProps.foreground.srcKey,
+        },
       });
     }
   }
@@ -71,7 +73,8 @@ class CropperScreen extends Component {
 
   render() {
     const isShort = this.state.windowWidth <= styleConstants.breakpoints.shrink;
-    const isShorter = this.state.windowWidth <= styleConstants.breakpoints.compact;
+    const isShorter =
+      this.state.windowWidth <= styleConstants.breakpoints.compact;
 
     let assumedHeights = {
       header: controlsBarHeights.normal,
@@ -139,9 +142,7 @@ class CropperScreen extends Component {
       <div>
         <ControlsBar windowWidth={this.state.windowWidth} />
         <div className="cropContainer" style={styles.cropContainer}>
-          <ReactCropperEnhanced
-            {...reactCropperOptions}
-          />
+          <ReactCropperEnhanced {...reactCropperOptions} />
         </div>
         <CompletionInterface
           activeCompositeImageData={activeCompositeImageData}

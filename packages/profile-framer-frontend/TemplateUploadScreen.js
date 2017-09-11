@@ -1,20 +1,15 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React from 'react';
 
 import styled from 'styled-components';
 import styleConstants from './style-constants';
 
-const StyledButton = styled.div`
-  ${styleConstants.mixins.button()};
-`;
+const StyledButton = styled.div`${styleConstants.mixins.button()};`;
 const StyledButtonInner = styled.span`
   ${styleConstants.mixins.buttonInner()} background: ${styleConstants.colors
       .red};
 `;
 
-const StyledInputContainer = styled.div`
-  padding: ${styleConstants.appPad}em;
-`;
+const StyledInputContainer = styled.div`padding: ${styleConstants.appPad}em;`;
 
 const StyledTextContainer = styled.div`
   padding: ${styleConstants.appPad}em;

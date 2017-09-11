@@ -159,4 +159,4 @@ ImagePicker.defaultProps = {
   layoutVariation: '',
 };
 
-export default ImagePicker
+export default ImagePicker;

@@ -36,19 +36,19 @@ const standardModes = [
     featured: true,
   },
 ];
-export {standardModes};
+export { standardModes };
 
 const standardModesRegexArrayString = standardModes
   .map(item => {
     return item.mode;
   })
   .join('|');
-export {standardModesRegexArrayString};
+export { standardModesRegexArrayString };
 const standardModesDict = standardModes.reduce((accum, item) => {
   accum[item.mode] = true;
   return accum;
 }, {});
-export {standardModesDict};
+export { standardModesDict };
 
 export function formUrl(compositeImageData) {
   const fg = compositeImageData.foreground;
