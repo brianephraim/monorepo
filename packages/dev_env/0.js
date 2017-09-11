@@ -237,7 +237,6 @@ function makeServeChainableExpress(serverLogic) {
       appIsBrandNew = true;
       app = (0, _express2.default)();
     }
-    // nameSpace = 'bernieserver';
 
     serverLogic(app, nameSpace);
 
@@ -1292,6 +1291,7 @@ exports.default = function (_ref) {
       res: res,
       isSuccess: false
     });
+    console.log('originalUrl', originalUrl);
     var promise = urlToFileData(originalUrl).then(normalizeImageFileData);
     var promises = [promise, promise.then(deleteS3Object), promise.then(function (fileData) {
       if (mustBeSquare && Math.abs(fileData.width - fileData.height) > 1) {
@@ -1302,6 +1302,7 @@ exports.default = function (_ref) {
         return dfd.promise();
       } else {
         var uploadToS3Promise = this.then(uploadToS3);
+        console.log('uploadToS3');
         uploadToS3Promise.then(function () {
           if (mustBeSquare) {
             var userTemplateModel = {
@@ -1608,8 +1609,9 @@ module.exports = function (originalUrl) {
   } else {
     http = __webpack_require__(67);
   }
-
+  console.log('http get');
   http.get(options, function (response) {
+    console.log('GOTTEN', response);
     var chunks = [];
     response.on('data', function (chunk) {
       chunks.push(chunk);
@@ -1624,7 +1626,10 @@ module.exports = function (originalUrl) {
     }).on('error', function (e) {
       dfd.reject(e);
     });
-  });
+  }).on('error', function (e) {
+    console.error('urlFileToData http error!!!', e);
+    dfd.reject(e);
+  });;
 
   return dfd.promise();
 };

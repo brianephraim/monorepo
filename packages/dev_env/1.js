@@ -81,7 +81,6 @@ function makeServeChainableExpress(serverLogic) {
       appIsBrandNew = true;
       app = (0, _express2.default)();
     }
-    // nameSpace = 'bernieserver';
 
     serverLogic(app, nameSpace);
 
