@@ -8,7 +8,7 @@ import { makeNameSpacedResponsiveStatusesDictReducer } from '@defualt/responsive
 import { standardModesRegexArrayString } from './deriveUrlInfo';
 import {
   buttonGroupComponentsRegexArrayString,
-  buttonGroupComponents,
+  ButtonGroupFeaturedRouteScreen,
 } from './buttonGroups';
 import {
   HomeLayoutWithUploadCallback,
@@ -23,24 +23,7 @@ import { paramsIntoCompositeImage } from './compositeImage';
 
 import { setAncestorConstantsHoc } from './ancestorConstantsHoc';
 
-let Dynamic = props => {
-  if (props.dynamicScreen) {
-    const Comp = buttonGroupComponents[props.dynamicScreen];
-    return <Comp isModal />;
-  }
-  return null;
-};
-Dynamic.propTypes = {
-  dynamicScreen: PropTypes.string.isRequired,
-};
-Dynamic.defaultProps = {
-  dynamicScreen: '',
-};
-Dynamic = connect((state /* , { params }*/) => {
-  return {
-    dynamicScreen: state.location.payload.dynamicScreen,
-  };
-}, {})(Dynamic);
+
 
 const geoPathFrag =
   ':fgX([^/|^_]*)_:fgY([^/|^_]*)_:fgW([^/|^_]*)_:fgH([^/|^_]*)_:bgW([^/|^_]*)_:bgH([^/]*)';
@@ -129,7 +112,7 @@ const routes = [
   {
     action: 'DYNAMIC',
     urlEnd: `:dynamicScreen(${buttonGroupComponentsRegexArrayString})`,
-    component: Dynamic,
+    component: ButtonGroupFeaturedRouteScreen,
   },
 ];
 

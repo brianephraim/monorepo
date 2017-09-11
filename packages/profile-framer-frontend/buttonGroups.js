@@ -1,3 +1,5 @@
+/* eslint-disable import/no-mutable-exports */
+import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
@@ -380,16 +382,22 @@ let AppButtonGroup = class extends Component {
           );
         })}
       </StyledButtonGroupButtons>;
-
+    // headerButtonActionType
     const LinkOrDiv =
       this.props.compositeImageData.screen === this.props.urlFragment
         ? StyledHeaderDiv
         : StyledHeaderLink;
-    const to = {
-      type: `DYNAMIC`,
-      compositeImageData: this.props.compositeImageData,
-      dynamicScreen: this.props.urlFragment,
-    };
+    const to = 
+      this.props.headerButtonActionType
+      ? {
+          type: this.props.headerButtonActionType,
+          compositeImageData: this.props.compositeImageData,
+        }
+      : {
+          type: `DYNAMIC`,
+          compositeImageData: this.props.compositeImageData,
+          dynamicScreen: this.props.urlFragment,
+        };
     return (
       <StyledSubsection
         themex={this.props.themex}
@@ -418,6 +426,7 @@ AppButtonGroup.propTypes = {
   headline: PropTypes.string,
   buttons: PropTypes.array,
   urlFragment: PropTypes.string,
+  headerButtonActionType: PropTypes.string,
   compositeImageData: PropTypes.object.isRequired,
   hideExtras: PropTypes.bool,
   noLeftPadding: PropTypes.bool,
@@ -434,6 +443,7 @@ AppButtonGroup.defaultProps = {
   headline: '',
   buttons: [],
   urlFragment: '',
+  headerButtonActionType: '',
   hideExtras: false,
   noLeftPadding: false,
   hasLeftBorder: false,
@@ -534,7 +544,7 @@ const ShareButtonGroup = makeButtonGroupComponent(constants => {
 buttonGroupComponents.share = ShareButtonGroup;
 
 const EditBrushButtonGroup = makeButtonGroupComponent({
-  urlFragment: 'editBrush',
+  headerButtonActionType: 'CROP',
   themex: 'microSubsection',
   shortHeadline: 'edit',
   icon: 'brush',
@@ -542,7 +552,7 @@ const EditBrushButtonGroup = makeButtonGroupComponent({
 buttonGroupComponents.editBrush = EditBrushButtonGroup;
 
 const EditSizeButtonGroup = makeButtonGroupComponent({
-  urlFragment: 'editSize',
+  headerButtonActionType: 'CROP',
   themex: 'editSubsection',
   shortHeadline: 'edit',
   headline: 'Edit:',
@@ -568,6 +578,8 @@ ImagePickerTemplateConfigured.propTypes = {
 ImagePickerTemplateConfigured.defaultProps = {
   layoutVariation: '',
 };
+
+console.log('need to modify design when full screen mode');
 const EditDesignButtonGroup = makeButtonGroupComponent({
   urlFragment: 'editDesign',
   themex: 'designSubsection',
@@ -626,7 +638,27 @@ const buttonGroupComponentsRegexArrayString = objectKeysButtonGroupComponents.re
   []
 );
 
+let ButtonGroupFeaturedRouteScreen = props => {
+  if (props.dynamicScreen) {
+    const Comp = buttonGroupComponents[props.dynamicScreen];
+    return <Comp isModal />;
+  }
+  return null;
+};
+ButtonGroupFeaturedRouteScreen.propTypes = {
+  dynamicScreen: PropTypes.string.isRequired,
+};
+ButtonGroupFeaturedRouteScreen.defaultProps = {
+  dynamicScreen: '',
+};
+ButtonGroupFeaturedRouteScreen = connect((state /* , { params }*/) => {
+  return {
+    dynamicScreen: state.location.payload.dynamicScreen,
+  };
+}, {})(ButtonGroupFeaturedRouteScreen);
+
 export {
+  ButtonGroupFeaturedRouteScreen,
   buttonGroupComponents,
   buttonGroupComponentsRegexArrayString,
   EditDesignButtonGroup,

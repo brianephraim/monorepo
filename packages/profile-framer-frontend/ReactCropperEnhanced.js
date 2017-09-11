@@ -53,6 +53,7 @@ class ReactCropperEnhanced extends Component {
     }
   }
   componentWillUnmount() {
+    this.unmounted = true;
     if (this.removeWindowSizerCb) {
       this.removeWindowSizerCb();
       delete this.removeWindowSizerCb;
@@ -97,7 +98,15 @@ class ReactCropperEnhanced extends Component {
         lastCropData: cropData.detail,
       });
     }
-    this.props.crop(cropData, ...args);
+
+    // was getting a "setState after unmounted" warning
+    // I'm blaming janky 3rd party ReactCropper
+    // track unmounted.  Call this.props.crop only if mounted.
+    // btw this.props.crop contains the setState that was erroring.
+    // Burying this semi-ugly fix in this less business oriented component here.
+    if (!this.unmounted) {
+        this.props.crop(cropData, ...args);
+    }
   }
 
   cropend(...args) {
