@@ -1,14 +1,14 @@
 require("source-map-support").install();
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("fs-extra"), require("webpack"), require("path"), require("yargs"), require("child_process"), require("globby"), require("url"), require("express"), require("directory-named-webpack-plugin"), require("extract-text-webpack-plugin"), require("html-webpack-plugin"), require("node-sass-json-importer"), require("single-line-log"), require("string-replace-webpack-plugin"), require("validate-npm-package-name"), require("webpack-dev-middleware"), require("webpack-node-externals"), require("jquery-deferred"), require("aws-sdk"), require("sharp"), require("busboy"), require("deep-get-set"), require("ejs"), require("fs"), require("http"), require("https"), require("mime-types"), require("mongodb-uri"), require("mongoose"));
+		module.exports = factory(require("fs-extra"), require("webpack"), require("path"), require("yargs"), require("child_process"), require("globby"), require("url"), require("express"), require("webpack-dev-middleware"), require("webpack-node-externals"), require("html-webpack-plugin"), require("string-replace-webpack-plugin"), require("extract-text-webpack-plugin"), require("node-sass-json-importer"), require("directory-named-webpack-plugin"), require("single-line-log"), require("validate-npm-package-name"), require("jquery-deferred"), require("aws-sdk"), require("sharp"), require("ejs"), require("fs"), require("mongoose"), require("mongodb-uri"), require("mime-types"), require("https"), require("http"), require("deep-get-set"), require("busboy"));
 	else if(typeof define === 'function' && define.amd)
-		define("@defualt/dev_env", ["fs-extra", "webpack", "path", "yargs", "child_process", "globby", "url", "express", "directory-named-webpack-plugin", "extract-text-webpack-plugin", "html-webpack-plugin", "node-sass-json-importer", "single-line-log", "string-replace-webpack-plugin", "validate-npm-package-name", "webpack-dev-middleware", "webpack-node-externals", "jquery-deferred", "aws-sdk", "sharp", "busboy", "deep-get-set", "ejs", "fs", "http", "https", "mime-types", "mongodb-uri", "mongoose"], factory);
+		define("@defualt/dev_env", ["fs-extra", "webpack", "path", "yargs", "child_process", "globby", "url", "express", "webpack-dev-middleware", "webpack-node-externals", "html-webpack-plugin", "string-replace-webpack-plugin", "extract-text-webpack-plugin", "node-sass-json-importer", "directory-named-webpack-plugin", "single-line-log", "validate-npm-package-name", "jquery-deferred", "aws-sdk", "sharp", "ejs", "fs", "mongoose", "mongodb-uri", "mime-types", "https", "http", "deep-get-set", "busboy"], factory);
 	else if(typeof exports === 'object')
-		exports["@defualt/dev_env"] = factory(require("fs-extra"), require("webpack"), require("path"), require("yargs"), require("child_process"), require("globby"), require("url"), require("express"), require("directory-named-webpack-plugin"), require("extract-text-webpack-plugin"), require("html-webpack-plugin"), require("node-sass-json-importer"), require("single-line-log"), require("string-replace-webpack-plugin"), require("validate-npm-package-name"), require("webpack-dev-middleware"), require("webpack-node-externals"), require("jquery-deferred"), require("aws-sdk"), require("sharp"), require("busboy"), require("deep-get-set"), require("ejs"), require("fs"), require("http"), require("https"), require("mime-types"), require("mongodb-uri"), require("mongoose"));
+		exports["@defualt/dev_env"] = factory(require("fs-extra"), require("webpack"), require("path"), require("yargs"), require("child_process"), require("globby"), require("url"), require("express"), require("webpack-dev-middleware"), require("webpack-node-externals"), require("html-webpack-plugin"), require("string-replace-webpack-plugin"), require("extract-text-webpack-plugin"), require("node-sass-json-importer"), require("directory-named-webpack-plugin"), require("single-line-log"), require("validate-npm-package-name"), require("jquery-deferred"), require("aws-sdk"), require("sharp"), require("ejs"), require("fs"), require("mongoose"), require("mongodb-uri"), require("mime-types"), require("https"), require("http"), require("deep-get-set"), require("busboy"));
 	else
-		root["@defualt/dev_env"] = factory(root["fs-extra"], root["webpack"], root["path"], root["yargs"], root["child_process"], root["globby"], root["url"], root["express"], root["directory-named-webpack-plugin"], root["extract-text-webpack-plugin"], root["html-webpack-plugin"], root["node-sass-json-importer"], root["single-line-log"], root["string-replace-webpack-plugin"], root["validate-npm-package-name"], root["webpack-dev-middleware"], root["webpack-node-externals"], root["jquery-deferred"], root["aws-sdk"], root["sharp"], root["busboy"], root["deep-get-set"], root["ejs"], root["fs"], root["http"], root["https"], root["mime-types"], root["mongodb-uri"], root["mongoose"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_0__, __WEBPACK_EXTERNAL_MODULE_1__, __WEBPACK_EXTERNAL_MODULE_2__, __WEBPACK_EXTERNAL_MODULE_3__, __WEBPACK_EXTERNAL_MODULE_9__, __WEBPACK_EXTERNAL_MODULE_10__, __WEBPACK_EXTERNAL_MODULE_12__, __WEBPACK_EXTERNAL_MODULE_13__, __WEBPACK_EXTERNAL_MODULE_27__, __WEBPACK_EXTERNAL_MODULE_28__, __WEBPACK_EXTERNAL_MODULE_29__, __WEBPACK_EXTERNAL_MODULE_30__, __WEBPACK_EXTERNAL_MODULE_31__, __WEBPACK_EXTERNAL_MODULE_32__, __WEBPACK_EXTERNAL_MODULE_33__, __WEBPACK_EXTERNAL_MODULE_34__, __WEBPACK_EXTERNAL_MODULE_35__, __WEBPACK_EXTERNAL_MODULE_39__, __WEBPACK_EXTERNAL_MODULE_40__, __WEBPACK_EXTERNAL_MODULE_49__, __WEBPACK_EXTERNAL_MODULE_63__, __WEBPACK_EXTERNAL_MODULE_64__, __WEBPACK_EXTERNAL_MODULE_65__, __WEBPACK_EXTERNAL_MODULE_66__, __WEBPACK_EXTERNAL_MODULE_67__, __WEBPACK_EXTERNAL_MODULE_68__, __WEBPACK_EXTERNAL_MODULE_69__, __WEBPACK_EXTERNAL_MODULE_70__, __WEBPACK_EXTERNAL_MODULE_71__) {
+		root["@defualt/dev_env"] = factory(root["fs-extra"], root["webpack"], root["path"], root["yargs"], root["child_process"], root["globby"], root["url"], root["express"], root["webpack-dev-middleware"], root["webpack-node-externals"], root["html-webpack-plugin"], root["string-replace-webpack-plugin"], root["extract-text-webpack-plugin"], root["node-sass-json-importer"], root["directory-named-webpack-plugin"], root["single-line-log"], root["validate-npm-package-name"], root["jquery-deferred"], root["aws-sdk"], root["sharp"], root["ejs"], root["fs"], root["mongoose"], root["mongodb-uri"], root["mime-types"], root["https"], root["http"], root["deep-get-set"], root["busboy"]);
+})(this, function(__WEBPACK_EXTERNAL_MODULE_0__, __WEBPACK_EXTERNAL_MODULE_1__, __WEBPACK_EXTERNAL_MODULE_2__, __WEBPACK_EXTERNAL_MODULE_3__, __WEBPACK_EXTERNAL_MODULE_4__, __WEBPACK_EXTERNAL_MODULE_6__, __WEBPACK_EXTERNAL_MODULE_11__, __WEBPACK_EXTERNAL_MODULE_12__, __WEBPACK_EXTERNAL_MODULE_17__, __WEBPACK_EXTERNAL_MODULE_19__, __WEBPACK_EXTERNAL_MODULE_21__, __WEBPACK_EXTERNAL_MODULE_22__, __WEBPACK_EXTERNAL_MODULE_23__, __WEBPACK_EXTERNAL_MODULE_24__, __WEBPACK_EXTERNAL_MODULE_28__, __WEBPACK_EXTERNAL_MODULE_30__, __WEBPACK_EXTERNAL_MODULE_33__, __WEBPACK_EXTERNAL_MODULE_37__, __WEBPACK_EXTERNAL_MODULE_38__, __WEBPACK_EXTERNAL_MODULE_39__, __WEBPACK_EXTERNAL_MODULE_41__, __WEBPACK_EXTERNAL_MODULE_42__, __WEBPACK_EXTERNAL_MODULE_43__, __WEBPACK_EXTERNAL_MODULE_44__, __WEBPACK_EXTERNAL_MODULE_45__, __WEBPACK_EXTERNAL_MODULE_46__, __WEBPACK_EXTERNAL_MODULE_47__, __WEBPACK_EXTERNAL_MODULE_48__, __WEBPACK_EXTERNAL_MODULE_49__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -65,9 +65,6 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
 /******/
-/******/ 	// identity function for calling harmony imports with the correct context
-/******/ 	__webpack_require__.i = function(value) { return value; };
-/******/
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
@@ -102,7 +99,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	};
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 36);
+/******/ 	return __webpack_require__(__webpack_require__.s = 13);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -131,60 +128,9 @@ module.exports = require("yargs");
 
 /***/ }),
 /* 4 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-var _fsExtra = __webpack_require__(0);
-
-var _fsExtra2 = _interopRequireDefault(_fsExtra);
-
-var _yargs = __webpack_require__(3);
-
-var _webpackEnhanceBaseConfig = __webpack_require__(5);
-
-var _webpackEnhanceBaseConfig2 = _interopRequireDefault(_webpackEnhanceBaseConfig);
-
-var _webpackEnhanceConfigNode = __webpack_require__(6);
-
-var _webpackEnhanceConfigNode2 = _interopRequireDefault(_webpackEnhanceConfigNode);
-
-var _webpackEnhanceImmediateConfig = __webpack_require__(18);
-
-var _webpackEnhanceImmediateConfig2 = _interopRequireDefault(_webpackEnhanceImmediateConfig);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function enhance() {
-  var config = (0, _webpackEnhanceBaseConfig2.default)();
-  var entry = {
-    main: _yargs.argv.entry
-  };
-  var output = _yargs.argv.output;
-  output = output.split('/');
-
-  output = {
-    filename: output.pop(),
-    path: output.join('/')
-  };
-  config = _extends({}, config, {
-    entry: entry,
-    output: output
-  });
-  config = (0, _webpackEnhanceConfigNode2.default)(config);
-  config = (0, _webpackEnhanceImmediateConfig2.default)(config);
-  _fsExtra2.default.writeFileSync('./_webpack-config-preview-commandline.json', JSON.stringify(config, null, 2));
-  return config;
-}
-
-exports.default = enhance;
+module.exports = require("child_process");
 
 /***/ }),
 /* 5 */
@@ -197,52 +143,61 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+var _webpack = __webpack_require__(1);
 
-var _webpackConfigResolve = __webpack_require__(16);
+var _webpack2 = _interopRequireDefault(_webpack);
 
-var _webpackConfigResolve2 = _interopRequireDefault(_webpackConfigResolve);
+var _webpackDevMiddleware = __webpack_require__(17);
+
+var _webpackDevMiddleware2 = _interopRequireDefault(_webpackDevMiddleware);
+
+var _fsExtra = __webpack_require__(0);
+
+var _fsExtra2 = _interopRequireDefault(_fsExtra);
+
+var _webpackConfig = __webpack_require__(18);
+
+var _webpackConfig2 = _interopRequireDefault(_webpackConfig);
+
+var _webpackParseStatsForDepProblems = __webpack_require__(32);
+
+var _webpackParseStatsForDepProblems2 = _interopRequireDefault(_webpackParseStatsForDepProblems);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function enhance(originalConfig) {
-  var config = {
-    module: {
-      rules: [{
-        test: /\.(js)?$/,
-        loader: 'babel-loader',
-        exclude: /(node_modules|\.tmp)/
-        // include: `${dirRoot}`,
-        // options: {
-        //   presets: [
+exports.default = function (isDev) {
+  var compiler = (0, _webpack2.default)(_webpackConfig2.default);
+  if (isDev) {
+    console.log('COMPILER WTF');
+    compiler.plugin('invalid', function (fileName, changeTime) {
+      // console.trace();
+      console.log('stats', _fsExtra2.default.statSync(fileName));
+      console.log("FileName: " + fileName);
+      console.log("ChangeTimex:" + changeTime);
+    });
+    var activeWebpackDevMiddleware = (0, _webpackDevMiddleware2.default)(compiler, {
+      publicPath: _webpackConfig2.default.output.publicPath,
+      stats: {
+        colors: true
+      }
+    });
+    activeWebpackDevMiddleware.waitUntilValid(function (stats) {
+      (0, _webpackParseStatsForDepProblems2.default)(stats);
+    });
 
-        //     [
-        //       'es2015',
-        //       // needed for tree shaking
-        //       { modules: false },
-        //     ],
-        //     'react',
-        //     // 'react',
-        //   ],
-        //   plugins: [
-        //     'transform-es2015-spread',
-        //     'transform-object-rest-spread',
-        //   ],
-        //   // mocha needs .babelrc,
-        //   // and .babelrc cannot use the above config
-        //   // so ignore .babelrc here
-        //   babelrc: false,
-        // },
-      }]
-    },
-    resolve: _webpackConfigResolve2.default.resolve
-  };
-  return _extends({}, originalConfig, config);
-}
-exports.default = enhance;
+    return activeWebpackDevMiddleware;
+  }
+  return compiler;
+};
 
 /***/ }),
 /* 6 */
+/***/ (function(module, exports) {
+
+module.exports = require("globby");
+
+/***/ }),
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -259,7 +214,7 @@ var _webpack = __webpack_require__(1);
 
 var _webpack2 = _interopRequireDefault(_webpack);
 
-var _webpackNodeExternals = __webpack_require__(35);
+var _webpackNodeExternals = __webpack_require__(19);
 
 var _webpackNodeExternals2 = _interopRequireDefault(_webpackNodeExternals);
 
@@ -308,7 +263,119 @@ function enhance(originalConfig) {
 exports.default = enhance;
 
 /***/ }),
-/* 7 */
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _webpackConfigResolve = __webpack_require__(27);
+
+var _webpackConfigResolve2 = _interopRequireDefault(_webpackConfigResolve);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function enhance(originalConfig) {
+  var config = {
+    module: {
+      rules: [{
+        test: /\.(js)?$/,
+        loader: 'babel-loader',
+        exclude: /(node_modules|\.tmp)/
+        // include: `${dirRoot}`,
+        // options: {
+        //   presets: [
+
+        //     [
+        //       'es2015',
+        //       // needed for tree shaking
+        //       { modules: false },
+        //     ],
+        //     'react',
+        //     // 'react',
+        //   ],
+        //   plugins: [
+        //     'transform-es2015-spread',
+        //     'transform-object-rest-spread',
+        //   ],
+        //   // mocha needs .babelrc,
+        //   // and .babelrc cannot use the above config
+        //   // so ignore .babelrc here
+        //   babelrc: false,
+        // },
+      }]
+    },
+    resolve: _webpackConfigResolve2.default.resolve
+  };
+  return _extends({}, originalConfig, config);
+}
+exports.default = enhance;
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _fsExtra = __webpack_require__(0);
+
+var _fsExtra2 = _interopRequireDefault(_fsExtra);
+
+var _yargs = __webpack_require__(3);
+
+var _webpackEnhanceBaseConfig = __webpack_require__(8);
+
+var _webpackEnhanceBaseConfig2 = _interopRequireDefault(_webpackEnhanceBaseConfig);
+
+var _webpackEnhanceConfigNode = __webpack_require__(7);
+
+var _webpackEnhanceConfigNode2 = _interopRequireDefault(_webpackEnhanceConfigNode);
+
+var _webpackEnhanceImmediateConfig = __webpack_require__(31);
+
+var _webpackEnhanceImmediateConfig2 = _interopRequireDefault(_webpackEnhanceImmediateConfig);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function enhance() {
+  var config = (0, _webpackEnhanceBaseConfig2.default)();
+  var entry = {
+    main: _yargs.argv.entry
+  };
+  var output = _yargs.argv.output;
+  output = output.split('/');
+
+  output = {
+    filename: output.pop(),
+    path: output.join('/')
+  };
+  config = _extends({}, config, {
+    entry: entry,
+    output: output
+  });
+  config = (0, _webpackEnhanceConfigNode2.default)(config);
+  config = (0, _webpackEnhanceImmediateConfig2.default)(config);
+  _fsExtra2.default.writeFileSync('./_webpack-config-preview-commandline.json', JSON.stringify(config, null, 2));
+  return config;
+}
+
+exports.default = enhance;
+
+/***/ }),
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -345,77 +412,26 @@ exports.default = function (webpackMakeCompiler) {
 };
 
 /***/ }),
-/* 8 */
+/* 11 */
+/***/ (function(module, exports) {
+
+module.exports = require("url");
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports) {
+
+module.exports = require("express");
+
+/***/ }),
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
+module.exports = __webpack_require__(14);
 
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _webpack = __webpack_require__(1);
-
-var _webpack2 = _interopRequireDefault(_webpack);
-
-var _webpackDevMiddleware = __webpack_require__(34);
-
-var _webpackDevMiddleware2 = _interopRequireDefault(_webpackDevMiddleware);
-
-var _fsExtra = __webpack_require__(0);
-
-var _fsExtra2 = _interopRequireDefault(_fsExtra);
-
-var _webpackConfig = __webpack_require__(21);
-
-var _webpackConfig2 = _interopRequireDefault(_webpackConfig);
-
-var _webpackParseStatsForDepProblems = __webpack_require__(25);
-
-var _webpackParseStatsForDepProblems2 = _interopRequireDefault(_webpackParseStatsForDepProblems);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = function (isDev) {
-  var compiler = (0, _webpack2.default)(_webpackConfig2.default);
-  if (isDev) {
-    console.log('COMPILER WTF');
-    compiler.plugin('invalid', function (fileName, changeTime) {
-      // console.trace();
-      console.log('stats', _fsExtra2.default.statSync(fileName));
-      console.log("FileName: " + fileName);
-      console.log("ChangeTimex:" + changeTime);
-    });
-    var activeWebpackDevMiddleware = (0, _webpackDevMiddleware2.default)(compiler, {
-      publicPath: _webpackConfig2.default.output.publicPath,
-      stats: {
-        colors: true
-      }
-    });
-    activeWebpackDevMiddleware.waitUntilValid(function (stats) {
-      (0, _webpackParseStatsForDepProblems2.default)(stats);
-    });
-
-    return activeWebpackDevMiddleware;
-  }
-  return compiler;
-};
 
 /***/ }),
-/* 9 */
-/***/ (function(module, exports) {
-
-module.exports = require("child_process");
-
-/***/ }),
-/* 10 */
-/***/ (function(module, exports) {
-
-module.exports = require("globby");
-
-/***/ }),
-/* 11 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -432,23 +448,23 @@ var _shellCommand = __webpack_require__(15);
 
 var _shellCommand2 = _interopRequireDefault(_shellCommand);
 
-var _jestSpawnProcess = __webpack_require__(19);
+var _jestSpawnProcess = __webpack_require__(16);
 
 var _jestSpawnProcess2 = _interopRequireDefault(_jestSpawnProcess);
 
-var _webpackMakeCompiler = __webpack_require__(8);
+var _webpackMakeCompiler = __webpack_require__(5);
 
 var _webpackMakeCompiler2 = _interopRequireDefault(_webpackMakeCompiler);
 
-var _webpackRunCompiler = __webpack_require__(7);
+var _webpackRunCompiler = __webpack_require__(10);
 
 var _webpackRunCompiler2 = _interopRequireDefault(_webpackRunCompiler);
 
-var _webpackBuildCommandLine = __webpack_require__(17);
+var _webpackBuildCommandLine = __webpack_require__(34);
 
 var _webpackBuildCommandLine2 = _interopRequireDefault(_webpackBuildCommandLine);
 
-var _webpackExpressServer = __webpack_require__(24);
+var _webpackExpressServer = __webpack_require__(35);
 
 var _webpackExpressServer2 = _interopRequireDefault(_webpackExpressServer);
 
@@ -464,7 +480,7 @@ function asyncRecurseStartApps(serverNamespaces) {
   var lastBackendApp = null;
   var i = 0;
   function recurse(backendAppNamespace) {
-    __webpack_require__(26)("./" + backendAppNamespace + '/' + backendAppNamespace + '.express').then(function (someBackendApp) {
+    __webpack_require__(36)("./" + backendAppNamespace + '/' + backendAppNamespace + '.express').then(function (someBackendApp) {
       var serveBackendApp = someBackendApp.default;
       var backendAppSettings = {
         nameSpace: backendAppNamespace
@@ -505,66 +521,6 @@ if (item) {
 exports.serve = _webpackExpressServer2.default;
 
 /***/ }),
-/* 12 */
-/***/ (function(module, exports) {
-
-module.exports = require("url");
-
-/***/ }),
-/* 13 */
-/***/ (function(module, exports) {
-
-module.exports = require("express");
-
-/***/ }),
-/* 14 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-/* eslint-disable func-names */
-var singleLineLog = __webpack_require__(31).stdout;
-
-function printProgress(progress) {
-  if (!process || !process.stdout || !process.stdout.clearLine) {
-    return;
-  }
-  singleLineLog('Resolving: ' + progress + '\n');
-  // process.stdout.clearLine();
-  // process.stdout.cursorTo(0);
-  // process.stdout.write(progress + `-xxxxxx`);
-}
-function parseRequestResolvePlugin() {
-  var parseRequest = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function () {};
-
-  return {
-    apply: function apply(resolver) {
-      // I don't know why 'module' or 'resolve' are those values.
-      // Something to do with the the way they are used in this file:
-      // https://github.com/webpack/enhanced-resolve/blob/master/lib/ResolverFactory.js
-      // So they can be other values as seen in that file.
-      resolver.plugin( /* 'modules'*/'resolve', function (request, callback) {
-        printProgress('' + request.request);
-        // console.log('request.request',request.request)
-        var newRequestStr = parseRequest(request.request);
-        if (newRequestStr && newRequestStr !== request.request) {
-          var obj = Object.assign({}, request, {
-            request: newRequestStr
-          });
-          this.doResolve('resolve', obj, 'blah blah', callback);
-        } else {
-          // process.stdout.write(`\n`);
-          callback();
-        }
-      });
-    }
-  };
-}
-
-module.exports = parseRequestResolvePlugin;
-
-/***/ }),
 /* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -587,7 +543,7 @@ module.exports = function (commandToRun) {
   // } catch (err) {
   // if (err.code !== 'MODULE_NOT_FOUND') throw err;
 
-  var childProcess = __webpack_require__(9);
+  var childProcess = __webpack_require__(4);
   var proc = childProcess.spawn(command, args, options || {});
   proc.on('exit', function (code, signal) {
     if (killParentOnExit) {
@@ -611,128 +567,11 @@ module.exports = function (commandToRun) {
 "use strict";
 
 
-var DirectoryNamedWebpackPlugin = __webpack_require__(27);
-var parseRequestResolvePlugin = __webpack_require__(14);
-var path = __webpack_require__(2);
-module.exports = {
-  resolve: {
-    modules: [
-    // '/Users/brianephraim/Sites/monorepo/node_modules',
-    path.resolve('./src/library'), path.resolve(process.cwd(), 'packages'), path.resolve(process.cwd(), '../../packages'), 'node_modules'],
-    extensions: ['.js',
-
-    // Why is this here? : https://github.com/npm/normalize-package-data/issues/88
-    // Issue only appeard when webpack run on command line for Node bundle
-    '.json'],
-    plugins: [parseRequestResolvePlugin(function (requestStr) {
-      // console.log('requestStr', requestStr);
-      if (requestStr.indexOf('@') === 0 && requestStr.indexOf('/') !== -1) {
-        var split = requestStr.split('/');
-        split.shift();
-        split.join('/');
-        console.log('Afindme', split.join('/'), requestStr.split('/')[1]);
-        console.log('Bfindme', requestStr.split('/')[1]);
-        return split.join('/');
-        return requestStr.split('/')[1];
-      }
-      return false;
-    }), new DirectoryNamedWebpackPlugin(true)]
-  }
-};
-
-/***/ }),
-/* 17 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _webpack = __webpack_require__(1);
-
-var _webpack2 = _interopRequireDefault(_webpack);
-
-var _webpackRunCompiler = __webpack_require__(7);
-
-var _webpackRunCompiler2 = _interopRequireDefault(_webpackRunCompiler);
-
-var _webpackConfigCommandLine = __webpack_require__(4);
-
-var _webpackConfigCommandLine2 = _interopRequireDefault(_webpackConfigCommandLine);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function webpackMakeCompiler() {
-  var config = (0, _webpackConfigCommandLine2.default)();
-  var compiler = (0, _webpack2.default)(config);
-  return compiler;
-}
-
-exports.default = function () {
-  (0, _webpackRunCompiler2.default)(webpackMakeCompiler);
-};
-
-/***/ }),
-/* 18 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-function enhance(originalConfig) {
-  var config = _extends({}, originalConfig);
-  config.plugins = config.plugins || [];
-
-  // I needed __dirname hardcoded as the original dirname
-  // https://github.com/webpack/webpack/issues/1599#issuecomment-266588898
-  config.plugins.push({
-    apply: function apply(compiler) {
-      function setModuleConstant(expressionName, fn) {
-        compiler.plugin('compilation', function (compilation, data) {
-          data.normalModuleFactory.plugin('parser', function (parser) {
-            parser.plugin('expression ' + expressionName, function compilerParserPlugin() {
-              this.state.current.addVariable(expressionName, JSON.stringify(fn(this.state.module)));
-              return true;
-            });
-          });
-        });
-      }
-
-      setModuleConstant('__filename', function (module) {
-        return module.resource;
-      });
-
-      setModuleConstant('__dirname', function (module) {
-        return module.context;
-      });
-    }
-  });
-  return config;
-}
-
-exports.default = enhance;
-
-/***/ }),
-/* 19 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _child_process = __webpack_require__(9);
+var _child_process = __webpack_require__(4);
 
 var _child_process2 = _interopRequireDefault(_child_process);
 
@@ -776,51 +615,13 @@ exports.default = function (testdevenv) {
 };
 
 /***/ }),
-/* 20 */
-/***/ (function(module, exports, __webpack_require__) {
+/* 17 */
+/***/ (function(module, exports) {
 
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var PluginRegistry = function () {
-  function PluginRegistry() {
-    _classCallCheck(this, PluginRegistry);
-
-    this.registry = {};
-    this.plugins = [];
-  }
-
-  _createClass(PluginRegistry, [{
-    key: "register",
-    value: function register(name, plugin) {
-      if (!this.registry[name]) {
-        this.plugins.push(plugin);
-        this.registry[name] = true;
-        return true;
-      }
-      return false;
-    }
-  }]);
-
-  return PluginRegistry;
-}();
-
-var pluginRegistry = new PluginRegistry();
-var plugins = pluginRegistry.plugins;
-var register = pluginRegistry.register.bind(pluginRegistry);
-exports.register = register;
-exports.default = plugins;
+module.exports = require("webpack-dev-middleware");
 
 /***/ }),
-/* 21 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -838,27 +639,27 @@ var _fsExtra = __webpack_require__(0);
 
 var _fsExtra2 = _interopRequireDefault(_fsExtra);
 
-var _globby = __webpack_require__(10);
+var _globby = __webpack_require__(6);
 
 var _globby2 = _interopRequireDefault(_globby);
 
-var _webpackEnhanceConfigNode = __webpack_require__(6);
+var _webpackEnhanceConfigNode = __webpack_require__(7);
 
 var _webpackEnhanceConfigNode2 = _interopRequireDefault(_webpackEnhanceConfigNode);
 
-var _webpackEnhanceConfigWeb = __webpack_require__(22);
+var _webpackEnhanceConfigWeb = __webpack_require__(20);
 
 var _webpackEnhanceConfigWeb2 = _interopRequireDefault(_webpackEnhanceConfigWeb);
 
-var _webpackEnhanceEntryOutputStandard = __webpack_require__(23);
+var _webpackEnhanceEntryOutputStandard = __webpack_require__(26);
 
 var _webpackEnhanceEntryOutputStandard2 = _interopRequireDefault(_webpackEnhanceEntryOutputStandard);
 
-var _webpackEnhanceBaseConfig = __webpack_require__(5);
+var _webpackEnhanceBaseConfig = __webpack_require__(8);
 
 var _webpackEnhanceBaseConfig2 = _interopRequireDefault(_webpackEnhanceBaseConfig);
 
-var _webpackConfigCommandLine = __webpack_require__(4);
+var _webpackConfigCommandLine = __webpack_require__(9);
 
 var _webpackConfigCommandLine2 = _interopRequireDefault(_webpackConfigCommandLine);
 
@@ -964,7 +765,13 @@ function generateConfigJson() {
 exports.default = generateConfigJson();
 
 /***/ }),
-/* 22 */
+/* 19 */
+/***/ (function(module, exports) {
+
+module.exports = require("webpack-node-externals");
+
+/***/ }),
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -982,19 +789,19 @@ var _webpack = __webpack_require__(1);
 
 var _webpack2 = _interopRequireDefault(_webpack);
 
-var _htmlWebpackPlugin = __webpack_require__(29);
+var _htmlWebpackPlugin = __webpack_require__(21);
 
 var _htmlWebpackPlugin2 = _interopRequireDefault(_htmlWebpackPlugin);
 
-var _stringReplaceWebpackPlugin = __webpack_require__(32);
+var _stringReplaceWebpackPlugin = __webpack_require__(22);
 
 var _stringReplaceWebpackPlugin2 = _interopRequireDefault(_stringReplaceWebpackPlugin);
 
-var _extractTextWebpackPlugin = __webpack_require__(28);
+var _extractTextWebpackPlugin = __webpack_require__(23);
 
 var _extractTextWebpackPlugin2 = _interopRequireDefault(_extractTextWebpackPlugin);
 
-var _nodeSassJsonImporter = __webpack_require__(30);
+var _nodeSassJsonImporter = __webpack_require__(24);
 
 var _nodeSassJsonImporter2 = _interopRequireDefault(_nodeSassJsonImporter);
 
@@ -1002,11 +809,11 @@ var _fsExtra = __webpack_require__(0);
 
 var _fsExtra2 = _interopRequireDefault(_fsExtra);
 
-var _globby = __webpack_require__(10);
+var _globby = __webpack_require__(6);
 
 var _globby2 = _interopRequireDefault(_globby);
 
-var _pluginRegistry = __webpack_require__(20);
+var _pluginRegistry = __webpack_require__(25);
 
 var _pluginRegistry2 = _interopRequireDefault(_pluginRegistry);
 
@@ -1147,7 +954,75 @@ function enhance(originalConfig, libraryName, isBuild, dirRoot, username, output
 exports.default = enhance;
 
 /***/ }),
+/* 21 */
+/***/ (function(module, exports) {
+
+module.exports = require("html-webpack-plugin");
+
+/***/ }),
+/* 22 */
+/***/ (function(module, exports) {
+
+module.exports = require("string-replace-webpack-plugin");
+
+/***/ }),
 /* 23 */
+/***/ (function(module, exports) {
+
+module.exports = require("extract-text-webpack-plugin");
+
+/***/ }),
+/* 24 */
+/***/ (function(module, exports) {
+
+module.exports = require("node-sass-json-importer");
+
+/***/ }),
+/* 25 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var PluginRegistry = function () {
+  function PluginRegistry() {
+    _classCallCheck(this, PluginRegistry);
+
+    this.registry = {};
+    this.plugins = [];
+  }
+
+  _createClass(PluginRegistry, [{
+    key: "register",
+    value: function register(name, plugin) {
+      if (!this.registry[name]) {
+        this.plugins.push(plugin);
+        this.registry[name] = true;
+        return true;
+      }
+      return false;
+    }
+  }]);
+
+  return PluginRegistry;
+}();
+
+var pluginRegistry = new PluginRegistry();
+var plugins = pluginRegistry.plugins;
+var register = pluginRegistry.register.bind(pluginRegistry);
+exports.register = register;
+exports.default = plugins;
+
+/***/ }),
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1185,7 +1060,103 @@ function enhance(originalConfig, dirRoot, libraryName, entryFiles) {
 exports.default = enhance;
 
 /***/ }),
-/* 24 */
+/* 27 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var DirectoryNamedWebpackPlugin = __webpack_require__(28);
+var parseRequestResolvePlugin = __webpack_require__(29);
+var path = __webpack_require__(2);
+module.exports = {
+  resolve: {
+    modules: [
+    // '/Users/brianephraim/Sites/monorepo/node_modules',
+    path.resolve('./src/library'), path.resolve(process.cwd(), 'packages'), path.resolve(process.cwd(), '../../packages'), 'node_modules'],
+    extensions: ['.js',
+
+    // Why is this here? : https://github.com/npm/normalize-package-data/issues/88
+    // Issue only appeard when webpack run on command line for Node bundle
+    '.json'],
+    plugins: [parseRequestResolvePlugin(function (requestStr) {
+      // console.log('requestStr', requestStr);
+      if (requestStr.indexOf('@') === 0 && requestStr.indexOf('/') !== -1) {
+        var split = requestStr.split('/');
+        split.shift();
+        split.join('/');
+        console.log('Afindme', split.join('/'), requestStr.split('/')[1]);
+        console.log('Bfindme', requestStr.split('/')[1]);
+        return split.join('/');
+        return requestStr.split('/')[1];
+      }
+      return false;
+    }), new DirectoryNamedWebpackPlugin(true)]
+  }
+};
+
+/***/ }),
+/* 28 */
+/***/ (function(module, exports) {
+
+module.exports = require("directory-named-webpack-plugin");
+
+/***/ }),
+/* 29 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/* eslint-disable func-names */
+var singleLineLog = __webpack_require__(30).stdout;
+
+function printProgress(progress) {
+  if (!process || !process.stdout || !process.stdout.clearLine) {
+    return;
+  }
+  singleLineLog('Resolving: ' + progress + '\n');
+  // process.stdout.clearLine();
+  // process.stdout.cursorTo(0);
+  // process.stdout.write(progress + `-xxxxxx`);
+}
+function parseRequestResolvePlugin() {
+  var parseRequest = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function () {};
+
+  return {
+    apply: function apply(resolver) {
+      // I don't know why 'module' or 'resolve' are those values.
+      // Something to do with the the way they are used in this file:
+      // https://github.com/webpack/enhanced-resolve/blob/master/lib/ResolverFactory.js
+      // So they can be other values as seen in that file.
+      resolver.plugin( /* 'modules'*/'resolve', function (request, callback) {
+        printProgress('' + request.request);
+        // console.log('request.request',request.request)
+        var newRequestStr = parseRequest(request.request);
+        if (newRequestStr && newRequestStr !== request.request) {
+          var obj = Object.assign({}, request, {
+            request: newRequestStr
+          });
+          this.doResolve('resolve', obj, 'blah blah', callback);
+        } else {
+          // process.stdout.write(`\n`);
+          callback();
+        }
+      });
+    }
+  };
+}
+
+module.exports = parseRequestResolvePlugin;
+
+/***/ }),
+/* 30 */
+/***/ (function(module, exports) {
+
+module.exports = require("single-line-log");
+
+/***/ }),
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1195,80 +1166,43 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _express = __webpack_require__(13);
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _express2 = _interopRequireDefault(_express);
+function enhance(originalConfig) {
+  var config = _extends({}, originalConfig);
+  config.plugins = config.plugins || [];
 
-var _url = __webpack_require__(12);
-
-var _url2 = _interopRequireDefault(_url);
-
-var _webpackMakeCompiler = __webpack_require__(8);
-
-var _webpackMakeCompiler2 = _interopRequireDefault(_webpackMakeCompiler);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = function (_ref) {
-  var app = _ref.app,
-      _ref$port = _ref.port,
-      port = _ref$port === undefined ? 3000 : _ref$port;
-
-  // This module either extends an existing express app
-  // or creates a new express app
-  var appIsBrandNew = false;
-  if (!app) {
-    appIsBrandNew = true;
-    app = (0, _express2.default)();
-  }
-
-  // SPA server support
-  // All URLs that suggest an HTML file request get routed the same.
-  app.use(function (req, res, next) {
-    var lastPartOfURL = _url2.default.parse(req.url).pathname.split('/').pop();
-    var urlFormatSuggestsHtmlFileRequest = lastPartOfURL.indexOf('.') === -1 || lastPartOfURL.indexOf('.html') !== -1;
-    if (urlFormatSuggestsHtmlFileRequest) {
-      req.url = '/';
-    }
-    next();
-  });
-
-  console.info('🔷 Starting webpack ...');
-
-  app.use((0, _webpackMakeCompiler2.default)(true));
-
-  app.use('/images', _express2.default.static('packages/images'));
-  app.use('/fonts', _express2.default.static('packages/fonts'));
-
-  // Some Express code I don't want to lose yet.
-  /*
-  app.get(new RegExp('^[/](images|fonts)[/](.+)'), (req, res) => {
-    res.sendFile(path.join(__dirname, `packages${url.parse(req.url).pathname}`));
-  });
-   app.get('/*', (req, res) => {
-    console.log(url.parse(req.url).pathname);
-    res.sendFile(path.join(process.cwd(), 'index.html'));
-  });
-   app.get(new RegExp('/^\/(.*)\.html$'), (req, res) => {
-    res.sendFile(path.join(process.cwd(), 'index.html'));
-  });
-  */
-
-  if (appIsBrandNew) {
-    app.listen(port, function (error) {
-      if (error) {
-        console.error(error);
-      } else {
-        console.info('🌎 Listening on port %s. Open up http://localhost:%s/ in your browser.', port, port);
+  // I needed __dirname hardcoded as the original dirname
+  // https://github.com/webpack/webpack/issues/1599#issuecomment-266588898
+  config.plugins.push({
+    apply: function apply(compiler) {
+      function setModuleConstant(expressionName, fn) {
+        compiler.plugin('compilation', function (compilation, data) {
+          data.normalModuleFactory.plugin('parser', function (parser) {
+            parser.plugin('expression ' + expressionName, function compilerParserPlugin() {
+              this.state.current.addVariable(expressionName, JSON.stringify(fn(this.state.module)));
+              return true;
+            });
+          });
+        });
       }
-    });
-  }
 
-  return app;
-}; /* eslint-disable no-console */
+      setModuleConstant('__filename', function (module) {
+        return module.resource;
+      });
+
+      setModuleConstant('__dirname', function (module) {
+        return module.context;
+      });
+    }
+  });
+  return config;
+}
+
+exports.default = enhance;
 
 /***/ }),
-/* 25 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1422,16 +1356,140 @@ function webpackParseStatsForDepProblems(stats) {
 exports.default = webpackParseStatsForDepProblems;
 
 /***/ }),
-/* 26 */
+/* 33 */
+/***/ (function(module, exports) {
+
+module.exports = require("validate-npm-package-name");
+
+/***/ }),
+/* 34 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _webpack = __webpack_require__(1);
+
+var _webpack2 = _interopRequireDefault(_webpack);
+
+var _webpackRunCompiler = __webpack_require__(10);
+
+var _webpackRunCompiler2 = _interopRequireDefault(_webpackRunCompiler);
+
+var _webpackConfigCommandLine = __webpack_require__(9);
+
+var _webpackConfigCommandLine2 = _interopRequireDefault(_webpackConfigCommandLine);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function webpackMakeCompiler() {
+  var config = (0, _webpackConfigCommandLine2.default)();
+  var compiler = (0, _webpack2.default)(config);
+  return compiler;
+}
+
+exports.default = function () {
+  (0, _webpackRunCompiler2.default)(webpackMakeCompiler);
+};
+
+/***/ }),
+/* 35 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _express = __webpack_require__(12);
+
+var _express2 = _interopRequireDefault(_express);
+
+var _url = __webpack_require__(11);
+
+var _url2 = _interopRequireDefault(_url);
+
+var _webpackMakeCompiler = __webpack_require__(5);
+
+var _webpackMakeCompiler2 = _interopRequireDefault(_webpackMakeCompiler);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = function (_ref) {
+  var app = _ref.app,
+      _ref$port = _ref.port,
+      port = _ref$port === undefined ? 3000 : _ref$port;
+
+  // This module either extends an existing express app
+  // or creates a new express app
+  var appIsBrandNew = false;
+  if (!app) {
+    appIsBrandNew = true;
+    app = (0, _express2.default)();
+  }
+
+  // SPA server support
+  // All URLs that suggest an HTML file request get routed the same.
+  app.use(function (req, res, next) {
+    var lastPartOfURL = _url2.default.parse(req.url).pathname.split('/').pop();
+    var urlFormatSuggestsHtmlFileRequest = lastPartOfURL.indexOf('.') === -1 || lastPartOfURL.indexOf('.html') !== -1;
+    if (urlFormatSuggestsHtmlFileRequest) {
+      req.url = '/';
+    }
+    next();
+  });
+
+  console.info('🔷 Starting webpack ...');
+
+  app.use((0, _webpackMakeCompiler2.default)(true));
+
+  app.use('/images', _express2.default.static('packages/images'));
+  app.use('/fonts', _express2.default.static('packages/fonts'));
+
+  // Some Express code I don't want to lose yet.
+  /*
+  app.get(new RegExp('^[/](images|fonts)[/](.+)'), (req, res) => {
+    res.sendFile(path.join(__dirname, `packages${url.parse(req.url).pathname}`));
+  });
+   app.get('/*', (req, res) => {
+    console.log(url.parse(req.url).pathname);
+    res.sendFile(path.join(process.cwd(), 'index.html'));
+  });
+   app.get(new RegExp('/^\/(.*)\.html$'), (req, res) => {
+    res.sendFile(path.join(process.cwd(), 'index.html'));
+  });
+  */
+
+  if (appIsBrandNew) {
+    app.listen(port, function (error) {
+      if (error) {
+        console.error(error);
+      } else {
+        console.info('🌎 Listening on port %s. Open up http://localhost:%s/ in your browser.', port, port);
+      }
+    });
+  }
+
+  return app;
+}; /* eslint-disable no-console */
+
+/***/ }),
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
 	"./bernieserver/bernieserver.express": [
-		37,
+		40,
 		0
 	],
 	"./junk-express/junk-express.express": [
-		38,
+		50,
 		1
 	]
 };
@@ -1446,164 +1504,81 @@ function webpackAsyncContext(req) {
 webpackAsyncContext.keys = function webpackAsyncContextKeys() {
 	return Object.keys(map);
 };
+webpackAsyncContext.id = 36;
 module.exports = webpackAsyncContext;
-webpackAsyncContext.id = 26;
 
 /***/ }),
-/* 27 */
-/***/ (function(module, exports) {
-
-module.exports = require("directory-named-webpack-plugin");
-
-/***/ }),
-/* 28 */
-/***/ (function(module, exports) {
-
-module.exports = require("extract-text-webpack-plugin");
-
-/***/ }),
-/* 29 */
-/***/ (function(module, exports) {
-
-module.exports = require("html-webpack-plugin");
-
-/***/ }),
-/* 30 */
-/***/ (function(module, exports) {
-
-module.exports = require("node-sass-json-importer");
-
-/***/ }),
-/* 31 */
-/***/ (function(module, exports) {
-
-module.exports = require("single-line-log");
-
-/***/ }),
-/* 32 */
-/***/ (function(module, exports) {
-
-module.exports = require("string-replace-webpack-plugin");
-
-/***/ }),
-/* 33 */
-/***/ (function(module, exports) {
-
-module.exports = require("validate-npm-package-name");
-
-/***/ }),
-/* 34 */
-/***/ (function(module, exports) {
-
-module.exports = require("webpack-dev-middleware");
-
-/***/ }),
-/* 35 */
-/***/ (function(module, exports) {
-
-module.exports = require("webpack-node-externals");
-
-/***/ }),
-/* 36 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(11);
-
-
-/***/ }),
-/* 37 */,
-/* 38 */,
-/* 39 */
+/* 37 */
 /***/ (function(module, exports) {
 
 module.exports = require("jquery-deferred");
 
 /***/ }),
-/* 40 */
+/* 38 */
 /***/ (function(module, exports) {
 
 module.exports = require("aws-sdk");
 
 /***/ }),
-/* 41 */,
-/* 42 */,
-/* 43 */,
-/* 44 */,
-/* 45 */,
-/* 46 */,
-/* 47 */,
-/* 48 */,
-/* 49 */
+/* 39 */
 /***/ (function(module, exports) {
 
 module.exports = require("sharp");
 
 /***/ }),
-/* 50 */,
-/* 51 */,
-/* 52 */,
-/* 53 */,
-/* 54 */,
-/* 55 */,
-/* 56 */,
-/* 57 */,
-/* 58 */,
-/* 59 */,
-/* 60 */,
-/* 61 */,
-/* 62 */,
-/* 63 */
-/***/ (function(module, exports) {
-
-module.exports = require("busboy");
-
-/***/ }),
-/* 64 */
-/***/ (function(module, exports) {
-
-module.exports = require("deep-get-set");
-
-/***/ }),
-/* 65 */
+/* 40 */,
+/* 41 */
 /***/ (function(module, exports) {
 
 module.exports = require("ejs");
 
 /***/ }),
-/* 66 */
+/* 42 */
 /***/ (function(module, exports) {
 
 module.exports = require("fs");
 
 /***/ }),
-/* 67 */
+/* 43 */
 /***/ (function(module, exports) {
 
-module.exports = require("http");
+module.exports = require("mongoose");
 
 /***/ }),
-/* 68 */
-/***/ (function(module, exports) {
-
-module.exports = require("https");
-
-/***/ }),
-/* 69 */
-/***/ (function(module, exports) {
-
-module.exports = require("mime-types");
-
-/***/ }),
-/* 70 */
+/* 44 */
 /***/ (function(module, exports) {
 
 module.exports = require("mongodb-uri");
 
 /***/ }),
-/* 71 */
+/* 45 */
 /***/ (function(module, exports) {
 
-module.exports = require("mongoose");
+module.exports = require("mime-types");
+
+/***/ }),
+/* 46 */
+/***/ (function(module, exports) {
+
+module.exports = require("https");
+
+/***/ }),
+/* 47 */
+/***/ (function(module, exports) {
+
+module.exports = require("http");
+
+/***/ }),
+/* 48 */
+/***/ (function(module, exports) {
+
+module.exports = require("deep-get-set");
+
+/***/ }),
+/* 49 */
+/***/ (function(module, exports) {
+
+module.exports = require("busboy");
 
 /***/ })
 /******/ ]);
