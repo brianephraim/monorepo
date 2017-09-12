@@ -2,7 +2,7 @@ require("source-map-support").install();
 exports.ids = [1];
 exports.modules = {
 
-/***/ 50:
+/***/ 52:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12,15 +12,15 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _express = __webpack_require__(12);
+var _express = __webpack_require__(4);
 
 var _express2 = _interopRequireDefault(_express);
 
-var _makeServeChainableExpress = __webpack_require__(56);
+var _makeServeChainableExpress = __webpack_require__(58);
 
 var _makeServeChainableExpress2 = _interopRequireDefault(_makeServeChainableExpress);
 
-var _ensureLeadingSlash = __webpack_require__(51);
+var _ensureLeadingSlash = __webpack_require__(53);
 
 var _ensureLeadingSlash2 = _interopRequireDefault(_ensureLeadingSlash);
 
@@ -36,7 +36,7 @@ exports.default = (0, _makeServeChainableExpress2.default)(function (app, nameSp
 
 /***/ }),
 
-/***/ 51:
+/***/ 53:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -52,7 +52,7 @@ exports.default = ensureLeadingSlash;
 
 /***/ }),
 
-/***/ 56:
+/***/ 58:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -62,7 +62,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _express = __webpack_require__(12);
+var _express = __webpack_require__(4);
 
 var _express2 = _interopRequireDefault(_express);
 

@@ -2,7 +2,7 @@ require("source-map-support").install();
 exports.ids = [0];
 exports.modules = {
 
-/***/ 40:
+/***/ 43:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _bernieExpressServer = __webpack_require__(59);
+var _bernieExpressServer = __webpack_require__(61);
 
 var _bernieExpressServer2 = _interopRequireDefault(_bernieExpressServer);
 
@@ -22,7 +22,7 @@ exports.default = _bernieExpressServer2.default;
 
 /***/ }),
 
-/***/ 51:
+/***/ 53:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38,7 +38,7 @@ exports.default = ensureLeadingSlash;
 
 /***/ }),
 
-/***/ 52:
+/***/ 54:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -74,13 +74,13 @@ module.exports = function (fun) {
 
 /***/ }),
 
-/***/ 53:
+/***/ 55:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var prepareModuleWithDefaults = __webpack_require__(52);
+var prepareModuleWithDefaults = __webpack_require__(54);
 module.exports = prepareModuleWithDefaults(function (s) {
 	var res = s.res;
 	var isSuccess = typeof s.isSuccess === 'undefined' || !!s.isSuccess;
@@ -117,20 +117,20 @@ module.exports = prepareModuleWithDefaults(function (s) {
 
 /***/ }),
 
-/***/ 54:
+/***/ 56:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var jD = __webpack_require__(37);
-var sharp = __webpack_require__(39);
-var prepareModuleWithDefaults = __webpack_require__(52);
-var parseUrl = __webpack_require__(11).parse;
+var jD = __webpack_require__(40);
+var sharp = __webpack_require__(42);
+var prepareModuleWithDefaults = __webpack_require__(54);
+var parseUrl = __webpack_require__(14).parse;
 module.exports = prepareModuleWithDefaults(function (s) {
   var dfd = jD.Deferred();
   var buffer = s.Body;
-  var sharp = __webpack_require__(39);
+  var sharp = __webpack_require__(42);
   var image = sharp(buffer);
   image.metadata(function (err, meta) {
     if (err) {
@@ -169,19 +169,19 @@ module.exports = prepareModuleWithDefaults(function (s) {
 
 /***/ }),
 
-/***/ 55:
+/***/ 57:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var jD = __webpack_require__(37);
-var aws = __webpack_require__(38);
-var prepareModuleWithDefaults = __webpack_require__(52);
+var jD = __webpack_require__(40);
+var aws = __webpack_require__(41);
+var prepareModuleWithDefaults = __webpack_require__(54);
 module.exports = prepareModuleWithDefaults(function (s) {
   s = Object.assign({}, s);
   if (!s.ContentType) {
-    var mime = __webpack_require__(45);
+    var mime = __webpack_require__(47);
     var extension = s.Key.split('.').pop();
     s.ContentType = mime.lookup(extension);
   }
@@ -210,7 +210,7 @@ module.exports = prepareModuleWithDefaults(function (s) {
 
 /***/ }),
 
-/***/ 56:
+/***/ 58:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -220,7 +220,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _express = __webpack_require__(12);
+var _express = __webpack_require__(4);
 
 var _express2 = _interopRequireDefault(_express);
 
@@ -260,7 +260,7 @@ exports.default = makeServeChainableExpress;
 
 /***/ }),
 
-/***/ 57:
+/***/ 59:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -272,10 +272,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 var mymoduleName = 'mongooseStuff';;
 (function (exports) {
 
-    var jD = __webpack_require__(37);
+    var jD = __webpack_require__(40);
 
-    var mongoose = __webpack_require__(43);
-    var uriUtil = __webpack_require__(44);
+    var mongoose = __webpack_require__(45);
+    var uriUtil = __webpack_require__(46);
 
     var mongooseStuff = function () {
         var MongooseStuff = function MongooseStuff() {
@@ -535,14 +535,14 @@ var mymoduleName = 'mongooseStuff';;
 
 /***/ }),
 
-/***/ 58:
+/***/ 60:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var jD = __webpack_require__(37);
-var aws = __webpack_require__(38);
+var jD = __webpack_require__(40);
+var aws = __webpack_require__(41);
 module.exports = function (s) {
   s = Object.assign({}, s);
   var dfd = jD.Deferred();
@@ -568,7 +568,7 @@ module.exports = function (s) {
 
 /***/ }),
 
-/***/ 59:
+/***/ 61:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -578,15 +578,15 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _mymodule = __webpack_require__(60);
+var _mymodule = __webpack_require__(62);
 
 var _mymodule2 = _interopRequireDefault(_mymodule);
 
-var _express = __webpack_require__(12);
+var _express = __webpack_require__(4);
 
 var _express2 = _interopRequireDefault(_express);
 
-var _ejs = __webpack_require__(41);
+var _ejs = __webpack_require__(44);
 
 var _ejs2 = _interopRequireDefault(_ejs);
 
@@ -594,45 +594,45 @@ var _path = __webpack_require__(2);
 
 var _path2 = _interopRequireDefault(_path);
 
-var _url = __webpack_require__(11);
+var _url = __webpack_require__(14);
 
 var _url2 = _interopRequireDefault(_url);
 
-var _fs = __webpack_require__(42);
+var _fs = __webpack_require__(15);
 
 var _fs2 = _interopRequireDefault(_fs);
 
-var _mongooseStuff = __webpack_require__(57);
+var _mongooseStuff = __webpack_require__(59);
 
-var _endpointCompositeImage = __webpack_require__(61);
+var _endpointCompositeImage = __webpack_require__(63);
 
 var _endpointCompositeImage2 = _interopRequireDefault(_endpointCompositeImage);
 
-var _endpointGetNormalizedImageInfo = __webpack_require__(65);
+var _endpointGetNormalizedImageInfo = __webpack_require__(67);
 
 var _endpointGetNormalizedImageInfo2 = _interopRequireDefault(_endpointGetNormalizedImageInfo);
 
-var _endpointGetS3SignedUploadUrl = __webpack_require__(68);
+var _endpointGetS3SignedUploadUrl = __webpack_require__(70);
 
 var _endpointGetS3SignedUploadUrl2 = _interopRequireDefault(_endpointGetS3SignedUploadUrl);
 
-var _endpointIframeUpload = __webpack_require__(69);
+var _endpointIframeUpload = __webpack_require__(71);
 
 var _endpointIframeUpload2 = _interopRequireDefault(_endpointIframeUpload);
 
-var _generateUrlRegexNamespace = __webpack_require__(71);
+var _generateUrlRegexNamespace = __webpack_require__(73);
 
 var _generateUrlRegexNamespace2 = _interopRequireDefault(_generateUrlRegexNamespace);
 
-var _respondWithJson = __webpack_require__(53);
+var _respondWithJson = __webpack_require__(55);
 
 var _respondWithJson2 = _interopRequireDefault(_respondWithJson);
 
-var _ensureLeadingSlash = __webpack_require__(51);
+var _ensureLeadingSlash = __webpack_require__(53);
 
 var _ensureLeadingSlash2 = _interopRequireDefault(_ensureLeadingSlash);
 
-var _makeServeChainableExpress = __webpack_require__(56);
+var _makeServeChainableExpress = __webpack_require__(58);
 
 var _makeServeChainableExpress2 = _interopRequireDefault(_makeServeChainableExpress);
 
@@ -845,7 +845,7 @@ exports.default = (0, _makeServeChainableExpress2.default)(function (app, nameSp
 
 /***/ }),
 
-/***/ 60:
+/***/ 62:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1166,7 +1166,7 @@ var isNode = function () {
 
 /***/ }),
 
-/***/ 61:
+/***/ 63:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1176,7 +1176,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _awsSdk = __webpack_require__(38);
+var _awsSdk = __webpack_require__(41);
 
 var _awsSdk2 = _interopRequireDefault(_awsSdk);
 
@@ -1184,25 +1184,25 @@ var _path = __webpack_require__(2);
 
 var _path2 = _interopRequireDefault(_path);
 
-var _url = __webpack_require__(11);
+var _url = __webpack_require__(14);
 
-var _ensureLeadingSlash = __webpack_require__(51);
+var _ensureLeadingSlash = __webpack_require__(53);
 
 var _ensureLeadingSlash2 = _interopRequireDefault(_ensureLeadingSlash);
 
-var _getAllS3Objects = __webpack_require__(62);
+var _getAllS3Objects = __webpack_require__(64);
 
 var _getAllS3Objects2 = _interopRequireDefault(_getAllS3Objects);
 
-var _getS3ObjectData = __webpack_require__(58);
+var _getS3ObjectData = __webpack_require__(60);
 
 var _getS3ObjectData2 = _interopRequireDefault(_getS3ObjectData);
 
-var _meldAndCropImages = __webpack_require__(63);
+var _meldAndCropImages = __webpack_require__(65);
 
 var _meldAndCropImages2 = _interopRequireDefault(_meldAndCropImages);
 
-var _respondWithJson = __webpack_require__(53);
+var _respondWithJson = __webpack_require__(55);
 
 var _respondWithJson2 = _interopRequireDefault(_respondWithJson);
 
@@ -1339,15 +1339,15 @@ exports.default = function (_ref) {
 
 /***/ }),
 
-/***/ 62:
+/***/ 64:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var aws = __webpack_require__(38);
-var jD = __webpack_require__(37);
-var getS3ObjectData = __webpack_require__(58);
+var aws = __webpack_require__(41);
+var jD = __webpack_require__(40);
+var getS3ObjectData = __webpack_require__(60);
 module.exports = function (s) {
   var dfdMain = jD.Deferred();
   var promises = [];
@@ -1373,7 +1373,7 @@ module.exports = function (s) {
       }).then(entryDfd.resolve).fail(function (originalErr) {
         if (entry.retrySearchCriteria) {
           var retryBucket = entry.retrySearchCriteria.Bucket ? entry.retrySearchCriteria.Bucket : s.Bucket;
-          var aws = __webpack_require__(38);
+          var aws = __webpack_require__(41);
           aws.config.update({ accessKeyId: s.accessKeyId, secretAccessKey: s.secretAccessKey });
           var s3 = new aws.S3();
           var params = {
@@ -1399,7 +1399,7 @@ module.exports = function (s) {
                   Bucket: retryBucket
                 }).then(function () {
                   var args = arguments;
-                  var normalizeImageFileData = __webpack_require__(54)({
+                  var normalizeImageFileData = __webpack_require__(56)({
                     prepareModuleWithDefaults: true,
                     filename: filename,
                     parseSettings: function parseSettings(s) {
@@ -1407,7 +1407,7 @@ module.exports = function (s) {
                       return s;
                     }
                   });
-                  var uploadToS3 = __webpack_require__(55)({
+                  var uploadToS3 = __webpack_require__(57)({
                     prepareModuleWithDefaults: true,
                     accessKeyId: s.accessKeyId,
                     secretAccessKey: s.secretAccessKey,
@@ -1448,16 +1448,16 @@ module.exports = function (s) {
 
 /***/ }),
 
-/***/ 63:
+/***/ 65:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 /* eslint-disable */
-var sharp = __webpack_require__(39);
-var jD = __webpack_require__(37);
-var calcOverlayAndTemplateProcessingSettings = __webpack_require__(64);
+var sharp = __webpack_require__(42);
+var jD = __webpack_require__(40);
+var calcOverlayAndTemplateProcessingSettings = __webpack_require__(66);
 
 // Normally, this will meld a foreground and a background image together,
 // and crop them to a square, as a new image jpeg.
@@ -1533,7 +1533,7 @@ module.exports = function (overlaySettings, responses) {
 
 /***/ }),
 
-/***/ 64:
+/***/ 66:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1592,7 +1592,7 @@ module.exports = function (cropSettings, userPhotoWidthHeight) {
 
 /***/ }),
 
-/***/ 65:
+/***/ 67:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1602,15 +1602,15 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _awsSdk = __webpack_require__(38);
+var _awsSdk = __webpack_require__(41);
 
 var _awsSdk2 = _interopRequireDefault(_awsSdk);
 
-var _jqueryDeferred = __webpack_require__(37);
+var _jqueryDeferred = __webpack_require__(40);
 
 var _jqueryDeferred2 = _interopRequireDefault(_jqueryDeferred);
 
-var _mongooseStuff = __webpack_require__(57);
+var _mongooseStuff = __webpack_require__(59);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1622,17 +1622,17 @@ exports.default = function (_ref) {
       userTemplates = _ref.userTemplates,
       urlPattern = _ref.urlPattern;
 
-  var urlToFileData = __webpack_require__(66);
-  var uploadToS3 = __webpack_require__(55)({
+  var urlToFileData = __webpack_require__(68);
+  var uploadToS3 = __webpack_require__(57)({
     prepareModuleWithDefaults: true,
     accessKeyId: accessKeyId,
     secretAccessKey: secretAccessKey,
     Bucket: Bucket
   });
 
-  var parseUrl = __webpack_require__(11).parse;
+  var parseUrl = __webpack_require__(14).parse;
 
-  var normalizeImageFileData = __webpack_require__(54)({
+  var normalizeImageFileData = __webpack_require__(56)({
     prepareModuleWithDefaults: true,
     parseSettings: function parseSettings(s) {
       var filename;
@@ -1665,8 +1665,8 @@ exports.default = function (_ref) {
       return s;
     }
   });
-  var deep = __webpack_require__(48);
-  var deleteS3Object = __webpack_require__(67)({
+  var deep = __webpack_require__(50);
+  var deleteS3Object = __webpack_require__(69)({
     prepareModuleWithDefaults: true,
     parseSettings: function parseSettings(s) {
       s.Key = deep(s, 'originalFilename');
@@ -1681,12 +1681,12 @@ exports.default = function (_ref) {
     var originalUrl = decodeURIComponent(req.query.image_url);
     var mustBeSquare = req.query.must_be_square === 'true';
 
-    var respondWithJsonSuccess = __webpack_require__(53)({
+    var respondWithJsonSuccess = __webpack_require__(55)({
       prepareModuleWithDefaults: true,
       res: res,
       isSuccess: true
     });
-    var respondWithJsonFail = __webpack_require__(53)({
+    var respondWithJsonFail = __webpack_require__(55)({
       prepareModuleWithDefaults: true,
       res: res,
       isSuccess: false
@@ -1730,24 +1730,24 @@ exports.default = function (_ref) {
 
 /***/ }),
 
-/***/ 66:
+/***/ 68:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var jD = __webpack_require__(37);
+var jD = __webpack_require__(40);
 module.exports = function (originalUrl) {
   var isHttps = originalUrl.indexOf('https://') !== -1;
-  var url = __webpack_require__(11);
+  var url = __webpack_require__(14);
 
   var dfd = jD.Deferred();
   var options = url.parse(originalUrl);
   var http;
   if (isHttps) {
-    http = __webpack_require__(46);
+    http = __webpack_require__(48);
   } else {
-    http = __webpack_require__(47);
+    http = __webpack_require__(49);
   }
   console.log('http get');
   http.get(options, function (response) {
@@ -1776,15 +1776,15 @@ module.exports = function (originalUrl) {
 
 /***/ }),
 
-/***/ 67:
+/***/ 69:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var jD = __webpack_require__(37);
-var aws = __webpack_require__(38);
-var prepareModuleWithDefaults = __webpack_require__(52);
+var jD = __webpack_require__(40);
+var aws = __webpack_require__(41);
+var prepareModuleWithDefaults = __webpack_require__(54);
 
 module.exports = prepareModuleWithDefaults(function (s) {
   var dfd = jD.Deferred();
@@ -1815,7 +1815,7 @@ module.exports = prepareModuleWithDefaults(function (s) {
 
 /***/ }),
 
-/***/ 68:
+/***/ 70:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1825,15 +1825,15 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _awsSdk = __webpack_require__(38);
+var _awsSdk = __webpack_require__(41);
 
 var _awsSdk2 = _interopRequireDefault(_awsSdk);
 
-var _ensureLeadingSlash = __webpack_require__(51);
+var _ensureLeadingSlash = __webpack_require__(53);
 
 var _ensureLeadingSlash2 = _interopRequireDefault(_ensureLeadingSlash);
 
-var _respondWithJson = __webpack_require__(53);
+var _respondWithJson = __webpack_require__(55);
 
 var _respondWithJson2 = _interopRequireDefault(_respondWithJson);
 
@@ -1880,7 +1880,7 @@ exports.default = function (_ref) {
 
 /***/ }),
 
-/***/ 69:
+/***/ 71:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1890,7 +1890,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _ensureLeadingSlash = __webpack_require__(51);
+var _ensureLeadingSlash = __webpack_require__(53);
 
 var _ensureLeadingSlash2 = _interopRequireDefault(_ensureLeadingSlash);
 
@@ -1904,8 +1904,8 @@ exports.default = function (_ref) {
       urlPattern = _ref.urlPattern;
 
   app.post(urlPattern, function (req, res, next) {
-    var parseUrl = __webpack_require__(11).parse;
-    var normalizeImageFileData = __webpack_require__(54)({
+    var parseUrl = __webpack_require__(14).parse;
+    var normalizeImageFileData = __webpack_require__(56)({
       prepareModuleWithDefaults: true,
       parseSettings: function parseSettings(s) {
         var filename = s.filename;
@@ -1921,13 +1921,13 @@ exports.default = function (_ref) {
         return s;
       }
     });
-    var uploadToS3 = __webpack_require__(55)({
+    var uploadToS3 = __webpack_require__(57)({
       prepareModuleWithDefaults: true,
       accessKeyId: accessKeyId,
       secretAccessKey: secretAccessKey,
       Bucket: Bucket
     });
-    var apiRequestIntoBufferData = __webpack_require__(70);
+    var apiRequestIntoBufferData = __webpack_require__(72);
     apiRequestIntoBufferData(req).then(normalizeImageFileData).then(uploadToS3).then(function (r) {
       var details = {
         url: r.url
@@ -1949,15 +1949,15 @@ exports.default = function (_ref) {
 
 /***/ }),
 
-/***/ 70:
+/***/ 72:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var jD = __webpack_require__(37);
-var prepareModuleWithDefaults = __webpack_require__(52);
-var Busboy = __webpack_require__(49);
+var jD = __webpack_require__(40);
+var prepareModuleWithDefaults = __webpack_require__(54);
+var Busboy = __webpack_require__(51);
 
 module.exports = prepareModuleWithDefaults(function (req) {
   var dfd = jD.Deferred();
@@ -2015,7 +2015,7 @@ module.exports = prepareModuleWithDefaults(function (req) {
 
 /***/ }),
 
-/***/ 71:
+/***/ 73:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

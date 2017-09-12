@@ -1,5 +1,8 @@
 export default (webpackMakeCompiler) => {
-  webpackMakeCompiler().run((err, stats) => {
+  const processed = webpackMakeCompiler();
+  console.log(processed.activeWebpackDevMiddleware);
+  const toUse = processed.activeWebpackDevMiddleware ? processed.activeWebpackDevMiddleware : processed;
+  toUse.run((err, stats) => {
     console.log('RUN COMPILER');
     if (err) {
       console.error(err.stack || err);

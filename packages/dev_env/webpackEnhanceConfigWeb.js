@@ -76,10 +76,10 @@ function enhance(originalConfig, libraryName, isBuild, dirRoot, username, output
       ...indexHtmlSettings,
     }));
   } else {
-    registerPlugin('demoDevIndex-HtmlWebpackPlugin', new HtmlWebpackPlugin({
-      chunks: [outputFiles.demo],
-      filename: devHtmlPath,
-    }));
+    // registerPlugin('demoDevIndex-HtmlWebpackPlugin', new HtmlWebpackPlugin({
+    //   chunks: [outputFiles.demo],
+    //   filename: devHtmlPath,
+    // }));
   }
 
   registerPlugin('StringReplacePlugin', new StringReplacePlugin());
