@@ -16,7 +16,7 @@ import {
   ImagePickerTemplateWithOnClick,
   CropperWithFgBgCompletion,
   UrlImportScreenWithWithUploadCallback,
-  TemplateUploadScreenWithUploadCallback,
+  // TemplateUploadScreenWithUploadCallback,
 } from './routingComponents';
 
 import { paramsIntoCompositeImage } from './compositeImage';
