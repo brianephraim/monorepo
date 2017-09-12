@@ -1,3 +1,5 @@
+import React from 'react';
+import universal from 'react-universal-component'
 import renderReactRoot from '@defualt/render-react-root';
 import Routing, {addRoutesToApp} from 'redux-routing-app-root-component';
 import integrateBernie from 'profile-framer-frontend/setup'
@@ -60,4 +62,14 @@ addRoutesToApp({
   routeRootComponent: RouteLinksList,
 });
 
-renderReactRoot(Routing);
+function ToRender(props){
+  return (<Routing {...props} />);
+}
+
+const p = 'redux-routing-app-root-component';
+const UniversalComponent = universal((props) => import(`../redux-routing-app-root-component/${p}`), {
+  minDelay: 1200,
+})
+
+renderReactRoot(UniversalComponent);
+// renderReactRoot(ToRender);

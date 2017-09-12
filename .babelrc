@@ -1,7 +1,4 @@
 {
-  "presets": [
-    ["es2015", {"modules": false}],
-    "react"
-  ],
+  "presets": ["es2015", "react", "stage-2"],
   "plugins": ["transform-es2015-modules-commonjs", "transform-es2015-spread", "transform-object-rest-spread", "styled-components", "universal-import"]
 }

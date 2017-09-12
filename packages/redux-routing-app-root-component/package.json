@@ -9,5 +9,8 @@
   },
   "devDependencies": {
     "@defualt/dev_env": "^0.0.14"
+  },
+  "dependencies": {
+    "redux-thunk": "^2.1.0"
   }
 }

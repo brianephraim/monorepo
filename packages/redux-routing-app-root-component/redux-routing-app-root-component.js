@@ -1,5 +1,6 @@
 /* eslint-disable react/no-multi-comp */
 // import React from 'react';
+// import 'html-loader';
 import { connectRoutes, addRoutes, redirect, NOT_FOUND } from 'redux-first-router'
 import PropTypes from 'prop-types';
 import { Provider, connect } from 'react-redux';
