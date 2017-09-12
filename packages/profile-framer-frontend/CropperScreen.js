@@ -14,10 +14,6 @@ const isTouchDevice = 'ontouchstart' in document.documentElement;
 class CropperScreen extends Component {
   constructor(props) {
     super();
-    /*
-    swapGrounds:false,
-    hideForeground:false,
-    */
     this.state = {
       foreground: {
         ...props.foreground,
@@ -36,31 +32,6 @@ class CropperScreen extends Component {
       delete this.state.foreground.src;
       delete this.state.foreground.srcKey;
     }
-    // if ()
-    // if (props.swapGrounds) {
-    //   // props.defaultGeo
-    //   // console.log('SSSS');
-      
-    //   // delete this.state.foreground.srcKey;
-    //   // delete this.state.foreground.src;
-    // } else {
-    //   this.state = {
-    //     foreground: {
-    //       ...props.foreground,
-    //     },
-    //     background: {
-    //       ...props.background,
-    //     },
-    //   };
-    // }
-    // this.state = {
-    //   foreground: {
-    //     ...props.foreground,
-    //   },
-    //   background: {
-    //     ...props.background,
-    //   },
-    // };
     
     this.crop = this.crop.bind(this);
   }
@@ -97,7 +68,6 @@ class CropperScreen extends Component {
   }
 
   crop(cropData) {
-    // this.setState(result);
     this.setState({
       foreground: {
         ...this.state.foreground,
@@ -183,15 +153,17 @@ class CropperScreen extends Component {
           <ReactCropperEnhanced {...reactCropperOptions} />
         </div>
         <CompletionInterface
+          useClickHandledButton={this.props.useClickHandledButton}
           activeCompositeImageData={activeCompositeImageData}
           generateCompletionUrl={this.props.generateCompletionUrl}
-          publishTemplateCrop={this.props.publishTemplateCrop}
+          onClick={this.props.publishTemplateCrop}
         />
       </div>
     );
   }
 }
 CropperScreen.propTypes = {
+  useClickHandledButton:PropTypes.bool,
   defaultGeo:PropTypes.bool,
   hideForeground:PropTypes.bool,
   background: PropTypes.object.isRequired,
@@ -200,8 +172,8 @@ CropperScreen.propTypes = {
   publishTemplateCrop: PropTypes.func.isRequired,
 };
 CropperScreen.defaultProps = {
+  useClickHandledButton:false,
   defaultGeo: false,
-  swapGrounds:false,
   hideForeground:false,
 };
 

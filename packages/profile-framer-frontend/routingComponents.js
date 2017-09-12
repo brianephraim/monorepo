@@ -65,6 +65,7 @@ let CropperWithFgBgCompletion = class extends Component {
         <CropperScreen
           hideForeground={this.props.isMakeSquareTemplateMode}
           defaultGeo={this.props.isMakeSquareTemplateMode}
+          useClickHandledButton={this.props.isMakeSquareTemplateMode}
           foreground={this.props.compositeImageData.foreground}
           background={this.props.compositeImageData.background}
           generateCompletionUrl={this.generateCompletionUrl}

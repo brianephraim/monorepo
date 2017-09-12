@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import styleConstants from './style-constants';
 
-import {formPublishTemplateCropRequest} from './deriveUrlInfo';
-
 const StyledButtonWrap = styled.div`
   padding-left: ${styleConstants.appPad}em;
   padding-right: ${styleConstants.appPad}em;
@@ -25,41 +23,39 @@ const StyledButtonInnerSpan = styled.span`
 class CompletionInterface extends Component {
   constructor() {
     super();
-    this.publishTemplateCrop = this.publishTemplateCrop.bind(this);
+    this.onClick = this.onClick.bind(this);
   }
-  publishTemplateCrop() {
-    console.log('this.props.activeCompositeImageData',this.props.activeCompositeImageData);
-    const newTemplateCropSrcKey = formPublishTemplateCropRequest(this.props.activeCompositeImageData);
-    console.log('newTemplateCropSrcKey',newTemplateCropSrcKey);
-    this.props.publishTemplateCrop(newTemplateCropSrcKey,this.props.activeCompositeImageData);
+  onClick() {
+    this.props.onClick(this.props.activeCompositeImageData);
   }
   render(){
     const url = this.props.generateCompletionUrl(this.props.activeCompositeImageData);
+    let ButtonComp = StyledButtonAnchor;
+    let buttonProps = {href: url};
+    if (this.props.useClickHandledButton) {
+      ButtonComp = StyledButtonButton;
+      buttonProps = {onClick: this.onClick};
+    }
     return (
       <div>
         <StyledH2>Drag and resize the box to crop</StyledH2>
         <StyledButtonWrap className="modal_buttonGroup">
-          <StyledButtonButton
-            onClick={this.publishTemplateCrop}
-            className="button mainButton cropDoneButton"
-          >
+          <ButtonComp {...buttonProps} className="button mainButton cropDoneButton">
             <StyledButtonInnerSpan>Done</StyledButtonInnerSpan>
-          </StyledButtonButton>
-          <StyledButtonAnchor
-            href={url}
-            className="button mainButton cropDoneButton"
-          >
-            <StyledButtonInnerSpan>Done</StyledButtonInnerSpan>
-          </StyledButtonAnchor>
+          </ButtonComp>
         </StyledButtonWrap>
       </div>
     );
   }
 }
 CompletionInterface.propTypes = {
+  useClickHandledButton: PropTypes.bool,
   activeCompositeImageData: PropTypes.object.isRequired,
   generateCompletionUrl: PropTypes.func.isRequired,
-  publishTemplateCrop: PropTypes.func.isRequired,
+  onClick: PropTypes.func.isRequired,
+};
+CompletionInterface.defaultProps = {
+  useClickHandledButton: false,
 };
 export default CompletionInterface;
 

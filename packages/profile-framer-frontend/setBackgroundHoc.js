@@ -32,7 +32,6 @@ export default function setBackgroundHoc(Comp) {
         };
       },
       setBackgroundTemplateUploader: (imgSrc, ownProps) => {
-        console.log('setBackgroundTemplateUploader')
         imgSrc = typeof imgSrc === 'object' ? imgSrc.src : imgSrc;
         return (dispatch, getState) => {
           return getNormalizedImageInfo(

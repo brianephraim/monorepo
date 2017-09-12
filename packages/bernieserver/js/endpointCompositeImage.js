@@ -5,7 +5,7 @@ import {parse as parseUrl} from 'url';
 import ensureLeadingSlash from '@defualt/ensure-leading-slash';
 import getAllS3Objects from './getAllS3Objects';
 import getS3ObjectData from './getS3ObjectData';
-import createCompositeBuffer from './createCompositeBuffer';
+import meldAndCropImages from './meldAndCropImages';
 import respondWithJson from './respondWithJson';
 
 var parseClientCompositeImageUrl = function(url){
@@ -34,6 +34,10 @@ var parseClientCompositeImageUrl = function(url){
     compositeS3Key:compositeS3Key
   };
 };
+// Generate composite images.
+// Requests are either .png, .jpg, or .json.
+// If .json, the composite image is generated, uploaded to S3,
+// and the S3 item key is sent to the client in json.
 export default ({app,accessKeyId,secretAccessKey,Bucket,urlPattern}) => {
   app.get(urlPattern, function(req, res) {
     console.log('EXTNSSION', )
@@ -82,10 +86,12 @@ export default ({app,accessKeyId,secretAccessKey,Bucket,urlPattern}) => {
           accessKeyId: accessKeyId,
           secretAccessKey: secretAccessKey
         })
-        .then(createCompositeBuffer.bind(null,s.overlaySettings))
+        .then(meldAndCropImages.bind(null,s.overlaySettings))
         .then(function(bufferData){
+          
+          var Key = s.compositeS3Key;
           if (templateCreateMode) {
-
+            Key = 'decorations/' + s.userImageFilename + '.png'
           } else {
             res.setHeader('content-type', 'image/'+fileType);
             res.write(bufferData.Body,'binary');
@@ -94,14 +100,6 @@ export default ({app,accessKeyId,secretAccessKey,Bucket,urlPattern}) => {
 
           aws.config.update({accessKeyId: accessKeyId , secretAccessKey: secretAccessKey });
           var s3 = new aws.S3(); 
-          console.log('s.compositeS3Key',s.compositeS3Key);
-          console.log('fileType2',fileType);
-          var Key = s.compositeS3Key;
-          if (templateCreateMode) {
-            Key = 'decorations/' + s.userImageFilename + '.png'
-          }
-          console.log('Key',Key);
-          
           s3.putObject(
             {
                 Bucket: Bucket,
@@ -116,7 +114,6 @@ export default ({app,accessKeyId,secretAccessKey,Bucket,urlPattern}) => {
                     log.error('Failed saving to S3', err);
                 } else {
                   if (templateCreateMode) {
-                    console.log('RESPONDING TO JSON MAYBE')
                     respondWithJson({
                       Key:Key,
                       res:res,

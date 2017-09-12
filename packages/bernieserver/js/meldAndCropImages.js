@@ -2,6 +2,12 @@
 var sharp = require('sharp');
 var jD = require('jquery-deferred');
 var calcOverlayAndTemplateProcessingSettings = require('./calcOverlayAndTemplateProcessingSettings');
+
+// Normally, this will meld a foreground and a background image together,
+// and crop them to a square, as a new image jpeg.
+// But when templateCroppingMode is true,
+// only the foreground image is used,
+// and it alone gets cropped as a new image png.
 module.exports = function(overlaySettings,responses){
   var dfd = jD.Deferred();
   var templateFetchResponse = responses.template;
@@ -15,8 +21,8 @@ module.exports = function(overlaySettings,responses){
     var imageProcessingSettings = calcOverlayAndTemplateProcessingSettings(overlaySettings,metadata);
     var s = imageProcessingSettings;
     if(s.completelyOutOfBound){
-      var templateOrNot = templateCroppingMode ? userPhotoFetchResponse : templateFetchResponse;
-      var template = sharp(templateOrNot.data.Body);
+      var responseToProcess = templateCroppingMode ? userPhotoFetchResponse : templateFetchResponse;
+      var template = sharp(responseToProcess.data.Body);
       template.resize(s.limit, s.limit).min().max();
       template = template.background(bgColor);
       if (!templateCroppingMode) {

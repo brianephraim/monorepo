@@ -67,7 +67,6 @@ class ReactCropperEnhanced extends Component {
     });
   }
   ready(...args) {
-    console.log(this.props.cropSrc);
     if (
       this.props.cropSrc &&
       this.cropper &&
