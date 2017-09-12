@@ -13,7 +13,7 @@ module.exports = function(originalUrl){
   }
   console.log('http get');
   http.get(options, function (response) {
-    console.log('GOTTEN', response);
+    console.log('GOTTEN');
     var chunks = [];
     response.on('data', function (chunk) {
       chunks.push(chunk);

@@ -12,6 +12,7 @@
     "test": "./packages/dev_env/bin/devenv.js --env=test --testdevenv",
     "dev": "./packages/dev_env/bin/devenv.js",
     "bern2": "npm run dev -- --servers='bernieserver,junk-express'",
+    "bern3": "npm run dev -- --use-dist --servers='bernieserver,junk-express'",
     "bern": "npm run devenvnode /Users/brianephraim/Sites/monorepo/packages/bernieserver/bernieserver.js",
     "devusedist": "npm run dev -- --use-dist",
     "item": "npm_run_item(){ (./packages/dev_env/bin/devenv.js --item=$1) };npm_run_item",

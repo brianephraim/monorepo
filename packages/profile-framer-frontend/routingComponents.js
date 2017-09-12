@@ -11,7 +11,9 @@ import TemplateUploadScreen from './TemplateUploadScreen';
 import ModalScreen from './ModalScreen';
 import './app.scss';
 import setBackgroundHoc from './setBackgroundHoc';
+import publishTemplateCropHoc from './publishTemplateCropHoc';
 import ancestorConstantsHoc from './ancestorConstantsHoc';
+
 
 import { formUrl } from './deriveUrlInfo';
 
@@ -61,25 +63,33 @@ let CropperWithFgBgCompletion = class extends Component {
     return (
       <ModalScreen hasCloseButton>
         <CropperScreen
+          hideForeground={this.props.isMakeSquareTemplateMode}
+          defaultGeo={this.props.isMakeSquareTemplateMode}
           foreground={this.props.compositeImageData.foreground}
           background={this.props.compositeImageData.background}
           generateCompletionUrl={this.generateCompletionUrl}
+          publishTemplateCrop={this.props.publishTemplateCrop}
         />
       </ModalScreen>
     );
   }
 };
 CropperWithFgBgCompletion.propTypes = {
+  isMakeSquareTemplateMode: PropTypes.bool,
   compositeImageData: PropTypes.object.isRequired,
   constants: PropTypes.object.isRequired,
+  publishTemplateCrop: PropTypes.func.isRequired,
 };
-CropperWithFgBgCompletion = ancestorConstantsHoc(
+CropperWithFgBgCompletion.defaultPrps = {
+  isMakeSquareTemplateMode: false,
+};
+CropperWithFgBgCompletion = publishTemplateCropHoc(ancestorConstantsHoc(
   appConnect((appState /* , { params }*/) => {
     return {
       compositeImageData: appState.compositeImageData,
     };
   })(CropperWithFgBgCompletion)
-);
+));
 export { CropperWithFgBgCompletion };
 
 export function UrlImportScreenWithWithUploadCallback() {

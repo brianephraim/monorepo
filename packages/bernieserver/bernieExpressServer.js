@@ -1,4 +1,3 @@
-console.log('APP.js');
 import mymodule from './public/js/mymodule';
 import express from 'express';
 import ejs from 'ejs';
@@ -153,8 +152,6 @@ export default makeServeChainableExpress((app, nameSpace) => {
   });
 
   app.get(ensureLeadingSlash(`${nameSpace}/get_template_list`), (req, res) => {
-    console.log('req',req)
-    console.log('get_template_list',userTemplates)
     respondWithJson({
       res,
       userTemplates,

@@ -260,9 +260,10 @@ const StyledButtonInnerSpan = styled.span`
 `;
 
 let UploadBackgroundSetter = props => {
+  const onSuccess = props.isTemplateUploader ? props.setBackgroundTemplateUploader : props.setBackground;
   return (
     <Upload
-      onSuccess={props.setBackground}
+      onSuccess={onSuccess}
       backendApiPrefix={props.constants.backendApiPrefix}
     >
       {props.children}
@@ -270,11 +271,14 @@ let UploadBackgroundSetter = props => {
   );
 };
 UploadBackgroundSetter.propTypes = {
+  isTemplateUploader: PropTypes.bool,
   setBackground: PropTypes.func.isRequired,
+  setBackgroundTemplateUploader: PropTypes.func.isRequired,
   constants: PropTypes.object.isRequired,
   children: PropTypes.node,
 };
 UploadBackgroundSetter.defaultProps = {
+  isTemplateUploader: false,
   children: null,
 };
 UploadBackgroundSetter = ancestorConstantsHoc(
@@ -328,7 +332,7 @@ let AppButtonGroup = class extends Component {
           let btnInner;
           if (btnDetails.isUploadBackgroundSetter) {
             btnInner = (
-              <UploadBackgroundSetter>
+              <UploadBackgroundSetter isTemplateUploader={btnDetails.isTemplateUploader} >
                 {btnDetails.text}
               </UploadBackgroundSetter>
             );
@@ -502,7 +506,6 @@ const ImportButtonGroup = makeButtonGroupComponent({
   buttons: [
     {
       text: 'Facebook',
-      routerLinkScreenName: 'import-photo-from-facebook',
       actionType: 'IMPORT_FACEBOOK',
     },
     {
@@ -511,7 +514,6 @@ const ImportButtonGroup = makeButtonGroupComponent({
     },
     {
       text: 'URL',
-      routerLinkScreenName: 'import-url',
       actionType: 'IMPORT_URL',
     },
     {
@@ -560,7 +562,6 @@ const EditSizeButtonGroup = makeButtonGroupComponent({
   buttons: [
     {
       text: 'Size and position',
-      routerLinkScreenName: 'crop',
       actionType: 'CROP',
     },
   ],
@@ -590,13 +591,16 @@ const EditDesignButtonGroup = makeButtonGroupComponent({
   buttons: [
     {
       text: 'more options',
-      routerLinkScreenName: 'select-template',
       actionType: 'SELECT_TEMPLATE',
     },
+    // {
+    //   text: 'upload a template',
+    //   actionType: 'UPLOAD_TEMPLATE',
+    // },
     {
       text: 'upload a template',
-      routerLinkScreenName: 'upload-template',
-      actionType: 'UPLOAD_TEMPLATE',
+      isUploadBackgroundSetter: true,
+      isTemplateUploader: true,
     },
   ],
 });
@@ -618,7 +622,6 @@ const GetPhotoMinimalButtonGroup = makeButtonGroupComponent({
   buttons: [
     {
       text: 'get photo',
-      routerLinkScreenName: 'select-template',
       actionType: 'DYNAMIC',
       dynamicScreen: 'import',
     },

@@ -1,19 +1,28 @@
+/* eslint-disable */
 var sharp = require('sharp');
 var jD = require('jquery-deferred');
 var calcOverlayAndTemplateProcessingSettings = require('./calcOverlayAndTemplateProcessingSettings');
 module.exports = function(overlaySettings,responses){
   var dfd = jD.Deferred();
   var templateFetchResponse = responses.template;
+  var templateCroppingMode = !templateFetchResponse;
   var userPhotoFetchResponse = responses.userPhoto;
   var args = Array.prototype.slice.call(arguments);  
   var userPhoto = sharp(userPhotoFetchResponse.data.Body);
+  var bgColor = templateCroppingMode ? {r: 0, g: 0, b: 0, alpha: 0} : 'white';
+  var fileType = templateCroppingMode ? 'png' : 'jpeg';
   userPhoto.metadata().then(function(metadata) {
     var imageProcessingSettings = calcOverlayAndTemplateProcessingSettings(overlaySettings,metadata);
     var s = imageProcessingSettings;
     if(s.completelyOutOfBound){
-      var template = sharp(templateFetchResponse.data.Body);
+      var templateOrNot = templateCroppingMode ? userPhotoFetchResponse : templateFetchResponse;
+      var template = sharp(templateOrNot.data.Body);
       template.resize(s.limit, s.limit).min().max();
-      template.background('white').flatten().jpeg().toBuffer().then(function(templateBuffer){
+      template = template.background(bgColor);
+      if (!templateCroppingMode) {
+        template = template.flatten()
+      }
+      template[fileType]().toBuffer().then(function(templateBuffer){
         dfd.resolve({
           Body: templateBuffer,
         });
@@ -25,23 +34,34 @@ module.exports = function(overlaySettings,responses){
       if(s.extend){
         userPhoto.extend(s.extend);
       }
-
-      userPhoto.background('white').flatten().toBuffer().then(function(userPhotoBuffer){
+      userPhoto = userPhoto.background(bgColor);
+      if (!templateCroppingMode) {
+        userPhoto = userPhoto.flatten();
+      }
+      userPhoto.toBuffer().then(function(userPhotoBuffer){
         var userPhoto = sharp(userPhotoBuffer);
         userPhoto.resize(1200,1200);
-        var template = sharp(templateFetchResponse.data.Body);
-        template.resize(1200, 1200).min().max();
-        template.toBuffer().then(function(templateBuffer){
-          userPhoto.overlayWith(templateBuffer, {
-            top: 0,
-            left: 0
-          });
-          userPhoto.jpeg().toBuffer().then(function(userPhotoBuffer){
+        if  (templateCroppingMode) {
+          userPhoto.png().toBuffer().then(function(userPhotoBuffer){
             dfd.resolve({
               Body: userPhotoBuffer,
             });
           });
-        });
+        } else {
+          var template = sharp(templateFetchResponse.data.Body);
+          template.resize(1200, 1200).min().max();
+          template.toBuffer().then(function(templateBuffer){
+            userPhoto.overlayWith(templateBuffer, {
+              top: 0,
+              left: 0
+            });
+            userPhoto.jpeg().toBuffer().then(function(userPhotoBuffer){
+              dfd.resolve({
+                Body: userPhotoBuffer,
+              });
+            });
+          });
+        }
       })       
     }    
     return userPhoto

@@ -78,7 +78,6 @@ export default ({accessKeyId,secretAccessKey,Bucket,app,userTemplates, urlPatter
       res:res,
       isSuccess:false
     });
-    console.log('originalUrl',originalUrl);
     var promise = urlToFileData(originalUrl).then(normalizeImageFileData);
     var promises = [
       promise,

@@ -1,7 +1,9 @@
-import React from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import styleConstants from './style-constants';
+
+import {formPublishTemplateCropRequest} from './deriveUrlInfo';
 
 const StyledButtonWrap = styled.div`
   padding-left: ${styleConstants.appPad}em;
@@ -15,29 +17,49 @@ const StyledH2 = styled.h2`
 `;
 
 const StyledButtonAnchor = styled.a`${styleConstants.mixins.button()};`;
+const StyledButtonButton = styled.button`${styleConstants.mixins.button()};`;
 const StyledButtonInnerSpan = styled.span`
   ${styleConstants.mixins.buttonInner()};
   background: ${styleConstants.colors.red};
 `;
-function CompletionInterface(props) {
-  const url = props.generateCompletionUrl(props.activeCompositeImageData);
-  return (
-    <div>
-      <StyledH2>Drag and resize the box to crop</StyledH2>
-      <StyledButtonWrap className="modal_buttonGroup">
-        <StyledButtonAnchor
-          href={url}
-          className="button mainButton cropDoneButton"
-        >
-          <StyledButtonInnerSpan>Done</StyledButtonInnerSpan>
-        </StyledButtonAnchor>
-      </StyledButtonWrap>
-    </div>
-  );
+class CompletionInterface extends Component {
+  constructor() {
+    super();
+    this.publishTemplateCrop = this.publishTemplateCrop.bind(this);
+  }
+  publishTemplateCrop() {
+    console.log('this.props.activeCompositeImageData',this.props.activeCompositeImageData);
+    const newTemplateCropSrcKey = formPublishTemplateCropRequest(this.props.activeCompositeImageData);
+    console.log('newTemplateCropSrcKey',newTemplateCropSrcKey);
+    this.props.publishTemplateCrop(newTemplateCropSrcKey,this.props.activeCompositeImageData);
+  }
+  render(){
+    const url = this.props.generateCompletionUrl(this.props.activeCompositeImageData);
+    return (
+      <div>
+        <StyledH2>Drag and resize the box to crop</StyledH2>
+        <StyledButtonWrap className="modal_buttonGroup">
+          <StyledButtonButton
+            onClick={this.publishTemplateCrop}
+            className="button mainButton cropDoneButton"
+          >
+            <StyledButtonInnerSpan>Done</StyledButtonInnerSpan>
+          </StyledButtonButton>
+          <StyledButtonAnchor
+            href={url}
+            className="button mainButton cropDoneButton"
+          >
+            <StyledButtonInnerSpan>Done</StyledButtonInnerSpan>
+          </StyledButtonAnchor>
+        </StyledButtonWrap>
+      </div>
+    );
+  }
 }
 CompletionInterface.propTypes = {
   activeCompositeImageData: PropTypes.object.isRequired,
   generateCompletionUrl: PropTypes.func.isRequired,
+  publishTemplateCrop: PropTypes.func.isRequired,
 };
 export default CompletionInterface;
 

@@ -17,8 +17,6 @@ var _bernieExpressServer2 = _interopRequireDefault(_bernieExpressServer);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-console.log('BERNIE SERVER EXPRESS HERE!!!');
-
 exports.default = _bernieExpressServer2.default;
 
 /***/ }),
@@ -634,8 +632,6 @@ var _makeServeChainableExpress2 = _interopRequireDefault(_makeServeChainableExpr
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-console.log('APP.js');
-
 // var mymodule = require('./public/js/mymodule');
 // var express = require('express');
 // var ejs = require('ejs');
@@ -770,8 +766,6 @@ exports.default = (0, _makeServeChainableExpress2.default)(function (app, nameSp
     });
 
     app.get((0, _ensureLeadingSlash2.default)(nameSpace + '/get_template_list'), function (req, res) {
-        console.log('req', req);
-        console.log('get_template_list', userTemplates);
         (0, _respondWithJson2.default)({
             res: res,
             userTemplates: userTemplates
@@ -1099,6 +1093,7 @@ var _createCompositeBuffer2 = _interopRequireDefault(_createCompositeBuffer);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+/* eslint-disable */
 var parseClientCompositeImageUrl = function parseClientCompositeImageUrl(url) {
   var pathnameSplit = (0, _url.parse)(url).pathname.split('/').splice(2, 2);
   var compositeS3Key = 'consolidated/' + pathnameSplit.join('/');
@@ -1134,6 +1129,7 @@ exports.default = function (_ref) {
 
   app.get(urlPattern, function (req, res) {
     var compositeImageInstructions = parseClientCompositeImageUrl(req.url);
+    console.log('compositeImageInstructions', compositeImageInstructions);
     var s = compositeImageInstructions;
     (0, _getS3ObjectData2.default)({
       Key: s.compositeS3Key,

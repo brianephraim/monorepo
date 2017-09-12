@@ -67,6 +67,7 @@ class ReactCropperEnhanced extends Component {
     });
   }
   ready(...args) {
+    console.log(this.props.cropSrc);
     if (
       this.props.cropSrc &&
       this.cropper &&
@@ -147,7 +148,7 @@ ReactCropperEnhanced.propTypes = {
   crop: PropTypes.func,
   ready: PropTypes.func,
   data: PropTypes.object,
-  cropSrc: PropTypes.string.isRequired,
+  cropSrc: PropTypes.string,
 };
 ReactCropperEnhanced.defaultProps = {
   cropend: () => {},
@@ -155,6 +156,7 @@ ReactCropperEnhanced.defaultProps = {
   crop: () => {},
   ready: () => {},
   data: null,
+  cropSrc: '',
 };
 
 export default ReactCropperEnhanced;

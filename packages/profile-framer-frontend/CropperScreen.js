@@ -14,6 +14,10 @@ const isTouchDevice = 'ontouchstart' in document.documentElement;
 class CropperScreen extends Component {
   constructor(props) {
     super();
+    /*
+    swapGrounds:false,
+    hideForeground:false,
+    */
     this.state = {
       foreground: {
         ...props.foreground,
@@ -22,6 +26,42 @@ class CropperScreen extends Component {
         ...props.background,
       },
     };
+    if (props.defaultGeo) {
+      delete this.state.foreground.x;
+      delete this.state.foreground.y;
+      delete this.state.foreground.width;
+      delete this.state.foreground.height;
+    }
+    if (props.hideForeground) {
+      delete this.state.foreground.src;
+      delete this.state.foreground.srcKey;
+    }
+    // if ()
+    // if (props.swapGrounds) {
+    //   // props.defaultGeo
+    //   // console.log('SSSS');
+      
+    //   // delete this.state.foreground.srcKey;
+    //   // delete this.state.foreground.src;
+    // } else {
+    //   this.state = {
+    //     foreground: {
+    //       ...props.foreground,
+    //     },
+    //     background: {
+    //       ...props.background,
+    //     },
+    //   };
+    // }
+    // this.state = {
+    //   foreground: {
+    //     ...props.foreground,
+    //   },
+    //   background: {
+    //     ...props.background,
+    //   },
+    // };
+    
     this.crop = this.crop.bind(this);
   }
 
@@ -145,15 +185,24 @@ class CropperScreen extends Component {
         <CompletionInterface
           activeCompositeImageData={activeCompositeImageData}
           generateCompletionUrl={this.props.generateCompletionUrl}
+          publishTemplateCrop={this.props.publishTemplateCrop}
         />
       </div>
     );
   }
 }
 CropperScreen.propTypes = {
+  defaultGeo:PropTypes.bool,
+  hideForeground:PropTypes.bool,
   background: PropTypes.object.isRequired,
   foreground: PropTypes.object.isRequired,
   generateCompletionUrl: PropTypes.func.isRequired,
+  publishTemplateCrop: PropTypes.func.isRequired,
+};
+CropperScreen.defaultProps = {
+  defaultGeo: false,
+  swapGrounds:false,
+  hideForeground:false,
 };
 
 export default CropperScreen;

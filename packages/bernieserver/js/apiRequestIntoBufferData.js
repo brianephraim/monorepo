@@ -45,8 +45,6 @@ module.exports = prepareModuleWithDefaults(function(req){
   });
   var endDfd = jD.Deferred();
   req.on('end', function(x) {
-    console.log('end')
-    console.log(data)
       var Body = Buffer.concat(data);
       // console.log(Body)
       endDfd.resolve({

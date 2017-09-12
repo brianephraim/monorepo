@@ -96,7 +96,11 @@ const routes = [
   {
     action: 'UPLOAD_TEMPLATE',
     urlEnd: 'upload-template',
-    component: TemplateUploadScreenWithUploadCallback,
+    component: () => {
+      console.log('!!!');
+      return <CropperWithFgBgCompletion isMakeSquareTemplateMode />
+    },
+    // component: TemplateUploadScreenWithUploadCallback,
   },
 
   {

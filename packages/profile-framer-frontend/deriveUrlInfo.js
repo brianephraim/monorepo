@@ -59,6 +59,14 @@ export function formUrl(compositeImageData) {
   return url;
 }
 
+export function formPublishTemplateCropRequest(compositeImageData) {
+  const fg = compositeImageData.foreground;
+  const bg = compositeImageData.background;
+  // const url = `/image/undefined/${bg.srcKey}_${fg.width}_${fg.height}_${fg.x}_${fg.y}.json`;
+  const url = `${bg.srcKey}_${fg.width}_${fg.height}_${fg.x}_${fg.y}`;
+  return url;
+}
+
 // module.exports.oldModes = (function() {
 //   const a = [];
 //   for (let i = 0, l = module.exports.standardModes.length; i < l; i++) {
