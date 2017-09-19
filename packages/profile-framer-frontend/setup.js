@@ -285,18 +285,10 @@ export default function(constants) {
   let HeaderStuff = (props) => {
     const constants = props.constants;
     const compositeImageUrl = props.compositeImageUrl;
-    const headMetaOgUrl = `http://www.bernieselfie.com/h3/zephyr1500589750771/237_19_218_218_553_369/`;// !!!!!
     let metaOgUrl = `${props.serverClientOrigin}${props.constants.urlAppNameSpace}/${formUrl(props.compositeImageData)}`;
     if (`${props.serverClientOrigin}${props.constants.urlAppNameSpace}` === `${props.serverClientUrl}`) {
       metaOgUrl = props.serverClientUrl;
     }
-    console.log('A',`${props.serverClientOrigin}${props.constants.urlAppNameSpace}`);
-    console.log('B',`${props.serverClientUrl}`);
-    // if (`${props.serverClientOrigin}${props.constants.urlAppNameSpace}` === ) {}
-    console.log('fakeUrlXX', headMetaOgUrl);
-    console.log('metaOgUrl',metaOgUrl);
-    console.log('props.serverClientUrl',props.serverClientUrl);
-
 
     return (
       <Helmet>
@@ -329,29 +321,29 @@ export default function(constants) {
       </Helmet>
     );
   };
-
+  HeaderStuff.propTypes = {
+    constants: PropTypes.object.isRequired,
+    compositeImageData: PropTypes.object.isRequired,
+    compositeImageUrl: PropTypes.string.isRequired,
+    serverClientOrigin: PropTypes.string.isRequired,
+    serverClientUrl: PropTypes.string.isRequired,
+  };
   HeaderStuff = 
   connect(
-    (state /* , { params }*/) => {
-      console.log('xxxxxxx');
+    (state) => {
       return {
         serverClientUrl: state.serverClientUrl,
         serverClientOrigin: state.serverClientOrigin,
       };
-    },
+    }
   )(appConnect(
     (appState) => {
-      console.log('yyyyyy');
-      console.log(appState);
       return {
         compositeImageData: appState.compositeImageData,
         compositeImageUrl: appState.compositeImageData.compositeImageUrl,
         constants: appState.constants
       };
-    },
-    // {
-    //   fetchFacebookPhotos: makeActionFetchPhotos,
-    // }
+    }
   )(HeaderStuff));
 
 
