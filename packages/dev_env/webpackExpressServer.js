@@ -5,7 +5,7 @@ import url from 'url';
 import { argv } from 'yargs';
 import webpackMakeCompiler from './webpackMakeCompiler';
 
-import demoEndpoints from './demo/server/demoEndpoints';
+import demoEndpoints from './universal/server/demoEndpoints';
 import startUniversalExpress from './startUniversalExpress';
 
 

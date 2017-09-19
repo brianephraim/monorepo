@@ -7,7 +7,7 @@ import webpackHotServerMiddleware from 'webpack-hot-server-middleware'
 import { argv } from 'yargs';
 import path from 'path';
 import deleteFiles from 'rimraf';
-import universalWebpackConfig from './demo/webpack/universalWebpackConfig';
+import universalWebpackConfig from './universal/webpack/universalWebpackConfig';
 import webpackRunCompiler from './core/webpackRunCompiler';
 
 
@@ -41,7 +41,7 @@ export default function startUniversal({app = express()}) {
     const serverProdConfig = universalWebpackConfig({isClient:false,isDev:false});
     deleteFiles(clientProdConfig.output.path, () => {
       console.log('DELETE FILES DONE',clientProdConfig.output.path)
-      console.log('START WEBPACK CLIENT',res('./demo/webpack/client.prod.js'))
+      console.log('START WEBPACK CLIENT',res('./universal/webpack/client.prod.js'))
       webpackRunCompiler(webpack(clientProdConfig)).then(() => {
         console.log('DONE WEBPACK CLIENT')
         deleteFiles(serverProdConfig.output.path, () => {
@@ -53,8 +53,8 @@ export default function startUniversal({app = express()}) {
             const clientConfig = universalWebpackConfig({isClient:true,isDev:true});
             const publicPath = clientConfig.output.publicPath
             const outputPath = clientConfig.output.path
-            const serverRender = __non_webpack_require__(res('./demo/buildServer/main.js')).default
-            const clientStats = __non_webpack_require__(res('./demo/buildClient/stats.json'))            
+            const serverRender = __non_webpack_require__(res('./universal/buildServer/main.js')).default
+            const clientStats = __non_webpack_require__(res('./universal/buildClient/stats.json'))            
             app.use(publicPath, express.static(outputPath))
             app.use(serverRender({ clientStats, outputPath }))
           });
