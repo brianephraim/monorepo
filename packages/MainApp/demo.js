@@ -1,3 +1,2 @@
-import renderReactRoot from '@defualt/render-react-root';
-import Routing,{routeData,addRoutesToApp} from './MainApp';
-renderReactRoot(Routing,routeData,addRoutesToApp);
+import 'babel-polyfill';
+import 'dev_env/universal/src/clientRender';

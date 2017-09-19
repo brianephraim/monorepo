@@ -2,16 +2,17 @@ import React from 'react'
 import { Provider } from 'react-redux'
 
 import {Helmet} from "react-helmet";
+import { connect } from 'react-redux'
+import { TransitionGroup, Transition } from 'transition-group'
+import universal from 'react-universal-component'
+import { addRoutes } from 'redux-first-router'
 
 import DevTools from './DevTools'
 import Sidebar from './Sidebar'
 
 import styles from '../css/App'
 
-import { connect } from 'react-redux'
-import { TransitionGroup, Transition } from 'transition-group'
-import universal from 'react-universal-component'
-import { addRoutes } from 'redux-first-router'
+
 
 import Loading from './Loading'
 import Err from './Error'
@@ -91,3 +92,18 @@ export default (props) =>
       <DevTools />
     </div>
   </Provider>
+
+/*
+import 'babel-polyfill';
+import React from 'react';
+import { Provider } from 'react-redux';
+export default function App (props) {
+  return (
+    <Provider store={props.store}>
+      <p>H!</p>
+    </Provider>
+    
+  );
+}
+
+*/
