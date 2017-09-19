@@ -61,14 +61,12 @@ export default (history, preLoadedState) => {
     routesMap,
     options
   )
-  console.log('routeData',routeData);
   const rootReducer = combineReducers({ ...reducers, ...routeData.allReducers, location: reducer })
   // const middlewares = applyMiddleware(thunk, middleware, redundantAppNameSpaceMiddleware)
   const middlewares = applyMiddleware(reduxThunk,middleware,redundantAppNameSpaceMiddleware)
 
   const enhancers = composeEnhancers(enhancer, middlewares)
   const store = createStore(rootReducer, preLoadedState, enhancers)
-  console.log('process.env.NODE_ENV',process.env.NODE_ENV);
   if (module.hot && process.env.NODE_ENV === 'development') {
     module.hot.accept('./reducers/index', () => {
       const reducers = require('./reducers/index')

@@ -14,6 +14,7 @@
     "bern1": "npm run dev -- --servers='bernieserver,junk-express'",
     "bern2": "npm run dev -- --servers='bernieserver,junk-express' --isDev=true --isUniversal=true",
     "bern3": "npm run dev -- --servers='bernieserver,junk-express' --isDev=false --isUniversal=true",
+    "bern4": "npm run dev -- --isDev=true --isUniversal=true",
     "bern": "npm run devenvnode /Users/brianephraim/Sites/monorepo/packages/bernieserver/bernieserver.js",
     "devusedist": "npm run dev -- --use-dist",
     "item": "npm_run_item(){ (./packages/dev_env/bin/devenv.js --item=$1) };npm_run_item",

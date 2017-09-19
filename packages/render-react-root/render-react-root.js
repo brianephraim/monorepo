@@ -6,6 +6,7 @@ import { connectRoutes, addRoutes, redirect, NOT_FOUND } from 'redux-first-route
 import { createStore, applyMiddleware, combineReducers, compose } from 'redux';
 import thunk from 'redux-thunk';
 import { Provider, connect } from 'react-redux';
+import configureStore from 'dev_env/universal/src/configureStore';
 
 function renderReactRoot(Comp,routeData,addRoutesToApp) {
   const history = createBrowserHistory();
@@ -56,19 +57,20 @@ function renderReactRoot(Comp,routeData,addRoutesToApp) {
     return next(action);
   }}}
 
-  const configureStore = () => {
-    const middlewares = [thunk, middleware, redundantAppNameSpaceMiddleware];
-    // if (process.env.NODE_ENV !== 'production') {
-      // middlewares.push(createLogger());
-    // }
-    return createStore(
-      combineReducers(allReducers),
-      compose(enhancer, applyMiddleware(...middlewares))
-    );
-  };
+  // const configureStore = () => {
+  //   const middlewares = [thunk, middleware, redundantAppNameSpaceMiddleware];
+  //   // if (process.env.NODE_ENV !== 'production') {
+  //     // middlewares.push(createLogger());
+  //   // }
+  //   return createStore(
+  //     combineReducers(allReducers),
+  //     compose(enhancer, applyMiddleware(...middlewares))
+  //   );
+  // };
 
 
-  const store = configureStore();
+  // const store = configureStore();
+  const { store } = configureStore(history, window.REDUX_STATE)
 
   store.dispatch(addRoutes(routesMap));
   store.replaceReducer(combineReducers(allReducers));
