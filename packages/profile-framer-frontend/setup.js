@@ -328,6 +328,10 @@ export default function(constants) {
     serverClientOrigin: PropTypes.string.isRequired,
     serverClientUrl: PropTypes.string.isRequired,
   };
+  HeaderStuff.defaultProps = {
+    serverClientOrigin: '',
+    serverClientUrl: '',
+  };
   HeaderStuff = 
   connect(
     (state) => {
