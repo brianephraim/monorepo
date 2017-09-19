@@ -1,6 +1,8 @@
 import React from 'react'
 import { Provider } from 'react-redux'
 
+import {Helmet} from "react-helmet";
+
 import DevTools from './DevTools'
 import Sidebar from './Sidebar'
 
@@ -72,9 +74,19 @@ const mapState = ({ page, direction, ...state }) => ({
 
 Switcher = connect(mapState)(Switcher)
 
+
+let HeadStuff = () => {
+  return (<Helmet>
+      <meta charSet="utf-8" />
+      <title>My Title</title>
+      <link rel="canonical" href="http://mysite.com/example" />
+  </Helmet>)
+};
+
 export default (props) =>
   <Provider store={props.store}>
     <div>
+      <HeadStuff />
       <Switcher />
       <DevTools />
     </div>

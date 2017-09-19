@@ -2,6 +2,8 @@ import React from 'react'
 import ReactDOM from 'react-dom/server'
 import { flushChunkNames } from 'react-universal-component/server'
 import flushChunks from 'webpack-flush-chunks'
+import {Helmet} from "react-helmet";
+
 // import configureStore from './configureStore'
 import App from '../src/components/App'
 
@@ -89,6 +91,7 @@ export default ({ clientStats }) => async (req, res, next) => {
   // ==== 
 
   const appString = ReactDOM.renderToString(<App store={store} />)
+  const helmet = Helmet.renderStatic();
   const stateJson = JSON.stringify(store.getState())
   const chunkNames = flushChunkNames()
   const { js, styles, cssHash } = flushChunks(clientStats, { chunkNames })
@@ -102,6 +105,9 @@ export default ({ clientStats }) => async (req, res, next) => {
         <head>
           <meta charset="utf-8">
           <title>redux-first-router-demo</title>
+          ${helmet.title.toString()}
+          ${helmet.meta.toString()}
+          ${helmet.link.toString()}
           ${styles}
           <link rel="stylesheet prefetch" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
         </head>
