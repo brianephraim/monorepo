@@ -9,5 +9,5 @@ function webpackMakeCompiler() {
 }
 
 export default () => {
-  webpackRunCompiler(webpackMakeCompiler);
+  webpackRunCompiler(webpackMakeCompiler());
 };

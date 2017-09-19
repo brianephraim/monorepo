@@ -6,6 +6,12 @@ let LandingScreen = (props) => {
   return (
     <div>
       <h1>WELCOME</h1>
+      <Link to='/boomer'>
+        boomer
+      </Link>
+      <Link to='/battleship'>
+        battleship
+      </Link>
       { props.routeInfos.map((details) => {
         return (
           <div key={details.path}>

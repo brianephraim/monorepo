@@ -25,6 +25,7 @@
     ],
     "extensions": [
       ".js",
+      ".css",
       ".json"
     ],
     "plugins": [
@@ -36,7 +37,7 @@
     "main": "/Users/brianephraim/Sites/monorepo/packages/dev_env/dev_env.js"
   },
   "output": {
-    "filename": "2bdc4661-4fb0-4c33-86e4-3a557e4e5f57XXX.js",
+    "filename": "52253b75-290b-4d86-b128-993610b4e565XXX.js",
     "path": "/var/folders/t0/dms578js4lg8x73s9jzmvcp40000gn/T"
   },
   "devtool": "sourcemap",

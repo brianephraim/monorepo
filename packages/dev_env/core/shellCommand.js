@@ -3,6 +3,7 @@ module.exports = (commandToRun, options = { stdio: 'inherit' }, killParentOnExit
   const command = 'sh';
   const args = [
     '-c',
+    // commandToRun.replace('node $TMPFILE','node --inspect=9223 $TMPFILE'),
     commandToRun,
   ];
   //

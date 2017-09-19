@@ -12,17 +12,36 @@ import {
 } from './buttonGroups';
 import {
   HomeLayoutWithUploadCallback,
-  ImagePickerFacebookWithOnClick,
+//   ImagePickerFacebookWithOnClick,
   ImagePickerTemplateWithOnClick,
-  CropperWithFgBgCompletion,
-  UrlImportScreenWithWithUploadCallback,
-  // TemplateUploadScreenWithUploadCallback,
+//   CropperWithFgBgCompletion,
+//   UrlImportScreenWithWithUploadCallback,
+//   // TemplateUploadScreenWithUploadCallback,
 } from './routingComponents';
 
 import { paramsIntoCompositeImage } from './compositeImage';
 
 import { setAncestorConstantsHoc } from './ancestorConstantsHoc';
 
+console.log('MORE UNCOMMENTING TO DO HERE');
+// function ButtonGroupFeaturedRouteScreen(){
+//   return <div />;
+// }
+// function HomeLayoutWithUploadCallback(){
+//   return <div>adfasdfa</div>;
+// }
+function ImagePickerFacebookWithOnClick(){
+  return <div />;
+}
+// function ImagePickerTemplateWithOnClick(){
+//   return <div />;
+// }
+function CropperWithFgBgCompletion(){
+  return <div />;
+}
+function UrlImportScreenWithWithUploadCallback(){
+  return <div />;
+}
 
 
 const geoPathFrag =
@@ -79,7 +98,7 @@ export function payloadRefineAction({ type, payload }, appNameSpace) {
 
 const routes = [
   {
-    action: 'HOME',
+    action: 'HOME_PROFILE_FRAMER',
     urlEnd: '',
     component: HomeLayoutWithUploadCallback,
   },
@@ -139,7 +158,7 @@ export default function(constants) {
   });
   const appRootActionType = `APP_ROOT_${constants.urlAppNameSpace.toUpperCase()}`;
   routesMap[appRootActionType] = constants.urlAppNameSpace;
-  screenNameMap[appRootActionType] = 'HOME';
+  screenNameMap[appRootActionType] = 'HOME_PROFILE_FRAMER';
 
   function filterReducers(reducers, check) {
     // return reducers;
@@ -178,7 +197,7 @@ export default function(constants) {
           return state;
       }
     },
-    activeAppScreen: (state = 'HOME', action) => {
+    activeAppScreen: (state = 'HOME_PROFILE_FRAMER', action) => {
       if (
         (routesMap[action.type] &&
           action.payload.appNameSpace === constants.appNameSpace) ||

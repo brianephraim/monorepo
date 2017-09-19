@@ -11,7 +11,9 @@
     "testpackages": "./packages/dev_env/bin/devenv.js --env=test",
     "test": "./packages/dev_env/bin/devenv.js --env=test --testdevenv",
     "dev": "./packages/dev_env/bin/devenv.js",
-    "bern2": "npm run dev -- --servers='bernieserver,junk-express'",
+    "bern1": "npm run dev -- --servers='bernieserver,junk-express'",
+    "bern2": "npm run dev -- --servers='bernieserver,junk-express' --isDev=true --isUniversal=true",
+    "bern3": "npm run dev -- --servers='bernieserver,junk-express' --isDev=false --isUniversal=true",
     "bern": "npm run devenvnode /Users/brianephraim/Sites/monorepo/packages/bernieserver/bernieserver.js",
     "devusedist": "npm run dev -- --use-dist",
     "item": "npm_run_item(){ (./packages/dev_env/bin/devenv.js --item=$1) };npm_run_item",
@@ -27,7 +29,7 @@
     "scatter": "npm run mono-to-multirepo -- --m='scattered from monorepo'",
     "both": "./node_modules/stmux/bin/stmux.js -M -- [ \"npm run dev\" .. \"npm run test\" ]",
     "asdf": "(cd ./packages/study && npm run start)",
-    "start": "babel-node devServer.js",
+    "startx": "babel-node devServer.js",
     "lint": "eslint src",
     "testx": "./node_modules/mocha/bin/mocha src/**/*.spec.js --reporter spec",
     "echox": "SHA=${SHA:-};xx=1000; echo $((11 + $xx)) && echo \"xx-$SHA-xx\"",
@@ -38,7 +40,21 @@
     "devold": "node ./packages/dev_env/babelXXXX.start.js",
     "item2": "npm_run_item(){ (cd ./packages/$1 && npm run start) };npm_run_item",
     "item3": "./packages/dev_env/bin/devenv.js --item=study",
-    "dd": "(cd /Users/brianephraim/Sites/test-project-for-dev-env/ && npm run dev)"
+    "dd": "(cd /Users/brianephraim/Sites/test-project-for-dev-env/ && npm run dev)",
+
+    "start": "npm run clean && cross-env NODE_ENV=development babel-watch ./packages/dev_env/demo/server/index.js",
+    "start:prod": "npm run build && npm run serve",
+    "serve": "cross-env NODE_ENV=production ./node_modules/.bin/babel-node ./packages/dev_env/demo/buildServer/index.js",
+    "serve2": "npm run build:node && cross-env NODE_ENV=production ./node_modules/.bin/babel-node ./packages/dev_env/demo/buildServer/index.js",
+    "build": "npm run build:client && npm run build:server && npm run build:node",
+    "build:client": "rimraf ./packages/dev_env/demo/buildClient && cross-env NODE_ENV=production webpack --progress -p --config ./packages/dev_env/demo/webpack/client.prod.js",
+    "build:server": "rimraf ./packages/dev_env/demo/buildServer && cross-env NODE_ENV=production webpack --progress -p --config ./packages/dev_env/demo/webpack/server.prod.js",
+    "build:node": "cross-env NODE_ENV=production babel ./packages/dev_env/demo/server/index.js -o ./packages/dev_env/demo/buildServer/index.js && babel ./packages/dev_env/demo/server/api.js -o ./packages/dev_env/demo/buildServer/api.js",
+    "clean": "rimraf ./packages/monorepo/dev_env/demo/buildClient ./packages/monorepo/dev_env/demo/buildServer",
+    "precommit": "lint-staged --verbose",
+    "cm": "git-cz",
+    "lint": "eslint --fix src server webpack",
+    "format": "prettier --single-quote --semi=false --write '{src,server,webpack}/**/*.js' && npm run lint"
   },
   "publishConfig": {
     "access": "public"

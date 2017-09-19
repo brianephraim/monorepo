@@ -6,6 +6,7 @@ import { initUpload } from './s3';
 import './app.scss';
 
 import styleConstants from './style-constants';
+import root from 'window-or-global'
 
 const StyledFileInput = styled.input`
   position: absolute;
@@ -102,7 +103,7 @@ class Upload extends Component {
   }
   render() {
     const id = `uploadizerId_${uploadizerId++}`;
-    if (window.FormData) {
+    if (root.FormData) {
       return (
         <form>
           <StyledFileInput

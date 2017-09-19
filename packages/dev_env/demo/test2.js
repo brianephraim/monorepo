@@ -1,0 +1,1 @@
+export default "HERE I AM2";

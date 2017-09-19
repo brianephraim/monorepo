@@ -20,7 +20,8 @@
     "import/extensions": 0,
     "react/jsx-filename-extension": 0,
     "react/forbid-prop-types": 0,
-    "no-plusplus": 0
+    "no-plusplus": 0,
+    "jsx-a11y/href-no-hash": 0
   },
   "env": {
     "jest": true,

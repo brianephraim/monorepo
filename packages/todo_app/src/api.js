@@ -1,15 +1,10 @@
+import root from 'window-or-global'
+
 import { v4 } from 'node-uuid';
 // This is a fake in-memory implementation of something
 // that would be implemented by calling a REST server.
 
-// if localstorage exists use it, else fake it
-const storage = window && window.localStorage || {
-  getItem() {},
-  setItem() {},
-};
-
-// if storage already has data, use it, otherwise use fake data
-const fakeDatabase = JSON.parse(storage.getItem('fakeDatabase')) || {
+const initialData = JSON.stringify({
   justInitialized: true,
   todos: [
     {
@@ -36,7 +31,21 @@ const fakeDatabase = JSON.parse(storage.getItem('fakeDatabase')) || {
       name: 'Mr. Z',
     },
   ],
+});
+
+// if localstorage exists use it, else fake it
+let storage = {
+  getItem() {
+    return initialData;
+  },
+  setItem() {},
 };
+if (root.localStorage) {
+  storage = root.localStorage;
+}
+
+// if storage already has data, use it, otherwise use fake data
+const fakeDatabase = JSON.parse(storage.getItem('fakeDatabase') || initialData);
 
 const updateFakeDatabaseStorage = () => {
   storage.setItem('fakeDatabase', JSON.stringify(fakeDatabase));

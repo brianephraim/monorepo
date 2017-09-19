@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Board from './Board';
 import { compose1DArrayInto2DGrid, compose2DGridArrayInto1DAndWidth } from './gridUtils';
+import Link from 'redux-first-router-link'
 
 class ReactiveBoard extends Board {
   constructor(...args) {
@@ -102,6 +103,16 @@ class Battleship extends Component {
   render() {
     return (
       <div>
+        <Link
+          to='todos/all'
+        >
+          todos
+        </Link>
+        <Link
+          to='/boomer/ut/original-21313-1402070821-131504902837890/354_161_305_305_1200_1200/c2kkzyyg92seahxcoml1'
+        >
+          BOOMER
+        </Link>
         <h2>Battleship</h2>
         <pre>{this.state.stringGrid}</pre>
         <h4>gridAsArray</h4>

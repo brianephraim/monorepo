@@ -84,7 +84,7 @@ function generateConfigJson() {
     //   };
     } else {
       entryFiles = {
-        MainApp: globby.sync([`${dirRoot}/packages/MainApp/MainApp.js`]),
+        MainApp: globby.sync([`${dirRoot}/packages/MainApp/demo.js`]),
         [outputFiles.library]: globby.sync([
           `${dirRoot}/${libraryNameReduced}.js`,
           `${dirRoot}/src/library/index.js`,
@@ -100,7 +100,7 @@ function generateConfigJson() {
           `${dirRoot}/**/*/*.demo.js`,
           `${dirRoot}/**/*/demo.js`,
           `!${dirRoot}/packages/**/*`,
-          `${dirRoot}/packages/MainApp/MainApp.js`,
+          `${dirRoot}/packages/MainApp/demo.js`,
           `!${dirRoot}/node_modules/**/*`,
         ]),
       };

@@ -1,7 +1,4 @@
-import React from 'react';
-import universal from 'react-universal-component'
-import renderReactRoot from '@defualt/render-react-root';
-import Routing, {addRoutesToApp} from 'redux-routing-app-root-component';
+import Routing, {addRoutesToApp, routeData} from 'redux-routing-app-root-component';
 import integrateBernie from 'profile-framer-frontend/setup'
 import integrateToDoApp from 'todo_app/mainAppIntegration'
 import integrateBattleship from 'battleship/mainAppIntegration'
@@ -62,101 +59,9 @@ addRoutesToApp({
   routeRootComponent: RouteLinksList,
 });
 
-function ToRender(props){
-  return (<Routing {...props} />);
-}
-
-const p = 'redux-routing-app-root-component';
-const UniversalComponent = universal((props) => import(`../redux-routing-app-root-component/${p}`), {
-  minDelay: 1200,
-})
-
-renderReactRoot(UniversalComponent);
-// renderReactRoot(ToRender);
+export default Routing;
 
 
-export default class App extends React.Component {
-  render() {
-    const { index, done, loading } = this.state
-    const page = pages[index]
-    const loadingClass = loading ? styles.loading : ''
-    const buttonClass = `${styles[page]} ${loadingClass}`
-
-    return (
-      <div>
-        <h1>Hello Reactlandia</h1>
-        {done && <div>all loaded ✔</div>}
+export {routeData};
 
 
-        <UniversalComponent
-          page={page}
-          onBefore={this.beforeChange}
-          onAfter={this.afterChange}
-          onError={this.handleError}
-        />
-
-        <button onClick={this.changePage}>
-          {this.buttonText()}
-        </button>
-
-        <p>
-          <span>*why are you looking at this? refresh the page</span>
-          <span>and view the source in Chrome for the real goods</span>
-        </p>
-      </div>
-    )
-  }
-
-  constructor(props) {
-    super(props)
-
-    const { history } = props
-    const index = indexFromPath(history.location.pathname)
-
-    this.state = {
-      index,
-      loading: false,
-      done: false,
-      error: false
-    }
-
-    history.listen(({ pathname }) => {
-      const index = indexFromPath(pathname)
-      this.setState({ index })
-    })
-  }
-
-  changePage = () => {
-    if (this.state.loading) return
-
-    const index = nextIndex(this.state.index)
-    const page = pages[index]
-
-    this.props.history.push(`/${page}`)
-  }
-
-  beforeChange = ({ isSync }) => {
-    if (!isSync) {
-      this.setState({ loading: true, error: false })
-    }
-  }
-
-  afterChange = ({ isSync, isServer, isMount }) => {
-    if (!isSync) {
-      this.setState({ loading: false, error: false })
-    }
-    else if (!isServer && !isMount) {
-      this.setState({ done: true, error: false })
-    }
-  }
-
-  handleError = error => {
-    this.setState({ error: true, loading: false })
-  }
-
-  buttonText() {
-    const { loading, error } = this.state
-    if (error) return 'ERROR'
-    return loading ? 'LOADING...' : 'CHANGE PAGE'
-  }
-}

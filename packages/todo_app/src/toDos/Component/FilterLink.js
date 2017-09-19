@@ -5,7 +5,7 @@ import './FilterLink.scss';
 
 const FilterLink = ({ filter, children }) => (
   <NavLink
-    className="aaaa"
+    className="FilterLink"
     to={{ type: 'TODOS', payload: { filter } }}
     activeClassName="activex"
     activeStyle={{

@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// --inspect=9224
 var argv = require('yargs').argv;
 const isWithinMonoRepo = (dirname) => {
   return dirname.indexOf('/packages/') > dirname.indexOf('/node_modules/');

@@ -1,15 +1,16 @@
+import root from 'window-or-global'
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import whitelistFilterProps from '@defualt/whitelist-filter-props';
 import windowSizer from '@defualt/window-sizer';
-import ReactCropperEnhanced from './ReactCropperEnhanced';
+// import ReactCropperEnhanced from './ReactCropperEnhanced';
 import styleConstants from './style-constants';
 import ControlsBar, { controlsBarHeights } from './ControlsBar';
 import CompletionInterface, {
   completionInterfaceHeights,
 } from './CompletionInterface';
 
-const isTouchDevice = 'ontouchstart' in document.documentElement;
+const isTouchDevice = root.document && root.document.documentElement && 'ontouchstart' in document.documentElement;
 
 class CropperScreen extends Component {
   constructor(props) {
@@ -150,7 +151,7 @@ class CropperScreen extends Component {
       <div>
         <ControlsBar windowWidth={this.state.windowWidth} />
         <div className="cropContainer" style={styles.cropContainer}>
-          <ReactCropperEnhanced {...reactCropperOptions} />
+          <p>ReactCropperEnhanced</p>{ /* <ReactCropperEnhanced {...reactCropperOptions} /> */}
         </div>
         <CompletionInterface
           useClickHandledButton={this.props.useClickHandledButton}

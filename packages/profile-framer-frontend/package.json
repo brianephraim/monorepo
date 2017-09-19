@@ -7,7 +7,7 @@
     "@defualt/bind_here": "^0.0.19",
     "@defualt/make-binder": "^0.0.1",
     "@defualt/name-space-connect": "^0.0.1",
-    "@defualt/redux-routing-app-root-component": "^0.0.1", 
+    "@defualt/redux-routing-app-root-component": "^0.0.1",
     "@defualt/responsive": "^0.0.1",
     "@defualt/vanilla": "^0.0.1",
     "@defualt/whitelist-filter-props": "^0.0.1",
@@ -20,6 +20,7 @@
     "redux": "^3.5.2",
     "redux-first-router": "0.0.20-next",
     "redux-first-router-link": "^1.4.1",
-    "styled-components": "^2.1.2"
+    "styled-components": "^2.1.2",
+    "window-or-global": "^1.0.1"
   }
 }

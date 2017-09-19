@@ -1,3 +1,4 @@
+import root from 'window-or-global'
 import debounce from 'debounce';
 import vanilla from '@defualt/vanilla';
 
@@ -15,7 +16,7 @@ const dimensions = {
 
 // const isTouchDevice = 'ontouchstart' in document.documentElement;
 // const danger_of_url_bar_disappearing_and_thus_window_height_will_change = isTouchDevice;
-const heightTweak = 'ontouchstart' in document.documentElement ? 75  : 0;
+const heightTweak = root.document && root.document.documentElement && 'ontouchstart' in root.document.documentElement ? 75  : 0;
 export { heightTweak };
 
 const resizeDeb = debounce(300,null);
@@ -31,7 +32,7 @@ function addCb(fun) {
     removeCb(fun);
   }
 }
-window.addEventListener('resize', () => {
+root.addEventListener && root.addEventListener('resize', () => {
   resizing = true;
   const lastDimensions = {
     ...dimensions,

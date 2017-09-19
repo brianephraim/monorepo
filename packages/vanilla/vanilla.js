@@ -1,12 +1,27 @@
-const docEl = document.documentElement;
-const docBody = document.body;
+import root from 'window-or-global'
+const placeholderVals = {
+  clientWidth:800,
+  clientHeight: 600,
+  scrollHeight: 1600,
+  offsetHeight: 800,
+  scrollTop: 0,
+  scrollLeft: 0,
+  innerWidth: 800,
+  innerHeight: 600
+};
+const doc = root.document ? root.document : {
+  documentElement: placeholderVals,
+  docBody: placeholderVals
+};
+const docEl = doc.documentElement;
+const docBody = doc.body;
 
 function getWinWidth() {
-  return window.innerWidth || docEl.clientWidth || docBody.clientWidth
+  return root.innerWidth || docEl.clientWidth || docBody.clientWidth
 }
 
 function getWinHeight() {
-  return window.innerHeight || docEl.clientHeight || docBody.clientHeight
+  return root.innerHeight || docEl.clientHeight || docBody.clientHeight
 }
 
 function getDocumentHeight() {

@@ -5,9 +5,9 @@ import jestSpawnProcess from './jest/jestSpawnProcess';
 import webpackMakeCompiler from './webpackMakeCompiler';
 import webpackRunCompiler from './core/webpackRunCompiler';
 import webpackBuildCommandLine from './core/webpackBuildCommandLine';
-import serve from './webpackExpressServer.js';
+import serveWebpack from './webpackExpressServer.js';
 // import isWithinMonoRepo from './core/isWithinMonoRepo');
-
+ 
 const env = argv.env;
 const item = argv.item;
 
@@ -29,7 +29,7 @@ function asyncRecurseStartApps(serverNamespaces) {
       if (nextNamespace) {
         recurse(nextNamespace);
       } else {
-        serve({
+        serveWebpack({
           app: backendAppServed,
         });
       }
@@ -45,12 +45,14 @@ if (item) {
 } else if (argv.entry) {
   webpackBuildCommandLine();
 } else if (env === 'build') {
-  webpackRunCompiler(webpackMakeCompiler);
+  webpackRunCompiler(webpackMakeCompiler());
 } else if (argv.servers) {
   const serverNamespaces = argv.servers.split(',');
   asyncRecurseStartApps(serverNamespaces);
 } else {
-  serve({});
+  serveWebpack({});
 }
-
+const serve = function ()   {
+  serveWebpack.apply(this,arguments);
+}
 export { serve };

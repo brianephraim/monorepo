@@ -12,14 +12,14 @@ Lerna is typically used by public projects like Babel, which has many Babel-rela
 
 ## My Monorepo
 
-This project for which you are reading the README.md for, I will refer to as *my-monorepo*.
+This monorepo contains a number of modules within its './packages' directory.  Each of these can be published to NPM via `lerna publish`, and as discussed earlier, Lerna manages the versioning complexity.
 
-*my-monorepo* contains a number of modules within its './packages' directory.  Each of these can be published to NPM via `lerna publish`, and as discussed earlier, Lerna manages the versioning complexity.
+Each of those modules can be published to their own Github repos with `npm run scatter`.  If a Github repo doesn't exist for that module name, one will be created.  Otherwise, the repo will be checked out, deleted of its files, and a copy of the files from the module's folder will replace those files.  Then those files will be committed to that new module repo.
 
-Each of those modules can be published to their own Github repos with `npm scatter`.  If a Github repo doesn't exist for that module name, one will be created.  Otherwise, the existing Github repo will be hard reset to the contents of the module's folder.
+Now, developers can report bugs to appropriate Github repos. This monorepo could even be private.  The repos maintained via `npm run scatter` can then be public.
 
-Now, developers can report bugs to appropriate Github repos.  *my-monorepo* could even be private.  The repos the `npm scatter` maintains will always be public.
+This monorepo also provides a script for initializing new modules.  `npm run new` will ask you some questions and generate a folder within '/packages/' with an appropriate set of files for authoring and publishing a module.
 
-*my-monorepo* also provides a script for initializing new modules.  `npm run new` will ask you some questions and generate a folder within '/packages/' with an appropriate set of files for authoring and publishing a module.
+A development environment called `dev_env` is included as an NPM dependency of each module created.  `dev_env` is also the development environment for this monorepo.  `dev_env` helps you run a localhost server, bundle assets with webpack, and run test with Jest.
 
-A development environemnt called `dev_env` is included as an NPM dependency of each module created.  `dev_env` is also the development environment for *my-monorepo*.  `dev_env` helps you run a localhost server, bundle assets with webpack, and run test with Jest.
+This monorepo also contains a package called `profile-framer-frontend`, which is an application being built as a use case for monorepo, dev_env, and some other technologies.
