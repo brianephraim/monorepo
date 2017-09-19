@@ -61,16 +61,34 @@ export default (history, preLoadedState) => {
     routesMap,
     options
   )
-  const rootReducer = combineReducers({ ...reducers, ...routeData.allReducers, location: reducer })
+  const moreReducers = {
+    serverClientUrl: (state = '', action = '') => {
+      if (action.type === 'UDPATE_SERVER_CLIENT_URL') {
+        return action.url
+      }
+      return state;
+    },
+    serverClientOrigin: (state = '', action = '') => {
+      if (action.type === 'UDPATE_SERVER_CLIENT_ORIGIN') {
+        return action.origin
+      }
+      return state;
+    }
+  };
+
+  const rootReducer = combineReducers({...moreReducers, ...reducers, ...routeData.allReducers, location: reducer })
   // const middlewares = applyMiddleware(thunk, middleware, redundantAppNameSpaceMiddleware)
   const middlewares = applyMiddleware(reduxThunk,middleware,redundantAppNameSpaceMiddleware)
 
   const enhancers = composeEnhancers(enhancer, middlewares)
   const store = createStore(rootReducer, preLoadedState, enhancers)
+  if (typeof window !== 'undefined') {
+    window.ss = store;
+  }
   if (module.hot && process.env.NODE_ENV === 'development') {
     module.hot.accept('./reducers/index', () => {
       const reducers = require('./reducers/index')
-      const rootReducer = combineReducers({ ...reducers, ...routeData.allReducers, location: reducer })
+      const rootReducer = combineReducers({...moreReducers, ...reducers, ...routeData.allReducers, location: reducer })
       store.replaceReducer(rootReducer)
     })
   }

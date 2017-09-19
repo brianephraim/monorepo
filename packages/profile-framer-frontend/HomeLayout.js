@@ -187,10 +187,9 @@ AppHero.propTypes = {
 AppHero = ancestorConstantsHoc(
   appConnect((appState /* , { params }*/) => {
     return {
-      imSrc:
-        appState && appState.compositeImageData
-          ? generateCompositeImgSrcUrl(appState.compositeImageData)
-          : '/images/mock-selfie.png',
+      imSrc: appState && appState.compositeImageData && appState.compositeImageData.compositeImageUrl || '/images/mock-selfie.png',
+          // ? generateCompositeImgSrcUrl(appState.compositeImageData)
+          // : '/images/mock-selfie.png',
       // toBeAssigned: getDetailsOfToBeAssigned(state),
     };
   }, {})(AppHero)

@@ -1,10 +1,12 @@
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import {Helmet} from "react-helmet";
 import { combineReducers } from 'redux';
 import { addRoutesToApp } from '@defualt/redux-routing-app-root-component';
 import { makeNameSpacedResponsiveStatusesDictReducer } from '@defualt/responsive/nameSpaceResponsive';
 
+import { generateCompositeImgSrcUrl } from './compositeImage';
 import { standardModesRegexArrayString } from './deriveUrlInfo';
 import {
   buttonGroupComponentsRegexArrayString,
@@ -22,6 +24,10 @@ import {
 import { paramsIntoCompositeImage } from './compositeImage';
 
 import { setAncestorConstantsHoc } from './ancestorConstantsHoc';
+
+import { appConnect } from './nameSpacedResponsive';
+
+import { formUrl } from './deriveUrlInfo';
 
 console.log('MORE UNCOMMENTING TO DO HERE');
 // function ButtonGroupFeaturedRouteScreen(){
@@ -186,17 +192,42 @@ export default function(constants) {
           action.payload,
           constants
         );
+        compositeImageData.compositeImageUrl = generateCompositeImgSrcUrl(compositeImageData);
         return compositeImageData;
       }
       switch (action.type) {
         case 'SET_COMPOSITE_IMAGE_DATA':
           return {
             ...action.compositeImageData,
+            compositeImageUrl: generateCompositeImgSrcUrl(action.compositeImageData)
           };
         default:
           return state;
       }
     },
+    // generateCompositeImgSrcUrl
+    /*
+    appState && appState.compositeImageData
+          ? generateCompositeImgSrcUrl(appState.compositeImageData)
+          : '/images/mock-selfie.png',
+    */
+    // compositeImageUrl: (state = {}, action) => {
+    //   if (routesMap[action.type] || action.type === appRootActionType) {
+    //     const compositeImageData = paramsIntoCompositeImage(
+    //       action.payload,
+    //       constants
+    //     );
+    //     return compositeImageData;
+    //   }
+    //   switch (action.type) {
+    //     case 'SET_COMPOSITE_IMAGE_DATA':
+    //       return {
+    //         ...action.compositeImageData,
+    //       };
+    //     default:
+    //       return state;
+    //   }
+    // },
     activeAppScreen: (state = 'HOME_PROFILE_FRAMER', action) => {
       if (
         (routesMap[action.type] &&
@@ -250,13 +281,92 @@ export default function(constants) {
     },
   });
 
+  
+  let HeaderStuff = (props) => {
+    const constants = props.constants;
+    const compositeImageUrl = props.compositeImageUrl;
+    const headMetaOgUrl = `http://www.bernieselfie.com/h3/zephyr1500589750771/237_19_218_218_553_369/`;// !!!!!
+    let metaOgUrl = `${props.serverClientOrigin}${props.constants.urlAppNameSpace}/${formUrl(props.compositeImageData)}`;
+    if (`${props.serverClientOrigin}${props.constants.urlAppNameSpace}` === `${props.serverClientUrl}`) {
+      metaOgUrl = props.serverClientUrl;
+    }
+    console.log('A',`${props.serverClientOrigin}${props.constants.urlAppNameSpace}`);
+    console.log('B',`${props.serverClientUrl}`);
+    // if (`${props.serverClientOrigin}${props.constants.urlAppNameSpace}` === ) {}
+    console.log('fakeUrlXX', headMetaOgUrl);
+    console.log('metaOgUrl',metaOgUrl);
+    console.log('props.serverClientUrl',props.serverClientUrl);
+
+
+    return (
+      <Helmet>
+        <meta charSet="utf-8" />
+        <meta httpEquiv="x-ua-compatible" content="ie=edge" />
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1" />
+        <title>{constants.headTitle}</title>
+        <meta name="description" content={constants.headDescription} />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        
+        <link href={`https://fonts.googleapis.com/css?family=${constants.googleFonts}`} rel='stylesheet' type='text/css' />
+
+        <meta property="og:title" content={constants.headMetaOgTitle} />
+        <meta property="og:site_name" content={constants.headMetaOgSiteName} />
+        <meta property="og:url" content={metaOgUrl} />
+        <meta property="og:description" content={constants.headMetaOgDescription} />
+        <meta property="fb:app_id" content={constants.headMetaFbAppId} />
+        <meta property="og:type" content={constants.headMetaOgType} />
+        <meta property="og:locale" content={constants.headMetaOgLocale} />
+        <meta property="og:image" content={compositeImageUrl} />
+        <meta property="og:image:width" content={constants.headMetaOgImageWidth} />
+        <meta property="og:image:height" content={constants.headMetaOgImageHeight} />
+
+        <meta name="twitter:card" content={constants.headMetaTwitterCard} />
+        <meta name="twitter:site" content={constants.headMetaTwitterSite} />
+        <meta name="twitter:creator" content={constants.headMetaTwitterCreator} />
+        <meta name="twitter:title" content={constants.headMetaTwitterTitle} />
+        <meta name="twitter:description" content={constants.headMetaTwitterDescription} />
+        <meta name="twitter:image" content={props.compositeImageUrl} />
+      </Helmet>
+    );
+  };
+
+  HeaderStuff = 
+  connect(
+    (state /* , { params }*/) => {
+      console.log('xxxxxxx');
+      return {
+        serverClientUrl: state.serverClientUrl,
+        serverClientOrigin: state.serverClientOrigin,
+      };
+    },
+  )(appConnect(
+    (appState) => {
+      console.log('yyyyyy');
+      console.log(appState);
+      return {
+        compositeImageData: appState.compositeImageData,
+        compositeImageUrl: appState.compositeImageData.compositeImageUrl,
+        constants: appState.constants
+      };
+    },
+    // {
+    //   fetchFacebookPhotos: makeActionFetchPhotos,
+    // }
+  )(HeaderStuff));
+
+
   let Routing = class extends Component {
     componentWillMount() {
       this.props.setConstants(constants);
     }
     render() {
       const Comp = screenComponentMap[this.props.activeAppScreen];
-      return <Comp />;
+      return (
+        <div>
+          <HeaderStuff />
+          <Comp />
+        </div>
+      );
     }
   };
   Routing.propTypes = {

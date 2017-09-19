@@ -11,6 +11,8 @@ import createHistory from 'history/createMemoryHistory'
 import { NOT_FOUND } from 'redux-first-router'
 import configureStore from '../src/configureStore'
 
+import url from 'url';
+
 
 // async function test() {
 //   await db.destroy();
@@ -67,6 +69,28 @@ export default ({ clientStats }) => async (req, res, next) => {
   console.log('req.path',req.path)
   console.log('preLoadedState',preLoadedState)
   const { store, thunk } = configureStore(history, preLoadedState)
+  function fullUrl(req) {
+    return decodeURIComponent(url.format({
+      protocol: req.protocol,
+      host: req.get('host'),
+      pathname: req.originalUrl
+    }));
+  }
+  store.dispatch({
+    type: 'UDPATE_SERVER_CLIENT_URL',
+    url: fullUrl(req)
+  });
+  function fullOrigin(req) {
+    return decodeURIComponent(url.format({
+      protocol: req.protocol,
+      host: req.get('host'),
+    }));
+  }
+  store.dispatch({
+    type: 'UDPATE_SERVER_CLIENT_ORIGIN',
+    origin: fullOrigin(req)
+  });
+
 
   // if not using onBeforeChange + jwTokens, you can also async authenticate
   // here against your db (i.e. using req.cookies.sessionId)

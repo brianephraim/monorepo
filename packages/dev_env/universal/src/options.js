@@ -12,7 +12,12 @@ export default {
   },
   onAfterChange: (dispatch, getState) => {
     const { type } = getState().location
-
+    if (typeof window !== 'undefined') {
+      dispatch({
+        type: 'UDPATE_SERVER_CLIENT_URL',
+        url: window.location.href
+      });
+    }
     if (type === 'LOGIN' && !isServer) {
       setTimeout(() => {
         alert(alertMessage)
