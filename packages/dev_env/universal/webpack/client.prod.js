@@ -16,7 +16,7 @@ module.exports = {
     'fetch-everywhere',
     
 
-    path.resolve(__dirname, '../src/index.js')
+    path.resolve(__dirname, '../src/clientRender.js')
   ],
   output: {
     filename: '[name].[chunkhash].js',

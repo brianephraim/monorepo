@@ -68,7 +68,7 @@ module.exports = ({isClient = false, isDev = false}) => {
         'react-hot-loader/patch',
         ] : []
       ),
-      path.resolve(__dirname, isClient ? '../src/index.js' : '../server/render.js')
+      path.resolve(__dirname, isClient ? '../src/clientRender.js' : '../server/render.js')
     ],
     ...(!isClient ? {externals} : {}),
     output: {
