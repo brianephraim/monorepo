@@ -24,19 +24,8 @@ export default ({app, port = 3000}) => {
     demoEndpoints({app})
     startUniversalExpress({app});
   } else {
-    // SPA server support
-    // All URLs that suggest an HTML file request get routed the same.
-    app.use((req, res, next) => {
-      const lastPartOfURL = url.parse(req.url).pathname.split('/').pop();
-      const urlFormatSuggestsHtmlFileRequest = (
-        lastPartOfURL.indexOf('.') === -1 || lastPartOfURL.indexOf('.html') !== -1
-      );
-      if (urlFormatSuggestsHtmlFileRequest) {
-        req.url = '/';
-      }
-      next();
-    });
-    app.use(webpackMakeCompiler(true)); 
+    
+    webpackMakeCompiler(app)
   }
 
 

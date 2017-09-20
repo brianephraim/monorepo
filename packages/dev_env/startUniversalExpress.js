@@ -1,7 +1,9 @@
 import 'babel-polyfill'
-import express from 'express'
 import webpack from 'webpack'
 import webpackDevMiddleware from 'webpack-dev-middleware'
+
+import express from 'express'
+
 import webpackHotMiddleware from 'webpack-hot-middleware'
 import webpackHotServerMiddleware from 'webpack-hot-server-middleware'
 import { argv } from 'yargs';

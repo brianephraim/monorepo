@@ -1,11 +1,12 @@
 /* eslint-disable no-console */
+import webpack from 'webpack';
 import { argv } from 'yargs';
 import shellCommand from './core/shellCommand';
 import jestSpawnProcess from './jest/jestSpawnProcess';
-import webpackMakeCompiler from './webpackMakeCompiler';
 import webpackRunCompiler from './core/webpackRunCompiler';
 import webpackBuildCommandLine from './core/webpackBuildCommandLine';
 import serveWebpack from './webpackExpressServer.js';
+import webpackConfig from './webpackConfig'; 
 // import isWithinMonoRepo from './core/isWithinMonoRepo');
  
 const env = argv.env;
@@ -45,7 +46,7 @@ if (item) {
 } else if (argv.entry) {
   webpackBuildCommandLine();
 } else if (env === 'build') {
-  webpackRunCompiler(webpackMakeCompiler());
+  webpackRunCompiler(webpack(webpackConfig));
 } else if (argv.servers) {
   const serverNamespaces = argv.servers.split(',');
   asyncRecurseStartApps(serverNamespaces);
