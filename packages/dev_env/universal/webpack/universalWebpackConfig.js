@@ -52,8 +52,8 @@ const externals = fs
   }, {})
 
 
-
-module.exports = ({isClient = false, isDev = false}) => {
+/* eslint-disable no-nested-ternary */
+module.exports = ({isClient = false, isDev = false, isUniversal = false}) => {
   return {
     name: isClient ? 'client' : 'server',
     target: isClient ? 'web' : 'node',
@@ -68,7 +68,19 @@ module.exports = ({isClient = false, isDev = false}) => {
         'react-hot-loader/patch',
         ] : []
       ),
-      path.resolve(__dirname, isClient ? '../src/clientRender.js' : '../server/render.js')
+      path.resolve(__dirname,
+        isClient
+        ?
+        '../src/clientRender.js'
+        :
+        (
+          isUniversal
+          ?
+          '../server/render.js'
+          :
+          '../server/nonUniversalRender.js'
+        )
+      )
     ],
     ...(!isClient ? {externals} : {}),
     output: {

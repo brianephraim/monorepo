@@ -115,7 +115,7 @@ class Battleship extends Component {
         </Link>
         <h2>Battleship</h2>
         <pre>{this.state.stringGrid}</pre>
-        <h4>gridAsArray</h4>
+        <h4>gridAsArrayxxxxxxxxx</h4>
         <p>{JSON.stringify(this.state.gridAsArray)}</p>
         <h4>
           gridAsArray -

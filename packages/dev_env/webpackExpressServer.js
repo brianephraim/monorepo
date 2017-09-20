@@ -10,7 +10,7 @@ import startUniversalExpress from './startUniversalExpress';
 
 
 export default ({app, port = 3000}) => {
-  const isUniversal = argv.isUniversal === 'true';
+  
   console.log('SERVE');
   // This module either extends an existing express app
   // or creates a new express app
@@ -20,13 +20,16 @@ export default ({app, port = 3000}) => {
     app = express();
   }
 
-  if (isUniversal) {
-    demoEndpoints({app})
-    startUniversalExpress({app});
-  } else {
+  demoEndpoints({app})
+  startUniversalExpress({app});
+
+  // if (isUniversal) {
+  //   demoEndpoints({app})
+  //   startUniversalExpress({app});
+  // } else {
     
-    webpackMakeCompiler(app)
-  }
+  //   webpackMakeCompiler(app)
+  // }
 
 
   
