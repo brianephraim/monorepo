@@ -1,12 +1,10 @@
+import webpack from 'webpack';
 import { argv } from 'yargs';
 import fs from 'fs-extra';
 import globby from 'globby';
-import webpackEnhanceConfigNode from './core/webpackEnhanceConfigNode';
-import webpackEnhanceBaseConfig from './core/webpackEnhanceBaseConfig';
-
-
-import webpackEnhanceImmediateConfig from './core/webpackEnhanceImmediateConfig';
-
+import nodeExternals from 'webpack-node-externals';
+import path from 'path';
+import webpackConfigResolve from './core/webpack-config-resolve';
 
 
 function removeKeysWithEmptyVals(obj){
@@ -75,46 +73,109 @@ function makeEntry({libraryName,isBuild,dirRoot}) {
     }
   )
 }
-
+/* eslint-disable no-nested-ternary */
 function generateConfigJson(options = {}) {
   const isCommandLine = options.isCommandLine || argv.entry;
-  let config;
-  config = webpackEnhanceBaseConfig();
-  if (isCommandLine) {
-    config = {
-      ...config,
-      entry: {
-        main: argv.entry,
-      },
-      output: makeOutputSettingsFromFilePath(argv.output),
-    };
-  } else {
-    const isBuild = argv.env === 'build';
-    const dirRoot = argv.dirroot || process.cwd();
-    const packageJson = fs.readJsonSync(`${dirRoot}/package.json`);
-    
-    const libraryName = packageJson.name;
-    
-    config = {
-      ...config,
-      entry: makeEntry({libraryName,isBuild,dirRoot}),
-      output: {
-        path: `${dirRoot}`,
-        filename: '[name].js',
-        library: libraryName,
-        libraryTarget: 'umd',
-        umdNamedDefine: true,
-        publicPath: '/',
-        // publicPath: '/assets/',
-      },
-    };
-  }
+  const isMocha = options.isMocha;
+  const isBuild = argv.env === 'build';
+  const dirRoot = argv.dirroot || process.cwd();
+  const packageJson = fs.readJsonSync(`${dirRoot}/package.json`);
+  const libraryName = packageJson.name;
 
-  config = webpackEnhanceConfigNode(config);
+  const config = {
+    devtool: 'sourcemap',
+    ...(
+      !isMocha
+      ?
+      (
+        {
+          entry: isCommandLine ? argv.entry : makeEntry({libraryName,isBuild,dirRoot}),
+          output: isCommandLine ? makeOutputSettingsFromFilePath(argv.output) : {
+            path: `${dirRoot}`,
+            filename: '[name].js',
+            library: libraryName,
+            libraryTarget: 'umd',
+            umdNamedDefine: true,
+            publicPath: '/',
+          }
+        }
+      )
+      :
+      {}
+    ),
 
-  if (isCommandLine) {
-    config = webpackEnhanceImmediateConfig(config);
-  }
+    // for node start
+    target: 'node',
+    node: {
+      __dirname: false,
+      __filename: false,
+    },
+    externals: [
+      nodeExternals({
+        // modulesFromFile: true,
+        modulesDir: path.resolve(__dirname.split('/packages/dev_env')[0], './node_modules'),
+      }),
+    ],
+    // for node end
+
+    module: {
+      rules: [
+        // for node start
+        { test: /rx\.lite\.aggregates\.js/, use: 'imports-loader?define=>false' },
+        { test: /async\.js/, use: 'imports-loader?define=>false' },
+        // for node end
+
+        {
+          test: /\.(js)?$/,
+          loader: 'babel-loader',
+          exclude: /(node_modules|\.tmp)/,
+        },
+      ],
+    },
+    resolve: webpackConfigResolve.resolve,
+    plugins: [
+      // for node start
+      new webpack.BannerPlugin({
+        banner: 'require("source-map-support").install();',
+        raw: true,
+        entryOnly: false,
+      }),
+      ...(
+        isCommandLine || isMocha
+        ?
+        [
+          // I needed __dirname hardcoded as the original dirname
+          // https://github.com/webpack/webpack/issues/1599#issuecomment-266588898
+          {
+            apply(compiler) {
+              function setModuleConstant(expressionName, fn) {
+                compiler.plugin('compilation', (compilation, data) => {
+                  data.normalModuleFactory.plugin('parser', (parser) => {
+                    parser.plugin(`expression ${expressionName}`, function compilerParserPlugin() {
+                      this.state.current.addVariable(expressionName, JSON.stringify(fn(this.state.module)));
+                      return true;
+                    });
+                  });
+                });
+              }
+
+              setModuleConstant('__filename', (module) => {
+                return module.resource;
+              });
+
+              setModuleConstant('__dirname', (module) => {
+                return module.context;
+              });
+            },
+          }
+        ]
+        :
+        []
+      ),
+      // for node end
+    ]
+  };
+
   // fs.writeFileSync('./_webpack-config-preview.json', JSON.stringify(config, null, 2));
   return config;
 }
