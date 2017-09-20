@@ -23,7 +23,6 @@ const argumentsPassThrough = process.argv.reduce((accum, argString) => {
 // console.log('------', );
 const pathToCheckFile = path.resolve('../../', '.lernahoist-running');
 if (!fs.existsSync(pathToCheckFile)) {
-  // const devEnv = argv.entry ? './devEnvCommandLine.js' : './dev_env.js';
   const devEnv = './dev_env.js';
   // shellCommand(`${path.resolve(__dirname, './node_modules/.bin/babel-node')} ${path.resolve(__dirname, devEnv)}${argumentsPassThrough}`);
   shellCommand(`${path.resolve(__dirname, './bin/devenv-node.js')} ${path.resolve(__dirname, devEnv)}${argumentsPassThrough}`);

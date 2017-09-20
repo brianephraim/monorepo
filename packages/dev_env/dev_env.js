@@ -19,7 +19,7 @@ if (item) {
 } else if (argv.entry) {
   webpackBuildCommandLine();
 } else if (env === 'build') {
-  webpackRunCompiler(webpack(webpackConfig));  
+  webpackRunCompiler(webpack(webpackConfig()));  
 } else {
   serveWebpack();
 }
