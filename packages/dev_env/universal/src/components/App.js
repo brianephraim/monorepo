@@ -51,28 +51,43 @@ const UniversalComponent = universal(
   }
 )
 
-let Switcher = ({ page, direction, isLoading }) =>
-  <div className={styles.app}>
-    <p>find me asdfasdfasdfasdf {page}</p>
-    <Sidebar />
-    <TransitionGroup
-      className={`${switcherStyles.switcher} ${direction}`}
-      duration={500}
-      prefix='fade'
-    >
-      <Transition key={page}>
-        <UniversalComponent page={page} isLoading={isLoading} />
-      </Transition>
-    </TransitionGroup>
-  </div>
 
-const mapState = ({ page, direction, ...state }) => ({
+let DemoWrapper = ({ page, direction, location, children }) => {
+  if (location.pathname.indexOf('/willard') !== 0) {
+    return children;
+  }
+  return (
+    <div className={styles.app}>
+      <Sidebar />
+      <TransitionGroup
+        className={`${switcherStyles.switcher} ${direction}`}
+        duration={500}
+        prefix='fade'
+      >
+        <Transition key={page}>
+          {children}
+        </Transition>
+      </TransitionGroup>
+    </div>
+  );
+};
+
+DemoWrapper = connect(({ page, direction,location }) => ({
   page,
   direction,
-  isLoading: isLoading(state)
-})
+  location,
+}))(DemoWrapper)
 
-Switcher = connect(mapState)(Switcher)
+
+let Switcher = ({ page, isLoading }) =>
+  <DemoWrapper>
+    <UniversalComponent page={page} isLoading={isLoading} />
+  </DemoWrapper>
+
+Switcher = connect(({ page, ...state }) => ({
+  page,
+  isLoading: isLoading(state)
+}))(Switcher)
 
 
 let HeadStuff = () => {
@@ -81,6 +96,9 @@ let HeadStuff = () => {
       <title>My Title</title>
   </Helmet>)
 };
+
+
+
 
 export default (props) =>
   <Provider store={props.store}>
