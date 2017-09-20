@@ -23,7 +23,7 @@ function enhance() {
   };
   config = webpackEnhanceConfigNode(config);
   config = webpackEnhanceImmediateConfig(config);
-  fs.writeFileSync('./_webpack-config-preview-commandline.json', JSON.stringify(config, null, 2));
+  // fs.writeFileSync('./_webpack-config-preview-commandline.json', JSON.stringify(config, null, 2));
   return config;
 }
 

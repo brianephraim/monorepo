@@ -7,7 +7,7 @@ function enhance() {
   let config = webpackEnhanceBaseConfig();
   config = webpackEnhanceConfigNode(config);
   config = webpackEnhanceImmediateConfig(config);
-  fs.writeFileSync('./_webpack-config-preview-mocha.json', JSON.stringify(config, null, 2));
+  // fs.writeFileSync('./_webpack-config-preview-mocha.json', JSON.stringify(config, null, 2));
   return config;
 }
 

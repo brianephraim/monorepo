@@ -121,7 +121,7 @@ function generateConfigJson() {
       );
     }
   }
-  fs.writeFileSync('./_webpack-config-preview.json', JSON.stringify(config, null, 2));
+  // fs.writeFileSync('./_webpack-config-preview.json', JSON.stringify(config, null, 2));
   return config;
 }
 
