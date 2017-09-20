@@ -25,17 +25,19 @@ const UniversalComponent = universal(
     if (page === 'BATTLESHIP') {
       page = 'Migration';
     }
-    return import(`./${page}`)
+    const imported = import(`./${page}`)
+    // imported.then((...args) => {console.log('!!!',args)})
+    return imported
   },
   {
     minDelay: 500,
     loading: Loading,
     error: Err,
     onLoad: (module, info, props, context) => {
-      console.log('module',module)
-      console.log('info',info)
-      console.log('props',props)
-      console.log('context',context)
+      // console.log('module',module)
+      // console.log('info',info)
+      // console.log('props',props)
+      // console.log('context',context)
   /*
        const aThunk = addRoutes(module.newRoutes) // export new routes from component file
        context.store.dispatch(aThunk)

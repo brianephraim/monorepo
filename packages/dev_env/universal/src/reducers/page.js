@@ -1,7 +1,10 @@
 import { NOT_FOUND } from 'redux-first-router'
 import {routeData} from 'MainApp';
 
-export default (state = 'HOME_UNIVERSAL_DEMO', action = {}) => components[action.type] || state
+export default (state = 'HOME_UNIVERSAL_DEMO', action = {}) => { 
+  console.log(state,action);
+  return components[action.type] || state;
+}
 
 const MainAppShim = Object.keys(routeData.routesMap).reduce((accum, key) => {
   accum[key] = 'Migration'; return accum;
@@ -10,6 +13,7 @@ const components = {
   HOME_UNIVERSAL_DEMO: 'Home',
   LIST: 'List',
   VIDEO: 'Video',
+  ROOT: 'Migration',
   MIGRATION: 'Migration',
   BATTLESHIP: 'Migration',
   ADMIN: 'Admin',
