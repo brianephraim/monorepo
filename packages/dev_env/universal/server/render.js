@@ -4,6 +4,8 @@ import { flushChunkNames } from 'react-universal-component/server'
 import flushChunks from 'webpack-flush-chunks'
 import {Helmet} from "react-helmet";
 
+import { ServerStyleSheet } from 'styled-components'
+
 // import configureStore from './configureStore'
 import App from '../src/components/App'
 
@@ -112,11 +114,22 @@ export default ({ clientStats }) => async (req, res, next) => {
 
   // ==== 
 
-  const appString = ReactDOM.renderToString(<App store={store} />)
+
+
+  const sheet = new ServerStyleSheet()
+
+
+  const appString = ReactDOM.renderToString(
+    sheet.collectStyles(<App store={store} />)
+  );
+
+  const styledComponentsRenderedTags = sheet.getStyleTags()
+
   const helmet = Helmet.renderStatic();
   const stateJson = JSON.stringify(store.getState())
   const chunkNames = flushChunkNames()
   const { js, styles, cssHash } = flushChunks(clientStats, { chunkNames })
+  const webpackStyles = styles;
 
   console.log('REQUESTED PATH:', req.path)
   console.log('CHUNK NAMES', chunkNames)
@@ -130,7 +143,8 @@ export default ({ clientStats }) => async (req, res, next) => {
           ${helmet.title.toString()}
           ${helmet.meta.toString()}
           ${helmet.link.toString()}
-          ${styles}
+          ${webpackStyles}
+          ${styledComponentsRenderedTags}
           <link rel="stylesheet prefetch" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
         </head>
         <body>
