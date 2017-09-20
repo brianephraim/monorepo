@@ -197,18 +197,18 @@ function generateConfigJson(options = {}) {
     ),
 
     // for node start
-    ...(
-      !isReact
-      ?
-      {
-        node: {
-          __dirname: false,
-          __filename: false,
-        }
-      }
-      :
-      {}
-    ),
+    // ...(
+    //   !isReact
+    //   ?
+    //   {
+    //     node: {
+    //       __dirname: false,
+    //       __filename: false,
+    //     }
+    //   }
+    //   :
+    //   {}
+    // ),
     ...(
       isReact
       ?
@@ -234,9 +234,12 @@ function generateConfigJson(options = {}) {
     //         ...(
     //           isReact ?
     //           {
-    //             whitelist: [
-    //               '.bin','react-universal-component','require-universal-module','webpack-flush-chunks',
-    //             ]
+    //             whitelist: (x) => {
+    //               return !/\.bin|react-universal-component|require-universal-module|webpack-flush-chunks/.test(x);
+    //             }
+    //             // [
+    //             //   '.bin','react-universal-component','require-universal-module','webpack-flush-chunks',
+    //             // ]
     //           }
     //           :
     //           {}
@@ -420,11 +423,16 @@ function generateConfigJson(options = {}) {
                 ]
               }
             }),
-            makeProgressPlugin()
+            makeProgressPlugin(),
           ]
           :
           // IS SERVER
           [
+            new webpack.BannerPlugin({
+              banner: 'require("source-map-support").install();',
+              raw: true,
+              entryOnly: false,
+            }),
             new webpack.optimize.LimitChunkCountPlugin({
               maxChunks: 1
             }),
@@ -434,7 +442,7 @@ function generateConfigJson(options = {}) {
                 NODE_ENV: JSON.stringify(isDev ? 'development' : 'production')
               }
             }),
-            makeProgressPlugin()
+            makeProgressPlugin(),
           ]
         )
         :
@@ -472,12 +480,12 @@ function generateConfigJson(options = {}) {
                     return module.context;
                   });
                 },
-              }
+              },
             ]
             :
             []
           ),
-
+          makeProgressPlugin(),
         ]
       ),
           

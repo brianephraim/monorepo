@@ -2,8 +2,6 @@ import { redirect, NOT_FOUND } from 'redux-first-router'
 import { fetchData } from './utils'
 import {routeData} from 'MainApp';
 
-console.log('routeData', routeData.routesMap);
-
 export default {
   ...routeData.routesMap,
   HOME_UNIVERSAL_DEMO: '/',

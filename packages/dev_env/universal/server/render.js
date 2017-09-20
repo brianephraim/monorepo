@@ -66,8 +66,6 @@ export default ({ clientStats }) => async (req, res, next) => {
   const preLoadedState = { jwToken } // onBeforeChange will authenticate using this
 
   const history = createHistory({ initialEntries: [req.path] })
-  console.log('req.path',req.path)
-  console.log('preLoadedState',preLoadedState)
   const { store, thunk } = configureStore(history, preLoadedState)
   function fullUrl(req) {
     return decodeURIComponent(url.format({

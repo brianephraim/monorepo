@@ -10,7 +10,8 @@ import webpackHotServerMiddleware from 'webpack-hot-server-middleware'
 import { argv } from 'yargs';
 import path from 'path';
 import deleteFiles from 'rimraf';
-import universalWebpackConfig from './universal/webpack/universalWebpackConfig';
+// import universalWebpackConfig from './universal/webpack/universalWebpackConfig';
+import webpackConfig from './webpackConfig';
 import webpackRunCompiler from './core/webpackRunCompiler';
 import webpackParseStatsForDepProblems from './webpackParseStatsForDepProblems';
 
@@ -18,9 +19,9 @@ import webpackParseStatsForDepProblems from './webpackParseStatsForDepProblems';
 const res = p => path.resolve(__dirname, p)
 
 export default function startUniversal({app = express()}) {
-  const clientDevConfig = universalWebpackConfig({isReact:true,isClient:true,isDev:true,isUniversal:true});
-  const serverDevConfig = universalWebpackConfig({isReact:true,isClient:false,isDev:true,isUniversal:true});
-  const serverNonUniversalConfig = universalWebpackConfig({isReact:true,isClient:false,isDev:true,isUniversal:false});
+  const clientDevConfig = webpackConfig({isReact:true,isClient:true,isDev:true,isUniversal:true});
+  const serverDevConfig = webpackConfig({isReact:true,isClient:false,isDev:true,isUniversal:true});
+  const serverNonUniversalConfig = webpackConfig({isReact:true,isClient:false,isDev:true,isUniversal:false});
   const publicPath = clientDevConfig.output.publicPath
   const outputPath = clientDevConfig.output.path
 
@@ -46,7 +47,6 @@ export default function startUniversal({app = express()}) {
 
     clientCompiler.plugin('invalid', invalidHandler);
     const activeWebpackDevMiddleware = webpackDevMiddleware(multiCompiler, options);
-    console.log(activeWebpackDevMiddleware);
     activeWebpackDevMiddleware.waitUntilValid((stats) => {
       // function censor(censor) {
       //   var i = 0;
@@ -78,9 +78,8 @@ export default function startUniversal({app = express()}) {
 
   }
   else {
-    console.log('I GUESS ITS PROD',process.env.NODE_ENV)
-    const clientProdConfig = universalWebpackConfig({isReact:true,isClient:true,isDev:false,isUniversal:true});
-    const serverProdConfig = universalWebpackConfig({isReact:true,isClient:false,isDev:false,isUniversal:true});
+    const clientProdConfig = webpackConfig({isReact:true,isClient:true,isDev:false,isUniversal:true});
+    const serverProdConfig = webpackConfig({isReact:true,isClient:false,isDev:false,isUniversal:true});
     deleteFiles(`{${clientProdConfig.output.path},${serverProdConfig.output.path}}`, () => {
       // webpackRunCompiler(webpack(clientProdConfig)).then(() => {
         // deleteFiles(serverProdConfig.output.path, () => {
@@ -88,7 +87,7 @@ export default function startUniversal({app = express()}) {
           const clientCompiler = multiCompiler.compilers[0];
           const serverCompiler = multiCompiler.compilers[1];
           webpackRunCompiler(multiCompiler).then(() => {
-            const clientConfig = universalWebpackConfig({isReact:true,isClient:true,isDev:true,isUniversal:true});
+            const clientConfig = webpackConfig({isReact:true,isClient:true,isDev:true,isUniversal:true});
             const publicPath = clientConfig.output.publicPath
             const outputPath = clientConfig.output.path
             const serverRender = __non_webpack_require__(res('./universal/buildServer/main.js')).default

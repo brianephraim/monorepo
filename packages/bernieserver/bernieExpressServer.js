@@ -32,8 +32,6 @@ import ensureLeadingSlash from '@defualt/ensure-leading-slash';
  */
 
 export default function ({app, nameSpace})  {
-  console.log('!!!!');
-  console.log(app);
   app.set('views', __dirname + '/views');
   app.engine('html', ejs.renderFile);
 

@@ -49,7 +49,7 @@ function DirectoryDefaultFilePlugin() {
             }
             // console.log(req)
             // done();
-            console.log('new request',resolver.join(directory, basename(directory)));
+            // console.log('new request',resolver.join(directory, basename(directory)));
             const obj = Object.assign({}, req, {
               request: resolver.join(directory, basename(directory)),
             });

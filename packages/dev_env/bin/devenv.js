@@ -4,8 +4,7 @@ var argv = require('yargs').argv;
 const isWithinMonoRepo = (dirname) => {
   return dirname.indexOf('/packages/') > dirname.indexOf('/node_modules/');
 };
-console.log('!!!!!!!');
-console.log(argv);
+// console.log(argv);
 
 /* eslint-disable global-require */
 if (isWithinMonoRepo(__dirname) && !argv.useDist) {

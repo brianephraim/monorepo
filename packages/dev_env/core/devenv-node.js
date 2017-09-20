@@ -9,7 +9,6 @@ const isWithinMonoRepo = require('./isWithinMonoRepo');
 const getDevEnvRoot = require('./getDevEnvRoot');
 const getNodePathShVar = require('./getNodePathShVar');
 
-console.log('xxxxxx', getNodePathShVar({}));
 
 const os = require('os');
 

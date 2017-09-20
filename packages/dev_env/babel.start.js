@@ -20,7 +20,6 @@ const argumentsPassThrough = process.argv.reduce((accum, argString) => {
   return `${accum}${toAppend}`;
 }, '');
 
-// console.log('------', );
 const pathToCheckFile = path.resolve('../../', '.lernahoist-running');
 if (!fs.existsSync(pathToCheckFile)) {
   const devEnv = './dev_env.js';

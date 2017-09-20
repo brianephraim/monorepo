@@ -19,13 +19,9 @@ import Err from './Error'
 import isLoading from '../selectors/isLoading'
 import switcherStyles from '../css/Switcher'
 
-import test2 from '../../test2';
-
-console.log('TEST2????',test2);
 
 const UniversalComponent = universal(
   ({ page }) => {
-    console.log('page',page);
     if (page === 'BATTLESHIP') {
       page = 'Migration';
     }
@@ -81,14 +77,12 @@ let HeadStuff = () => {
   return (<Helmet>
       <meta charSet="utf-8" />
       <title>My Title</title>
-      <link rel="canonical" href="http://mysite.com/example" />
   </Helmet>)
 };
 
 export default (props) =>
   <Provider store={props.store}>
     <div>
-      <p>help {props.store.getState().page} HHHHH</p>
       <HeadStuff />
       <Switcher />
       <DevTools />
