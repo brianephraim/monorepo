@@ -55,6 +55,7 @@ const UniversalComponent = universal(
 
 let Switcher = ({ page, direction, isLoading }) =>
   <div className={styles.app}>
+    <p>find me asdfasdfasdfasdf {page}</p>
     <Sidebar />
     <TransitionGroup
       className={`${switcherStyles.switcher} ${direction}`}
@@ -87,6 +88,7 @@ let HeadStuff = () => {
 export default (props) =>
   <Provider store={props.store}>
     <div>
+      <p>help {props.store.getState().page} HHHHH</p>
       <HeadStuff />
       <Switcher />
       <DevTools />

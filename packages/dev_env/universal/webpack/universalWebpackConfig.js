@@ -8,6 +8,7 @@ import ProgressPlugin from 'webpack/lib/ProgressPlugin';
 import jsonImporter from 'node-sass-json-importer';
 import WriteFilePlugin from 'write-file-webpack-plugin';
 import resolve2 from '../../core/webpack-config-resolve';
+import webpackConfig from '../../webpackConfig';
 
 
 const makeProgressPlugin = () => {
@@ -52,8 +53,10 @@ const externals = fs
   }, {});
 
 
+
 /* eslint-disable no-nested-ternary */
 module.exports = ({isClient = false, isDev = false, isUniversal = false}) => {
+  return webpackConfig({isClient, isDev, isUniversal,isReact: true});
   return {
     name: isClient ? 'client' : 'server',
     target: isClient ? 'web' : 'node',
@@ -168,7 +171,7 @@ module.exports = ({isClient = false, isDev = false, isUniversal = false}) => {
       ]
     },
     resolve: resolve2.resolve,
-    plugins: isClient
+    plugins: (isClient
       ?
       [
         (
@@ -257,6 +260,7 @@ module.exports = ({isClient = false, isDev = false, isUniversal = false}) => {
         }),
         makeProgressPlugin()
       ]
+    ),
   };
 
 }
