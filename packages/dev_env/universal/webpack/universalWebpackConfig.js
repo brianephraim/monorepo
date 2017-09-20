@@ -1,22 +1,23 @@
 // ----- client dev
-const path = require('path')
-const webpack = require('webpack')
-const ExtractCssChunks = require('extract-css-chunks-webpack-plugin')
-const AutoDllPlugin = require('autodll-webpack-plugin')
-const WriteFilePlugin = require('write-file-webpack-plugin')
-const resolve2 = require('../../core/webpack-config-resolve')
-const StatsPlugin = require('stats-webpack-plugin')
-const ProgressPlugin = require('webpack/lib/ProgressPlugin')
-const jsonImporter = require('node-sass-json-importer');
+import path from 'path';
+import webpack from 'webpack';
+import ExtractCssChunks from 'extract-css-chunks-webpack-plugin';
+import AutoDllPlugin from 'autodll-webpack-plugin';
+import StatsPlugin from 'stats-webpack-plugin';
+import ProgressPlugin from 'webpack/lib/ProgressPlugin';
+import jsonImporter from 'node-sass-json-importer';
+import WriteFilePlugin from 'write-file-webpack-plugin';
+import resolve2 from '../../core/webpack-config-resolve';
+
 
 const makeProgressPlugin = () => {
-  return new ProgressPlugin(function (percentage, msg, current, active, modulepath) {
+  return new ProgressPlugin((percentage, msg, current, active, modulepath) => {
     if (process.stdout.isTTY && percentage < 1) {
-      process.stdout.cursorTo(0)
-      modulepath = modulepath ? ' …' + modulepath.substr(modulepath.length - 30) : ''
-      current = current ? ' ' + current : ''
-      active = active ? ' ' + active : ''
-      process.stdout.write((percentage * 100).toFixed(0) + '% ' + msg + current + active + modulepath + ' ')
+      process.stdout.cursorTo(0);
+      modulepath = modulepath ? ` …${modulepath.substr(modulepath.length - 30)}` : '';
+      current = current ? ` ${current}` : '';
+      active = active ? ` ${active}` : '';
+      process.stdout.write(`${(percentage * 100).toFixed(0)}% ${msg}${current}${active}${modulepath} `)
       process.stdout.clearLine(1)
     } else if (percentage === 1) {
       process.stdout.write('\n')
@@ -32,7 +33,9 @@ const fs = require('fs')
 // const resolve2 = require('../../core/webpack-config-resolve')
 
 // ----- server dev
-const res = p => path.resolve(__dirname, p)
+const res = (p) => {
+  return path.resolve(__dirname, p);
+};
 
 // if you're specifying externals to leave unbundled, you need to tell Webpack
 // to still bundle `react-universal-component`, `webpack-flush-chunks` and
@@ -40,16 +43,13 @@ const res = p => path.resolve(__dirname, p)
 // within Webpack and can properly make connections to client modules:
 const externals = fs
   .readdirSync(res('../../../../node_modules'))
-  .filter(
-    x =>
-      !/\.bin|react-universal-component|require-universal-module|webpack-flush-chunks/.test(
-        x
-      )
-  )
+  .filter((x) => {
+    return !/\.bin|react-universal-component|require-universal-module|webpack-flush-chunks/.test(x);      
+  })
   .reduce((externals, mod) => {
     externals[mod] = `commonjs ${mod}`
     return externals
-  }, {})
+  }, {});
 
 
 /* eslint-disable no-nested-ternary */
