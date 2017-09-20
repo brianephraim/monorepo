@@ -104,8 +104,8 @@ function webpackParseStatsForDepProblems(stats, shouldShowProblemsInConsole = tr
 
   const packageDotJsonCache = {};
   const problems = {};
-  console.log('GGGGGG');
-  stats.compilation.modules.forEach((module) => {
+  const compilation = stats.compilation ? stats.compilation : stats.stats[0].compilation
+  compilation.modules.forEach((module) => {
     // only concerned with module entries from /packages/ folder (not node_modules)
     if (
       module.resource &&

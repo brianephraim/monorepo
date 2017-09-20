@@ -12,33 +12,6 @@ import webpackConfig from './webpackConfig';
 const env = argv.env;
 const item = argv.item;
 
-function asyncRecurseStartApps(serverNamespaces) {
-  let lastBackendApp = null;
-  let i = 0;
-  function recurse(backendAppNamespace) {
-    System.import(`../../packages/${backendAppNamespace}/${backendAppNamespace}.express`).then((someBackendApp) => {
-      const serveBackendApp = someBackendApp.default;
-      const backendAppSettings = {
-        nameSpace: backendAppNamespace,
-      };
-      if (lastBackendApp) {
-        backendAppSettings.app = lastBackendApp;
-      }
-      const backendAppServed = serveBackendApp(backendAppSettings);
-      lastBackendApp = backendAppServed;
-      const nextNamespace = serverNamespaces[++i];
-      if (nextNamespace) {
-        recurse(nextNamespace);
-      } else {
-        serveWebpack({
-          app: backendAppServed,
-        });
-      }
-    });
-  }
-  recurse(serverNamespaces[i]);
-}
-
 if (item) {
   shellCommand(`(cd ./packages/${item} && npm run start)`);
 } else if (env === 'test') {
@@ -46,12 +19,9 @@ if (item) {
 } else if (argv.entry) {
   webpackBuildCommandLine();
 } else if (env === 'build') {
-  webpackRunCompiler(webpack(webpackConfig));
-} else if (argv.servers) {
-  const serverNamespaces = argv.servers.split(',');
-  asyncRecurseStartApps(serverNamespaces);
+  webpackRunCompiler(webpack(webpackConfig));  
 } else {
-  serveWebpack({});
+  serveWebpack();
 }
 const serve = function ()   {
   serveWebpack.apply(this,arguments);

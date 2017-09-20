@@ -12,7 +12,6 @@ import endpointIframeUpload from './js/endpointIframeUpload';
 import generateUrlRegexNamespace from './js/generateUrlRegexNamespace';
 import respondWithJson from './js/respondWithJson';
 import ensureLeadingSlash from '@defualt/ensure-leading-slash';
-import makeServeChainableExpress from '@defualt/make-serve-chainable-express';
 // var mymodule = require('./public/js/mymodule');
 // var express = require('express');
 // var ejs = require('ejs');
@@ -32,7 +31,9 @@ import makeServeChainableExpress from '@defualt/make-serve-chainable-express';
  * Set-up the Express app.
  */
 
-export default makeServeChainableExpress((app, nameSpace) => {
+export default function ({app, nameSpace})  {
+  console.log('!!!!');
+  console.log(app);
   app.set('views', __dirname + '/views');
   app.engine('html', ejs.renderFile);
 
@@ -235,5 +236,5 @@ export default makeServeChainableExpress((app, nameSpace) => {
   })
 
   return app;
-});
+}
 

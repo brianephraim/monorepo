@@ -6,7 +6,7 @@ import styles from '../css/Sidebar'
 
 const Sidebar = ({ onClick, path }) =>
   <div className={styles.sidebar}>
-    <h2>SEO-FRIENDLY LINKS</h2>
+    <h2>SEO-FRIENDLY LINKSz</h2>
 
     <NavLink activeClassName={styles.active} exact to='/'>HOME_UNIVERSAL_DEMO</NavLink>
 
