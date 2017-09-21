@@ -166,7 +166,7 @@ export default function(constants) {
     });
   });
   const appRootActionType = `APP_ROOT_${constants.urlAppNameSpace.toUpperCase()}`;
-  routesMap[appRootActionType] = constants.urlAppNameSpace;
+  routesMap[appRootActionType] = constants.urlAppNameSpace || '/';
   screenNameMap[appRootActionType] = 'HOME_PROFILE_FRAMER';
 
   function filterReducers(reducers, check) {

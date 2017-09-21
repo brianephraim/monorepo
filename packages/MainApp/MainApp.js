@@ -10,11 +10,16 @@ function capitalizeFirstLetter(string) {
 }
 function makeProfileFrameConstants(namingBasis,isUrlRoot) {
   // namingBasis = isUrlRoot ? 'qqq' : namingBasis;
-  const NamingBasis = capitalizeFirstLetter(namingBasis);
-  const appNameSpace = namingBasis;
-  const APPNAMESPACE = namingBasis.toUpperCase();
-  const urlAppNameSpace = `/${isUrlRoot ? 'qqq' : namingBasis}`;
+  
+  const appNameSpace = isUrlRoot ? 'qqq' : namingBasis;
+  // const appNameSpace = namingBasis;
   const urlAppNameSpaceNoSlash = isUrlRoot ? 'qqq' : namingBasis;
+  const urlAppNameSpace = `/${isUrlRoot ? 'qqq' : urlAppNameSpaceNoSlash}`;
+  
+  
+
+
+
   const tweetUrl = `https://twitter.com/intent/tweet?url=xXxXxXxXxXxXxXxXxXxXxXxX&via=${namingBasis}selfie&hashtags=BernieSanders%2Cfeelthebern%2Cbernieselfie&related=BernieSanders`; // !!!!!
   const assetUrlPrefix = 'http://s3-us-west-1.amazonaws.com/bernieapp/'
   const fgImagePrefix = `${assetUrlPrefix}decorations/`;
@@ -23,6 +28,8 @@ function makeProfileFrameConstants(namingBasis,isUrlRoot) {
   const appPublishDomain = `${namingBasis}selfie.com`;
   const adminEmail = `admin@${appPublishDomain}`;
   const disclaimerText = `${appPublishDomain} is not affiliated with any political party, candidate,or interest group.`
+  
+  const NamingBasis = capitalizeFirstLetter(namingBasis);
   const topBanner = {
     href: `http://www.${appPublishDomain}/`,
     text: `Contribute to ${NamingBasis}`
@@ -87,7 +94,6 @@ function makeProfileFrameConstants(namingBasis,isUrlRoot) {
   return {
     isUrlRoot,
     appNameSpace,
-    APPNAMESPACE,
     urlAppNameSpace,
     urlAppNameSpaceNoSlash,
     tweetUrl,
