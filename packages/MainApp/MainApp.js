@@ -12,7 +12,7 @@ function makeProfileFrameConstants(namingBasis,isUrlRoot) {
   // namingBasis = isUrlRoot ? 'qqq' : namingBasis;
   
   const appNameSpace = namingBasis;
-  const urlAppNameSpace = `/${isUrlRoot ? '' : namingBasis}`;
+  const urlAppNameSpace = isUrlRoot ? '' : `/${namingBasis}`;
 
   const tweetUrl = `https://twitter.com/intent/tweet?url=xXxXxXxXxXxXxXxXxXxXxXxX&via=${namingBasis}selfie&hashtags=BernieSanders%2Cfeelthebern%2Cbernieselfie&related=BernieSanders`; // !!!!!
   const assetUrlPrefix = 'http://s3-us-west-1.amazonaws.com/bernieapp/'

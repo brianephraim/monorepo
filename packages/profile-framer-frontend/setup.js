@@ -14,10 +14,10 @@ import {
 } from './buttonGroups';
 import {
   HomeLayoutWithUploadCallback,
-//   ImagePickerFacebookWithOnClick,
+  ImagePickerFacebookWithOnClick,
   ImagePickerTemplateWithOnClick,
-//   CropperWithFgBgCompletion,
-//   UrlImportScreenWithWithUploadCallback,
+  CropperWithFgBgCompletion,
+  UrlImportScreenWithWithUploadCallback,
 //   // TemplateUploadScreenWithUploadCallback,
 } from './routingComponents';
 
@@ -28,26 +28,6 @@ import { setAncestorConstantsHoc } from './ancestorConstantsHoc';
 import { appConnect } from './nameSpacedResponsive';
 
 import { formUrl } from './deriveUrlInfo';
-
-console.log('MORE UNCOMMENTING TO DO HERE');
-// function ButtonGroupFeaturedRouteScreen(){
-//   return <div />;
-// }
-// function HomeLayoutWithUploadCallback(){
-//   return <div>adfasdfa</div>;
-// }
-function ImagePickerFacebookWithOnClick(){
-  return <div />;
-}
-// function ImagePickerTemplateWithOnClick(){
-//   return <div />;
-// }
-function CropperWithFgBgCompletion(){
-  return <div />;
-}
-function UrlImportScreenWithWithUploadCallback(){
-  return <div />;
-}
 
 
 const geoPathFrag =
@@ -151,7 +131,7 @@ export default function(constants) {
   routeModes.forEach(homeLayoutPath => {
     const key = homeLayoutPath.key;
     const urlStart = homeLayoutPath.getUrlStart(
-      !constants.urlAppNameSpace ? '' : `/:appNameSpace(${constants.appNameSpace})`
+      constants.isUrlRoot ? '' : `/:appNameSpace(${constants.appNameSpace})`
     );
     // const urlStart = routeModes[key];
     routes.forEach(route => {
@@ -164,8 +144,8 @@ export default function(constants) {
       screenComponentMap[route.action] = route.component;
     });
   });
-  const appRootActionType = `APP_ROOT_${constants.urlAppNameSpace.toUpperCase()}`;
-  routesMap[appRootActionType] = !constants.urlAppNameSpace ? '/' : constants.urlAppNameSpace;
+  const appRootActionType = `APP_ROOT_${constants.appNameSpace}`;
+  routesMap[appRootActionType] = constants.isUrlRoot ? '/' : constants.urlAppNameSpace;
   screenNameMap[appRootActionType] = 'HOME_PROFILE_FRAMER';
 
   function filterReducers(reducers, check) {
@@ -236,7 +216,7 @@ export default function(constants) {
         // in case profile-framer is root url
         (
           routesMap[action.type] &&
-          !action.payload.appNameSpace && !constants.urlAppNameSpace
+          !action.payload.appNameSpace && constants.isUrlRoot
         )
         ||
         // normal case
@@ -282,7 +262,7 @@ export default function(constants) {
   );
   const filteredReducers = filterReducers(reducersToFocus, (state, action) => {
       return (
-        (action.appNameSpace === 'rootProfileFramer' && !constants.urlAppNameSpace) ||
+        (action.appNameSpace === 'rootProfileFramer' && constants.isUrlRoot) ||
         action.appNameSpace === constants.appNameSpace ||
         action.type === appRootActionType
       );

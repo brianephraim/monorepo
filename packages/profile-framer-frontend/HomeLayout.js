@@ -86,9 +86,14 @@ const StyledSelfieFrame = ConnectResponsiveStatusesDictHOC(styled.div`
   }} box-sizing:border-box;
 `);
 function AppMainSelfieFrame(props) {
+  const style = props.style ? props.style : {
+    width:'300px',
+    height:'300px',
+
+  };
   return (
     <StyledSelfieFrame
-      style={props.style}
+      style={style}
       className="app_body_leftPillar_selfieFrame js_mainSelfieFrame"
       // WTF is innerRef https://github.com/styled-components/styled-components/issues/102
       // use instead of ref when adding ref to component affected by styled-components

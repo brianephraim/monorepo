@@ -1,11 +1,17 @@
 /* eslint-disable no-console */
 /* eslint-disable no-alert */
+import root from 'window-or-global'
 import deferred from './deferred';
 
 // window.FB is initially undefined, because lazy-loaded facebook SDK defines FB.
 // So references to FB are via this getter.
 function FB() {
-  return window.FB;
+  // if (typeof window === 'undefined') {
+  //   return {
+
+  //   };
+  // }
+  return root.FB;
 }
 
 const offline = false;
@@ -23,21 +29,23 @@ const bs = {
 };
 
 function loadSdk() {
-  const d = document;
-  const s = 'script';
-  const id = 'facebook-jssdk';
-  const fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) return;
-  const js = d.createElement(s);
-  js.id = id;
-  js.src = '//connect.facebook.net/en_US/sdk.js';
-  fjs.parentNode.insertBefore(js, fjs);
+  const d = root.document;
+  if (d) {
+    const s = 'script';
+    const id = 'facebook-jssdk';
+    const fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    const js = d.createElement(s) || {};
+    js.id = id;
+    js.src = '//connect.facebook.net/en_US/sdk.js';
+    fjs.parentNode.insertBefore(js, fjs);
+  }
 }
 
 function asyncInit() {
   return new Promise((resolve /* , reject*/) => {
     if (!offline) {
-      window.fbAsyncInit = () => {
+      root.fbAsyncInit = () => {
         FB().init({
           appId: '1633460223596071',
           cookie: true, // enable cookies to allow the server to access
@@ -48,7 +56,7 @@ function asyncInit() {
 
         resolve();
       };
-      // window.laterScripts.push(function() {
+      // root.laterScripts.push(function() {
       loadSdk();
       // });
     } else {

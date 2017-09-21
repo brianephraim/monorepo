@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { appConnect } from './nameSpacedResponsive';
 import CropperScreen from './CropperScreen';
-// import ImagePickerFacebook from './ImagePickerFacebook';
+import ImagePickerFacebook from './ImagePickerFacebook';
 import ImagePickerTemplate from './ImagePickerTemplate';
 import HomeLayout from './HomeLayout';
 import UrlImportScreen from './UrlImportScreen';
@@ -34,7 +34,7 @@ export { HomeLayoutWithUploadCallback };
 export function ImagePickerFacebookWithOnClick() {
   return (
     <ModalScreen hasCloseButton headerText="Pick a photo">
-      {/*<ImagePickerFacebook />*/}
+      <ImagePickerFacebook />
     </ModalScreen>
   );
 }
