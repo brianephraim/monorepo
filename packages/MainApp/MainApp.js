@@ -9,10 +9,12 @@ function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 function makeProfileFrameConstants(namingBasis,isUrlRoot) {
+  // namingBasis = isUrlRoot ? 'qqq' : namingBasis;
   const NamingBasis = capitalizeFirstLetter(namingBasis);
   const appNameSpace = namingBasis;
   const APPNAMESPACE = namingBasis.toUpperCase();
-  const urlAppNameSpace = `/${appNameSpace}`;
+  const urlAppNameSpace = `/${isUrlRoot ? 'qqq' : namingBasis}`;
+  const urlAppNameSpaceNoSlash = isUrlRoot ? 'qqq' : namingBasis;
   const tweetUrl = `https://twitter.com/intent/tweet?url=xXxXxXxXxXxXxXxXxXxXxXxX&via=${namingBasis}selfie&hashtags=BernieSanders%2Cfeelthebern%2Cbernieselfie&related=BernieSanders`; // !!!!!
   const assetUrlPrefix = 'http://s3-us-west-1.amazonaws.com/bernieapp/'
   const fgImagePrefix = `${assetUrlPrefix}decorations/`;
@@ -87,6 +89,7 @@ function makeProfileFrameConstants(namingBasis,isUrlRoot) {
     appNameSpace,
     APPNAMESPACE,
     urlAppNameSpace,
+    urlAppNameSpaceNoSlash,
     tweetUrl,
     fgImagePrefix,
     bgImagePrefix,

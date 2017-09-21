@@ -56,7 +56,7 @@ const geoPathFrag =
 const routeModes = [
   {
     key: 'H3LIKE',
-    getUrlStart: (appNameSpace, prepend) => {
+    getUrlStart: (prepend) => {
       return `${prepend}/:fgSrcKey(${standardModesRegexArrayString})/:bgSrcKey/${geoPathFrag}`;
     },
     match: payload => {
@@ -70,7 +70,7 @@ const routeModes = [
   },
   {
     key: 'UT',
-    getUrlStart: (appNameSpace, prepend) => {
+    getUrlStart: (prepend) => {
       return `${prepend}/ut/:bgSrcKey/${geoPathFrag}/:fgSrcKey`;
     },
     match: payload => {
@@ -151,7 +151,6 @@ export default function(constants) {
   routeModes.forEach(homeLayoutPath => {
     const key = homeLayoutPath.key;
     const urlStart = homeLayoutPath.getUrlStart(
-      constants.appNameSpace,
       `/:appNameSpace(${constants.appNameSpace})`
       // constants.isUrlRoot ? `/:appNameSpace(qqq)` : `/:appNameSpace(${constants.appNameSpace})`
     );
