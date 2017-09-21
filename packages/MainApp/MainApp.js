@@ -8,7 +8,7 @@ import './reset.css';
 function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
-function makeProfileFrameConstants(namingBasis) {
+function makeProfileFrameConstants(namingBasis,isUrlRoot) {
   const NamingBasis = capitalizeFirstLetter(namingBasis);
   const appNameSpace = namingBasis;
   const APPNAMESPACE = namingBasis.toUpperCase();
@@ -83,6 +83,7 @@ function makeProfileFrameConstants(namingBasis) {
 
 
   return {
+    isUrlRoot,
     appNameSpace,
     APPNAMESPACE,
     urlAppNameSpace,
@@ -117,6 +118,7 @@ function makeProfileFrameConstants(namingBasis) {
 
 }
 
+integrateBernie(makeProfileFrameConstants('bernie',true));
 integrateBernie(makeProfileFrameConstants('boomer'));
 integrateBernie(makeProfileFrameConstants('behemoth'));
 integrateToDoApp();

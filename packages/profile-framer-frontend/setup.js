@@ -56,8 +56,8 @@ const geoPathFrag =
 const routeModes = [
   {
     key: 'H3LIKE',
-    getUrlStart: appNameSpace => {
-      return `/:appNameSpace(${appNameSpace})/:fgSrcKey(${standardModesRegexArrayString})/:bgSrcKey/${geoPathFrag}`;
+    getUrlStart: (appNameSpace, prepend) => {
+      return `${prepend}/:fgSrcKey(${standardModesRegexArrayString})/:bgSrcKey/${geoPathFrag}`;
     },
     match: payload => {
       return (
@@ -70,8 +70,8 @@ const routeModes = [
   },
   {
     key: 'UT',
-    getUrlStart: appNameSpace => {
-      return `/:appNameSpace(${appNameSpace})/ut/:bgSrcKey/${geoPathFrag}/:fgSrcKey`;
+    getUrlStart: (appNameSpace, prepend) => {
+      return `${prepend}/ut/:bgSrcKey/${geoPathFrag}/:fgSrcKey`;
     },
     match: payload => {
       return payload.fgSrcKey;
@@ -150,7 +150,11 @@ export default function(constants) {
   const screenComponentMap = {};
   routeModes.forEach(homeLayoutPath => {
     const key = homeLayoutPath.key;
-    const urlStart = homeLayoutPath.getUrlStart(constants.appNameSpace);
+    const urlStart = homeLayoutPath.getUrlStart(
+      constants.appNameSpace,
+      `/:appNameSpace(${constants.appNameSpace})`
+      // constants.isUrlRoot ? `/:appNameSpace(qqq)` : `/:appNameSpace(${constants.appNameSpace})`
+    );
     // const urlStart = routeModes[key];
     routes.forEach(route => {
       let urlEnd = route.urlEnd;

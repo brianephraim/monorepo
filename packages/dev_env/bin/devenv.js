@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/env node --trace-warnings
 // --inspect=9224
 var argv = require('yargs').argv;
 const isWithinMonoRepo = (dirname) => {

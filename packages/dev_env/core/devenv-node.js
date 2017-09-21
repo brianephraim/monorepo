@@ -37,7 +37,8 @@ if (isWithinMonoRepo(__dirname)) {
     ' && ',
     // Compile the file as the temp file we created.
     // `${babelNodePath} --inspect=9225 ${devEnvCommandLinePath} --entry=${toCompile} --output=$TMPFILE`,
-    `${babelNodePath} ${devEnvCommandLinePath} --entry=${toCompile} --output=$TMPFILE`,
+    // `${babelNodePath} ${devEnvCommandLinePath} --entry=${toCompile} --output=$TMPFILE`,
+    `${babelNodePath} --trace-warnings ${devEnvCommandLinePath} --entry=${toCompile} --output=$TMPFILE`,
     ')',
     ' && ',
     // We are manually setting the node path because
