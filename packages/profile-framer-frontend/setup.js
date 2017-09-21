@@ -261,8 +261,7 @@ export default function(constants) {
   const nameSpacedResponsiveStatusesDictReducer = makeNameSpacedResponsiveStatusesDictReducer(
     () => {
       return constants.appNameSpace;
-    },
-    'homeResponsive'
+    }
   );
 
   const reducers = combineReducers({

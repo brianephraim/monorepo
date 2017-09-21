@@ -5,9 +5,9 @@ export function makeNamespacedReduxConnectHocForResponsiveStatusesDict(appNameSp
   return connect(
     (state, props /* , { params }*/) => {
       
-      appNameSpace = typeof appNameSpace === 'function' ? appNameSpace(props) : appNameSpace;
+      const refinedAppNameSpace = typeof appNameSpace === 'function' ? appNameSpace(props) : appNameSpace;
       return {
-        responsiveStatusesDict: state[appNameSpace].responsiveStatusesDict,
+        responsiveStatusesDict: state[refinedAppNameSpace].responsiveStatusesDict,
       };
     },
     null,
