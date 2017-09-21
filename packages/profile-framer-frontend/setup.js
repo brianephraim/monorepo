@@ -151,8 +151,7 @@ export default function(constants) {
   routeModes.forEach(homeLayoutPath => {
     const key = homeLayoutPath.key;
     const urlStart = homeLayoutPath.getUrlStart(
-      `/:appNameSpace(${constants.appNameSpace})`
-      // constants.isUrlRoot ? `/:appNameSpace(qqq)` : `/:appNameSpace(${constants.appNameSpace})`
+      !constants.urlAppNameSpace ? '' : `/:appNameSpace(${constants.appNameSpace})`
     );
     // const urlStart = routeModes[key];
     routes.forEach(route => {
@@ -166,7 +165,7 @@ export default function(constants) {
     });
   });
   const appRootActionType = `APP_ROOT_${constants.urlAppNameSpace.toUpperCase()}`;
-  routesMap[appRootActionType] = constants.urlAppNameSpace || '/';
+  routesMap[appRootActionType] = !constants.urlAppNameSpace ? '/' : constants.urlAppNameSpace;
   screenNameMap[appRootActionType] = 'HOME_PROFILE_FRAMER';
 
   function filterReducers(reducers, check) {
@@ -232,13 +231,28 @@ export default function(constants) {
     //   }
     // },
     activeAppScreen: (state = 'HOME_PROFILE_FRAMER', action) => {
+      /* beautify ignore:start */
       if (
-        (routesMap[action.type] &&
-          action.payload.appNameSpace === constants.appNameSpace) ||
-        action.type === appRootActionType // in this case, there is no payload... like when the url is just /bernie
+        // in case profile-framer is root url
+        (
+          routesMap[action.type] &&
+          !action.payload.appNameSpace && !constants.urlAppNameSpace
+        )
+        ||
+        // normal case
+        (
+          routesMap[action.type] &&
+          action.payload.appNameSpace === constants.appNameSpace
+        )
+        ||
+        // in this case, there is no payload... like when the url is just /bernie
+        (
+          action.type === appRootActionType
+        ) 
       ) {
         return screenNameMap[action.type];
       }
+      /* beautify ignore:end */
       return state;
     },
     facebookPhotos: (state = [], action) => {
@@ -266,14 +280,15 @@ export default function(constants) {
       return constants.appNameSpace;
     }
   );
-
-  const reducers = combineReducers({
-    ...filterReducers(reducersToFocus, (state, action) => {
+  const filteredReducers = filterReducers(reducersToFocus, (state, action) => {
       return (
+        (action.appNameSpace === 'rootProfileFramer' && !constants.urlAppNameSpace) ||
         action.appNameSpace === constants.appNameSpace ||
         action.type === appRootActionType
       );
-    }),
+  })
+  const reducers = combineReducers({
+    ...filteredReducers,
     responsiveStatusesDict: nameSpacedResponsiveStatusesDictReducer,
     constants: (state = {}, action) => {
       if (action.type === 'SET_CONSTANTS') {

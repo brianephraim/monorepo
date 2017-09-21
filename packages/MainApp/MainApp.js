@@ -11,14 +11,8 @@ function capitalizeFirstLetter(string) {
 function makeProfileFrameConstants(namingBasis,isUrlRoot) {
   // namingBasis = isUrlRoot ? 'qqq' : namingBasis;
   
-  const appNameSpace = isUrlRoot ? 'qqq' : namingBasis;
-  // const appNameSpace = namingBasis;
-  const urlAppNameSpaceNoSlash = isUrlRoot ? 'qqq' : namingBasis;
-  const urlAppNameSpace = `/${isUrlRoot ? 'qqq' : urlAppNameSpaceNoSlash}`;
-  
-  
-
-
+  const appNameSpace = namingBasis;
+  const urlAppNameSpace = `/${isUrlRoot ? '' : namingBasis}`;
 
   const tweetUrl = `https://twitter.com/intent/tweet?url=xXxXxXxXxXxXxXxXxXxXxXxX&via=${namingBasis}selfie&hashtags=BernieSanders%2Cfeelthebern%2Cbernieselfie&related=BernieSanders`; // !!!!!
   const assetUrlPrefix = 'http://s3-us-west-1.amazonaws.com/bernieapp/'
@@ -95,7 +89,6 @@ function makeProfileFrameConstants(namingBasis,isUrlRoot) {
     isUrlRoot,
     appNameSpace,
     urlAppNameSpace,
-    urlAppNameSpaceNoSlash,
     tweetUrl,
     fgImagePrefix,
     bgImagePrefix,
