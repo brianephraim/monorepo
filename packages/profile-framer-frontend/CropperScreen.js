@@ -3,19 +3,25 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import whitelistFilterProps from '@defualt/whitelist-filter-props';
 import windowSizer from '@defualt/window-sizer';
-// import ReactCropperEnhanced from './ReactCropperEnhanced';
+
 import styleConstants from './style-constants';
 import ControlsBar, { controlsBarHeights } from './ControlsBar';
 import CompletionInterface, {
   completionInterfaceHeights,
 } from './CompletionInterface';
+import 'cropperjs/dist/cropper.css';
 
 const isTouchDevice = root.document && root.document.documentElement && 'ontouchstart' in document.documentElement;
+
+const hasDom = typeof window !== 'undefined';
+
+let ReactCropperEnhanced = (<p>cropper loading...</p>);
 
 class CropperScreen extends Component {
   constructor(props) {
     super();
     this.state = {
+      cropperLibraryReady: false,
       foreground: {
         ...props.foreground,
       },
@@ -38,16 +44,27 @@ class CropperScreen extends Component {
   }
 
   componentWillMount() {
-    // When window resizes, flicker cropperExists.
-    // cropperExists determines whether or not <ReactCropper> renders.
-    // So <ReactCropper> will unmount then mount another instance.
-    // This lets us reset the cropper for each resize.
-    this.setState({ windowHeight: windowSizer.dimensions.height });
-    this.setState({ windowWidth: windowSizer.dimensions.width });
-    this.removeWindowSizerCb = windowSizer.addCb(() => {
+    if (typeof window !== 'undefined') {
       this.setState({ windowHeight: windowSizer.dimensions.height });
       this.setState({ windowWidth: windowSizer.dimensions.width });
-    });
+      this.removeWindowSizerCb = windowSizer.addCb(() => {
+        this.setState({ windowHeight: windowSizer.dimensions.height });
+        this.setState({ windowWidth: windowSizer.dimensions.width });
+      });
+      import('./ReactCropperEnhanced').then((module) => {
+        console.log('@@@@ cropper lib loaded');
+        ReactCropperEnhanced = module.default;
+        
+        this.setState({ cropperLibraryReady: true }, () => {
+        
+          // When window resizes, flicker cropperExists.
+          // cropperExists determines whether or not <ReactCropper> renders.
+          // So <ReactCropper> will unmount then mount another instance.
+          // This lets us reset the cropper for each resize.
+          
+        });
+      });
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -81,6 +98,10 @@ class CropperScreen extends Component {
   }
 
   render() {
+    if (!this.state.cropperLibraryReady) {
+      return (<p>Cropper Loading</p>);
+    }
+
     const isShort = this.state.windowWidth <= styleConstants.breakpoints.shrink;
     const isShorter =
       this.state.windowWidth <= styleConstants.breakpoints.compact;
@@ -151,7 +172,7 @@ class CropperScreen extends Component {
       <div>
         <ControlsBar windowWidth={this.state.windowWidth} />
         <div className="cropContainer" style={styles.cropContainer}>
-          <p>ReactCropperEnhanced</p>{ /* <ReactCropperEnhanced {...reactCropperOptions} /> */}
+          <ReactCropperEnhanced {...reactCropperOptions} />
         </div>
         <CompletionInterface
           useClickHandledButton={this.props.useClickHandledButton}

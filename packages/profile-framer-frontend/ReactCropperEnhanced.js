@@ -4,7 +4,6 @@ import ReactCropper from 'react-cropper';
 import windowSizer from '@defualt/window-sizer';
 import vanilla from '@defualt/vanilla';
 import bindHere from '@defualt/bind_here';
-import 'cropperjs/dist/cropper.css';
 import './cropperLibMonkeyPatch';
 
 // React-Cropper is a react wrapper around cropperjs.
