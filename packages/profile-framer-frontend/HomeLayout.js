@@ -317,6 +317,11 @@ const StyledAppBody = styled.div`
 // (modal was outside .homeLayout)
 // It was also used to display:none the home screen when modal appears.
 function HomeLayout(props) {
+  const singleCol = (
+    props.responsiveStatusesDict.homeResponsive &&
+    props.responsiveStatusesDict.homeResponsive &&
+    props.responsiveStatusesDict.homeResponsive.singleCol
+  );
   return (
     <StyledHomeLayout className="homeLayout">
       {/* The wrapping element below distinguishes the photo-plus-buttonGroupComponents from disclaimer.*/}
@@ -333,13 +338,19 @@ function HomeLayout(props) {
               <ImportButtonGroup section="photo" {...props} />
             </StyledSection>
             <StyledSection section="design">
-              <EditBrushButtonGroup section="design" {...props} />
-              <EditSizeButtonGroup section="design" {...props} />
-              <EditDesignButtonGroup
-                section="design"
-                layoutVariation="vertical"
-                {...props}
-              />
+              {
+                singleCol &&  <EditBrushButtonGroup section="design" {...props} />
+              }
+              {
+                !singleCol && <EditSizeButtonGroup section="design" {...props} />
+              }
+              {
+                !singleCol && (<EditDesignButtonGroup
+                  section="design"
+                  layoutVariation="vertical"
+                  {...props}
+                />)
+              }              
             </StyledSection>
           </AppBusiness>
         </StyledAppBody>
@@ -349,5 +360,10 @@ function HomeLayout(props) {
   );
 }
 
-export default ResponsiveReduxMasterHOC(HomeLayout, 'homeResponsive');
+
+export default ResponsiveReduxMasterHOC(appConnect((appState) => {
+  return {
+    responsiveStatusesDict: appState.responsiveStatusesDict
+  };
+})(HomeLayout), 'homeResponsive');
 // export default HomeLayout;

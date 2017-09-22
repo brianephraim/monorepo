@@ -34,26 +34,6 @@ const StyledSubsection = ConnectResponsiveStatusesDictHOC(styled.div`
         float:none;
         margin:0 auto;
       `;
-      if (
-        props.themex === 'editSubsection' ||
-        props.themex === 'designSubsection'
-      ) {
-        toReturn += `display:none;`;
-      }
-    }
-
-    if (props.themex === 'microSubsection') {
-      toReturn += `
-        display:none;
-      `;
-      if (
-        !props.isModal &&
-        props.responsiveStatusesDict.homeResponsive.singleCol
-      ) {
-        toReturn += `
-          display:block;
-        `;
-      }
     }
     return toReturn;
   }} ${props => {
@@ -115,7 +95,17 @@ const StyledHeaderLink = styled(AppReduxLink)`
     return '';
   }}
 `;
-const StyledHeaderDiv = styled.div`${headerStyle};`;
+const StyledHeaderDiv = styled.div`
+  ${headerStyle}
+  ${props => {
+    if (props.layoutVariation === 'header') {
+      return `
+        color: ${styleConstants.colors.red};
+      `;
+    }
+    return '';
+  }}
+`;
 
 const StyledMicroText = ConnectResponsiveStatusesDictHOC(styled.div`
   display: none;
@@ -124,7 +114,6 @@ const StyledMicroText = ConnectResponsiveStatusesDictHOC(styled.div`
   padding-top: ${styleConstants.appPad / 2}em;
   padding-bottom: ${styleConstants.appPad}em;
   ${props => {
-    // singleColHome
     if (
       !props.isModal &&
       props.responsiveStatusesDict.homeResponsive &&
@@ -142,7 +131,6 @@ const StyledText = ConnectResponsiveStatusesDictHOC(styled.div`
   padding-left: ${styleConstants.appPad / 2}em;
   overflow: hidden;
   ${props => {
-    // singleColHome
     if (
       !props.isModal &&
       props.responsiveStatusesDict.homeResponsive &&
@@ -331,6 +319,9 @@ let AppButtonGroup = class extends Component {
       >
         {!this.props.hideExtras && <ComponentPrepended {...this.props} />}
         {buttons.map(btnDetails => {
+          if (btnDetails.hideWhen && btnDetails.hideWhen(this.props)) {
+            return null
+          }
           let btnInner;
           if (btnDetails.isUploadBackgroundSetter) {
             btnInner = (
@@ -467,6 +458,7 @@ AppButtonGroup.defaultProps = {
 AppButtonGroup = appConnect((appState /* , { params }*/) => {
   return {
     compositeImageData: appState.compositeImageData,
+    responsiveStatusesDict:appState.responsiveStatusesDict,
   };
 })(AppButtonGroup);
 
@@ -631,6 +623,9 @@ const EditDesignButtonGroup = makeButtonGroupComponent({
       text: 'upload a template',
       isUploadBackgroundSetter: true,
       isTemplateUploader: true,
+      hideWhen: ({layoutVariation}) => {
+        return layoutVariation === 'header';
+      }
     },
   ],
 });
@@ -644,7 +639,6 @@ const ImageNeighborCompensator = styled.div`
 
 const GetPhotoMinimalButtonGroup = makeButtonGroupComponent({
   urlFragment: 'editDesign',
-  themex: 'designSubsection',
   // shortHeadline: 'edit',
   headline: '\u00A0',
   // icon: 'brush',
