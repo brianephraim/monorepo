@@ -51,7 +51,7 @@ function asyncInit() {
           cookie: true, // enable cookies to allow the server to access
           // the session
           xfbml: true, // parse social plugins on this page
-          version: 'v2.2', // use version 2.2
+          version: 'v2.10', // use version 2.2
         });
 
         resolve();
@@ -213,49 +213,56 @@ class FbManager {
     //   bs.loader.unload();
     // })
   }
-  postToWall() {
+  postToWall(url) {
     bs.loader.load();
     return this.asyncInitPromise
       .then(() => {
         FB().ui(
           {
             method: 'share',
-            href: bs.util.getPageUrl(),
+            href: url,
           },
           () => {
             console.log('DONE');
           }
         );
       })
-      .always(() => {
-        bs.loader.unload();
-      });
+      // .always(() => {
+      //   bs.loader.unload();
+      // });
   }
   exportStuff(url) {
     bs.loader.load();
     this.attemptedAuth = false;
-    this.urlToExport = url;
     return (
       this.asyncInitPromise
         .then(login)
         .then(getMyInfo)
-        .then(this.uploadPhoto)
+        .then(this.uploadPhoto(url))
         // .fail(statusChangeCallback)
-        .then(getMyInfo)
-        .then(this.uploadPhoto)
-        .catch(() => {
+        // .then(getMyInfo)
+        // .then(this.uploadPhoto)
+        .then((x) => {
+          console.log('SUCCESS',x)
+          return x;
+        })
+        .catch((x) => {
+          console.log('ERROR',x)
           alert('sorry, that did not work');
         })
-        .always(() => {
-          this.urlToExport = null;
-          bs.loader.unload();
-        })
+        // .always(() => {
+        //   this.urlToExport = null;
+        //   bs.loader.unload();
+        // })
     );
   }
-  uploadPhoto(response) {
-    return fbApi(`/${response.id}/photos`, 'post', {
-      url: this.urlToExport,
-    });
+  uploadPhoto(url) {
+    return (response) => {
+      console.log('url',url);
+      return fbApi(`/${response.id}/photos`, 'post', {
+        url: url.replace('localhost.bernieselfie.com:3000','www.bernieselfie.com'),
+      });
+    };
   }
 }
 
@@ -295,3 +302,6 @@ export function makeActionFetchPhotos(ownProps) {
     });
   };
 }
+const postToWall = fbManager.postToWall.bind(fbManager);
+const exportStuff = fbManager.exportStuff.bind(fbManager);
+export {postToWall,exportStuff}

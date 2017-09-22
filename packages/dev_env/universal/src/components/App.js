@@ -66,6 +66,7 @@ let DemoWrapper = ({ page, direction, location, children }) => {
       >
         <Transition key={page}>
           {children}
+          <DevTools />
         </Transition>
       </TransitionGroup>
     </div>
@@ -105,7 +106,6 @@ export default (props) =>
     <div>
       <HeadStuff />
       <Switcher />
-      <DevTools />
     </div>
   </Provider>
 

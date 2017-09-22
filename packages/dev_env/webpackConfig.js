@@ -313,7 +313,7 @@ function generateConfigJson(options = {}) {
             [
               {
                 test: /\.css$/,
-                // exclude: /node_modules/,
+                exclude: /node_modules/,
                 use: {
                   loader: 'css-loader/locals',
                   options: {
@@ -324,7 +324,7 @@ function generateConfigJson(options = {}) {
               },
               {
                 test: /\.scss$/,
-                // exclude: /node_modules/,
+                exclude: /node_modules/,
                 use: [
                   'css-loader?sourceMap',
                   {

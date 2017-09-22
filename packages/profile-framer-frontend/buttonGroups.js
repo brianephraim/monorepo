@@ -15,6 +15,8 @@ import ImagePickerTemplate from './ImagePickerTemplate';
 import ModalScreen from './ModalScreen';
 import setBackgroundHoc from './setBackgroundHoc';
 import ancestorConstantsHoc from './ancestorConstantsHoc';
+import { postToWall, exportStuff } from './fb';
+import { formUrl } from './deriveUrlInfo';
 
 import './app.scss';
 
@@ -475,8 +477,11 @@ function makeButtonGroupComponent(
 }*/
 ) {
   function ButtonGroup(props) {
+    const shareUrl = `${props.serverClientOrigin}${props.constants.urlAppNameSpace}/${formUrl(props.compositeImageData)}`;
+    const imageUrl = `${props.serverClientOrigin}${props.compositeImageUrl}`
+
     options =
-      typeof options === 'function' ? options(props.constants) : options;
+      typeof options === 'function' ? options(props.constants,shareUrl, imageUrl) : options;
     const ButtonGroup = <AppButtonGroup {...props} {...options} />;
     if (props.isModal) {
       return (
@@ -495,7 +500,22 @@ function makeButtonGroupComponent(
     isModal: false,
   };
 
-  return ancestorConstantsHoc(ButtonGroup);
+  return connect(
+    (state) => {
+      return {
+        serverClientUrl: state.serverClientUrl,
+        serverClientOrigin: state.serverClientOrigin,
+      };
+    }
+  )(appConnect(
+    (appState) => {
+      return {
+        compositeImageData: appState.compositeImageData,
+        compositeImageUrl: appState.compositeImageData.compositeImageUrl,
+        constants: appState.constants
+      };
+    }
+  )(ButtonGroup));
 }
 
 const ImportButtonGroup = makeButtonGroupComponent({
@@ -523,7 +543,7 @@ const ImportButtonGroup = makeButtonGroupComponent({
 });
 buttonGroupComponents.import = ImportButtonGroup;
 
-const ShareButtonGroup = makeButtonGroupComponent(constants => {
+const ShareButtonGroup = makeButtonGroupComponent((constants, shareUrl, imageUrl) => {
   return {
     urlFragment: 'share',
     headline: 'Share this via:',
@@ -532,9 +552,19 @@ const ShareButtonGroup = makeButtonGroupComponent(constants => {
     buttons: [
       {
         text: 'Facebook photo',
+        // postToWall, exportStuff
+        onClick: () => {
+          console.log('CLICK fb add photo',imageUrl)
+          exportStuff(imageUrl);
+        },
       },
       {
         text: 'Facebook post',
+        onClick: () => {
+          console.log('CLICK fb post')
+          console.log('shareUrl',shareUrl);
+          postToWall(shareUrl);
+        },
       },
       {
         text: 'Tweet',
@@ -654,7 +684,7 @@ ButtonGroupFeaturedRouteScreen.propTypes = {
 ButtonGroupFeaturedRouteScreen.defaultProps = {
   dynamicScreen: '',
 };
-ButtonGroupFeaturedRouteScreen = connect((state /* , { params }*/) => {
+ButtonGroupFeaturedRouteScreen = connect((state) => {
   return {
     dynamicScreen: state.location.payload.dynamicScreen,
   };

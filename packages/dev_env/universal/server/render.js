@@ -139,7 +139,6 @@ export default ({ clientStats }) => async (req, res, next) => {
       <html>
         <head>
           <meta charset="utf-8">
-          <title>redux-first-router-demo</title>
           ${helmet.title.toString()}
           ${helmet.meta.toString()}
           ${helmet.link.toString()}
