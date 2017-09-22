@@ -61,6 +61,7 @@ export default CompletionInterface;
 
 const completionInterfaceHeights = {
   normal: 128,
+  shortVertical: 88,
   shrink: 88,
   compact: 88,
 };

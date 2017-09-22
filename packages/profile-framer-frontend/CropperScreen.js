@@ -102,7 +102,7 @@ class CropperScreen extends Component {
       return (<p>Cropper Loading</p>);
     }
 
-    const isShort = this.state.windowWidth <= styleConstants.breakpoints.shrink;
+    const isShort = this.state.windowHeight <= styleConstants.breakpoints.shortVertical || this.state.windowWidth <= styleConstants.breakpoints.shrink;
     const isShorter =
       this.state.windowWidth <= styleConstants.breakpoints.compact;
 
