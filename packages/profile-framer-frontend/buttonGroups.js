@@ -578,7 +578,7 @@ ImagePickerTemplateConfigured.defaultProps = {
 
 console.log('need to modify design when full screen mode');
 const EditDesignButtonGroup = makeButtonGroupComponent({
-  urlFragment: 'editDesign',
+  headerButtonActionType: 'SELECT_TEMPLATE',
   themex: 'designSubsection',
   shortHeadline: 'edit',
   headline: 'Change design:',

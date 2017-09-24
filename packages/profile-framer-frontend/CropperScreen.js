@@ -170,7 +170,8 @@ class CropperScreen extends Component {
     };
     return (
       <div>
-        <ControlsBar windowWidth={this.state.windowWidth} />
+        {!this.props.hideControlsBar && <ControlsBar windowWidth={this.state.windowWidth} />}
+        {this.props.hideControlsBar && <div style={{height: '4em'}} />}
         <div className="cropContainer" style={styles.cropContainer}>
           <ReactCropperEnhanced {...reactCropperOptions} />
         </div>
@@ -185,6 +186,7 @@ class CropperScreen extends Component {
   }
 }
 CropperScreen.propTypes = {
+  hideControlsBar:PropTypes.bool,
   useClickHandledButton:PropTypes.bool,
   defaultGeo:PropTypes.bool,
   hideForeground:PropTypes.bool,
@@ -194,6 +196,7 @@ CropperScreen.propTypes = {
   publishTemplateCrop: PropTypes.func.isRequired,
 };
 CropperScreen.defaultProps = {
+  hideControlsBar:false,
   useClickHandledButton:false,
   defaultGeo: false,
   hideForeground:false,
