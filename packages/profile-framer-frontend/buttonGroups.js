@@ -17,18 +17,18 @@ import setBackgroundHoc from './setBackgroundHoc';
 import ancestorConstantsHoc from './ancestorConstantsHoc';
 import { postToWall, exportStuff } from './fb';
 import { formUrl } from './deriveUrlInfo';
+import UploadCompositeImageSetter from './UploadCompositeImageSetter';
 
 import './app.scss';
-
+//  isSingleButton={this.props.isSingleButton}
+// StyledSubsection,StyledIconWrapper,StyledMicroText,StyledButtonGroup,StyledButtonGroupButtons
 const StyledSubsection = ConnectResponsiveStatusesDictHOC(styled.div`
   padding-bottom: ${styleConstants.appPad}em;
   ${props => {
     let toReturn = '';
     // singleColHome
     if (
-      !props.isModal &&
-      props.responsiveStatusesDict.homeResponsive &&
-      props.responsiveStatusesDict.homeResponsive.singleCol
+      props.isSingleButton
     ) {
       toReturn += `
         float:none;
@@ -62,9 +62,7 @@ const StyledIconWrapper = ConnectResponsiveStatusesDictHOC(styled.div`
   ${props => {
     // singleColHome
     if (
-      !props.isModal &&
-      props.responsiveStatusesDict.homeResponsive &&
-      props.responsiveStatusesDict.homeResponsive.singleCol
+      props.isSingleButton
     ) {
       return `
         float:none;
@@ -115,9 +113,7 @@ const StyledMicroText = ConnectResponsiveStatusesDictHOC(styled.div`
   padding-bottom: ${styleConstants.appPad}em;
   ${props => {
     if (
-      !props.isModal &&
-      props.responsiveStatusesDict.homeResponsive &&
-      props.responsiveStatusesDict.homeResponsive.singleCol
+      props.isSingleButton
     ) {
       return `
         display:block;
@@ -132,9 +128,7 @@ const StyledText = ConnectResponsiveStatusesDictHOC(styled.div`
   overflow: hidden;
   ${props => {
     if (
-      !props.isModal &&
-      props.responsiveStatusesDict.homeResponsive &&
-      props.responsiveStatusesDict.homeResponsive.singleCol
+      props.isSingleButton
     ) {
       return `
         width:0;
@@ -145,7 +139,6 @@ const StyledText = ConnectResponsiveStatusesDictHOC(styled.div`
     return '';
   }};
 `);
-
 const StyledButtonGroup = ConnectResponsiveStatusesDictHOC(styled.div`
   overflow:hidden;
   padding: ${styleConstants.appPad /
@@ -153,9 +146,7 @@ const StyledButtonGroup = ConnectResponsiveStatusesDictHOC(styled.div`
   ${props => {
     // singleColHome
     if (
-      !props.isModal &&
-      props.responsiveStatusesDict.homeResponsive &&
-      props.responsiveStatusesDict.homeResponsive.singleCol
+      props.isSingleButton
     ) {
       return `
         padding: ${styleConstants.appPad / 2}em 0 0 0;
@@ -187,14 +178,13 @@ const StyledButtonGroup = ConnectResponsiveStatusesDictHOC(styled.div`
   noLeftPadding
 `);
 
+
 const StyledButtonGroupButtons = ConnectResponsiveStatusesDictHOC(styled.div`
   ${props => {
     // singleColHome
 
     if (
-      !props.isModal &&
-      props.responsiveStatusesDict.homeResponsive &&
-      props.responsiveStatusesDict.homeResponsive.singleCol
+      props.isSingleButton
     ) {
       return `
         display:none;
@@ -249,31 +239,7 @@ const StyledButtonInnerSpan = styled.span`
       .white};
 `;
 
-let UploadBackgroundSetter = props => {
-  const onSuccess = props.isTemplateUploader ? props.setBackgroundTemplateUploader : props.setBackground;
-  return (
-    <Upload
-      onSuccess={onSuccess}
-      backendApiPrefix={props.constants.backendApiPrefix}
-    >
-      {props.children}
-    </Upload>
-  );
-};
-UploadBackgroundSetter.propTypes = {
-  isTemplateUploader: PropTypes.bool,
-  setBackground: PropTypes.func.isRequired,
-  setBackgroundTemplateUploader: PropTypes.func.isRequired,
-  constants: PropTypes.object.isRequired,
-  children: PropTypes.node,
-};
-UploadBackgroundSetter.defaultProps = {
-  isTemplateUploader: false,
-  children: null,
-};
-UploadBackgroundSetter = ancestorConstantsHoc(
-  setBackgroundHoc(UploadBackgroundSetter)
-);
+
 
 let AppButtonGroup = class extends Component {
   constructor() {
@@ -284,7 +250,7 @@ let AppButtonGroup = class extends Component {
     const icon =
       this.props.icon &&
       !this.props.hideExtras &&
-      <StyledIconWrapper isModal={this.props.isModal}>
+      <StyledIconWrapper isModal={this.props.isModal} isSingleButton={this.props.isSingleButton}>
         <StyledIcon className="material-icons" isModal={this.props.isModal}>
           {this.props.icon}
         </StyledIcon>
@@ -292,7 +258,7 @@ let AppButtonGroup = class extends Component {
 
     const shortHeadline =
       this.props.shortHeadline &&
-      <StyledMicroText isModal={this.props.isModal}>
+      <StyledMicroText isModal={this.props.isModal} isSingleButton={this.props.isSingleButton}>
         <span>
           {this.props.shortHeadline}
         </span>
@@ -302,6 +268,7 @@ let AppButtonGroup = class extends Component {
       this.props.headline &&
       !this.props.hideExtras &&
       <StyledText
+        isSingleButton={this.props.isSingleButton}
         isModal={this.props.isModal}
         layoutVariation={this.props.layoutVariation}
       >
@@ -314,6 +281,7 @@ let AppButtonGroup = class extends Component {
     const buttonComponents =
       buttons &&
       <StyledButtonGroupButtons
+        isSingleButton={this.props.isSingleButton}
         isModal={this.props.isModal}
         filter={this.props.filter}
       >
@@ -323,11 +291,11 @@ let AppButtonGroup = class extends Component {
             return null
           }
           let btnInner;
-          if (btnDetails.isUploadBackgroundSetter) {
+          if (btnDetails.isUploadCompositeImageSetter) {
             btnInner = (
-              <UploadBackgroundSetter isTemplateUploader={btnDetails.isTemplateUploader} >
+              <UploadCompositeImageSetter isTemplateUploader={btnDetails.isTemplateUploader} >
                 {btnDetails.text}
-              </UploadBackgroundSetter>
+              </UploadCompositeImageSetter>
             );
           } else if (btnDetails.aHref) {
             btnInner = (
@@ -381,6 +349,7 @@ let AppButtonGroup = class extends Component {
       </StyledButtonGroupButtons>;
     // headerButtonActionType
     const LinkOrDiv =
+      this.props.layoutVariation === 'header' ||
       this.props.compositeImageData.screen === this.props.urlFragment
         ? StyledHeaderDiv
         : StyledHeaderLink;
@@ -397,11 +366,13 @@ let AppButtonGroup = class extends Component {
         };
     return (
       <StyledSubsection
+        isSingleButton={this.props.isSingleButton}
         themex={this.props.themex}
         layoutVariation={this.props.layoutVariation}
         hasLeftBorder={this.props.hasLeftBorder}
       >
         <StyledButtonGroup
+          isSingleButton={this.props.isSingleButton}
           isModal={this.props.isModal}
           layoutVariation={this.props.layoutVariation}
           noLeftPadding={this.props.noLeftPadding}
@@ -461,6 +432,8 @@ AppButtonGroup = appConnect((appState /* , { params }*/) => {
     responsiveStatusesDict:appState.responsiveStatusesDict,
   };
 })(AppButtonGroup);
+
+export default AppButtonGroup;
 
 const buttonGroupComponents = {};
 function makeButtonGroupComponent(
@@ -522,7 +495,7 @@ const ImportButtonGroup = makeButtonGroupComponent({
     },
     {
       text: 'Camera',
-      isUploadBackgroundSetter: true,
+      isUploadCompositeImageSetter: true,
     },
     {
       text: 'URL',
@@ -568,6 +541,7 @@ const ShareButtonGroup = makeButtonGroupComponent((constants, shareUrl, imageUrl
 buttonGroupComponents.share = ShareButtonGroup;
 
 const EditBrushButtonGroup = makeButtonGroupComponent({
+  isSingleButton: true,
   headerButtonActionType: 'CROP',
   themex: 'microSubsection',
   shortHeadline: 'edit',
@@ -621,7 +595,7 @@ const EditDesignButtonGroup = makeButtonGroupComponent({
     // },
     {
       text: 'upload a template',
-      isUploadBackgroundSetter: true,
+      isUploadCompositeImageSetter: true,
       isTemplateUploader: true,
       hideWhen: ({layoutVariation}) => {
         return layoutVariation === 'header';

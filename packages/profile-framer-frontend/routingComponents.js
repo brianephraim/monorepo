@@ -1,6 +1,8 @@
 /* eslint-disable import/no-mutable-exports */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
+import styleConstants from './style-constants';
 import { appConnect } from './nameSpacedResponsive';
 import CropperScreen from './CropperScreen';
 import ImagePickerFacebook from './ImagePickerFacebook';
@@ -13,7 +15,7 @@ import './app.scss';
 import setBackgroundHoc from './setBackgroundHoc';
 import publishTemplateCropHoc from './publishTemplateCropHoc';
 import ancestorConstantsHoc from './ancestorConstantsHoc';
-
+import UploadCompositeImageSetter from './UploadCompositeImageSetter';
 
 import { formUrl } from './deriveUrlInfo';
 
@@ -40,10 +42,21 @@ export function ImagePickerFacebookWithOnClick() {
 }
 
 // ===
-
+const StyledHeaderContentWrapper = styled.div`
+  color: ${styleConstants.colors.red};
+  padding: 0 ${styleConstants.appPad}em;
+  display: inline-block;
+`;
 export function ImagePickerTemplateWithOnClick() {
+  const headerContent = (
+    <StyledHeaderContentWrapper>
+      <UploadCompositeImageSetter isTemplateUploader>
+        upload a template
+      </UploadCompositeImageSetter>
+    </StyledHeaderContentWrapper>
+  );
   return (
-    <ModalScreen hasCloseButton headerText="Pick a design">
+    <ModalScreen hasCloseButton headerText="Pick a design" headerContent={headerContent}>
       <ImagePickerTemplate />
     </ModalScreen>
   );

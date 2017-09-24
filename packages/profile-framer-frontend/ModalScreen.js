@@ -8,10 +8,10 @@ const StyledWrap = styled.div`
   color: black;
   position: absolute;
   top: 0;
-  background: red;
   height: 100%;
   width: 100%;
   z-index: 3;
+  background: ${styleConstants.colors.white};
 `;
 
 const StyledH2 = styled.h2`
@@ -24,6 +24,7 @@ export default function ModalScreen(props) {
   return (
     <StyledWrap>
       {props.hasCloseButton && <CloseButton />}
+      {props.headerContent && props.headerContent}
       {props.headerText &&
         <StyledH2>
           {props.headerText}
@@ -36,9 +37,11 @@ ModalScreen.propTypes = {
   hasCloseButton: PropTypes.bool,
   children: PropTypes.node,
   headerText: PropTypes.string,
+  headerContent: PropTypes.node,
 };
 ModalScreen.defaultProps = {
   hasCloseButton: false,
   headerText: '',
   children: null,
+  headerContent:null,
 };

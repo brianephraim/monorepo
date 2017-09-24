@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { generateGiantSquareDetails } from '@defualt/responsive';
 import { generateCompositeImgSrcUrl } from './compositeImage';
-import {
+import ButtonGroup, {
   EditDesignButtonGroup,
   EditSizeButtonGroup,
   EditBrushButtonGroup,
@@ -330,28 +330,62 @@ function HomeLayout(props) {
         <HomeLayoutHeader />
         <StyledAppBody className="app_body">
           <AppHero {...props} />
-          <AppBusiness>
-            <StyledSection section="share">
-              <ShareButtonGroup section="share" {...props} />
-            </StyledSection>
-            <StyledSection section="photo" featured>
-              <ImportButtonGroup section="photo" {...props} />
-            </StyledSection>
-            <StyledSection section="design">
-              {
-                singleCol &&  <EditBrushButtonGroup section="design" {...props} />
-              }
-              {
-                !singleCol && <EditSizeButtonGroup section="design" {...props} />
-              }
-              {
-                !singleCol && (<EditDesignButtonGroup
-                  section="design"
-                  layoutVariation="vertical"
-                  {...props}
-                />)
-              }              
-            </StyledSection>
+          <AppBusiness section="design">
+            {
+              singleCol && (
+                <div>
+                  <StyledSection section="share">
+                    <ButtonGroup
+                      isSingleButton
+                      urlFragment='share'
+                      themex='microSubsection'
+                      shortHeadline='share'
+                      icon='share'
+                    />
+                  </StyledSection>
+                  <StyledSection section="photo" featured>
+
+                    <ButtonGroup
+                      isSingleButton
+                      urlFragment='import'
+                      themex='microSubsection'
+                      shortHeadline='import'
+                      icon='photo_camera'
+                    />
+                    
+                  </StyledSection>
+                  <StyledSection section="design">
+                    <ButtonGroup
+                      isSingleButton
+                      headerButtonActionType='CROP'
+                      themex='microSubsection'
+                      shortHeadline='edit'
+                      icon='brush'
+                    />
+                  </StyledSection>
+                </div>
+              )
+            }
+            {
+              !singleCol && (
+                <div>
+                  <StyledSection section="share">
+                    <ShareButtonGroup section="share" {...props} />
+                  </StyledSection>
+                  <StyledSection section="photo" featured>
+                    <ImportButtonGroup section="photo" {...props} />
+                  </StyledSection>
+                  <StyledSection section="design">
+                    <EditSizeButtonGroup section="design" {...props} />
+                    <EditDesignButtonGroup
+                      section="design"
+                      layoutVariation="vertical"
+                      {...props}
+                    />
+                  </StyledSection>
+                </div>
+              )
+            }
           </AppBusiness>
         </StyledAppBody>
       </StyledApp>

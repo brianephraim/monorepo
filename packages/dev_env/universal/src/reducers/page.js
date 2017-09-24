@@ -16,6 +16,7 @@ const components = {
   ROOT: 'Migration',
   MIGRATION: 'Migration',
   BATTLESHIP: 'Migration',
+  TODOS: 'Migration',
   ADMIN: 'Admin',
   LOGIN: 'Login',
   [NOT_FOUND]: 'NotFound',
