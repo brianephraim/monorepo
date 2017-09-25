@@ -6,11 +6,12 @@ import { combineReducers } from 'redux';
 import { addRoutesToApp } from '@defualt/redux-routing-app-root-component';
 import { makeNameSpacedResponsiveStatusesDictReducer } from '@defualt/responsive/nameSpaceResponsive';
 
-import { generateCompositeImgSrcUrl } from './compositeImage';
+import { generateCompositeImgSrcUrl,getDefaultCompositeImageData } from './compositeImage';
 import { standardModesRegexArrayString } from './deriveUrlInfo';
 import {
   buttonGroupComponentsRegexArrayString,
   ButtonGroupFeaturedRouteScreen,
+  ImportButtonGroup
 } from './buttonGroups';
 import {
   HomeLayoutWithUploadCallback,
@@ -57,6 +58,18 @@ const routeModes = [
       return payload.fgSrcKey;
     },
   },
+  {
+    key: 'BLANK',
+    getUrlStart: (prepend) => {
+      return `${prepend}`;
+    },
+    // exclude: {
+    //   DYNAMIC: true,
+    // },
+    match: payload => {
+      return true;
+    },
+  },
 ];
 
 export function payloadRefineAction({ type, payload }, appNameSpace) {
@@ -82,12 +95,20 @@ export function payloadRefineAction({ type, payload }, appNameSpace) {
   };
 }
 
+function Privacy(){
+  return (<div><ImportButtonGroup /><p style={{fontSize: '99px'}}>PRIVAAACY</p></div>);
+}
+function Terms(){
+  return <p>TERRRMS</p>
+}
+
 const routes = [
   {
     action: 'HOME_PROFILE_FRAMER',
     urlEnd: '',
     component: HomeLayoutWithUploadCallback,
   },
+  
   {
     action: 'IMPORT_FACEBOOK',
     urlEnd: 'import-photo-from-facebook',
@@ -122,21 +143,40 @@ const routes = [
     urlEnd: `:dynamicScreen(${buttonGroupComponentsRegexArrayString})`,
     component: ButtonGroupFeaturedRouteScreen,
   },
+  {
+    action: 'PRIVACY',
+    urlEnd: 'privacy',
+    // getUrlStartOnRouteInsteadOfMore: (prepend) => {
+    //   return `${prepend}`;
+    // },
+    component: Privacy,
+  },
+  {
+    action: 'TERMS',
+    urlEnd: '',
+    component: Terms,
+  },
 ];
-
+console.log('buttonGroupComponentsRegexArrayString',buttonGroupComponentsRegexArrayString);
 export default function(constants) {
   const routesMap = {};
   const screenNameMap = {};
   const screenComponentMap = {};
-  routeModes.forEach(homeLayoutPath => {
-    const key = homeLayoutPath.key;
-    const urlStart = homeLayoutPath.getUrlStart(
-      constants.isUrlRoot ? '' : `/:appNameSpace(${constants.appNameSpace})`
-    );
+  routeModes.forEach(routeMode => {
+    const key = routeMode.key;
+    const urlPrepend = constants.isUrlRoot ? '' : `/:appNameSpace(${constants.appNameSpace})`;
+    let urlStart = routeMode.getUrlStart(urlPrepend);
     // const urlStart = routeModes[key];
     routes.forEach(route => {
+      // if (routeMode.exclude && routeMode.exclude[route.action]) {
+      //   console.log('EXCLUDED',route.action);
+      //   return;
+      // }
       let urlEnd = route.urlEnd;
       urlEnd = urlEnd ? `/${urlEnd}` : '';
+      // if (route.getUrlStartOnRouteInsteadOfMore) {
+      //   urlStart = route.getUrlStartOnRouteInsteadOfMore(urlPrepend);
+      // }
       const path = `${urlStart}${urlEnd}`;
       const routesMapKey = `${route.action}_${key}_${constants.appNameSpace.toUpperCase()}`;
       routesMap[routesMapKey] = path;
@@ -169,6 +209,9 @@ export default function(constants) {
 
   const reducersToFocus = {
     compositeImageData: (state = {}, action) => {
+      // if(action.type.indexOf('PRIVACY') !== -1) {
+      //   return state;
+      // }
       if (routesMap[action.type] || action.type === appRootActionType) {
         const compositeImageData = paramsIntoCompositeImage(
           action.payload,
@@ -177,15 +220,9 @@ export default function(constants) {
         compositeImageData.compositeImageUrl = generateCompositeImgSrcUrl(compositeImageData);
         return compositeImageData;
       }
-      switch (action.type) {
-        case 'SET_COMPOSITE_IMAGE_DATA':
-          return {
-            ...action.compositeImageData,
-            compositeImageUrl: generateCompositeImgSrcUrl(action.compositeImageData)
-          };
-        default:
-          return state;
-      }
+      const compositeImageData = getDefaultCompositeImageData(constants);
+      compositeImageData.compositeImageUrl = generateCompositeImgSrcUrl(compositeImageData);
+      return compositeImageData;
     },
     // generateCompositeImgSrcUrl
     /*
@@ -211,6 +248,7 @@ export default function(constants) {
     //   }
     // },
     activeAppScreen: (state = 'HOME_PROFILE_FRAMER', action) => {
+      console.log('!!',!!routesMap[action.type],action.type);
       /* beautify ignore:start */
       if (
         // in case profile-framer is root url
@@ -262,6 +300,7 @@ export default function(constants) {
   );
   const filteredReducers = filterReducers(reducersToFocus, (state, action) => {
       return (
+        action.type.indexOf(`_BLANK_${constants.appNameSpace.toUpperCase()}`) !== -1 ||
         (action.appNameSpace === 'rootProfileFramer' && constants.isUrlRoot) ||
         action.appNameSpace === constants.appNameSpace ||
         action.type === appRootActionType

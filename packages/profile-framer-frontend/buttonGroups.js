@@ -18,6 +18,7 @@ import ancestorConstantsHoc from './ancestorConstantsHoc';
 import { postToWall, exportStuff } from './fb';
 import { formUrl } from './deriveUrlInfo';
 import UploadCompositeImageSetter from './UploadCompositeImageSetter';
+import shareUrlHoc from './shareUrlHoc';
 
 import './app.scss';
 //  isSingleButton={this.props.isSingleButton}
@@ -435,6 +436,10 @@ AppButtonGroup = appConnect((appState /* , { params }*/) => {
 
 export default AppButtonGroup;
 
+
+
+
+
 const buttonGroupComponents = {};
 function makeButtonGroupComponent(
   options /* {
@@ -442,11 +447,10 @@ function makeButtonGroupComponent(
 }*/
 ) {
   function ButtonGroup(props) {
-    const shareUrl = `${props.serverClientOrigin}${props.constants.urlAppNameSpace}/${formUrl(props.compositeImageData)}`;
     const imageUrl = `${props.serverClientOrigin}${props.compositeImageUrl}`
 
     options =
-      typeof options === 'function' ? options(props.constants,shareUrl, imageUrl) : options;
+      typeof options === 'function' ? options(props.constants,props.shareUrl, imageUrl) : options;
     const ButtonGroup = <AppButtonGroup {...props} {...options} />;
     if (props.isModal) {
       return (
@@ -465,10 +469,9 @@ function makeButtonGroupComponent(
     isModal: false,
   };
 
-  return connect(
+  return shareUrlHoc(connect(
     (state) => {
       return {
-        serverClientUrl: state.serverClientUrl,
         serverClientOrigin: state.serverClientOrigin,
       };
     }
@@ -480,7 +483,7 @@ function makeButtonGroupComponent(
         constants: appState.constants
       };
     }
-  )(ButtonGroup));
+  )(ButtonGroup)));
 }
 
 const ImportButtonGroup = makeButtonGroupComponent({
@@ -517,23 +520,19 @@ const ShareButtonGroup = makeButtonGroupComponent((constants, shareUrl, imageUrl
     buttons: [
       {
         text: 'Facebook photo',
-        // postToWall, exportStuff
         onClick: () => {
-          console.log('CLICK fb add photo',imageUrl)
           exportStuff(imageUrl);
         },
       },
       {
         text: 'Facebook post',
         onClick: () => {
-          console.log('CLICK fb post')
-          console.log('shareUrl',shareUrl);
           postToWall(shareUrl);
         },
       },
       {
         text: 'Tweet',
-        aHref: constants.tweetUrl,
+        aHref: `https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&via=bernieselfie&hashtags=BernieSanders%2Cfeelthebern%2Cbernieselfie&related=BernieSanders`,
       },
     ],
   };

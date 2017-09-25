@@ -50,3 +50,7 @@ export function paramsIntoCompositeImage(params, constants) {
   };
   return compositeImageData;
 }
+
+export function getDefaultCompositeImageData (constants){
+  return paramsIntoCompositeImage({},constants);
+}
