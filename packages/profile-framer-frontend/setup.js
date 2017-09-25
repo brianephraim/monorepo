@@ -66,9 +66,7 @@ const routeModes = [
     getUrlStart: (prepend) => {
       return `${prepend}`;
     },
-    // exclude: {
-    //   DYNAMIC: true,
-    // },
+
     match: payload => {
       return true;
     },
@@ -157,18 +155,10 @@ export default function(constants) {
   routeModes.forEach(routeMode => {
     const key = routeMode.key;
     const urlPrepend = constants.isUrlRoot ? '' : `/:appNameSpace(${constants.appNameSpace})`;
-    let urlStart = routeMode.getUrlStart(urlPrepend);
-    // const urlStart = routeModes[key];
+    const urlStart = routeMode.getUrlStart(urlPrepend);
     routes.forEach(route => {
-      // if (routeMode.exclude && routeMode.exclude[route.action]) {
-      //   console.log('EXCLUDED',route.action);
-      //   return;
-      // }
       let urlEnd = route.urlEnd;
       urlEnd = urlEnd ? `/${urlEnd}` : '';
-      // if (route.getUrlStartOnRouteInsteadOfMore) {
-      //   urlStart = route.getUrlStartOnRouteInsteadOfMore(urlPrepend);
-      // }
       const path = `${urlStart}${urlEnd}`;
       const routesMapKey = `${route.action}_${key}_${constants.appNameSpace.toUpperCase()}`;
       routesMap[routesMapKey] = path;

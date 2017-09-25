@@ -21,8 +21,6 @@ import UploadCompositeImageSetter from './UploadCompositeImageSetter';
 import shareUrlHoc from './shareUrlHoc';
 
 import './app.scss';
-//  isSingleButton={this.props.isSingleButton}
-// StyledSubsection,StyledIconWrapper,StyledMicroText,StyledButtonGroup,StyledButtonGroupButtons
 const StyledSubsection = ConnectResponsiveStatusesDictHOC(styled.div`
   padding-bottom: ${styleConstants.appPad}em;
   ${props => {

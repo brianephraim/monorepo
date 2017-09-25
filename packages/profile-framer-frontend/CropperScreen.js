@@ -9,7 +9,6 @@ import ControlsBar, { controlsBarHeights } from './ControlsBar';
 import CompletionInterface, {
   completionInterfaceHeights,
 } from './CompletionInterface';
-// import 'cropperjs/dist/cropper.css';
 
 const isTouchDevice = root.document && root.document.documentElement && 'ontouchstart' in document.documentElement;
 

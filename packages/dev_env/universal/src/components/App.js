@@ -53,7 +53,6 @@ const UniversalComponent = universal(
 
 
 let DemoWrapper = ({ page, direction, location, children }) => {
-  console.log('location.pathname',location.pathname)
   if (location.pathname.indexOf('/willard') !== 0) {
     return children;
   }

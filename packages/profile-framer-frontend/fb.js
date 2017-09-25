@@ -6,11 +6,6 @@ import deferred from './deferred';
 // window.FB is initially undefined, because lazy-loaded facebook SDK defines FB.
 // So references to FB are via this getter.
 function FB() {
-  // if (typeof window === 'undefined') {
-  //   return {
-
-  //   };
-  // }
   return root.FB;
 }
 

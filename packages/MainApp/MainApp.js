@@ -8,9 +8,7 @@ import './reset.css';
 function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
-function makeProfileFrameConstants(namingBasis,isUrlRoot) {
-  // namingBasis = isUrlRoot ? 'qqq' : namingBasis;
-  
+function makeProfileFrameConstants(namingBasis,isUrlRoot) {  
   const appNameSpace = namingBasis;
   const urlAppNameSpace = isUrlRoot ? '' : `/${namingBasis}`;
 
@@ -49,41 +47,6 @@ function makeProfileFrameConstants(namingBasis,isUrlRoot) {
   const headMetaTwitterTitle = `My selfie for ${NamingBasis}`;
   const headMetaTwitterDescription = headMetaOgDescription;
   const googleFonts = 'Fjalla+One|Cantarell';
-/*
-  <meta charSet="utf-8" />
-  <meta httpEquiv="x-ua-compatible" content="ie=edge" />
-  <meta name="viewport" content="initial-scale=1, maximum-scale=1" />
-  <title>Bernie Selfie</title>
-  <meta name="description" content="Support Bernie Sanders 2016 with your selfie photo" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  
-  <link href='https://fonts.googleapis.com/css?family=Fjalla+One|Cantarell' rel='stylesheet' type='text/css' />
-  
-  <link rel="stylesheet" href="/css/cropper.css" />
-  <link rel="stylesheet" href="/css/reset.css" />
-  <link rel="stylesheet" href="/css/sass-generated.css" />
-
-  <meta property="og:title" content="My selfie for Bernie" />
-  <meta property="og:site_name" content="BernieSelfie" />
-  <meta property="og:url" content="http://www.bernieselfie.com/h3/zephyr1500589750771/237_19_218_218_553_369/" />
-  <meta property="og:description" content="BernieSelfie.com uses your selfie to support Bernie Sanders for President.  Save the generated image and share to Facebook, Twitter, and Instagram." />
-  <meta property="fb:app_id" content="1633460223596071" />
-  <meta property="og:type" content="profile" />
-  <meta property="og:locale" content="en_US" />
-  <meta property="og:image" content={props.compositeImageUrl} />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="1200" />
-
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:site" content="@bernieselfie" />
-  <meta name="twitter:creator" content="@bernieselfie" />
-  <meta name="twitter:title" content="My selfie for Bernie" />
-  <meta name="twitter:description" content="Use bernieselfie.com to use your selfie to support Bernie Sanders for President.  Save the generated image and share to Facebook, Twitter, and Instagram." />
-  <meta name="twitter:image" content={props.compositeImageUrl} />
-
-*/
-
-
 
   return {
     isUrlRoot,
