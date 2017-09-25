@@ -5,7 +5,8 @@
   "version": "0.0.0",
   "description": "Redux ToDos example",
   "scripts": {
-    "start" : "echo h1",
+    "start" : "npm run lernahoist && npm run bern3",
+    "start2" : "echo hi",
     "prettier": "./node_modules/.bin/prettier --single-quote --trailing-comma es5 --write \"packages/profile-framer-frontend/**/*.js\"",
     "eslintfix": "./node_modules/.bin/eslint --fix  packages/profile-framer-frontend",
     "mono": "./packages/mono-to-multirepo/bin/mono-to-multirepo.js --i",
@@ -15,6 +16,7 @@
     "bern1": "npm run dev -- --servers='bernieserver,junk-express' --isDev=true --isUniversal=false",
     "bern2": "npm run dev -- --servers='bernieserver,junk-express' --isDev=true --isUniversal=true",
     "bern3": "npm run dev -- --servers='bernieserver,junk-express' --isDev=false --isUniversal=true",
+    "bern4": "npm run dev -- --servers='bernieserver,junk-express' --isDev=false --isUniversal=true --isDeploy=true",
     "bern": "npm run devenvnode /Users/brianephraim/Sites/monorepo/packages/bernieserver/bernieserver.js",
     "devusedist": "npm run dev -- --use-dist",
     "item": "npm_run_item(){ (./packages/dev_env/bin/devenv.js --item=$1) };npm_run_item",

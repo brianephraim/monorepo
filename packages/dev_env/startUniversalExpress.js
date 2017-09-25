@@ -76,8 +76,12 @@ export default function startUniversal({app = express()}) {
       })
     )
 
-  }
-  else {
+  } else if (argv.isDeploy === 'true') {
+    const serverRender = __non_webpack_require__(res('./universal/buildServer/main.js')).default
+    const clientStats = __non_webpack_require__(res('./universal/buildClient/stats.json'))            
+    app.use(publicPath, express.static(outputPath))
+    app.use(serverRender({ clientStats, outputPath }))
+  } else {
     const clientProdConfig = webpackConfig({isReact:true,isClient:true,isDev:false,isUniversal:true});
     const serverProdConfig = webpackConfig({isReact:true,isClient:false,isDev:false,isUniversal:true});
     deleteFiles(`{${clientProdConfig.output.path},${serverProdConfig.output.path}}`, () => {
