@@ -30,6 +30,9 @@ import { appConnect } from './nameSpacedResponsive';
 
 import { formUrl } from './deriveUrlInfo';
 
+import Privacy from './Privacy';
+import Terms from './Terms';
+
 
 const geoPathFrag =
   ':fgX([^/|^_]*)_:fgY([^/|^_]*)_:fgW([^/|^_]*)_:fgH([^/|^_]*)_:bgW([^/|^_]*)_:bgH([^/]*)';
@@ -95,13 +98,6 @@ export function payloadRefineAction({ type, payload }, appNameSpace) {
   };
 }
 
-function Privacy(){
-  return (<div><ImportButtonGroup /><p style={{fontSize: '99px'}}>PRIVAAACY</p></div>);
-}
-function Terms(){
-  return <p>TERRRMS</p>
-}
-
 const routes = [
   {
     action: 'HOME_PROFILE_FRAMER',
@@ -146,14 +142,11 @@ const routes = [
   {
     action: 'PRIVACY',
     urlEnd: 'privacy',
-    // getUrlStartOnRouteInsteadOfMore: (prepend) => {
-    //   return `${prepend}`;
-    // },
     component: Privacy,
   },
   {
     action: 'TERMS',
-    urlEnd: '',
+    urlEnd: 'terms',
     component: Terms,
   },
 ];
