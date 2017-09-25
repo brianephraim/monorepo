@@ -1,0 +1,1 @@
+web: npm run lernahoist && npm run bern3
