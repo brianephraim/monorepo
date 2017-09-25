@@ -5,6 +5,7 @@
   "version": "0.0.0",
   "description": "Redux ToDos example",
   "scripts": {
+    "start" : "npm run lernahoist && npm run bern3",
     "prettier": "./node_modules/.bin/prettier --single-quote --trailing-comma es5 --write \"packages/profile-framer-frontend/**/*.js\"",
     "eslintfix": "./node_modules/.bin/eslint --fix  packages/profile-framer-frontend",
     "mono": "./packages/mono-to-multirepo/bin/mono-to-multirepo.js --i",
@@ -42,7 +43,7 @@
     "item3": "./packages/dev_env/bin/devenv.js --item=study",
     "dd": "(cd /Users/brianephraim/Sites/test-project-for-dev-env/ && npm run dev)",
 
-    "start": "npm run clean && cross-env NODE_ENV=development babel-watch ./packages/dev_env/universal/server/index.js",
+    "startxxx": "npm run clean && cross-env NODE_ENV=development babel-watch ./packages/dev_env/universal/server/index.js",
     "start:prod": "npm run build && npm run serve",
     "serve": "cross-env NODE_ENV=production ./node_modules/.bin/babel-node ./packages/dev_env/universal/buildServer/index.js",
     "serve2": "npm run build:node && cross-env NODE_ENV=production ./node_modules/.bin/babel-node ./packages/dev_env/universal/buildServer/index.js",
