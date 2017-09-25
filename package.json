@@ -71,9 +71,6 @@
     "prettier": "^1.5.3"
   },
   "dependencies": {
-    "redux-first-router": "0.0.20-next",
-    "redux-first-router-link": "^1.4.1",
-    "lerna": "^2.2.0",
-    "npm": "^4.6.1"
+    
   }
 }
