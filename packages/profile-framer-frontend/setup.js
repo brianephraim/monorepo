@@ -150,7 +150,6 @@ const routes = [
     component: Terms,
   },
 ];
-console.log('buttonGroupComponentsRegexArrayString',buttonGroupComponentsRegexArrayString);
 export default function(constants) {
   const routesMap = {};
   const screenNameMap = {};
@@ -213,9 +212,12 @@ export default function(constants) {
         compositeImageData.compositeImageUrl = generateCompositeImgSrcUrl(compositeImageData);
         return compositeImageData;
       }
-      const compositeImageData = getDefaultCompositeImageData(constants);
-      compositeImageData.compositeImageUrl = generateCompositeImgSrcUrl(compositeImageData);
-      return compositeImageData;
+      if (!state.compositeImageUrl) {
+        const compositeImageData = getDefaultCompositeImageData(constants);
+        compositeImageData.compositeImageUrl = generateCompositeImgSrcUrl(compositeImageData);
+        return compositeImageData;
+      }
+      return state;
     },
     // generateCompositeImgSrcUrl
     /*
@@ -241,7 +243,6 @@ export default function(constants) {
     //   }
     // },
     activeAppScreen: (state = 'HOME_PROFILE_FRAMER', action) => {
-      console.log('!!',!!routesMap[action.type],action.type);
       /* beautify ignore:start */
       if (
         // in case profile-framer is root url
