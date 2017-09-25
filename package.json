@@ -7,6 +7,7 @@
   "scripts": {
     "start" : "npm run lernahoist && npm run bern3",
     "start2" : "echo hi",
+    "npm-dps": "/Users/brianephraim/Sites/npm-deps/bin/npm-deps < package.json > package-combined.json",
     "tail": "heroku logs --app berniereact --tail",
     "prettier": "./node_modules/.bin/prettier --single-quote --trailing-comma es5 --write \"packages/profile-framer-frontend/**/*.js\"",
     "eslintfix": "./node_modules/.bin/eslint --fix  packages/profile-framer-frontend",
@@ -23,7 +24,8 @@
     "item": "npm_run_item(){ (./packages/dev_env/bin/devenv.js --item=$1) };npm_run_item",
     "devenvnode": "./packages/dev_env/bin/devenv-node.js",
     "new": "npm run devenvnode ./packages/mono-to-multirepo/mono-to-multirepo.js -- --i",
-    "lernahoist": "lerna bootstrap --hoist --concurrency 1",
+    "lernahoist": "lerna bootstrap --hoist",
+    "lernahoistX": "lerna bootstrap --hoist --concurrency 1",
     "lernahoist3": "./packages/dev_env/bin/lernahoist.js",
     "lernahoist2": "lerna bootstrap --hoist",
     "devenvnode3": "npm_run_item(){ (cd ./packages/dev_env && ./node_modules/.bin/babel-node ./babelXXXX.start.js --entry=$1 --output=$2) };npm_run_item",
@@ -71,7 +73,7 @@
   "dependencies": {
     "redux-first-router": "0.0.20-next",
     "redux-first-router-link": "^1.4.1",
-    "lerna": "^2.0.0-rc.4",
+    "lerna": "^2.2.0",
     "npm": "^4.6.1"
   }
 }
