@@ -5,6 +5,9 @@ import globby from 'globby';
 import nodeExternals from 'webpack-node-externals';
 import path from 'path';
 
+import findNodeModules from 'find-node-modules';
+
+
 
 // from universal
 // import path from 'path';
@@ -108,8 +111,16 @@ function makeEntry({libraryName,isBuild,dirRoot}) {
 }
 // /Users/brianephraim/Sites/monorepo/packages/dev_env/universal/webpack/universalWebpackConfig.js
 // /Users/brianephraim/Sites/monorepo/packages/dev_env/         /       /webpackConfig.js
+const nodeModulesLocationsArray = findNodeModules({ relative: false });
+let nodeModulesLocation = nodeModulesLocationsArray[0];
+if (nodeModulesLocation.indexOf('packages/dev_env') !== -1){
+  nodeModulesLocation = nodeModulesLocation.split('packages/dev_env')[0];
+  nodeModulesLocation = `${nodeModulesLocation}node_modules`
+}
+
+
 const externalsOld = fs
-  .readdirSync(res('../../node_modules'))
+  .readdirSync(res(nodeModulesLocation))
   .filter((x) => {
     return !/\.bin|react-universal-component|require-universal-module|webpack-flush-chunks/.test(x);      
   })
@@ -454,7 +465,7 @@ function generateConfigJson(options = {}) {
             entryOnly: false,
           }),
           ...(
-            isCommandLine || isMocha
+            isCommandLine || isMocha || isBuild
             ?
             [
               // I needed __dirname hardcoded as the original dirname
