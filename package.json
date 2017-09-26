@@ -15,7 +15,7 @@
     "mono": "./packages/mono-to-multirepo/bin/mono-to-multirepo.js --i",
     "testpackages": "./packages/dev_env/bin/devenv.js --env=test",
     "test": "./packages/dev_env/bin/devenv.js --env=test --testdevenv",
-    "dev": "./packages/dev_env/bin/devenv2.js",
+    "dev": "./packages/dev_env/bin/devenv.js",
     "bern0": "npm run dev -- --servers='bernieserver,junk-express' --use-dist --isDev=true --isUniversal=false",
     "bern1": "npm run dev -- --servers='bernieserver,junk-express' --isDev=true --isUniversal=false",
     "bern2": "npm run dev -- --servers='bernieserver,junk-express' --isDev=true --isUniversal=true",
