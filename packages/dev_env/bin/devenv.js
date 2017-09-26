@@ -9,7 +9,7 @@ console.log('DDDD')
 console.log('DDDD')
 console.log('DDDD')
 console.log('DDDD')
-
+console.log('__dirname pacakges/dev_env/bin/devenv.js',__dirname)
 // --inspect=9224
 var argv = require('yargs').argv;
 const isWithinMonoRepo = (dirname) => {

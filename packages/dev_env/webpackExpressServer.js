@@ -14,6 +14,7 @@ const extraServers = {
 };
 
 function startWebpack(app) {
+  console.log('__dirname pacakges/dev_env/webpackExpressServer.js',__dirname)
   console.log('SERVE');
   // This module either extends an existing express app
   // or creates a new express app
