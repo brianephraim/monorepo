@@ -23,6 +23,7 @@ const argumentsPassThrough = process.argv.reduce((accum, argString) => {
 const pathToCheckFile = path.resolve('../../', '.lernahoist-running');
 if (!fs.existsSync(pathToCheckFile)) {
   const devEnv = './dev_env.js';
+  console.log('typeof __xdirname',typeof __xdirname,'/Users/brianephraim/Sites/monorepo/packages/dev_env/babel.start.js')
   // shellCommand(`${path.resolve(__xdirname, './node_modules/.bin/babel-node')} ${path.resolve(__xdirname, devEnv)}${argumentsPassThrough}`);
   console.log('#######',`${path.resolve(typeof __xdirname !== 'undefined' ? __xdirname : __dirname, './bin/devenv-node.js')} ${path.resolve(typeof __xdirname !== 'undefined' ? __xdirname : __dirname, devEnv)}${argumentsPassThrough}`);
   shellCommand(`${path.resolve(typeof __xdirname !== 'undefined' ? __xdirname : __dirname, './bin/devenv-node.js')} ${path.resolve(typeof __xdirname !== 'undefined' ? __xdirname : __dirname, devEnv)}${argumentsPassThrough}`);

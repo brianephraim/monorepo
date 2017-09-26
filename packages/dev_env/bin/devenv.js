@@ -18,6 +18,7 @@ const isWithinMonoRepo = (dirname) => {
 // console.log(argv);
 
 /* eslint-disable global-require */
+console.log('typeof __xdirname',typeof __xdirname,'/Users/brianephraim/Sites/monorepo/packages/dev_env/bin/devenv.js')
 if (isWithinMonoRepo(typeof __xdirname !== 'undefined' ? __xdirname : __dirname) && !argv.useDist) {
   console.log('EEEE1111')
   // when I am in monorepo mode, with dev_env as one of my repos.

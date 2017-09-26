@@ -38,6 +38,7 @@ const makeProgressPlugin = () => {
   })
 };
 const res = (p) => {
+  console.log('typeof __xdirname',typeof __xdirname,'/Users/brianephraim/Sites/monorepo/packages/dev_env/webpackConfig.js')
   return path.resolve(typeof __xdirname !== 'undefined' ? __xdirname : __dirname, p);
 };
 
@@ -152,6 +153,7 @@ function generateConfigJson(options = {}) {
     console.log('RRRR')
     console.log('RRRR')
   }
+  console.log('typeof __xdirname',typeof __xdirname,'/Users/brianephraim/Sites/monorepo/packages/dev_env/webpackConfig.js 222')
   const config = {
     ...(isReact ? {
         name: isClient ? 'client' : 'server'
