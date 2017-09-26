@@ -4,7 +4,7 @@ import webpackDevMiddleware from 'webpack-dev-middleware'
 
 import express from 'express'
 import fs from 'fs-extra';
-
+import _eval from 'eval';
 import webpackHotMiddleware from 'webpack-hot-middleware'
 import webpackHotServerMiddleware from 'webpack-hot-server-middleware'
 import { argv } from 'yargs';
@@ -16,7 +16,8 @@ import webpackRunCompiler from './core/webpackRunCompiler';
 import webpackParseStatsForDepProblems from './webpackParseStatsForDepProblems';
 
 
-const res = p => path.resolve(__xdirname, p)
+
+const res = p => path.resolve(typeof __xdirname !== 'undefined' ? __xdirname : __dirname, p)
 
 export default function startUniversal({app = express()}) {
   console.log('typeof __xdirname',typeof __xdirname,'/Users/brianephraim/Sites/monorepo/packages/dev_env/startUniversalExpress.js')
@@ -78,28 +79,22 @@ export default function startUniversal({app = express()}) {
         serverRendererOptions: { outputPath }
       })
     )
-
   } else if (argv.isDeploy === 'true') {
     console.log('77777')
-    const serverRender = require('./universal/buildServer/main.js').default
-    const clientStats = require('./universal/buildClient/stats.json');
-    const clientProdConfig = webpackConfig({isReact:true,isClient:true,isDev:false,isUniversal:true,'xxx':113});
-    const publicPath = clientProdConfig.output.publicPath
-    let outputPath = clientProdConfig.output.path;
-    console.log('outputPath1', outputPath)
-    // const outputPath = '../universal/buildServer';
-    console.log('argv.dirroot',argv.dirroot);
-    console.log('__dirname',__dirname);
-    console.log('__xdirname',__xdirname);
-    console.log('publicPath',publicPath);  
-    outputPath = outputPath.split('/dev_env/')[1];
-    outputPath = path.resolve(__dirname, `./${outputPath}`)
-    outputPath = 'packages/dev_env/universal/buildClient'
-    console.log('outputPath2x',outputPath);
-    // app.use('/images', express.static('packages/images'));
-    // app.use('/fonts', express.static('packages/fonts'));
-    app.use(publicPath, express.static(outputPath))
-    app.use(serverRender({ clientStats, outputPath }))
+    // import(`universal/buildServer/main.js'`).then((someBackendApp) => {
+      // const serverRender = someBackendApp || someBackendApp.default;
+      const buildServerMainContent = fs.readFileSync(res('./universal/buildServer/main.js'));
+      const serverRender = _eval(buildServerMainContent,true).default;
+      // const serverRender = require('./universal/buildServer/main.js').default
+      // const clientStats = require('./universal/buildClient/stats.json');
+      const clientStats = fs.readJsonSync(res('./universal/buildClient/stats.json'));
+      const clientProdConfig = webpackConfig({isReact:true,isClient:true,isDev:false,isUniversal:true,'xxx':113});
+      const publicPath = clientProdConfig.output.publicPath
+      const outputPath = 'packages/dev_env/universal/buildClient';
+      app.use(publicPath, express.static(outputPath))
+      app.use(serverRender({ clientStats, outputPath }))
+    // });
+    
   } else {
     console.log('8888')
     const clientProdConfig = webpackConfig({isReact:true,isClient:true,isDev:false,isUniversal:true,'xxx':113});
