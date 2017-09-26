@@ -25,7 +25,7 @@ function startWebpack(app) {
   app.use('/images', express.static('packages/images'));
   app.use('/fonts', express.static('packages/fonts'));
 
-  const port = 3000;
+  const port = process.env.PORT || 3000;
   app.listen(port, (error) => {
     if (error) {
       console.error(error);
