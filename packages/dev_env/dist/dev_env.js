@@ -1543,7 +1543,7 @@ function startWebpack(app) {
   app.use('/fonts', _express2.default.static('packages/fonts'));
 
   (0, _demoEndpoints2.default)({ app: app });
-  (0, _startUniversalExpress2.default)({ app: app });
+  (0, _startUniversalExpress2.default)(app);
 
   var port = process.env.PORT || 3000;
   app.listen(port, function (error) {
@@ -1610,8 +1610,6 @@ var _api = __webpack_require__(41);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
-
-// import startUniversalExpress from '../../startUniversalExpress';
 
 function demoExpress(_ref) {
   var _this = this;
@@ -1959,10 +1957,7 @@ var res = function res(p) {
   return _path2.default.resolve(typeof __xdirname !== 'undefined' ? __xdirname : __dirname, p);
 };
 
-function startUniversal(_ref) {
-  var _ref$app = _ref.app,
-      app = _ref$app === undefined ? (0, _express2.default)() : _ref$app;
-
+function startUniversal(app) {
   console.log('typeof __xdirname', typeof __xdirname === 'undefined' ? 'undefined' : _typeof(__xdirname), '/Users/brianephraim/Sites/monorepo/packages/dev_env/startUniversalExpress.js');
 
   // UNIVERSAL HMR + STATS HANDLING GOODNESS:
@@ -2023,34 +2018,29 @@ function startUniversal(_ref) {
       serverRendererOptions: { outputPath: outputPath }
     }));
   } else if (_yargs.argv.isDeploy === 'true') {
-    console.log('77777', process.cwd());
-    // import(`universal/buildServer/main.js'`).then((someBackendApp) => {
-    // const serverRender = someBackendApp || someBackendApp.default;
-    console.log('process.cwd()', process.cwd());
-    console.log('argv.dirroot', _yargs.argv.dirroot);
+    // instead of `require` or `__non_webpack_require__` or `import (...)`
+    // using `fs.readFileSync` + `_eval`.
+    // why
+    // -  not `require` because we don't want to bundle what we are importing here
+    //    because what we are importing is itself a bundle
+    //    - which might not exist yet
+    //    - which will itself be ES5 safe
+    //    - which is itself huge so we don't want to bundle it here.
+    // -  `__non_webpack_require__` and `import (...)` don't work or too complicated.
     var buildServerMainContent = _fsExtra2.default.readFileSync(_path2.default.resolve(process.cwd(), './packages/dev_env/universal/buildServer/main.js'));
     var serverRender = (0, _eval3.default)(buildServerMainContent, true).default;
-    // const serverRender = require('./universal/buildServer/main.js').default
-    // const clientStats = require('./universal/buildClient/stats.json');
     var clientStats = _fsExtra2.default.readJsonSync(_path2.default.resolve(process.cwd(), './packages/dev_env/universal/buildClient/stats.json'));
     var clientProdConfig = (0, _webpackConfig2.default)({ isReact: true, isClient: true, isDev: false, isUniversal: true, 'xxx': 113 });
     var _publicPath = clientProdConfig.output.publicPath;
     var _outputPath = 'packages/dev_env/universal/buildClient';
     app.use(_publicPath, _express2.default.static(_outputPath));
     app.use(serverRender({ clientStats: clientStats, outputPath: _outputPath }));
-    // });
   } else {
-    console.log('8888');
     var _clientProdConfig = (0, _webpackConfig2.default)({ isReact: true, isClient: true, isDev: false, isUniversal: true, 'xxx': 113 });
     var serverProdConfig = (0, _webpackConfig2.default)({ isReact: true, isClient: false, isDev: false, isUniversal: true, 'xxx': 112 });
     (0, _rimraf2.default)('{' + _clientProdConfig.output.path + ',' + serverProdConfig.output.path + '}', function () {
-      // webpackRunCompiler(webpack(clientProdConfig)).then(() => {
-      // deleteFiles(serverProdConfig.output.path, () => {
       var multiCompiler = (0, _webpack2.default)([_clientProdConfig, serverProdConfig]);
-      var clientCompiler = multiCompiler.compilers[0];
-      var serverCompiler = multiCompiler.compilers[1];
       (0, _webpackRunCompiler2.default)(multiCompiler).then(function () {
-        // const clientConfig = webpackConfig({isReact:true,isClient:true,isDev:true,isUniversal:true,'xxx':111});
         var publicPath = _clientProdConfig.output.publicPath;
         var outputPath = _clientProdConfig.output.path;
         var serverRender = require(res('./universal/buildServer/main.js')).default;
@@ -2058,12 +2048,8 @@ function startUniversal(_ref) {
         app.use(publicPath, _express2.default.static(outputPath));
         app.use(serverRender({ clientStats: clientStats, outputPath: outputPath }));
       });
-      // });
-      // });
     });
   }
-
-  return app;
 }
 /* WEBPACK VAR INJECTION */}.call(exports, "/Users/brianephraim/Sites/monorepo/packages/dev_env", "/"))
 

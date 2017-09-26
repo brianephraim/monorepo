@@ -23,7 +23,7 @@ function startWebpack(app) {
   app.use('/fonts', express.static('packages/fonts'));
 
   demoEndpoints({app})
-  startUniversalExpress({app});
+  startUniversalExpress(app);
 
   
 
