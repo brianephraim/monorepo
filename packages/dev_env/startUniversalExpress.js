@@ -19,7 +19,8 @@ import webpackParseStatsForDepProblems from './webpackParseStatsForDepProblems';
 const res = p => path.resolve(__xdirname, p)
 
 export default function startUniversal({app = express()}) {
-  
+  console.log('typeof __xdirname',typeof __xdirname,'/Users/brianephraim/Sites/monorepo/packages/dev_env/startUniversalExpress.js')
+
 
   // UNIVERSAL HMR + STATS HANDLING GOODNESS:
 
@@ -87,6 +88,7 @@ export default function startUniversal({app = express()}) {
     let outputPath = clientProdConfig.output.path;
     console.log('outputPath1', outputPath)
     // const outputPath = '../universal/buildServer';
+    console.log('argv.dirroot',argv.dirroot);
     console.log('__dirname',__dirname);
     console.log('__xdirname',__xdirname);
     console.log('publicPath',publicPath);  
