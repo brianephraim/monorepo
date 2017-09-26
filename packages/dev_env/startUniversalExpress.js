@@ -94,6 +94,8 @@ export default function startUniversal({app = express()}) {
     outputPath = path.resolve(__dirname, `./${outputPath}`)
     outputPath = 'packages/dev_env/universal/buildClient'
     console.log('outputPath2x',outputPath);
+    app.use('/images', express.static('packages/images'));
+    app.use('/fonts', express.static('packages/fonts'));
     app.use(publicPath, express.static(outputPath))
     app.use(serverRender({ clientStats, outputPath }))
   } else {
@@ -113,8 +115,6 @@ export default function startUniversal({app = express()}) {
             const serverRender = __non_webpack_require__(res('./universal/buildServer/main.js')).default
             const clientStats = __non_webpack_require__(res('./universal/buildClient/stats.json'))            
             app.use(publicPath, express.static(outputPath))
-            app.use('/images', express.static('packages/images'));
-            app.use('/fonts', express.static('packages/fonts'));
             app.use(serverRender({ clientStats, outputPath }))
           });
         // });
