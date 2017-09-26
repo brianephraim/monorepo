@@ -21,12 +21,12 @@ const isWithinMonoRepo = (dirname) => {
 if (isWithinMonoRepo(__dirname) && !argv.useDist) {
   console.log('EEEE1111')
   // when I am in monorepo mode, with dev_env as one of my repos.
-  // require('../babel.start');
+  require('../babel.start');
 } else {
   console.log('EEEE2222')
   console.log('USING DIST');
   // when dev_env is an installed package
-  // require('../dist/dev_env');
+  require('../dist/dev_env');
 }
 
 

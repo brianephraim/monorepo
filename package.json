@@ -5,7 +5,7 @@
   "version": "0.0.0",
   "description": "Redux ToDos example",
   "scripts": {
-    "start" : "./packages/dev_env/bin/devenv2.js",
+    "start" : "npm run bern4",
     "start3333" : "npm run bern4",
     "start2" : "echo hi",
     "npm-dps": "/Users/brianephraim/Sites/npm-deps/bin/npm-deps < package.json > package-combined.json",
@@ -15,7 +15,7 @@
     "mono": "./packages/mono-to-multirepo/bin/mono-to-multirepo.js --i",
     "testpackages": "./packages/dev_env/bin/devenv.js --env=test",
     "test": "./packages/dev_env/bin/devenv.js --env=test --testdevenv",
-    "dev": "./packages/dev_env/bin/devenv.js",
+    "dev": "./packages/dev_env/bin/devenv2.js",
     "bern0": "npm run dev -- --servers='bernieserver,junk-express' --use-dist --isDev=true --isUniversal=false",
     "bern1": "npm run dev -- --servers='bernieserver,junk-express' --isDev=true --isUniversal=false",
     "bern2": "npm run dev -- --servers='bernieserver,junk-express' --isDev=true --isUniversal=true",
