@@ -1074,12 +1074,7 @@ module.exports = __webpack_require__(21);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(__dirname) {
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.serve = undefined;
 
 var _webpack = __webpack_require__(7);
 
@@ -1115,7 +1110,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 // import isWithinMonoRepo from './core/isWithinMonoRepo');
 /* eslint-disable no-console */
-console.log('__dirname packages/dev_env/dev_env.js', __dirname);
 var env = _yargs.argv.env;
 var item = _yargs.argv.item;
 
@@ -1130,11 +1124,8 @@ if (item) {
 } else {
   (0, _webpackExpressServer2.default)();
 }
-var serve = function serve() {
-  _webpackExpressServer2.default.apply(this, arguments);
-};
-exports.serve = serve;
-/* WEBPACK VAR INJECTION */}.call(exports, "/"))
+var serve = _webpackExpressServer2.default;
+// export { serve };
 
 /***/ }),
 /* 22 */

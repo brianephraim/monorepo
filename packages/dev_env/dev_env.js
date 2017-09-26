@@ -8,7 +8,6 @@ import webpackBuildCommandLine from './core/webpackBuildCommandLine';
 import serveWebpack from './webpackExpressServer.js';
 import webpackConfig from './webpackConfig'; 
 // import isWithinMonoRepo from './core/isWithinMonoRepo');
-console.log('__dirname packages/dev_env/dev_env.js',__dirname)
 const env = argv.env;
 const item = argv.item;
 
@@ -23,7 +22,5 @@ if (item) {
 } else {
   serveWebpack();
 }
-const serve = function ()   {
-  serveWebpack.apply(this,arguments);
-}
-export { serve };
+const serve = serveWebpack;
+// export { serve };
