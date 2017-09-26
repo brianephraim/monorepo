@@ -84,12 +84,15 @@ export default function startUniversal({app = express()}) {
     const clientStats = require('./universal/buildClient/stats.json');
     const clientProdConfig = webpackConfig({isReact:true,isClient:true,isDev:false,isUniversal:true,'xxx':113});
     const publicPath = clientProdConfig.output.publicPath
-    const outputPath = clientProdConfig.output.path  ;
+    let outputPath = clientProdConfig.output.path;
+    console.log('outputPath1', outputPath)
     // const outputPath = '../universal/buildServer';
     console.log('__dirname',__dirname);
     console.log('__xdirname',__xdirname);
     console.log('publicPath',publicPath);  
-    console.log('outputPath',outputPath);  
+    outputPath = outputPath.split('/dev_env/')[1];
+    outputPath = path.resolve(__dirname, `./${outputPath}`)
+    console.log('outputPath2',outputPath);
     app.use(publicPath, express.static(outputPath))
     app.use(serverRender({ clientStats, outputPath }))
   } else {
