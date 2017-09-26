@@ -80,8 +80,8 @@ export default function startUniversal({app = express()}) {
 
   } else if (argv.isDeploy === 'true') {
     console.log('77777')
-    const serverRender = __non_webpack_require__(res('./universal/buildServer/main.js')).default
-    const clientStats = __non_webpack_require__(res('./universal/buildClient/stats.json'))    
+    const serverRender = require('./universal/buildServer/main.js').default
+    const clientStats = require('./universal/buildClient/stats.json');
     const clientProdConfig = webpackConfig({isReact:true,isClient:true,isDev:false,isUniversal:true,'xxx':113});
     const publicPath = clientProdConfig.output.publicPath
     const outputPath = clientProdConfig.output.path    
