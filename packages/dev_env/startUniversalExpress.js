@@ -21,7 +21,7 @@ const res = (p) => {
   return path.resolve(typeof __xdirname !== 'undefined' ? __xdirname : __dirname, p)
 };
 
-export default function startUniversal(app = express()) {
+export default function startUniversal(app) {
 
   if (argv.isDev === 'true') {
     // `npm run bern1` or `npm run bern2`
