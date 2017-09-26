@@ -1484,7 +1484,7 @@ module.exports = require("single-line-log");
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(__dirname) {
+
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -1506,10 +1506,6 @@ var _express2 = _interopRequireDefault(_express);
 
 var _yargs = __webpack_require__(8);
 
-var _path = __webpack_require__(2);
-
-var _path2 = _interopRequireDefault(_path);
-
 var _demoEndpoints = __webpack_require__(39);
 
 var _demoEndpoints2 = _interopRequireDefault(_demoEndpoints);
@@ -1528,37 +1524,35 @@ var _junkExpress2 = _interopRequireDefault(_junkExpress);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var extraServers = {
-  bernieserver: _bernieserver2.default,
-  'junk-express': _junkExpress2.default
-}; /* eslint-disable no-console */
-
 function startWebpack(app) {
-  console.log('__dirname pacakges/dev_env/webpackExpressServer.js', __dirname);
+  /* eslint-disable no-console */
   console.log('SERVE');
-  // This module either extends an existing express app
-  // or creates a new express app
-
+  /* eslint-enable no-console */
   app.use('/images', _express2.default.static('packages/images'));
   app.use('/fonts', _express2.default.static('packages/fonts'));
-
   (0, _demoEndpoints2.default)({ app: app });
   (0, _startUniversalExpress2.default)(app);
-
   var port = process.env.PORT || 3000;
   app.listen(port, function (error) {
+    /* eslint-disable no-console */
     if (error) {
       console.error(error);
     } else {
       console.info('🌎 Listening on port %s. Open up http://localhost:%s/ in your browser.', port, port);
     }
+    /* eslint-enable no-console */
   });
-
   return app;
 }
 
 function asyncRecurseStartApps(app, serverNamespaces) {
-  return new Promise(function (resolve, reject) {
+  // I want to asynchronously load these endpoint modules.
+  // but this is tricky.  Fix this later.
+  var extraServers = {
+    bernieserver: _bernieserver2.default,
+    'junk-express': _junkExpress2.default
+  };
+  return new Promise(function (resolve) {
     var i = 0;
     function recurse(backendAppNamespace) {
       var someBackendApp = extraServers[backendAppNamespace];
@@ -1581,7 +1575,6 @@ function asyncRecurseStartApps(app, serverNamespaces) {
     recurse(serverNamespaces[i]);
   });
 }
-/* WEBPACK VAR INJECTION */}.call(exports, "/"))
 
 /***/ }),
 /* 39 */

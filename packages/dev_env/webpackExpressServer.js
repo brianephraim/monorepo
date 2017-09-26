@@ -1,34 +1,21 @@
-/* eslint-disable no-console */
-
 import express from 'express';
 import { argv } from 'yargs';
-import path from 'path';
 import demoEndpoints from './universal/server/demoEndpoints';
 import startUniversalExpress from './startUniversalExpress';
 import bernieServer from '@defualt/bernieserver/bernieserver.express';
 import junkServer from '@defualt/junk-express/junk-express.express';
 
-const extraServers = {
-  bernieserver: bernieServer,
-  'junk-express': junkServer,
-};
-
 function startWebpack(app) {
-  console.log('__dirname pacakges/dev_env/webpackExpressServer.js',__dirname)
+  /* eslint-disable no-console */
   console.log('SERVE');
-  // This module either extends an existing express app
-  // or creates a new express app
-
+  /* eslint-enable no-console */
   app.use('/images', express.static('packages/images'));
   app.use('/fonts', express.static('packages/fonts'));
-
-  demoEndpoints({app})
+  demoEndpoints({app}) 
   startUniversalExpress(app);
-
-  
-
   const port = process.env.PORT || 3000;
   app.listen(port, (error) => {
+    /* eslint-disable no-console */
     if (error) {
       console.error(error);
     } else {
@@ -38,14 +25,19 @@ function startWebpack(app) {
         port,
       );
     }
+    /* eslint-enable no-console */
   });
-
   return app;
 }
 
-
 function asyncRecurseStartApps(app,serverNamespaces) {
-  return new Promise((resolve, reject) => {
+  // I want to asynchronously load these endpoint modules.
+  // but this is tricky.  Fix this later.
+  const extraServers = {
+    bernieserver: bernieServer,
+    'junk-express': junkServer,
+  };
+  return new Promise((resolve) => {
     let i = 0;
     function recurse(backendAppNamespace) {
       const someBackendApp = extraServers[backendAppNamespace];
@@ -78,5 +70,3 @@ export default function () {
     startWebpack(app)
   }
 }
-
-
