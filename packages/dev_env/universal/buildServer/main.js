@@ -59,7 +59,7 @@ module.exports =
 /******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
 /******/
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "/static/";
+/******/ 	__webpack_require__.p = "/staticx/";
 /******/
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(__webpack_require__.s = 150);
@@ -17210,7 +17210,7 @@ exports.default = function (_ref2) {
               console.log('REQUESTED PATH:', req.path);
               console.log('CHUNK NAMES', chunkNames);
 
-              return _context.abrupt('return', res.send('<!doctype html>\n      <html>\n        <head>\n          <meta charset="utf-8">\n          ' + helmet.title.toString() + '\n          ' + helmet.meta.toString() + '\n          ' + helmet.link.toString() + '\n          ' + webpackStyles + '\n          ' + styledComponentsRenderedTags + '\n          <link rel="stylesheet prefetch" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">\n        </head>\n        <body>\n          <script>window.REDUX_STATE = ' + stateJson + '</script>\n          <div id="root">' + appString + '</div>\n          ' + cssHash + '\n          <script type=\'text/javascript\' src=\'/static/vendor.js\'></script>\n          ' + js + '\n        </body>\n      </html>'));
+              return _context.abrupt('return', res.send('<!doctype html>\n      <html>\n        <head>\n          <meta charset="utf-8">\n          ' + helmet.title.toString() + '\n          ' + helmet.meta.toString() + '\n          ' + helmet.link.toString() + '\n          ' + webpackStyles + '\n          ' + styledComponentsRenderedTags + '\n          <link rel="stylesheet prefetch" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">\n        </head>\n        <body>\n          <script>window.REDUX_STATE = ' + stateJson + '</script>\n          <div id="root">' + appString + '</div>\n          ' + cssHash + '\n          <script type=\'text/javascript\' src=\'/staticx/vendor.js\'></script>\n          ' + js + '\n        </body>\n      </html>'));
 
             case 29:
             case 'end':

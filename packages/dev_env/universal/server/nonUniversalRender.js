@@ -133,7 +133,7 @@ export default ({ clientStats }) => async (req, res, next) => {
         <body>
           <div id="root"></div>
           ${cssHash}
-          <script type='text/javascript' src='/static/vendor.js'></script>
+          <script type='text/javascript' src='/staticx/vendor.js'></script>
           ${js}
         </body>
       </html>`

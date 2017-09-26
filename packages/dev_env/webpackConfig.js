@@ -170,8 +170,8 @@ function generateConfigJson(options = {}) {
             'fetch-everywhere',
             ...(
               isClient && isDev ? [
-              // 'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=false&quiet=false&noInfo=false',
-              // 'react-hot-loader/patch',
+              'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=false&quiet=false&noInfo=false',
+              'react-hot-loader/patch',
               ] : []
             ),
             path.resolve(__dirname,
@@ -191,7 +191,7 @@ function generateConfigJson(options = {}) {
           output: {
             path: res(isClient ? './universal/buildClient' : './universal/buildServer'),
             filename: isClient && !isDev ? '[name].[chunkhash].js' : '[name].js',
-            publicPath: '/static/',
+            publicPath: '/staticx/',
             ...(
               isClient
               ?
@@ -392,8 +392,8 @@ function generateConfigJson(options = {}) {
               isDev
                 ?
                 [
-                  // new webpack.HotModuleReplacementPlugin(),
-                  // new webpack.NoEmitOnErrorsPlugin(),
+                  new webpack.HotModuleReplacementPlugin(),
+                  new webpack.NoEmitOnErrorsPlugin(),
                 ]
                 :
                 []

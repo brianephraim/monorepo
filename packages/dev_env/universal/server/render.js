@@ -150,7 +150,7 @@ export default ({ clientStats }) => async (req, res, next) => {
           <script>window.REDUX_STATE = ${stateJson}</script>
           <div id="root">${appString}</div>
           ${cssHash}
-          <script type='text/javascript' src='/static/vendor.js'></script>
+          <script type='text/javascript' src='/staticx/vendor.js'></script>
           ${js}
         </body>
       </html>`
