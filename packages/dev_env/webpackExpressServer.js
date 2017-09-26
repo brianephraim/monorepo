@@ -18,12 +18,13 @@ function startWebpack(app) {
   // This module either extends an existing express app
   // or creates a new express app
 
+  app.use('/images', express.static('packages/images'));
+  app.use('/fonts', express.static('packages/fonts'));
 
   demoEndpoints({app})
   startUniversalExpress({app});
 
-  app.use('/images', express.static('packages/images'));
-  app.use('/fonts', express.static('packages/fonts'));
+  
 
   const port = process.env.PORT || 3000;
   app.listen(port, (error) => {

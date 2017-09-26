@@ -94,8 +94,8 @@ export default function startUniversal({app = express()}) {
     outputPath = path.resolve(__dirname, `./${outputPath}`)
     outputPath = 'packages/dev_env/universal/buildClient'
     console.log('outputPath2x',outputPath);
-    app.use('/images', express.static('packages/images'));
-    app.use('/fonts', express.static('packages/fonts'));
+    // app.use('/images', express.static('packages/images'));
+    // app.use('/fonts', express.static('packages/fonts'));
     app.use(publicPath, express.static(outputPath))
     app.use(serverRender({ clientStats, outputPath }))
   } else {
