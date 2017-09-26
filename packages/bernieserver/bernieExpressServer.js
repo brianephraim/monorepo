@@ -32,10 +32,10 @@ import ensureLeadingSlash from '@defualt/ensure-leading-slash';
  */
 
 export default function ({app, nameSpace})  {
-  app.set('views', __dirname + '/views');
+  app.set('views', __xdirname + '/views');
   app.engine('html', ejs.renderFile);
 
-  app.use(express.static(path.join(__dirname, 'public')));
+  app.use(express.static(path.join(__xdirname, 'public')));
 
   /*
    * Load the S3 information from the environment variables.

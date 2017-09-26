@@ -18,7 +18,7 @@ const isWithinMonoRepo = (dirname) => {
 // console.log(argv);
 
 /* eslint-disable global-require */
-if (isWithinMonoRepo(__dirname) && !argv.useDist) {
+if (isWithinMonoRepo(__xdirname) && !argv.useDist) {
   console.log('EEEE1111')
   // when I am in monorepo mode, with dev_env as one of my repos.
   require('../babel.start');

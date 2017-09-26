@@ -38,7 +38,7 @@ const makeProgressPlugin = () => {
   })
 };
 const res = (p) => {
-  return path.resolve(__dirname, p);
+  return path.resolve(typeof __xdirname !== 'undefined' ? __xdirname : __dirname, p);
 };
 
 
@@ -174,7 +174,7 @@ function generateConfigJson(options = {}) {
               'react-hot-loader/patch',
               ] : []
             ),
-            path.resolve(__dirname,
+            path.resolve(typeof __xdirname !== 'undefined' ? __xdirname : __dirname,
               isClient
               ?
               './universal/src/clientRender.js'
@@ -224,7 +224,7 @@ function generateConfigJson(options = {}) {
     //   ?
     //   {
     //     node: {
-    //       __dirname: false,
+    //       __xdirname: false,
     //       __filename: false,
     //     }
     //   }
@@ -240,7 +240,7 @@ function generateConfigJson(options = {}) {
         externals: [
           nodeExternals({
             // modulesFromFile: true,
-            modulesDir: path.resolve(__dirname.split('/packages/dev_env')[0], './node_modules'),
+            modulesDir: path.resolve((typeof __xdirname !== 'undefined' ? __xdirname : __dirname).split('/packages/dev_env')[0], './node_modules'),
           }),
         ],
       }
@@ -252,7 +252,7 @@ function generateConfigJson(options = {}) {
     //     externals: [
     //       nodeExternals({
     //         // modulesFromFile: true,
-    //         modulesDir: path.resolve(__dirname.split('/packages/dev_env')[0], './node_modules'),
+    //         modulesDir: path.resolve(__xdirname.split('/packages/dev_env')[0], './node_modules'),
     //         ...(
     //           isReact ?
     //           {
@@ -427,7 +427,7 @@ function generateConfigJson(options = {}) {
                 []
             ),
             new AutoDllPlugin({
-              context: path.join(__dirname, '..'),
+              context: path.join(__xdirname, '..'),
               filename: '[name].js',
               entry: {
                 vendor: [
@@ -479,7 +479,7 @@ function generateConfigJson(options = {}) {
             isCommandLine || isMocha || isBuild
             ?
             [
-              // I needed __dirname hardcoded as the original dirname
+              // I needed __xdirname hardcoded as the original dirname
               // https://github.com/webpack/webpack/issues/1599#issuecomment-266588898
               {
                 apply(compiler) {
@@ -498,7 +498,7 @@ function generateConfigJson(options = {}) {
                     return module.resource;
                   });
 
-                  setModuleConstant('__dirname', (module) => {
+                  setModuleConstant('__xdirname', (module) => {
                     return module.context;
                   });
                 },

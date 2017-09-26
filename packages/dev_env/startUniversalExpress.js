@@ -16,7 +16,7 @@ import webpackRunCompiler from './core/webpackRunCompiler';
 import webpackParseStatsForDepProblems from './webpackParseStatsForDepProblems';
 
 
-const res = p => path.resolve(__dirname, p)
+const res = p => path.resolve(__xdirname, p)
 
 export default function startUniversal({app = express()}) {
   
@@ -87,6 +87,7 @@ export default function startUniversal({app = express()}) {
     const outputPath = clientProdConfig.output.path  ;
     // const outputPath = '../universal/buildServer';
     console.log('__dirname',__dirname);
+    console.log('__xdirname',__xdirname);
     console.log('publicPath',publicPath);  
     console.log('outputPath',outputPath);  
     app.use(publicPath, express.static(outputPath))
