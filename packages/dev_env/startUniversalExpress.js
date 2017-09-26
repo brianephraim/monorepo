@@ -19,15 +19,17 @@ import webpackParseStatsForDepProblems from './webpackParseStatsForDepProblems';
 const res = p => path.resolve(__dirname, p)
 
 export default function startUniversal({app = express()}) {
-  const clientDevConfig = webpackConfig({isReact:true,isClient:true,isDev:true,isUniversal:true});
-  const serverDevConfig = webpackConfig({isReact:true,isClient:false,isDev:true,isUniversal:true});
-  const serverNonUniversalConfig = webpackConfig({isReact:true,isClient:false,isDev:true,isUniversal:false});
-  const publicPath = clientDevConfig.output.publicPath
-  const outputPath = clientDevConfig.output.path
+  
 
   // UNIVERSAL HMR + STATS HANDLING GOODNESS:
 
   if (argv.isDev === 'true') {
+    const clientDevConfig = webpackConfig({isReact:true,isClient:true,isDev:true,isUniversal:true,'xxx':116});
+    const serverDevConfig = webpackConfig({isReact:true,isClient:false,isDev:true,isUniversal:true,'xxx':115});
+    const serverNonUniversalConfig = webpackConfig({isReact:true,isClient:false,isDev:true,isUniversal:false,'xxx':114});
+    const publicPath = clientDevConfig.output.publicPath
+    const outputPath = clientDevConfig.output.path
+    console.log('66666')
     function invalidHandler(fileName, changeTime) {
       console.log('==== INVALIDATED ====')
       console.log('stats', fs.statSync(fileName));
@@ -77,13 +79,18 @@ export default function startUniversal({app = express()}) {
     )
 
   } else if (argv.isDeploy === 'true') {
+    console.log('77777')
     const serverRender = __non_webpack_require__(res('./universal/buildServer/main.js')).default
-    const clientStats = __non_webpack_require__(res('./universal/buildClient/stats.json'))            
+    const clientStats = __non_webpack_require__(res('./universal/buildClient/stats.json'))    
+    const clientProdConfig = webpackConfig({isReact:true,isClient:true,isDev:false,isUniversal:true,'xxx':113});
+    const publicPath = clientProdConfig.output.publicPath
+    const outputPath = clientProdConfig.output.path    
     app.use(publicPath, express.static(outputPath))
     app.use(serverRender({ clientStats, outputPath }))
   } else {
-    const clientProdConfig = webpackConfig({isReact:true,isClient:true,isDev:false,isUniversal:true});
-    const serverProdConfig = webpackConfig({isReact:true,isClient:false,isDev:false,isUniversal:true});
+    console.log('8888')
+    const clientProdConfig = webpackConfig({isReact:true,isClient:true,isDev:false,isUniversal:true,'xxx':113});
+    const serverProdConfig = webpackConfig({isReact:true,isClient:false,isDev:false,isUniversal:true,'xxx':112});
     deleteFiles(`{${clientProdConfig.output.path},${serverProdConfig.output.path}}`, () => {
       // webpackRunCompiler(webpack(clientProdConfig)).then(() => {
         // deleteFiles(serverProdConfig.output.path, () => {
@@ -91,9 +98,9 @@ export default function startUniversal({app = express()}) {
           const clientCompiler = multiCompiler.compilers[0];
           const serverCompiler = multiCompiler.compilers[1];
           webpackRunCompiler(multiCompiler).then(() => {
-            const clientConfig = webpackConfig({isReact:true,isClient:true,isDev:true,isUniversal:true});
-            const publicPath = clientConfig.output.publicPath
-            const outputPath = clientConfig.output.path
+            // const clientConfig = webpackConfig({isReact:true,isClient:true,isDev:true,isUniversal:true,'xxx':111});
+            const publicPath = clientProdConfig.output.publicPath
+            const outputPath = clientProdConfig.output.path
             const serverRender = __non_webpack_require__(res('./universal/buildServer/main.js')).default
             const clientStats = __non_webpack_require__(res('./universal/buildClient/stats.json'))            
             app.use(publicPath, express.static(outputPath))

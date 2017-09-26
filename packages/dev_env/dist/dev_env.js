@@ -156,9 +156,7 @@ module.exports = function (fun) {
 
 
 var prepareModuleWithDefaults = __webpack_require__(5);
-console.log('xxx');
 module.exports = prepareModuleWithDefaults(function (s) {
-	console.log('SSSSSS', s);
 	var res = s.res;
 	var isSuccess = typeof s.isSuccess === 'undefined' || !!s.isSuccess;
 	delete s.res;
@@ -176,7 +174,6 @@ module.exports = prepareModuleWithDefaults(function (s) {
 	if (s.error) {
 		// res.write(s.error);
 		// res.render('error', s.error);
-		console.log("AAAAAAAAAA");
 		res.status(status).json({
 			message: s.error.message,
 			error: s.error.error
@@ -186,7 +183,6 @@ module.exports = prepareModuleWithDefaults(function (s) {
 		//        error: s.error
 		//    });
 	} else {
-		console.log("BBBBBBBB");
 		res.status(status);
 		res.write(JSON.stringify(s));
 	}
@@ -408,18 +404,6 @@ if (nodeModulesLocation.indexOf('packages/dev_env') !== -1) {
   nodeModulesLocation = nodeModulesLocation + 'node_modules';
 }
 
-console.log('GGGGG');
-console.log('GGGGG');
-console.log('GGGGG');
-console.log('GGGGG');
-console.log('GGGGG');
-console.log('GGGGG');
-console.log('GGGGG');
-console.log('GGGGG');
-console.log('GGGGG');
-console.log('GGGGG');
-console.log('nodeModulesLocation', nodeModulesLocation);
-
 var externalsOld = _fsExtra2.default.readdirSync(res(nodeModulesLocation)).filter(function (x) {
   return !/\.bin|react-universal-component|require-universal-module|webpack-flush-chunks/.test(x);
 }).reduce(function (externals, mod) {
@@ -447,7 +431,18 @@ function generateConfigJson() {
   var dirRoot = _yargs.argv.dirroot || process.cwd();
   var packageJson = _fsExtra2.default.readJsonSync(dirRoot + '/package.json');
   var libraryName = packageJson.name;
-
+  if (isClient && isDev) {
+    console.log(options);
+    console.trace();
+    console.log('RRRR');
+    console.log('RRRR');
+    console.log('RRRR');
+    console.log('RRRR');
+    console.log('RRRR');
+    console.log('RRRR');
+    console.log('RRRR');
+    console.log('RRRR');
+  }
   var config = _extends({}, isReact ? {
     name: isClient ? 'client' : 'server'
   } : {}, {
@@ -455,7 +450,10 @@ function generateConfigJson() {
     devtool: 'sourcemap'
   }, !isMocha ? isReact ? {
     entry: [].concat(_toConsumableArray(!isClient && !isDev ? [] : ['babel-polyfill']), [// not sure why non babel-polyfill when server-prod
-    'fetch-everywhere'], _toConsumableArray(isClient && isDev ? ['webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=false&quiet=false&noInfo=false', 'react-hot-loader/patch'] : []), [_path2.default.resolve(__dirname, isClient ? './universal/src/clientRender.js' : isUniversal ? './universal/server/render.js' : './universal/server/nonUniversalRender.js')]),
+    'fetch-everywhere'], _toConsumableArray(isClient && isDev ? [
+      // 'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=false&quiet=false&noInfo=false',
+      // 'react-hot-loader/patch',
+    ] : []), [_path2.default.resolve(__dirname, isClient ? './universal/src/clientRender.js' : isUniversal ? './universal/server/render.js' : './universal/server/nonUniversalRender.js')]),
     output: _extends({
       path: res(isClient ? './universal/buildClient' : './universal/buildServer'),
       filename: isClient && !isDev ? '[name].[chunkhash].js' : '[name].js',
@@ -567,7 +565,10 @@ function generateConfigJson() {
       names: ['bootstrap'], // needed to put webpack bootstrap code before chunks
       filename: isDev ? '[name].js' : '[name].[chunkhash].js',
       minChunks: Infinity
-    })].concat(_toConsumableArray(isDev ? [new _webpack2.default.HotModuleReplacementPlugin(), new _webpack2.default.NoEmitOnErrorsPlugin()] : []), [new _webpack2.default.DefinePlugin({
+    })].concat(_toConsumableArray(isDev ? [
+      // new webpack.HotModuleReplacementPlugin(),
+      // new webpack.NoEmitOnErrorsPlugin(),
+    ] : []), [new _webpack2.default.DefinePlugin({
       'process.env': {
         NODE_ENV: JSON.stringify(isDev ? 'development' : 'production')
       }
@@ -1561,12 +1562,9 @@ function asyncRecurseStartApps(app, serverNamespaces) {
   return new Promise(function (resolve, reject) {
     var i = 0;
     function recurse(backendAppNamespace) {
-      // __non_webpack_require__
-      console.log('?????');
       var someBackendApp = extraServers[backendAppNamespace];
       // const someBackendApp = __non_webpack_require__(path.resolve(__dirname, `../../packages/${backendAppNamespace}/${backendAppNamespace}.express`));
       // import(`../../packages/${backendAppNamespace}/${backendAppNamespace}.express`).then((someBackendApp) => {
-      console.log('someBackendApp', someBackendApp);
       var serveBackendApp = someBackendApp.default || someBackendApp;
       var backendAppSettings = {
         nameSpace: backendAppNamespace
@@ -1956,11 +1954,6 @@ function startUniversal(_ref) {
   var _ref$app = _ref.app,
       app = _ref$app === undefined ? (0, _express2.default)() : _ref$app;
 
-  var clientDevConfig = (0, _webpackConfig2.default)({ isReact: true, isClient: true, isDev: true, isUniversal: true });
-  var serverDevConfig = (0, _webpackConfig2.default)({ isReact: true, isClient: false, isDev: true, isUniversal: true });
-  var serverNonUniversalConfig = (0, _webpackConfig2.default)({ isReact: true, isClient: false, isDev: true, isUniversal: false });
-  var publicPath = clientDevConfig.output.publicPath;
-  var outputPath = clientDevConfig.output.path;
 
   // UNIVERSAL HMR + STATS HANDLING GOODNESS:
 
@@ -1971,6 +1964,13 @@ function startUniversal(_ref) {
       console.log('FileName: ' + fileName);
       console.log('ChangeTimex: ' + changeTime);
     };
+
+    var clientDevConfig = (0, _webpackConfig2.default)({ isReact: true, isClient: true, isDev: true, isUniversal: true, 'xxx': 116 });
+    var serverDevConfig = (0, _webpackConfig2.default)({ isReact: true, isClient: false, isDev: true, isUniversal: true, 'xxx': 115 });
+    var serverNonUniversalConfig = (0, _webpackConfig2.default)({ isReact: true, isClient: false, isDev: true, isUniversal: false, 'xxx': 114 });
+    var publicPath = clientDevConfig.output.publicPath;
+    var outputPath = clientDevConfig.output.path;
+    console.log('66666');
 
     var options = {
       publicPath: publicPath,
@@ -2013,23 +2013,28 @@ function startUniversal(_ref) {
       serverRendererOptions: { outputPath: outputPath }
     }));
   } else if (_yargs.argv.isDeploy === 'true') {
+    console.log('77777');
     var serverRender = require(res('./universal/buildServer/main.js')).default;
     var clientStats = require(res('./universal/buildClient/stats.json'));
-    app.use(publicPath, _express2.default.static(outputPath));
-    app.use(serverRender({ clientStats: clientStats, outputPath: outputPath }));
+    var clientProdConfig = (0, _webpackConfig2.default)({ isReact: true, isClient: true, isDev: false, isUniversal: true, 'xxx': 113 });
+    var _publicPath = clientProdConfig.output.publicPath;
+    var _outputPath = clientProdConfig.output.path;
+    app.use(_publicPath, _express2.default.static(_outputPath));
+    app.use(serverRender({ clientStats: clientStats, outputPath: _outputPath }));
   } else {
-    var clientProdConfig = (0, _webpackConfig2.default)({ isReact: true, isClient: true, isDev: false, isUniversal: true });
-    var serverProdConfig = (0, _webpackConfig2.default)({ isReact: true, isClient: false, isDev: false, isUniversal: true });
-    (0, _rimraf2.default)('{' + clientProdConfig.output.path + ',' + serverProdConfig.output.path + '}', function () {
+    console.log('8888');
+    var _clientProdConfig = (0, _webpackConfig2.default)({ isReact: true, isClient: true, isDev: false, isUniversal: true, 'xxx': 113 });
+    var serverProdConfig = (0, _webpackConfig2.default)({ isReact: true, isClient: false, isDev: false, isUniversal: true, 'xxx': 112 });
+    (0, _rimraf2.default)('{' + _clientProdConfig.output.path + ',' + serverProdConfig.output.path + '}', function () {
       // webpackRunCompiler(webpack(clientProdConfig)).then(() => {
       // deleteFiles(serverProdConfig.output.path, () => {
-      var multiCompiler = (0, _webpack2.default)([clientProdConfig, serverProdConfig]);
+      var multiCompiler = (0, _webpack2.default)([_clientProdConfig, serverProdConfig]);
       var clientCompiler = multiCompiler.compilers[0];
       var serverCompiler = multiCompiler.compilers[1];
       (0, _webpackRunCompiler2.default)(multiCompiler).then(function () {
-        var clientConfig = (0, _webpackConfig2.default)({ isReact: true, isClient: true, isDev: true, isUniversal: true });
-        var publicPath = clientConfig.output.publicPath;
-        var outputPath = clientConfig.output.path;
+        // const clientConfig = webpackConfig({isReact:true,isClient:true,isDev:true,isUniversal:true,'xxx':111});
+        var publicPath = _clientProdConfig.output.publicPath;
+        var outputPath = _clientProdConfig.output.path;
         var serverRender = require(res('./universal/buildServer/main.js')).default;
         var clientStats = require(res('./universal/buildClient/stats.json'));
         app.use(publicPath, _express2.default.static(outputPath));
@@ -3744,19 +3749,25 @@ module.exports = function (standardModes) {
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
+
+exports.default = function (_ref) {
+    var app = _ref.app,
+        nameSpace = _ref.nameSpace;
+
+    app.get((0, _ensureLeadingSlash2.default)(nameSpace + "/junk-express"), function (req, res) {
+        res.send({
+            status: "success"
+        });
+    });
+};
 
 var _ensureLeadingSlash = __webpack_require__(4);
 
 var _ensureLeadingSlash2 = _interopRequireDefault(_ensureLeadingSlash);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = function (a) {
-  console.log('JJUUUNNNKK');
-  return a;
-};
 
 /***/ })
 /******/ ]);

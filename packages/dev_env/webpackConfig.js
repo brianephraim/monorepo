@@ -140,7 +140,18 @@ function generateConfigJson(options = {}) {
   const dirRoot = argv.dirroot || process.cwd();
   const packageJson = fs.readJsonSync(`${dirRoot}/package.json`);
   const libraryName = packageJson.name;
-
+  if (isClient && isDev ) {
+    console.log(options);
+    console.trace();
+    console.log('RRRR')
+    console.log('RRRR')
+    console.log('RRRR')
+    console.log('RRRR')
+    console.log('RRRR')
+    console.log('RRRR')
+    console.log('RRRR')
+    console.log('RRRR')
+  }
   const config = {
     ...(isReact ? {
         name: isClient ? 'client' : 'server'
@@ -158,9 +169,9 @@ function generateConfigJson(options = {}) {
             ...(!isClient && !isDev ? [] : ['babel-polyfill']), // not sure why non babel-polyfill when server-prod
             'fetch-everywhere',
             ...(
-              isClient &&  isDev ? [
-              'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=false&quiet=false&noInfo=false',
-              'react-hot-loader/patch',
+              isClient && isDev ? [
+              // 'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=false&quiet=false&noInfo=false',
+              // 'react-hot-loader/patch',
               ] : []
             ),
             path.resolve(__dirname,
@@ -381,8 +392,8 @@ function generateConfigJson(options = {}) {
               isDev
                 ?
                 [
-                  new webpack.HotModuleReplacementPlugin(),
-                  new webpack.NoEmitOnErrorsPlugin(),
+                  // new webpack.HotModuleReplacementPlugin(),
+                  // new webpack.NoEmitOnErrorsPlugin(),
                 ]
                 :
                 []

@@ -5,7 +5,7 @@
   "version": "0.0.0",
   "description": "Redux ToDos example",
   "scripts": {
-    "start" : "npm run lernahoist && npm run bern3",
+    "start" : "npm run bern4",
     "start2" : "echo hi",
     "npm-dps": "/Users/brianephraim/Sites/npm-deps/bin/npm-deps < package.json > package-combined.json",
     "tail": "heroku logs --app berniereact --tail",
@@ -83,6 +83,7 @@
     "ejs": "*",
     "express": "^4.13.3",
     "express-session": ">= 1.6.1",
+    "history": "^4.7.2",
     "jquery-deferred": "^0.3.0",
     "method-override": ">= 2.0.2",
     "mime-types": "^2.1.12",
