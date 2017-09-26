@@ -93,7 +93,7 @@ export default function startUniversal({app = express()}) {
     outputPath = outputPath.split('/dev_env/')[1];
     outputPath = path.resolve(__dirname, `./${outputPath}`)
     outputPath = 'packages/dev_env/universal/buildClient'
-    console.log('outputPath2',outputPath);
+    console.log('outputPath2x',outputPath);
     app.use(publicPath, express.static(outputPath))
     app.use(serverRender({ clientStats, outputPath }))
   } else {
