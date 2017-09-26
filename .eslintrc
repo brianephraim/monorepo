@@ -27,5 +27,9 @@
     "jest": true,
     "browser": true,
     "node": true
+  },
+  "globals": {
+    "__xdirname": true,
+    "__non_webpack_require__": true
   }
 }

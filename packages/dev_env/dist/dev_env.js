@@ -1892,11 +1892,6 @@ var allVideos = reactReduxVideos.concat(dbGraphqlVideos, fpVideos);
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-// import universalWebpackConfig from './universal/webpack/universalWebpackConfig';
-
-
 exports.default = startUniversal;
 
 __webpack_require__(17);
@@ -1956,60 +1951,39 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var res = function res(p) {
   return _path2.default.resolve(typeof __xdirname !== 'undefined' ? __xdirname : __dirname, p);
 };
-
+// import universalWebpackConfig from './universal/webpack/universalWebpackConfig';
 function startUniversal(app) {
-  console.log('typeof __xdirname', typeof __xdirname === 'undefined' ? 'undefined' : _typeof(__xdirname), '/Users/brianephraim/Sites/monorepo/packages/dev_env/startUniversalExpress.js');
-
-  // UNIVERSAL HMR + STATS HANDLING GOODNESS:
 
   if (_yargs.argv.isDev === 'true') {
-    var invalidHandler = function invalidHandler(fileName, changeTime) {
-      console.log('==== INVALIDATED ====');
-      console.log('stats', _fsExtra2.default.statSync(fileName));
-      console.log('FileName: ' + fileName);
-      console.log('ChangeTimex: ' + changeTime);
-    };
-
+    // `npm run bern1` or `npm run bern2`
     var clientDevConfig = (0, _webpackConfig2.default)({ isReact: true, isClient: true, isDev: true, isUniversal: true, 'xxx': 116 });
     var serverDevConfig = (0, _webpackConfig2.default)({ isReact: true, isClient: false, isDev: true, isUniversal: true, 'xxx': 115 });
     var serverNonUniversalConfig = (0, _webpackConfig2.default)({ isReact: true, isClient: false, isDev: true, isUniversal: false, 'xxx': 114 });
     var publicPath = clientDevConfig.output.publicPath;
     var outputPath = clientDevConfig.output.path;
-    console.log('66666');
-
-    var options = {
+    var isUniversal = _yargs.argv.isUniversal === 'true';
+    var multiCompiler = (0, _webpack2.default)([clientDevConfig, isUniversal ? serverDevConfig : serverNonUniversalConfig]);
+    var clientCompiler = multiCompiler.compilers[0];
+    /* eslint-disable no-console */
+    console.info('🔷 Starting webpack ...');
+    /* eslint-enable no-console */
+    clientCompiler.plugin('invalid', function (fileName, changeTime) {
+      /* eslint-disable no-console */
+      console.log('==== INVALIDATED ====');
+      console.log('stats', _fsExtra2.default.statSync(fileName));
+      console.log('FileName: ' + fileName);
+      console.log('ChangeTimex: ' + changeTime);
+      /* eslint-enable no-console */
+    });
+    var activeWebpackDevMiddleware = (0, _webpackDevMiddleware2.default)(multiCompiler, {
       publicPath: publicPath,
       stats: {
         colors: true
       }
-    };
-    var isUniversal = _yargs.argv.isUniversal === 'true';
-    var multiCompiler = (0, _webpack2.default)([clientDevConfig, isUniversal ? serverDevConfig : serverNonUniversalConfig]);
-    var clientCompiler = multiCompiler.compilers[0];
-    console.info('🔷 Starting webpack ...');
-
-    clientCompiler.plugin('invalid', invalidHandler);
-    var activeWebpackDevMiddleware = (0, _webpackDevMiddleware2.default)(multiCompiler, options);
+    });
     activeWebpackDevMiddleware.waitUntilValid(function (stats) {
-      // function censor(censor) {
-      //   var i = 0;
-
-      //   return function(key, value) {
-      //     if(i !== 0 && typeof(censor) === 'object' && typeof(value) == 'object' && censor == value) 
-      //       return '[Circular]'; 
-
-      //     if(i >= 29) // seems to be a harded maximum of 30 serialized objects?
-      //       return '[Unknown]';
-
-      //     ++i; // so we know we aren't using the original object anymore
-
-      //     return value;  
-      //   }
-      // }
-      // fs.writeFileSync('./activeWebpackDevMiddlewareStats.json', JSON.stringify(stats, censor(stats), 2));
       (0, _webpackParseStatsForDepProblems2.default)(stats);
     });
-
     app.use(activeWebpackDevMiddleware);
     app.use((0, _webpackHotMiddleware2.default)(clientCompiler));
     app.use(
@@ -2018,6 +1992,8 @@ function startUniversal(app) {
       serverRendererOptions: { outputPath: outputPath }
     }));
   } else if (_yargs.argv.isDeploy === 'true') {
+    // `npm run bern4`
+
     // instead of `require` or `__non_webpack_require__` or `import (...)`
     // using `fs.readFileSync` + `_eval`.
     // why
@@ -2036,6 +2012,7 @@ function startUniversal(app) {
     app.use(_publicPath, _express2.default.static(_outputPath));
     app.use(serverRender({ clientStats: clientStats, outputPath: _outputPath }));
   } else {
+    // `npm run bern3`
     var _clientProdConfig = (0, _webpackConfig2.default)({ isReact: true, isClient: true, isDev: false, isUniversal: true, 'xxx': 113 });
     var serverProdConfig = (0, _webpackConfig2.default)({ isReact: true, isClient: false, isDev: false, isUniversal: true, 'xxx': 112 });
     (0, _rimraf2.default)('{' + _clientProdConfig.output.path + ',' + serverProdConfig.output.path + '}', function () {
