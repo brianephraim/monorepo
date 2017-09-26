@@ -5,6 +5,9 @@ import globby from 'globby';
 import nodeExternals from 'webpack-node-externals';
 import path from 'path';
 
+import findNodeModules from 'find-node-modules';
+
+
 
 // from universal
 // import path from 'path';
@@ -35,7 +38,7 @@ const makeProgressPlugin = () => {
   })
 };
 const res = (p) => {
-  return path.resolve(__dirname, p);
+  return path.resolve(typeof __xdirname !== 'undefined' ? __xdirname : __dirname, p);
 };
 
 
@@ -108,8 +111,16 @@ function makeEntry({libraryName,isBuild,dirRoot}) {
 }
 // /Users/brianephraim/Sites/monorepo/packages/dev_env/universal/webpack/universalWebpackConfig.js
 // /Users/brianephraim/Sites/monorepo/packages/dev_env/         /       /webpackConfig.js
+const nodeModulesLocationsArray = findNodeModules({ relative: false });
+let nodeModulesLocation = nodeModulesLocationsArray[0];
+if (nodeModulesLocation.indexOf('packages/dev_env') !== -1){
+  nodeModulesLocation = nodeModulesLocation.split('packages/dev_env')[0];
+  nodeModulesLocation = `${nodeModulesLocation}node_modules`
+}
+
+
 const externalsOld = fs
-  .readdirSync(res('../../node_modules'))
+  .readdirSync(res(nodeModulesLocation))
   .filter((x) => {
     return !/\.bin|react-universal-component|require-universal-module|webpack-flush-chunks/.test(x);      
   })
@@ -129,7 +140,18 @@ function generateConfigJson(options = {}) {
   const dirRoot = argv.dirroot || process.cwd();
   const packageJson = fs.readJsonSync(`${dirRoot}/package.json`);
   const libraryName = packageJson.name;
-
+  if (isClient && isDev ) {
+    console.log(options);
+    console.trace();
+    console.log('RRRR')
+    console.log('RRRR')
+    console.log('RRRR')
+    console.log('RRRR')
+    console.log('RRRR')
+    console.log('RRRR')
+    console.log('RRRR')
+    console.log('RRRR')
+  }
   const config = {
     ...(isReact ? {
         name: isClient ? 'client' : 'server'
@@ -147,12 +169,12 @@ function generateConfigJson(options = {}) {
             ...(!isClient && !isDev ? [] : ['babel-polyfill']), // not sure why non babel-polyfill when server-prod
             'fetch-everywhere',
             ...(
-              isClient &&  isDev ? [
+              isClient && isDev ? [
               'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=false&quiet=false&noInfo=false',
               'react-hot-loader/patch',
               ] : []
             ),
-            path.resolve(__dirname,
+            path.resolve(typeof __xdirname !== 'undefined' ? __xdirname : __dirname,
               isClient
               ?
               './universal/src/clientRender.js'
@@ -169,7 +191,7 @@ function generateConfigJson(options = {}) {
           output: {
             path: res(isClient ? './universal/buildClient' : './universal/buildServer'),
             filename: isClient && !isDev ? '[name].[chunkhash].js' : '[name].js',
-            publicPath: '/static/',
+            publicPath: '/staticx/',
             ...(
               isClient
               ?
@@ -202,7 +224,7 @@ function generateConfigJson(options = {}) {
     //   ?
     //   {
     //     node: {
-    //       __dirname: false,
+    //       __xdirname: false,
     //       __filename: false,
     //     }
     //   }
@@ -218,7 +240,7 @@ function generateConfigJson(options = {}) {
         externals: [
           nodeExternals({
             // modulesFromFile: true,
-            modulesDir: path.resolve(__dirname.split('/packages/dev_env')[0], './node_modules'),
+            modulesDir: path.resolve((typeof __xdirname !== 'undefined' ? __xdirname : __dirname).split('/packages/dev_env')[0], './node_modules'),
           }),
         ],
       }
@@ -230,7 +252,7 @@ function generateConfigJson(options = {}) {
     //     externals: [
     //       nodeExternals({
     //         // modulesFromFile: true,
-    //         modulesDir: path.resolve(__dirname.split('/packages/dev_env')[0], './node_modules'),
+    //         modulesDir: path.resolve(__xdirname.split('/packages/dev_env')[0], './node_modules'),
     //         ...(
     //           isReact ?
     //           {
@@ -405,7 +427,7 @@ function generateConfigJson(options = {}) {
                 []
             ),
             new AutoDllPlugin({
-              context: path.join(__dirname, '..'),
+              context: path.join(__xdirname, '..'),
               filename: '[name].js',
               entry: {
                 vendor: [
@@ -454,10 +476,10 @@ function generateConfigJson(options = {}) {
             entryOnly: false,
           }),
           ...(
-            isCommandLine || isMocha
+            isCommandLine || isMocha || isBuild
             ?
             [
-              // I needed __dirname hardcoded as the original dirname
+              // I needed __xdirname hardcoded as the original dirname
               // https://github.com/webpack/webpack/issues/1599#issuecomment-266588898
               {
                 apply(compiler) {
@@ -476,7 +498,7 @@ function generateConfigJson(options = {}) {
                     return module.resource;
                   });
 
-                  setModuleConstant('__dirname', (module) => {
+                  setModuleConstant('__xdirname', (module) => {
                     return module.context;
                   });
                 },

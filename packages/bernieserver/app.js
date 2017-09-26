@@ -7,13 +7,13 @@ var mymodule = require('./public/js/mymodule');
  */
  var express = require('express');
 var app = express();
-app.set('views', __dirname + '/views');
+app.set('views', __xdirname + '/views');
 app.engine('html', require('ejs').renderFile);
 console.log(process.env.PORT || 4000)
 app.set('port', process.env.PORT || 4000);
 // app.set('port', 4000);
 var path = require('path');
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__xdirname, 'public')));
 
 /*
  * Load the S3 information from the environment variables.

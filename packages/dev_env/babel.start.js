@@ -14,7 +14,7 @@
 const path = require('path');
 const shellCommand = require('./core/shellCommand');
 const fs = require('fs-extra');
-
+console.log('iiiii');
 const argumentsPassThrough = process.argv.reduce((accum, argString) => {
   const toAppend = argString.indexOf('--') === 0 ? ` ${argString}` : '';
   return `${accum}${toAppend}`;
@@ -23,6 +23,8 @@ const argumentsPassThrough = process.argv.reduce((accum, argString) => {
 const pathToCheckFile = path.resolve('../../', '.lernahoist-running');
 if (!fs.existsSync(pathToCheckFile)) {
   const devEnv = './dev_env.js';
-  // shellCommand(`${path.resolve(__dirname, './node_modules/.bin/babel-node')} ${path.resolve(__dirname, devEnv)}${argumentsPassThrough}`);
-  shellCommand(`${path.resolve(__dirname, './bin/devenv-node.js')} ${path.resolve(__dirname, devEnv)}${argumentsPassThrough}`);
+  // shellCommand(`${path.resolve(__xdirname, './node_modules/.bin/babel-node')} ${path.resolve(__xdirname, devEnv)}${argumentsPassThrough}`);
+  console.log('#######',`${path.resolve(typeof __xdirname !== 'undefined' ? __xdirname : __dirname, './bin/devenv-node.js')} ${path.resolve(typeof __xdirname !== 'undefined' ? __xdirname : __dirname, devEnv)}${argumentsPassThrough}`);
+  shellCommand(`${path.resolve(typeof __xdirname !== 'undefined' ? __xdirname : __dirname, './bin/devenv-node.js')} ${path.resolve(typeof __xdirname !== 'undefined' ? __xdirname : __dirname, devEnv)}${argumentsPassThrough}`);
 }
+console.log(')))))');

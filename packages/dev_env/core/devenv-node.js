@@ -18,10 +18,10 @@ const fileName = toCompileSplit.pop();
 const tempFileName = fileName.replace('.js', '.temp.js');
 const toCompileFolder = toCompileSplit.join('/');
 
-if (isWithinMonoRepo(__dirname)) {
+if (isWithinMonoRepo(typeof __xdirname !== 'undefined' ? __xdirname : __dirname)) {
   // Determine some paths, with logic that is resilient to
-  // unlikely situation of nested /dev_env/ instances is __dirname
-  const devEnvRoot = getDevEnvRoot(__dirname);
+  // unlikely situation of nested /dev_env/ instances is __xdirname
+  const devEnvRoot = getDevEnvRoot(typeof __xdirname !== 'undefined' ? __xdirname : __dirname);
 
   const babelNodePath = path.resolve(devEnvRoot, './node_modules/.bin/babel-node');
   const devEnvCommandLinePath = path.resolve(devEnvRoot, './core/devEnvCommandLine.js');
@@ -74,7 +74,7 @@ if (isWithinMonoRepo(__dirname)) {
   shellCommand(cmd);
 } else {
   const tempFilePath = `${toCompileFolder}/${tempFileName}`;
-  const devEnvDistPath = path.resolve(__dirname, '../dist/dev_env.js');
+  const devEnvDistPath = path.resolve(typeof __xdirname !== 'undefined' ? __xdirname : __dirname, '../dist/dev_env.js');
   const cmd = `(cd ${toCompileFolder} && node ${devEnvDistPath} --entry=${toCompile} --output=${tempFilePath}) && node ${tempFilePath} ${process.argv.slice(3).join(' ')} && rm ${tempFilePath}`;
   shellCommand(cmd);
 }
