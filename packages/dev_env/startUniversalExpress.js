@@ -80,14 +80,16 @@ export default function startUniversal({app = express()}) {
       })
     )
   } else if (argv.isDeploy === 'true') {
-    console.log('77777')
+      console.log('77777',process.cwd());
     // import(`universal/buildServer/main.js'`).then((someBackendApp) => {
       // const serverRender = someBackendApp || someBackendApp.default;
-      const buildServerMainContent = fs.readFileSync(res('./universal/buildServer/main.js'));
+      console.log('process.cwd()',process.cwd())
+      console.log('argv.dirroot',argv.dirroot)
+      const buildServerMainContent = fs.readFileSync(path.resolve(process.cwd(),'./packages/dev_env/universal/buildServer/main.js'));
       const serverRender = _eval(buildServerMainContent,true).default;
       // const serverRender = require('./universal/buildServer/main.js').default
       // const clientStats = require('./universal/buildClient/stats.json');
-      const clientStats = fs.readJsonSync(res('./universal/buildClient/stats.json'));
+      const clientStats = fs.readJsonSync(path.resolve(process.cwd(),'./packages/dev_env/universal/buildClient/stats.json'));
       const clientProdConfig = webpackConfig({isReact:true,isClient:true,isDev:false,isUniversal:true,'xxx':113});
       const publicPath = clientProdConfig.output.publicPath
       const outputPath = 'packages/dev_env/universal/buildClient';

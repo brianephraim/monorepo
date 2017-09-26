@@ -2023,14 +2023,16 @@ function startUniversal(_ref) {
       serverRendererOptions: { outputPath: outputPath }
     }));
   } else if (_yargs.argv.isDeploy === 'true') {
-    console.log('77777');
+    console.log('77777', process.cwd());
     // import(`universal/buildServer/main.js'`).then((someBackendApp) => {
     // const serverRender = someBackendApp || someBackendApp.default;
-    var buildServerMainContent = _fsExtra2.default.readFileSync(res('./universal/buildServer/main.js'));
+    console.log('process.cwd()', process.cwd());
+    console.log('argv.dirroot', _yargs.argv.dirroot);
+    var buildServerMainContent = _fsExtra2.default.readFileSync(_path2.default.resolve(process.cwd(), './packages/dev_env/universal/buildServer/main.js'));
     var serverRender = (0, _eval3.default)(buildServerMainContent, true).default;
     // const serverRender = require('./universal/buildServer/main.js').default
     // const clientStats = require('./universal/buildClient/stats.json');
-    var clientStats = _fsExtra2.default.readJsonSync(res('./universal/buildClient/stats.json'));
+    var clientStats = _fsExtra2.default.readJsonSync(_path2.default.resolve(process.cwd(), './packages/dev_env/universal/buildClient/stats.json'));
     var clientProdConfig = (0, _webpackConfig2.default)({ isReact: true, isClient: true, isDev: false, isUniversal: true, 'xxx': 113 });
     var _publicPath = clientProdConfig.output.publicPath;
     var _outputPath = 'packages/dev_env/universal/buildClient';
