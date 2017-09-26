@@ -22,5 +22,3 @@ if (item) {
 } else {
   serveWebpack();
 }
-const serve = serveWebpack;
-// export { serve };

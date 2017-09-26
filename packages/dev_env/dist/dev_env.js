@@ -1124,8 +1124,6 @@ if (item) {
 } else {
   (0, _webpackExpressServer2.default)();
 }
-var serve = _webpackExpressServer2.default;
-// export { serve };
 
 /***/ }),
 /* 22 */
