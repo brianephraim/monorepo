@@ -41865,7 +41865,6 @@ var MongooseStuff = function MongooseStuff() {
 
   this.mongooseUri = uriUtil.formatMongoose(mongodbUri);
 
-  console.log('process.env', process.env);
   console.log('mongodbUri', mongodbUri);
   console.log('this.mongooseUri', this.mongooseUri);
   this.db = mongoose.connection;
