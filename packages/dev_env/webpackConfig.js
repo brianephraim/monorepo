@@ -532,7 +532,7 @@ function generateConfigJson(options = {}) {
           
       // for node end
       new webpack.DefinePlugin({
-        '__nodeenv': isDev ? 'development' : 'production'
+        '__nodeenv': JSON.stringify(isDev ? 'development' : 'production')
       }),
       new webpack.EnvironmentPlugin({
         NODE_ENV: isDev ? 'development' : 'production', // use 'development' unless process.env.NODE_ENV is defined

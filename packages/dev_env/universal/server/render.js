@@ -12,17 +12,20 @@ import { NOT_FOUND } from 'redux-first-router'
 import configureStore from '../src/configureStore'
 import url from 'url';
 
+import startExpress from '../../startExpress';
 
 
 import express from 'express';
-import { argv } from 'yargs';
-import demoEndpoints from './demoEndpoints';
-import bernieServer from '@defualt/bernieserver/bernieserver.express';
-import junkServer from '@defualt/junk-express/junk-express.express';
+
 import path from 'path';
 import fs from 'fs-extra';
-import _eval from 'eval';
+// import _eval from 'eval';
 import webpackConfig from '../../webpackConfig';
+
+
+
+
+
 
 
 
@@ -136,89 +139,14 @@ const render = ({ clientStats }) => async (req, res, next) => {
 
 export default render;
 
-
-
-
-
-function asyncRecurseStartApps(app,serverNamespaces) {
-  // I want to asynchronously load these endpoint modules.
-  // but this is tricky.  Fix this later.
-  const extraServers = {
-    bernieserver: bernieServer,
-    'junk-express': junkServer,
-  };
-  return new Promise((resolve) => {
-    let i = 0;
-    function recurse(backendAppNamespace) {
-      console.log('backendAppNamespace',backendAppNamespace);
-      const someBackendApp = extraServers[backendAppNamespace];
-      // const someBackendApp = __non_webpack_require__(path.resolve(__xdirname, `../../packages/${backendAppNamespace}/${backendAppNamespace}.express`));
-      // import(`../../packages/${backendAppNamespace}/${backendAppNamespace}.express`).then((someBackendApp) => {
-      const serveBackendApp = someBackendApp.default || someBackendApp;
-      const backendAppSettings = {
-        nameSpace: backendAppNamespace,
-      };
-      backendAppSettings.app = app;
-      serveBackendApp(backendAppSettings);
-      const nextNamespace = serverNamespaces[++i];
-      if (nextNamespace) {
-        recurse(nextNamespace);
-      } else {
-        resolve(app);
-      }
-      // });
-    }
-    recurse(serverNamespaces[i]);
-  });  
-}
-
-function startUniversalExpress(app) {
-  const serverRender = render;
-  const clientStats = fs.readJsonSync(path.resolve(process.cwd(),'./packages/dev_env/universal/buildClient/stats.json'));
-  const clientProdConfig = webpackConfig({isReact:true,isClient:true,isDev:false,isUniversal:true,'xxx':113});
-  const publicPath = clientProdConfig.output.publicPath
-  const outputPath = 'packages/dev_env/universal/buildClient';
-  app.use(publicPath, express.static(outputPath))
-  app.use(serverRender({ clientStats, outputPath })) 
-}
-
-function startWebpack(app) {
-  /* eslint-disable no-console */
-  console.log('SERVE');
-  /* eslint-enable no-console */
-  app.use('/images', express.static('packages/images'));
-  app.use('/fonts', express.static('packages/fonts'));
-  demoEndpoints({app}) 
-  startUniversalExpress(app);
-  const port = process.env.PORT || 3000;
-  app.listen(port, (error) => {
-    /* eslint-disable no-console */
-    if (error) {
-      console.error(error);
-    } else {
-      console.info(
-        '🌎 Listening on port %s. Open up http://localhost:%s/ in your browser.',
-        port,
-        port,
-      );
-    }
-    /* eslint-enable no-console */
+if (__nodeenv === 'production') {
+  startExpress((app) => {
+    const serverRender = render;
+    const clientStats = fs.readJsonSync(path.resolve(process.cwd(),'./packages/dev_env/universal/buildClient/stats.json'));
+    const clientProdConfig = webpackConfig({isReact:true,isClient:true,isDev:false,isUniversal:true,'xxx':113});
+    const publicPath = clientProdConfig.output.publicPath
+    const outputPath = 'packages/dev_env/universal/buildClient';
+    app.use(publicPath, express.static(outputPath))
+    app.use(serverRender({ clientStats, outputPath })) 
   });
-  return app;
-}
-
-function startServer() {
-  const serverNamespaces = argv.servers && argv.servers.split(',');
-  const app = express();
-  if (serverNamespaces) {
-    asyncRecurseStartApps(app,serverNamespaces).then(startWebpack);
-  } else {
-    startWebpack(app)
-  }
-  // startWebpack(express())
-}
-
-if(argv.isDeploy || true) {
-  // startWebpack(express())
-  startServer();
 }

@@ -15,6 +15,8 @@ import webpackConfig from './webpackConfig';
 import webpackRunCompiler from './core/webpackRunCompiler';
 import webpackParseStatsForDepProblems from './webpackParseStatsForDepProblems';
 
+import startExpress from './startExpress';
+
 
 
 const res = (p) => {
@@ -25,42 +27,44 @@ export default function startUniversal(app) {
 
   if (argv.isDev === 'true') {
     // `npm run bern1` or `npm run bern2`
-    const clientDevConfig = webpackConfig({isReact:true,isClient:true,isDev:true,isUniversal:true,'xxx':116});
-    const serverDevConfig = webpackConfig({isReact:true,isClient:false,isDev:true,isUniversal:true,'xxx':115});
-    const serverNonUniversalConfig = webpackConfig({isReact:true,isClient:false,isDev:true,isUniversal:false,'xxx':114});
-    const publicPath = clientDevConfig.output.publicPath
-    const outputPath = clientDevConfig.output.path
-    const isUniversal = argv.isUniversal === 'true';
-    const multiCompiler = webpack([clientDevConfig, isUniversal ? serverDevConfig : serverNonUniversalConfig])
-    const clientCompiler = multiCompiler.compilers[0]
-    /* eslint-disable no-console */
-    console.info('🔷 Starting webpack ...');
-    /* eslint-enable no-console */
-    clientCompiler.plugin('invalid', (fileName, changeTime) => {
+    startExpress((app) => {
+      const clientDevConfig = webpackConfig({isReact:true,isClient:true,isDev:true,isUniversal:true,'xxx':116});
+      const serverDevConfig = webpackConfig({isReact:true,isClient:false,isDev:true,isUniversal:true,'xxx':115});
+      const serverNonUniversalConfig = webpackConfig({isReact:true,isClient:false,isDev:true,isUniversal:false,'xxx':114});
+      const publicPath = clientDevConfig.output.publicPath
+      const outputPath = clientDevConfig.output.path
+      const isUniversal = argv.isUniversal === 'true';
+      const multiCompiler = webpack([clientDevConfig, isUniversal ? serverDevConfig : serverNonUniversalConfig])
+      const clientCompiler = multiCompiler.compilers[0]
       /* eslint-disable no-console */
-      console.log('==== INVALIDATED ====')
-      console.log('stats', fs.statSync(fileName));
-      console.log(`FileName: ${fileName}`);
-      console.log(`ChangeTimex: ${changeTime}`);
+      console.info('🔷 Starting webpack ...');
       /* eslint-enable no-console */
+      clientCompiler.plugin('invalid', (fileName, changeTime) => {
+        /* eslint-disable no-console */
+        console.log('==== INVALIDATED ====')
+        console.log('stats', fs.statSync(fileName));
+        console.log(`FileName: ${fileName}`);
+        console.log(`ChangeTimex: ${changeTime}`);
+        /* eslint-enable no-console */
+      });
+      const activeWebpackDevMiddleware = webpackDevMiddleware(multiCompiler, {
+        publicPath,
+        stats: {
+          colors: true,
+        },
+      });
+      activeWebpackDevMiddleware.waitUntilValid((stats) => {
+        webpackParseStatsForDepProblems(stats);
+      });
+      app.use(activeWebpackDevMiddleware)
+      app.use(webpackHotMiddleware(clientCompiler))
+      app.use(
+        // keeps serverRender updated with arg: { clientStats, outputPath }
+        webpackHotServerMiddleware(multiCompiler, {
+          serverRendererOptions: { outputPath }
+        })
+      )
     });
-    const activeWebpackDevMiddleware = webpackDevMiddleware(multiCompiler, {
-      publicPath,
-      stats: {
-        colors: true,
-      },
-    });
-    activeWebpackDevMiddleware.waitUntilValid((stats) => {
-      webpackParseStatsForDepProblems(stats);
-    });
-    app.use(activeWebpackDevMiddleware)
-    app.use(webpackHotMiddleware(clientCompiler))
-    app.use(
-      // keeps serverRender updated with arg: { clientStats, outputPath }
-      webpackHotServerMiddleware(multiCompiler, {
-        serverRendererOptions: { outputPath }
-      })
-    )
   } else if (argv.isDeploy === 'true') {
     // `npm run bern4`
 
@@ -73,14 +77,14 @@ export default function startUniversal(app) {
     //    - which will itself be ES5 safe
     //    - which is itself huge so we don't want to bundle it here.
     // -  `__non_webpack_require__` and `import (...)` don't work or too complicated.
-    const buildServerMainContent = fs.readFileSync(path.resolve(process.cwd(),'./packages/dev_env/universal/buildServer/main.js'));
-    const serverRender = _eval(buildServerMainContent,true).default;
-    const clientStats = fs.readJsonSync(path.resolve(process.cwd(),'./packages/dev_env/universal/buildClient/stats.json'));
-    const clientProdConfig = webpackConfig({isReact:true,isClient:true,isDev:false,isUniversal:true,'xxx':113});
-    const publicPath = clientProdConfig.output.publicPath
-    const outputPath = 'packages/dev_env/universal/buildClient';
-    app.use(publicPath, express.static(outputPath))
-    app.use(serverRender({ clientStats, outputPath }))    
+    // const buildServerMainContent = fs.readFileSync(path.resolve(process.cwd(),'./packages/dev_env/universal/buildServer/main.js'));
+    // const serverRender = _eval(buildServerMainContent,true).default;
+    // const clientStats = fs.readJsonSync(path.resolve(process.cwd(),'./packages/dev_env/universal/buildClient/stats.json'));
+    // const clientProdConfig = webpackConfig({isReact:true,isClient:true,isDev:false,isUniversal:true,'xxx':113});
+    // const publicPath = clientProdConfig.output.publicPath
+    // const outputPath = 'packages/dev_env/universal/buildClient';
+    // app.use(publicPath, express.static(outputPath))
+    // app.use(serverRender({ clientStats, outputPath }))    
   } else {
     // `npm run bern3`
     const clientProdConfig = webpackConfig({isReact:true,isClient:true,isDev:false,isUniversal:true,'xxx':113});
