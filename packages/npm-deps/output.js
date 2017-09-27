@@ -35,7 +35,6 @@ module.exports = function(app) {
 
       for (var name in deps) {
         if (name.indexOf('@defualt') === -1){
-
           var dep = deps[name];
           if (dep.type == 'development') {
             pkgJson.devDependencies[name] = dep.version;

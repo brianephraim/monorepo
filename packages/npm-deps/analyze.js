@@ -55,19 +55,24 @@ function analyze(options, callback) {
     for (var dep in deps) {
       var version = deps[dep];
       // Try to add dependencies to root directory
-      if (!result[dep]) {
-        result[dep] = { version: version, type: type };
+      
+      if (dep === 'fsevents') {
+
       } else {
-        // check for inconsistent dependency versions.
-        if (result[dep].version != version) {
-          if (!options.silent) {
-            log.warn('analyze', '%s: inconsistent dependency version %s@%s', dir, dep, version);
+        if (!result[dep]) {
+          result[dep] = { version: version, type: type };
+        } else {
+          // check for inconsistent dependency versions.
+          if (result[dep].version != version) {
+            if (!options.silent) {
+              log.warn('analyze', '%s: inconsistent dependency version %s@%s', dir, dep, version);
+            }
           }
-        }
-        // check if the same dep is used on dev and production, if so
-        // make it sure it's listed as a production dep
-        if ((type == 'production') && (result[dep].type == 'development')) {
-          result[dep].type = 'production';
+          // check if the same dep is used on dev and production, if so
+          // make it sure it's listed as a production dep
+          if ((type == 'production') && (result[dep].type == 'development')) {
+            result[dep].type = 'production';
+          }
         }
       }
     }
