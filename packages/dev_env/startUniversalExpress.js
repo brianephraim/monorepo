@@ -56,7 +56,7 @@ function compileAndServeWebpackDevMiddlewareHMRUniversalExpress(clientDevConfig,
   });
 }
 
-function clearCompileAndServeProductionUniversalExpress(clientConfig,serverConfig) {
+function clearCompileAndServeProductionUniversalExpress(clientConfig,serverConfig,serve = true) {
   return new Promise((resolve) => {
     deleteFiles(`{${clientConfig.output.path},${serverConfig.output.path}}`, () => {
       const multiCompiler = webpack([clientConfig,serverConfig]);
@@ -64,7 +64,9 @@ function clearCompileAndServeProductionUniversalExpress(clientConfig,serverConfi
         resolve();
         // This calls the production bundle of the Universal React App just created.
         // This includes an express server.
-        __non_webpack_require__(res('./universal/buildServer/main.js'));
+        if (serve) {
+          __non_webpack_require__(res('./universal/buildServer/main.js'));
+        }
       });
     });
   });
@@ -73,8 +75,10 @@ function clearCompileAndServeProductionUniversalExpress(clientConfig,serverConfi
 
 
 export default function startUniversalExpress() {
-  const isDev = argv.isDev === 'true';
-  const isUniversal = argv.isUniversal === 'true' || !isDev;
+  const isDeploy = argv.isDeploy === 'true';
+  const isDev = argv.isDev === 'true' && !isDeploy;
+  const isUniversal = argv.isUniversal === 'true' || !isDev || isDeploy;
+
   const clientConfig = webpackConfig({
     isReact:true,
     isClient:true,
@@ -87,8 +91,14 @@ export default function startUniversalExpress() {
     isDev,
     isUniversal,
   });
-
-  if (argv.isDev === 'true') {
+  if (isDeploy) {
+    // `npm run bern4`
+    clearCompileAndServeProductionUniversalExpress(clientConfig,serverConfig,false).then(() => {
+       /* eslint-disable no-console */
+      console.log('🦁 Webpack production done for Universal React (for deploy, so no localhost started');
+      /* eslint-enable no-console */
+    });
+  } else if (isDev) {
     // `npm run bern1` or `npm run bern2`
     
     const isUniversal = argv.isUniversal === 'true';
@@ -108,11 +118,8 @@ export default function startUniversalExpress() {
     // `npm run bern3`
     clearCompileAndServeProductionUniversalExpress(clientConfig,serverConfig).then(() => {
        /* eslint-disable no-console */
-      console.log('🦁 Webpack production done for Universal React');
+      console.log('🦁 Webpack production done for Universal React ( and localhost started)');
       /* eslint-enable no-console */
-
-      // This calls the production bundle of the Universal React App just created.
-      __non_webpack_require__(res('./universal/buildServer/main.js'));
     });
   }
 }
