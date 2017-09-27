@@ -139,14 +139,18 @@ const render = ({ clientStats }) => async (req, res, next) => {
 
 export default render;
 
+
+// When this script is called from within the production bundle...
 if (__nodeenv === 'production') {
+  // We are launching an express server with `startExpress`.
+  // `startExpress` includes all the app's endpoints and the localhost port listener.
   startExpress((app) => {
-    const serverRender = render;
+    // And we integrate the the `render` function assigned above with the express add.
     const clientStats = fs.readJsonSync(path.resolve(process.cwd(),'./packages/dev_env/universal/buildClient/stats.json'));
     const clientProdConfig = webpackConfig({isReact:true,isClient:true,isDev:false,isUniversal:true,'xxx':113});
     const publicPath = clientProdConfig.output.publicPath
     const outputPath = 'packages/dev_env/universal/buildClient';
     app.use(publicPath, express.static(outputPath))
-    app.use(serverRender({ clientStats, outputPath })) 
+    app.use(render({ clientStats, outputPath })) 
   });
 }

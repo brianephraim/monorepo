@@ -75,6 +75,7 @@ MongooseStuff.prototype.connect = function() {
   if (mongoose.connection.readyState === 0) {
     console.log('CONNECT 1')
     var options = {
+      useMongoClient: true,
       server: {
         socketOptions: {
           keepAlive: 1,

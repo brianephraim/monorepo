@@ -17486,16 +17486,19 @@ var render = function render(_ref2) {
 
 exports.default = render;
 
+// When this script is called from within the production bundle...
 
 if (true) {
+  // We are launching an express server with `startExpress`.
+  // `startExpress` includes all the app's endpoints and the localhost port listener.
   (0, _startExpress2.default)(function (app) {
-    var serverRender = render;
+    // And we integrate the the `render` function assigned above with the express add.
     var clientStats = _fsExtra2.default.readJsonSync(_path2.default.resolve(process.cwd(), './packages/dev_env/universal/buildClient/stats.json'));
     var clientProdConfig = (0, _webpackConfig2.default)({ isReact: true, isClient: true, isDev: false, isUniversal: true, 'xxx': 113 });
     var publicPath = clientProdConfig.output.publicPath;
     var outputPath = 'packages/dev_env/universal/buildClient';
     app.use(publicPath, _express2.default.static(outputPath));
-    app.use(serverRender({ clientStats: clientStats, outputPath: outputPath }));
+    app.use(render({ clientStats: clientStats, outputPath: outputPath }));
   });
 }
 
@@ -41909,6 +41912,7 @@ MongooseStuff.prototype.connect = function () {
   if (mongoose.connection.readyState === 0) {
     console.log('CONNECT 1');
     var options = {
+      useMongoClient: true,
       server: {
         socketOptions: {
           keepAlive: 1,
