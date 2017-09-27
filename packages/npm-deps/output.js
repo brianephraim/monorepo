@@ -13,11 +13,11 @@ function getBasePackage(filename, callback) {
   if (stream) {
     var write = concat(function(data) {
       var pkgJson;
-      try {
-        pkgJson = JSON.parse(data);
-      } catch (e) {
+      // try {
+      //   pkgJson = JSON.parse(data);
+      // } catch (e) {
         pkgJson = {};
-      }
+      // }
       callback(null, pkgJson);
     });
     stream.pipe(write);

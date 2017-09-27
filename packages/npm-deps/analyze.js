@@ -16,6 +16,13 @@ function analyze(options, callback) {
     if (err) return;
 
     var rel = path.relative(cwd, dir);
+    if (rel.indexOf('/packages/') !== -1) {
+      log.warn('analyze', '!!!!skipping `node_modules` directory: %s', dir);
+    }
+    if (rel.indexOf('node_modules') !== -1) {
+      // log.warn('analyze', '!!!!skipping `node_modules` directory: %s', dir);
+      return;
+    }
 
     // don't process any `node_modules` directories
     var nodeModules = 'node_modules';
@@ -23,7 +30,7 @@ function analyze(options, callback) {
       log.verbose('analyze', 'skipping `node_modules` directory: %s', dir);
       return;
     }
-
+    // console.log(dir)
     // Check for existence of package.json and read it
     var pkgjson = path.join(dir, 'package.json');
     pending++;
