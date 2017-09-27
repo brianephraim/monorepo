@@ -6,9 +6,8 @@
 */
 import aws from 'aws-sdk';
 import jD from 'jquery-deferred';
-import { x as mongooseStuff } from './mongooseStuff';
 
-export default ({accessKeyId,secretAccessKey,Bucket,app,userTemplates, urlPattern}) => {
+export default ({accessKeyId,secretAccessKey,Bucket,app,userTemplates, urlPattern,MakeUserTemplate}) => {
   var urlToFileData = require('./urlToFileData');
   var uploadToS3 = require('./uploadToS3')({
     prepareModuleWithDefaults: true,
@@ -101,7 +100,7 @@ export default ({accessKeyId,secretAccessKey,Bucket,app,userTemplates, urlPatter
                 templateWidth: fileData.width
               };
               userTemplates.push(userTemplateModel);
-              mongooseStuff.MakeUserTemplate(userTemplateModel);
+              MakeUserTemplate(userTemplateModel);
             }
           });
           return uploadToS3Promise;

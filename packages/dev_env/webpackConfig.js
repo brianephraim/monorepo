@@ -400,11 +400,7 @@ function generateConfigJson(options = {}) {
                 :
                 []
             ),
-            new webpack.DefinePlugin({
-              'process.env': {
-                NODE_ENV: JSON.stringify(isDev ? 'development' : 'production')
-              }
-            }),
+            
             ...(
               !isDev
                 ?
@@ -429,7 +425,7 @@ function generateConfigJson(options = {}) {
                 []
             ),
             new AutoDllPlugin({
-              context: path.join(__xdirname, '..'),
+              context: path.join(typeof __xdirname !== 'undefined' ? __xdirname : __dirname, '..'),
               filename: '[name].js',
               entry: {
                 vendor: [
@@ -461,12 +457,30 @@ function generateConfigJson(options = {}) {
               maxChunks: 1
             }),
 
-            new webpack.DefinePlugin({
-              'process.env': {
-                NODE_ENV: JSON.stringify(isDev ? 'development' : 'production')
-              }
-            }),
-            makeProgressPlugin(),
+            
+            {
+              apply(compiler) {
+                function setModuleConstant(expressionName, fn) {
+                  compiler.plugin('compilation', (compilation, data) => {
+                    data.normalModuleFactory.plugin('parser', (parser) => {
+                      parser.plugin(`expression ${expressionName}`, function compilerParserPlugin() {
+                        this.state.current.addVariable(expressionName, JSON.stringify(fn(this.state.module)));
+                        return true;
+                      });
+                    });
+                  });
+                }
+
+                setModuleConstant('__filename', (module) => {
+                  return module.resource;
+                });
+
+                setModuleConstant('__xdirname', (module) => {
+                  return module.context;
+                });
+              },
+            },
+            // makeProgressPlugin(),
           ]
         )
         :
@@ -509,11 +523,22 @@ function generateConfigJson(options = {}) {
             :
             []
           ),
+          // new webpack.DefinePlugin({
+          //   '__nodeenv': JSON.stringify(isDev ? 'development' : 'production')
+          // }),
           makeProgressPlugin(),
         ]
       ),
           
       // for node end
+      new webpack.DefinePlugin({
+        '__nodeenv': isDev ? 'development' : 'production'
+      }),
+      new webpack.EnvironmentPlugin({
+        NODE_ENV: isDev ? 'development' : 'production', // use 'development' unless process.env.NODE_ENV is defined
+        // DEBUG: false
+      }),
+      makeProgressPlugin(),
     ]
   };
 

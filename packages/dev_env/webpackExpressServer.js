@@ -62,11 +62,12 @@ function asyncRecurseStartApps(app,serverNamespaces) {
 }
 
 export default function () {
-  const serverNamespaces = argv.servers && argv.servers.split(',');
-  const app = express();
-  if (serverNamespaces) {
-    asyncRecurseStartApps(app,serverNamespaces).then(startWebpack);
-  } else {
-    startWebpack(app)
-  }
+  startUniversalExpress();
+  // const serverNamespaces = argv.servers && argv.servers.split(',');
+  // const app = express();
+  // if (serverNamespaces) {
+  //   asyncRecurseStartApps(app,serverNamespaces).then(startWebpack);
+  // } else {
+  //   startWebpack(app)
+  // }
 }

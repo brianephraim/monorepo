@@ -91,9 +91,9 @@ export default function startUniversal(app) {
         const publicPath = clientProdConfig.output.publicPath
         const outputPath = clientProdConfig.output.path
         const serverRender = __non_webpack_require__(res('./universal/buildServer/main.js')).default
-        const clientStats = __non_webpack_require__(res('./universal/buildClient/stats.json')) 
-        app.use(publicPath, express.static(outputPath))
-        app.use(serverRender({ clientStats, outputPath }))
+        // const clientStats = __non_webpack_require__(res('./universal/buildClient/stats.json')) 
+        // app.use(publicPath, express.static(outputPath))
+        // app.use(serverRender({ clientStats, outputPath }))
       });
     });
   }

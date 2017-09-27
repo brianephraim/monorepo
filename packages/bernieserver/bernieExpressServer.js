@@ -4,7 +4,7 @@ import ejs from 'ejs';
 import path from 'path';
 import url from 'url';
 import fs from 'fs';
-import { x as mongooseStuff } from './js/mongooseStuff';
+import startMongooseStuff from './js/mongooseStuff';
 import endpointCompositeImage from './js/endpointCompositeImage';
 import endpointGetNormalizedImageInfo from './js/endpointGetNormalizedImageInfo';
 import endpointGetS3SignedUploadUrl from './js/endpointGetS3SignedUploadUrl';
@@ -17,7 +17,6 @@ import ensureLeadingSlash from '@defualt/ensure-leading-slash';
 // var ejs = require('ejs');
 // var path = require('path');
 // var url = require('url');
-// var mongooseStuff = require('./js/mongooseStuff').x;
 // var endpointCompositeImage = require('./js/endpointCompositeImage');
 
 // var endpointGetNormalizedImageInfo = require('./js/endpointGetNormalizedImageInfo');
@@ -32,10 +31,12 @@ import ensureLeadingSlash from '@defualt/ensure-leading-slash';
  */
 
 export default function ({app, nameSpace})  {
-  app.set('views', __xdirname + '/views');
+  const mongooseStuff = startMongooseStuff();
+  console.log('AAAA');
+  app.set('views', (typeof __xdirname !== 'undefined' ? __xdirname : __dirname) + '/views');
   app.engine('html', ejs.renderFile);
 
-  app.use(express.static(path.join(__xdirname, 'public')));
+  app.use(express.static(path.join((typeof __xdirname !== 'undefined' ? __xdirname : __dirname), 'public')));
 
   /*
    * Load the S3 information from the environment variables.
@@ -127,6 +128,7 @@ export default function ({app, nameSpace})  {
   });
 
   endpointGetNormalizedImageInfo({
+    MakeUserTemplate: (userTemplateModel) => {mongooseStuff.MakeUserTemplate(userTemplateModel);},
     app:app,
     accessKeyId:AWS_ACCESS_KEY,
     secretAccessKey:AWS_SECRET_KEY,
