@@ -30,7 +30,7 @@
     "bern2": "npm run dev2",
     "bern3": "npm run prod",
     "bern4": "npm run just-bundle-prod",
-    "bern5": "npm run bern5",
+    "bern5": "npm run runProductionBundle",
     "bern": "npm run devenvnode /Users/brianephraim/Sites/monorepo/packages/bernieserver/bernieserver.js",
     "devusedist": "npm run dev -- --use-dist",
     "item": "npm_run_item(){ (./packages/dev_env/bin/devenv.js --item=$1) };npm_run_item",
