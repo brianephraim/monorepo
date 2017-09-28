@@ -4,21 +4,13 @@ import fs from 'fs-extra';
 import globby from 'globby';
 import nodeExternals from 'webpack-node-externals';
 import path from 'path';
-
 import findNodeModules from 'find-node-modules';
-
-
-
-// from universal
-// import path from 'path';
-// import webpack from 'webpack';
 import ExtractCssChunks from 'extract-css-chunks-webpack-plugin';
 import AutoDllPlugin from 'autodll-webpack-plugin';
 import StatsPlugin from 'stats-webpack-plugin';
 import ProgressPlugin from 'webpack/lib/ProgressPlugin';
 import jsonImporter from 'node-sass-json-importer';
 import WriteFilePlugin from 'write-file-webpack-plugin';
-
 import webpackConfigResolve from './core/webpack-config-resolve';
 
 // from universal
@@ -160,6 +152,8 @@ function generateConfigJson(options = {}) {
     }: {}),
     target: isReact && isClient ? 'web' : 'node',
     devtool: 'sourcemap',
+    //  cheap-module-eval-source-map
+    // new webpack.EvalSourceMapDevToolPlugin()
     ...(
       !isMocha
       ?
@@ -523,17 +517,9 @@ function generateConfigJson(options = {}) {
             :
             []
           ),
-          // new webpack.DefinePlugin({
-          //   '__nodeenv': JSON.stringify(isDev ? 'development' : 'production')
-          // }),
           makeProgressPlugin(),
         ]
       ),
-          
-      // for node end
-      new webpack.DefinePlugin({
-        '__nodeenv': JSON.stringify(isDev ? 'development' : 'production')
-      }),
       new webpack.EnvironmentPlugin({
         NODE_ENV: isDev ? 'development' : 'production', // use 'development' unless process.env.NODE_ENV is defined
         // DEBUG: false

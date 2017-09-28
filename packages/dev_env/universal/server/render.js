@@ -141,7 +141,7 @@ export default render;
 
 
 // When this script is called from within the production bundle...
-if (__nodeenv === 'production') {
+if (process.env.NODE_ENV === 'production') {
   // We are launching an express server with `startExpress`.
   // `startExpress` includes all the app's endpoints and the localhost port listener.
   startExpress((app) => {

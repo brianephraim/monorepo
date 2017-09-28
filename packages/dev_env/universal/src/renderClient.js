@@ -32,8 +32,7 @@ export default function (App) {
   }
 
   render(App);
-  console.log('__nodeenv',__nodeenv)
-  if (module.hot && __nodeenv === 'development') {
+  if (module.hot && process.env.NODE_ENV === 'development') {
     module.hot.accept('./components/App', () => {
       const App = require('./components/App').default
       render(App)

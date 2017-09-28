@@ -40193,7 +40193,7 @@ exports.default = function (history, preLoadedState) {
   if (typeof window !== 'undefined') {
     window.ss = store;
   }
-  console.log('__nodeenv', "production");
+  console.log('process.env.NODE_ENV', "production");
   if (false) {
     module.hot.accept('./reducers/index', function () {
       var reducers = require('./reducers/index');
@@ -41266,7 +41266,6 @@ exports.default = function (_ref) {
         nameSpace = _ref.nameSpace;
 
     var mongooseStuff = (0, _mongooseStuff2.default)();
-    console.log('AAAA');
     app.set('views', (typeof __xdirname !== 'undefined' ? __xdirname : __dirname) + '/views');
     app.engine('html', _ejs2.default.renderFile);
 
@@ -43050,11 +43049,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-// from universal
-// import path from 'path';
-// import webpack from 'webpack';
-
-
 var _webpack = __webpack_require__(388);
 
 var _webpack2 = _interopRequireDefault(_webpack);
@@ -43235,8 +43229,7 @@ function generateConfigJson() {
   var config = _extends({}, isReact ? {
     name: isClient ? 'client' : 'server'
   } : {}, {
-    target: isReact && isClient ? 'web' : 'node',
-    devtool: 'sourcemap'
+    target: isReact && isClient ? 'web' : 'node'
   }, !isMocha ? isReact ? {
     entry: [].concat(_toConsumableArray(!isClient && !isDev ? [] : ['babel-polyfill']), [// not sure why non babel-polyfill when server-prod
     'fetch-everywhere'], _toConsumableArray(isClient && isDev ? ['webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=false&quiet=false&noInfo=false', 'react-hot-loader/patch'] : []), [_path2.default.resolve(typeof __xdirname !== 'undefined' ? __xdirname : __dirname, isClient ? './universal/src/clientRender.js' : isUniversal ? './universal/server/render.js' : './universal/server/nonUniversalRender.js')]),
@@ -43434,7 +43427,6 @@ function generateConfigJson() {
     //   '__nodeenv': JSON.stringify(isDev ? 'development' : 'production')
     // }),
     makeProgressPlugin()])), [
-
     // for node end
     new _webpack2.default.DefinePlugin({
       '__nodeenv': JSON.stringify(isDev ? 'development' : 'production')
@@ -43869,4 +43861,3 @@ module.exports = require("single-line-log");
 
 /***/ })
 /******/ ]);
-//# sourceMappingURL=main.js.map
