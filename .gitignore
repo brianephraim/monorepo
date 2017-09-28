@@ -54,8 +54,8 @@ tempRepos
 .tmp
 
 
-xbuildClient
-xbuildServer
+buildClient
+buildServer
 _webpack-config-preview-commandline.json
 packages/mono-to-multirepo/_webpack-config-preview-commandline.json
 
