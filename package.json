@@ -19,6 +19,7 @@
     "transfer-deps": "node ./packages/npm-deps/transfer-deps.js ./package-combined.json ./package.json",
     "npm-dps": "/Users/brianephraim/Sites/npm-deps/bin/npm-deps < package.json > package-combined.json",
     "tail": "heroku logs --app berniereact --tail",
+    "tail2": "heroku logs --app fierce-headland-6196 --tail",
     "prettier": "./node_modules/.bin/prettier --single-quote --trailing-comma es5 --write \"packages/profile-framer-frontend/**/*.js\"",
     "eslintfix": "./node_modules/.bin/eslint --fix  packages/profile-framer-frontend",
     "mono": "./packages/mono-to-multirepo/bin/mono-to-multirepo.js --i",
