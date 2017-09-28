@@ -81,7 +81,7 @@ app.get('/', standardRouteHtmlHandler);
 app.get('/redesign', standardRouteHtmlHandler);
 
 
-var mongooseStuff = require('./js/mongooseStuff').x;
+var mongooseStuff = require('./js/mongooseStuff');
 app.get('/list', function(req, res){
     var offline = typeof req.query.offline !== 'undefined';
     mongooseStuff.GetComplexImageAll().then(function(images){

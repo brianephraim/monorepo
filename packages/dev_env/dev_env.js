@@ -5,10 +5,9 @@ import shellCommand from './core/shellCommand';
 import jestSpawnProcess from './jest/jestSpawnProcess';
 import webpackRunCompiler from './core/webpackRunCompiler';
 import webpackBuildCommandLine from './core/webpackBuildCommandLine';
-import serveWebpack from './webpackExpressServer.js';
+import startUniversalExpress from './startUniversalExpress';
 import webpackConfig from './webpackConfig'; 
 // import isWithinMonoRepo from './core/isWithinMonoRepo');
- 
 const env = argv.env;
 const item = argv.item;
 
@@ -21,9 +20,5 @@ if (item) {
 } else if (env === 'build') {
   webpackRunCompiler(webpack(webpackConfig()));  
 } else {
-  serveWebpack();
+  startUniversalExpress();
 }
-const serve = function ()   {
-  serveWebpack.apply(this,arguments);
-}
-export { serve };

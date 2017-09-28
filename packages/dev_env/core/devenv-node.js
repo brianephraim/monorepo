@@ -17,7 +17,7 @@ const toCompileSplit = toCompile.split('/');
 const fileName = toCompileSplit.pop();
 const tempFileName = fileName.replace('.js', '.temp.js');
 const toCompileFolder = toCompileSplit.join('/');
-
+console.log('typeof __xdirname',typeof __xdirname,'/Users/brianephraim/Sites/monorepo/packages/dev_env/core/devenv-node.js')
 if (isWithinMonoRepo(typeof __xdirname !== 'undefined' ? __xdirname : __dirname)) {
   // Determine some paths, with logic that is resilient to
   // unlikely situation of nested /dev_env/ instances is __xdirname
@@ -74,6 +74,7 @@ if (isWithinMonoRepo(typeof __xdirname !== 'undefined' ? __xdirname : __dirname)
   shellCommand(cmd);
 } else {
   const tempFilePath = `${toCompileFolder}/${tempFileName}`;
+  console.log('typeof __xdirname',typeof __xdirname,'/Users/brianephraim/Sites/monorepo/packages/dev_env/core/devenv-node.js 222')
   const devEnvDistPath = path.resolve(typeof __xdirname !== 'undefined' ? __xdirname : __dirname, '../dist/dev_env.js');
   const cmd = `(cd ${toCompileFolder} && node ${devEnvDistPath} --entry=${toCompile} --output=${tempFilePath}) && node ${tempFilePath} ${process.argv.slice(3).join(' ')} && rm ${tempFilePath}`;
   shellCommand(cmd);

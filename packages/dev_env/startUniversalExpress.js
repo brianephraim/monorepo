@@ -2,9 +2,7 @@ import 'babel-polyfill'
 import webpack from 'webpack'
 import webpackDevMiddleware from 'webpack-dev-middleware'
 
-import express from 'express'
 import fs from 'fs-extra';
-
 import webpackHotMiddleware from 'webpack-hot-middleware'
 import webpackHotServerMiddleware from 'webpack-hot-server-middleware'
 import { argv } from 'yargs';
@@ -15,112 +13,113 @@ import webpackConfig from './webpackConfig';
 import webpackRunCompiler from './core/webpackRunCompiler';
 import webpackParseStatsForDepProblems from './webpackParseStatsForDepProblems';
 
+import startExpress from './startExpress';
 
-const res = p => path.resolve(__xdirname, p)
+const res = (p) => {
+  return path.resolve(typeof __xdirname !== 'undefined' ? __xdirname : __dirname, p)
+};
 
-export default function startUniversal({app = express()}) {
-  
-
-  // UNIVERSAL HMR + STATS HANDLING GOODNESS:
-
-  if (argv.isDev === 'true') {
-    const clientDevConfig = webpackConfig({isReact:true,isClient:true,isDev:true,isUniversal:true,'xxx':116});
-    const serverDevConfig = webpackConfig({isReact:true,isClient:false,isDev:true,isUniversal:true,'xxx':115});
-    const serverNonUniversalConfig = webpackConfig({isReact:true,isClient:false,isDev:true,isUniversal:false,'xxx':114});
-    const publicPath = clientDevConfig.output.publicPath
-    const outputPath = clientDevConfig.output.path
-    console.log('66666')
-    function invalidHandler(fileName, changeTime) {
-      console.log('==== INVALIDATED ====')
-      console.log('stats', fs.statSync(fileName));
-      console.log(`FileName: ${fileName}`);
-      console.log(`ChangeTimex: ${changeTime}`);
-    }
-    const options = {
-      publicPath,
-      stats: {
-        colors: true,
-      },
-    };
-    const isUniversal = argv.isUniversal === 'true';
-    const multiCompiler = webpack([clientDevConfig, isUniversal ? serverDevConfig : serverNonUniversalConfig])
-    const clientCompiler = multiCompiler.compilers[0]
-    console.info('🔷 Starting webpack ...');
-
-    clientCompiler.plugin('invalid', invalidHandler);
-    const activeWebpackDevMiddleware = webpackDevMiddleware(multiCompiler, options);
-    activeWebpackDevMiddleware.waitUntilValid((stats) => {
-      // function censor(censor) {
-      //   var i = 0;
-
-      //   return function(key, value) {
-      //     if(i !== 0 && typeof(censor) === 'object' && typeof(value) == 'object' && censor == value) 
-      //       return '[Circular]'; 
-
-      //     if(i >= 29) // seems to be a harded maximum of 30 serialized objects?
-      //       return '[Unknown]';
-
-      //     ++i; // so we know we aren't using the original object anymore
-
-      //     return value;  
-      //   }
-      // }
-      // fs.writeFileSync('./activeWebpackDevMiddlewareStats.json', JSON.stringify(stats, censor(stats), 2));
-      webpackParseStatsForDepProblems(stats);
+function compileAndServeWebpackDevMiddlewareHMRUniversalExpress(clientDevConfig, serverDevConfig) {
+  return new Promise((resolve) => {
+    startExpress((app) => {
+      
+      const publicPath = clientDevConfig.output.publicPath
+      const outputPath = clientDevConfig.output.path
+      const multiCompiler = webpack([clientDevConfig, serverDevConfig])
+      const clientCompiler = multiCompiler.compilers[0];
+      clientCompiler.plugin('invalid', (fileName, changeTime) => {
+        /* eslint-disable no-console */
+        console.log('==== INVALIDATED ====')
+        console.log('stats', fs.statSync(fileName));
+        console.log(`FileName: ${fileName}`);
+        console.log(`ChangeTimex: ${changeTime}`);
+        /* eslint-enable no-console */
+      });
+      const activeWebpackDevMiddleware = webpackDevMiddleware(multiCompiler, {
+        publicPath,
+        stats: {
+          colors: true,
+        },
+      });
+      activeWebpackDevMiddleware.waitUntilValid((stats) => {
+        resolve(stats)
+      });
+      app.use(activeWebpackDevMiddleware)
+      app.use(webpackHotMiddleware(clientCompiler))
+      app.use(
+        // keeps serverRender updated with arg: { clientStats, outputPath }
+        webpackHotServerMiddleware(multiCompiler, {
+          serverRendererOptions: { outputPath }
+        })
+      )
     });
+  });
+}
 
-    app.use(activeWebpackDevMiddleware)
-    app.use(webpackHotMiddleware(clientCompiler))
-    app.use(
-      // keeps serverRender updated with arg: { clientStats, outputPath }
-      webpackHotServerMiddleware(multiCompiler, {
-        serverRendererOptions: { outputPath }
-      })
-    )
+function clearCompileAndServeProductionUniversalExpress(clientConfig,serverConfig,serve = true) {
+  return new Promise((resolve) => {
+    deleteFiles(`{${clientConfig.output.path},${serverConfig.output.path}}`, () => {
+      const multiCompiler = webpack([clientConfig,serverConfig]);
+      webpackRunCompiler(multiCompiler).then(() => {
+        resolve();
+        // This calls the production bundle of the Universal React App just created.
+        // This includes an express server.
+        if (serve) {
+          __non_webpack_require__(res('./universal/buildServer/main.js'));
+        }
+      });
+    });
+  });
+} 
 
-  } else if (argv.isDeploy === 'true') {
-    console.log('77777')
-    const serverRender = require('./universal/buildServer/main.js').default
-    const clientStats = require('./universal/buildClient/stats.json');
-    const clientProdConfig = webpackConfig({isReact:true,isClient:true,isDev:false,isUniversal:true,'xxx':113});
-    const publicPath = clientProdConfig.output.publicPath
-    let outputPath = clientProdConfig.output.path;
-    console.log('outputPath1', outputPath)
-    // const outputPath = '../universal/buildServer';
-    console.log('__dirname',__dirname);
-    console.log('__xdirname',__xdirname);
-    console.log('publicPath',publicPath);  
-    outputPath = outputPath.split('/dev_env/')[1];
-    outputPath = path.resolve(__dirname, `./${outputPath}`)
-    outputPath = 'packages/dev_env/universal/buildClient'
-    console.log('outputPath2x',outputPath);
-    app.use('/images', express.static('packages/images'));
-    app.use('/fonts', express.static('packages/fonts'));
-    app.use(publicPath, express.static(outputPath))
-    app.use(serverRender({ clientStats, outputPath }))
+
+
+export default function startUniversalExpress() {
+  const isDeploy = argv.isDeploy === 'true';
+  const isDev = argv.isDev === 'true' && !isDeploy;
+  const isUniversal = argv.isUniversal === 'true' || !isDev || isDeploy;
+
+  const clientConfig = webpackConfig({
+    isReact:true,
+    isClient:true,
+    isDev,
+    isUniversal:true,
+  });
+  const serverConfig = webpackConfig({
+    isReact:true,
+    isClient:false,
+    isDev,
+    isUniversal,
+  });
+  if (isDeploy) {
+    // `npm run bern4`
+    clearCompileAndServeProductionUniversalExpress(clientConfig,serverConfig,false).then(() => {
+       /* eslint-disable no-console */
+      console.log('🦁 Webpack production done for Universal React (for deploy, so no localhost started');
+      /* eslint-enable no-console */
+    });
+  } else if (isDev) {
+    // `npm run bern1` or `npm run bern2`
+    
+    const isUniversal = argv.isUniversal === 'true';
+
+    /* eslint-disable no-console */
+    console.info(`🔷 Starting webpack development for ${isUniversal ? 'Universal':'NonUniversal'} React ...`);
+    /* eslint-enable no-console */
+    
+    compileAndServeWebpackDevMiddlewareHMRUniversalExpress(clientConfig, serverConfig).then((stats) => {
+      webpackParseStatsForDepProblems(stats);
+      /* eslint-disable no-console */
+      console.log(`🦁 Webpack development done for ${isUniversal ? 'Universal':'NonUniversal'} React`);
+      /* eslint-enable no-console */
+    });
+    
   } else {
-    console.log('8888')
-    const clientProdConfig = webpackConfig({isReact:true,isClient:true,isDev:false,isUniversal:true,'xxx':113});
-    const serverProdConfig = webpackConfig({isReact:true,isClient:false,isDev:false,isUniversal:true,'xxx':112});
-    deleteFiles(`{${clientProdConfig.output.path},${serverProdConfig.output.path}}`, () => {
-      // webpackRunCompiler(webpack(clientProdConfig)).then(() => {
-        // deleteFiles(serverProdConfig.output.path, () => {
-          const multiCompiler = webpack([clientProdConfig,serverProdConfig]);
-          const clientCompiler = multiCompiler.compilers[0];
-          const serverCompiler = multiCompiler.compilers[1];
-          webpackRunCompiler(multiCompiler).then(() => {
-            // const clientConfig = webpackConfig({isReact:true,isClient:true,isDev:true,isUniversal:true,'xxx':111});
-            const publicPath = clientProdConfig.output.publicPath
-            const outputPath = clientProdConfig.output.path
-            const serverRender = __non_webpack_require__(res('./universal/buildServer/main.js')).default
-            const clientStats = __non_webpack_require__(res('./universal/buildClient/stats.json'))            
-            app.use(publicPath, express.static(outputPath))
-            app.use(serverRender({ clientStats, outputPath }))
-          });
-        // });
-      // });
+    // `npm run bern3`
+    clearCompileAndServeProductionUniversalExpress(clientConfig,serverConfig).then(() => {
+       /* eslint-disable no-console */
+      console.log('🦁 Webpack production done for Universal React ( and localhost started)');
+      /* eslint-enable no-console */
     });
   }
-
-  return app;
 }

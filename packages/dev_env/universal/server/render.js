@@ -1,65 +1,45 @@
+import 'babel-polyfill';
 import React from 'react'
 import ReactDOM from 'react-dom/server'
 import { flushChunkNames } from 'react-universal-component/server'
 import flushChunks from 'webpack-flush-chunks'
 import {Helmet} from "react-helmet";
-
 import { ServerStyleSheet } from 'styled-components'
-
 // import configureStore from './configureStore'
 import App from '../src/components/App'
-
 import createHistory from 'history/createMemoryHistory'
 import { NOT_FOUND } from 'redux-first-router'
 import configureStore from '../src/configureStore'
-
 import url from 'url';
 
+import startExpress from '../../startExpress';
 
-// async function test() {
-//   await db.destroy();
-// }
-// function test() {
-//   return Promise.resolve().then(function () {
-//     return db.destroy();
-//   }).then(function () {});
-// }
+
+import express from 'express';
+
+import path from 'path';
+import fs from 'fs-extra';
+// import _eval from 'eval';
+import webpackConfig from '../../webpackConfig';
+
+
+
+
+
+
+
+
+
+
 const doesRedirect = ({ kind, pathname }, res) => {
   if (kind === 'redirect') {
     res.redirect(302, pathname)
     return true
   }
+  return false;
 }
 
-// const configureStoreX = async (req, res) => {
-//   const jwToken = req.cookies.jwToken // see server/index.js to change jwToken
-//   const preLoadedState = { jwToken } // onBeforeChange will authenticate using this
-
-//   const history = createHistory({ initialEntries: [req.path] })
-//   const { store, thunk } = configureStore(history, preLoadedState)
-
-//   // if not using onBeforeChange + jwTokens, you can also async authenticate
-//   // here against your db (i.e. using req.cookies.sessionId)
-
-//   let location = store.getState().location
-//   if (doesRedirect(location, res)) return false
-
-//   // using redux-thunk perhaps request and dispatch some app-wide state as well, e.g:
-//   // await Promise.all([store.dispatch(myThunkA), store.dispatch(myThunkB)])
-
-//   await thunk(store) // THE PAYOFF BABY!
-
-//   location = store.getState().location // remember: state has now changed
-//   if (doesRedirect(location, res)) return false // only do this again if ur thunks have redirects
-
-//   const status = location.type === NOT_FOUND ? 404 : 200
-//   res.status(status)
-//   return store
-// }
-
-
-
-export default ({ clientStats }) => async (req, res, next) => {
+const render = ({ clientStats }) => async (req, res, next) => {
   // const store = await configureStoreX(req, res)
   // if (!store) return // no store means redirect was already served
 
@@ -155,4 +135,22 @@ export default ({ clientStats }) => async (req, res, next) => {
         </body>
       </html>`
   )
+}
+
+export default render;
+
+
+// When this script is called from within the production bundle...
+if (__nodeenv === 'production') {
+  // We are launching an express server with `startExpress`.
+  // `startExpress` includes all the app's endpoints and the localhost port listener.
+  startExpress((app) => {
+    // And we integrate the the `render` function assigned above with the express add.
+    const clientStats = fs.readJsonSync(path.resolve(process.cwd(),'./packages/dev_env/universal/buildClient/stats.json'));
+    const clientProdConfig = webpackConfig({isReact:true,isClient:true,isDev:false,isUniversal:true,'xxx':113});
+    const publicPath = clientProdConfig.output.publicPath
+    const outputPath = 'packages/dev_env/universal/buildClient';
+    app.use(publicPath, express.static(outputPath))
+    app.use(render({ clientStats, outputPath })) 
+  });
 }
