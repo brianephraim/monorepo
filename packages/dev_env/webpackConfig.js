@@ -368,13 +368,10 @@ function generateConfigJson(options = {}) {
     resolve: webpackConfigResolve.resolve,
     plugins: [
       ...(
-        isReact
-        ?
-        (
+        !isReact ? [] : (
           // React Client
-          isClient
-          ?
-          [
+          !isClient ? [] : [
+
             // React Client Dev and Prod
             (
               isDev 
@@ -389,11 +386,13 @@ function generateConfigJson(options = {}) {
               filename: isDev ? '[name].js' : '[name].[chunkhash].js',
               minChunks: Infinity
             }),
+
             // React Client Dev
             ...(!isDev ? [] : [
               new webpack.HotModuleReplacementPlugin(),
               new webpack.NoEmitOnErrorsPlugin(),
             ]),
+
             // React Client Prod
             ...(isDev ? [] : [
               new webpack.optimize.UglifyJsPlugin({
@@ -412,6 +411,8 @@ function generateConfigJson(options = {}) {
               }),
               new webpack.HashedModuleIdsPlugin(), // not needed for strategy to work (just good practice)
             ]),
+
+            // React Client Dev and Prod
             new AutoDllPlugin({
               context: path.join(getDirname('AutoDllXX'), '..'),
               filename: '[name].js',
@@ -431,97 +432,49 @@ function generateConfigJson(options = {}) {
                 ]
               }
             }),
-            makeProgressPlugin(),
-          ]
-          :
-          // IS SERVER
-          [
-            new webpack.BannerPlugin({
-              banner: 'require("source-map-support").install();',
-              raw: true,
-              entryOnly: false,
-            }),
-            new webpack.optimize.LimitChunkCountPlugin({
-              maxChunks: 1
-            }),
-
-            
-            {
-              apply(compiler) {
-                function setModuleConstant(expressionName, fn) {
-                  compiler.plugin('compilation', (compilation, data) => {
-                    data.normalModuleFactory.plugin('parser', (parser) => {
-                      parser.plugin(`expression ${expressionName}`, function compilerParserPlugin() {
-                        this.state.current.addVariable(expressionName, JSON.stringify(fn(this.state.module)));
-                        return true;
-                      });
-                    });
-                  });
-                }
-
-                setModuleConstant('__filename', (module) => {
-                  return module.resource;
-                });
-
-                setModuleConstant('__xdirname', (module) => {
-                  return module.context;
-                });
-
-                setModuleConstant('__dirnameWhenCompiled', (module) => {
-                  return module.context;
-                });
-              },
-            },
-            // makeProgressPlugin(),
           ]
         )
-        :
-        [
-          // for node start
-          new webpack.BannerPlugin({
-            banner: 'require("source-map-support").install();',
-            raw: true,
-            entryOnly: false,
-          }),
-          ...(
-            isCommandLine || isMocha || isBuild
-            ?
-            [
-              // I needed __xdirname hardcoded as the original dirname
-              // https://github.com/webpack/webpack/issues/1599#issuecomment-266588898
-              {
-                apply(compiler) {
-                  function setModuleConstant(expressionName, fn) {
-                    compiler.plugin('compilation', (compilation, data) => {
-                      data.normalModuleFactory.plugin('parser', (parser) => {
-                        parser.plugin(`expression ${expressionName}`, function compilerParserPlugin() {
-                          this.state.current.addVariable(expressionName, JSON.stringify(fn(this.state.module)));
-                          return true;
-                        });
-                      });
-                    });
-                  }
-
-                  setModuleConstant('__filename', (module) => {
-                    return module.resource;
-                  });
-
-                  setModuleConstant('__xdirname', (module) => {
-                    return module.context;
-                  });
-
-                  setModuleConstant('__dirnameWhenCompiled', (module) => {
-                  return module.context;
-                });
-                },
-              },
-            ]
-            :
-            []
-          ),
-          makeProgressPlugin(),
-        ]
       ),
+
+      // If not react or is react but is server
+      ...(!(!isReact || !isClient) ? [] : [
+        new webpack.optimize.LimitChunkCountPlugin({
+          maxChunks: 1
+        }),
+        new webpack.BannerPlugin({
+          banner: 'require("source-map-support").install();',
+          raw: true,
+          entryOnly: false,
+        }),
+      ]),
+
+      // Everything gets these
+      {
+        apply(compiler) {
+          function setModuleConstant(expressionName, fn) {
+            compiler.plugin('compilation', (compilation, data) => {
+              data.normalModuleFactory.plugin('parser', (parser) => {
+                parser.plugin(`expression ${expressionName}`, function compilerParserPlugin() {
+                  this.state.current.addVariable(expressionName, JSON.stringify(fn(this.state.module)));
+                  return true;
+                });
+              });
+            });
+          }
+
+          setModuleConstant('__filename', (module) => {
+            return module.resource;
+          });
+
+          setModuleConstant('__xdirname', (module) => {
+            return module.context;
+          });
+
+          setModuleConstant('__dirnameWhenCompiled', (module) => {
+          return module.context;
+        });
+        },
+      },
       new webpack.EnvironmentPlugin({
         NODE_ENV: isDev ? 'development' : 'production', // use 'development' unless process.env.NODE_ENV is defined
         // DEBUG: false
