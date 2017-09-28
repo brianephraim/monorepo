@@ -128,7 +128,7 @@ const render = ({ clientStats }) => async (req, res, next) => {
         </head>
         <body>
           <script>window.REDUX_STATE = ${stateJson}</script>
-          <div id="root">${appString}</div>
+          <div id="root" class="universal">${appString}</div>
           ${cssHash}
           <script type='text/javascript' src='/staticx/vendor.js'></script>
           ${js}

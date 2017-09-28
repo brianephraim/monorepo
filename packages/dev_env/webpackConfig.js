@@ -14,10 +14,7 @@ import WriteFilePlugin from 'write-file-webpack-plugin';
 import webpackConfigResolve from './core/webpack-config-resolve';
 
 function getDirname(debug) {
-  console.log('debug',debug);
-  console.log('__xdirname', typeof __xdirname !== 'undefined' && __xdirname);
-  console.log('__dirname',__dirname);
-  return typeof __xdirname !== 'undefined' ? __xdirname : __dirname;
+  return typeof __dirnameWhenCompiled !== 'undefined' ? __dirnameWhenCompiled : __dirname;
 }
 
 // from universal
@@ -226,7 +223,7 @@ function generateConfigJson(options = {}) {
     //   ?
     //   {
     //     node: {
-    //       __xdirname: false,
+    //       __dirnameWhenCompiled: false,
     //       __filename: false,
     //     }
     //   }
@@ -254,7 +251,7 @@ function generateConfigJson(options = {}) {
     //     externals: [
     //       nodeExternals({
     //         // modulesFromFile: true,
-    //         modulesDir: path.resolve(__xdirname.split('/packages/dev_env')[0], './node_modules'),
+    //         modulesDir: path.resolve(__dirnameWhenCompiled.split('/packages/dev_env')[0], './node_modules'),
     //         ...(
     //           isReact ?
     //           {
@@ -374,9 +371,11 @@ function generateConfigJson(options = {}) {
         isReact
         ?
         (
+          // React Client
           isClient
           ?
           [
+            // React Client Dev and Prod
             (
               isDev 
                 ?
@@ -390,40 +389,29 @@ function generateConfigJson(options = {}) {
               filename: isDev ? '[name].js' : '[name].[chunkhash].js',
               minChunks: Infinity
             }),
-            ...(
-              isDev
-                ?
-                [
-                  new webpack.HotModuleReplacementPlugin(),
-                  new webpack.NoEmitOnErrorsPlugin(),
-                ]
-                :
-                []
-            ),
-            
-            ...(
-              !isDev
-                ?
-                [
-                  new webpack.optimize.UglifyJsPlugin({
-                    compress: {
-                      screw_ie8: true,
-                      warnings: false
-                    },
-                    mangle: {
-                      screw_ie8: true
-                    },
-                    output: {
-                      screw_ie8: true,
-                      comments: false
-                    },
-                    sourceMap: true
-                  }),
-                  new webpack.HashedModuleIdsPlugin(), // not needed for strategy to work (just good practice)
-                ]
-                :
-                []
-            ),
+            // React Client Dev
+            ...(!isDev ? [] : [
+              new webpack.HotModuleReplacementPlugin(),
+              new webpack.NoEmitOnErrorsPlugin(),
+            ]),
+            // React Client Prod
+            ...(isDev ? [] : [
+              new webpack.optimize.UglifyJsPlugin({
+                compress: {
+                  screw_ie8: true,
+                  warnings: false
+                },
+                mangle: {
+                  screw_ie8: true
+                },
+                output: {
+                  screw_ie8: true,
+                  comments: false
+                },
+                sourceMap: true
+              }),
+              new webpack.HashedModuleIdsPlugin(), // not needed for strategy to work (just good practice)
+            ]),
             new AutoDllPlugin({
               context: path.join(getDirname('AutoDllXX'), '..'),
               filename: '[name].js',

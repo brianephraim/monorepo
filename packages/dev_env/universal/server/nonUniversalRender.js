@@ -131,7 +131,7 @@ export default ({ clientStats }) => async (req, res, next) => {
           <link rel="stylesheet prefetch" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
         </head>
         <body>
-          <div id="root"></div>
+          <div id="root" class="nonUniversal"></div>
           ${cssHash}
           <script type='text/javascript' src='/staticx/vendor.js'></script>
           ${js}
