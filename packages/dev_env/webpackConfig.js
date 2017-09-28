@@ -127,6 +127,7 @@ const externalsOld = fs
 
 
 /* eslint-disable no-nested-ternary */
+// prettier-ignore
 function generateConfigJson(options = {}) {
   const isCommandLine = options.isCommandLine || argv.entry;
   const isMocha = options.isMocha;
@@ -136,18 +137,12 @@ function generateConfigJson(options = {}) {
   const dirRoot = argv.dirroot || process.cwd();
   const packageJson = fs.readJsonSync(`${dirRoot}/package.json`);
   const libraryName = packageJson.name;
-  if (isClient && isDev ) {
-    console.log(options);
-    console.trace();
-    console.log('RRRR')
-    console.log('RRRR')
-    console.log('RRRR')
-    console.log('RRRR')
-    console.log('RRRR')
-    console.log('RRRR')
-    console.log('RRRR')
-    console.log('RRRR')
-  }
+
+  // NOTE!!!!!!!
+  // Non-React is always server (node) right now.
+  // This will be a problem when publish packages out of the monorepo
+  // that are designed for client.
+  // Be aware.
   const config = {
     ...(isReact ? {
         name: isClient ? 'client' : 'server'
@@ -158,11 +153,11 @@ function generateConfigJson(options = {}) {
     //  cheap-module-eval-source-map
     // new webpack.EvalSourceMapDevToolPlugin()
     ...(
-      !isMocha
-      ?
-      (
+      isMocha ? {} :(
+        // Non-mocha
         isReact
         ?
+        // Non-mocha React
         {
           entry: [
             ...(!isClient && !isDev ? [] : ['babel-polyfill']), // not sure why non babel-polyfill when server-prod
@@ -201,6 +196,7 @@ function generateConfigJson(options = {}) {
           },
         }
         :
+        // Non-mocha Non-React
         {
           entry: isCommandLine ? argv.entry : makeEntry({libraryName,isBuild,dirRoot}),
           output: isCommandLine ? makeOutputSettingsFromFilePath(argv.output) : {
@@ -213,29 +209,17 @@ function generateConfigJson(options = {}) {
           }
         }
       )
-      :
-      {}
     ),
-
-    // for node start
-    // ...(
-    //   !isReact
-    //   ?
-    //   {
-    //     node: {
-    //       __dirnameWhenCompiled: false,
-    //       __filename: false,
-    //     }
-    //   }
-    //   :
-    //   {}
-    // ),
     ...(
       isReact
       ?
-      (!isClient ? {externals:externalsOld} : {})
+      (isClient ? {} : {
+        // React Server
+        externals:externalsOld
+      })
       :
       {
+        // Non-React
         externals: [
           nodeExternals({
             // modulesFromFile: true,
@@ -244,62 +228,25 @@ function generateConfigJson(options = {}) {
         ],
       }
     ),
-    // ...(
-    //   !isReact || (isReact && !isClient)
-    //   ?
-    //   {
-    //     externals: [
-    //       nodeExternals({
-    //         // modulesFromFile: true,
-    //         modulesDir: path.resolve(__dirnameWhenCompiled.split('/packages/dev_env')[0], './node_modules'),
-    //         ...(
-    //           isReact ?
-    //           {
-    //             whitelist: (x) => {
-    //               return !/\.bin|react-universal-component|require-universal-module|webpack-flush-chunks/.test(x);
-    //             }
-    //             // [
-    //             //   '.bin','react-universal-component','require-universal-module','webpack-flush-chunks',
-    //             // ]
-    //           }
-    //           :
-    //           {}
-    //         )
-    //       }),
-    //     ],
-    //   }
-    //   :
-    //   {}
-    // ),
-        
-    // for node end
 
     module: {
       rules: [
-        // for node start
-        ...(
-          !isReact
-          ?
-          [
-            { test: /rx\.lite\.aggregates\.js/, use: 'imports-loader?define=>false' },
-            { test: /async\.js/, use: 'imports-loader?define=>false' },
-          ]
-          :
-          []
-        ),
-        // for node end
-
+        // Non-React
+        ...(isReact ? [] : [
+          { test: /rx\.lite\.aggregates\.js/, use: 'imports-loader?define=>false' },
+          { test: /async\.js/, use: 'imports-loader?define=>false' },
+        ]),
+        // All configs
         {
           test: /\.(js)?$/,
           loader: 'babel-loader',
           exclude: /(node_modules|\.tmp)/,
         },
         ...(
-          isReact
-          ?
-          (
+          !isReact ? [] : (
             isClient
             ?
+            // React Client
             [
               {
                 test: /\.css$/,
@@ -331,6 +278,8 @@ function generateConfigJson(options = {}) {
               },
             ]
             :
+
+            // React Server
             [
               {
                 test: /\.css$/,
@@ -360,8 +309,6 @@ function generateConfigJson(options = {}) {
               }
             ]
           )
-          :
-          []
         ),
       ],
     },
@@ -369,6 +316,7 @@ function generateConfigJson(options = {}) {
     plugins: [
       ...(
         !isReact ? [] : (
+
           // React Client
           !isClient ? [] : [
 
@@ -466,10 +414,6 @@ function generateConfigJson(options = {}) {
             return module.resource;
           });
 
-          setModuleConstant('__xdirname', (module) => {
-            return module.context;
-          });
-
           setModuleConstant('__dirnameWhenCompiled', (module) => {
           return module.context;
         });
@@ -483,7 +427,6 @@ function generateConfigJson(options = {}) {
     ]
   };
 
-  // fs.writeFileSync('./_webpack-config-preview.json', JSON.stringify(config, null, 2));
   return config;
 }
 
