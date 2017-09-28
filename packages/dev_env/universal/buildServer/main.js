@@ -41266,7 +41266,6 @@ exports.default = function (_ref) {
         nameSpace = _ref.nameSpace;
 
     var mongooseStuff = (0, _mongooseStuff2.default)();
-    console.log('AAAA');
     app.set('views', (typeof __xdirname !== 'undefined' ? __xdirname : __dirname) + '/views');
     app.engine('html', _ejs2.default.renderFile);
 
