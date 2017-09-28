@@ -3186,7 +3186,7 @@ module.exports = reactProdInvariant;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(__dirname) {
+
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -3402,7 +3402,6 @@ export default function App (props) {
 }
 
 */
-/* WEBPACK VAR INJECTION */}.call(exports, "/"))
 
 /***/ }),
 /* 39 */
@@ -30552,7 +30551,7 @@ function TemplateUploadScreenWithUploadCallback() {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(__dirname) {
+
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -30838,7 +30837,6 @@ CropperScreen.defaultProps = {
 };
 
 exports.default = CropperScreen;
-/* WEBPACK VAR INJECTION */}.call(exports, "/"))
 
 /***/ }),
 /* 281 */
@@ -40878,7 +40876,7 @@ function asyncRecurseStartApps(app, serverNamespaces) {
     function recurse(backendAppNamespace) {
       console.log('backendAppNamespace', backendAppNamespace);
       var someBackendApp = extraServers[backendAppNamespace];
-      // const someBackendApp = __non_webpack_require__(path.resolve(__xdirname, `../../packages/${backendAppNamespace}/${backendAppNamespace}.express`));
+      // const someBackendApp = __non_webpack_require__(path.resolve(__ydirname, `../../packages/${backendAppNamespace}/${backendAppNamespace}.express`));
       // import(`../../packages/${backendAppNamespace}/${backendAppNamespace}.express`).then((someBackendApp) => {
       var serveBackendApp = someBackendApp.default || someBackendApp;
       var backendAppSettings = {
@@ -41255,7 +41253,7 @@ exports.default = _bernieExpressServer2.default;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(__xdirname, __dirname) {
+
 
 Object.defineProperty(exports, "__esModule", {
     value: true
@@ -41266,10 +41264,6 @@ exports.default = function (_ref) {
         nameSpace = _ref.nameSpace;
 
     var mongooseStuff = (0, _mongooseStuff2.default)();
-    app.set('views', (typeof __xdirname !== 'undefined' ? __xdirname : __dirname) + '/views');
-    app.engine('html', _ejs2.default.renderFile);
-
-    app.use(_express2.default.static(_path2.default.join(typeof __xdirname !== 'undefined' ? __xdirname : __dirname, 'public')));
 
     /*
      * Load the S3 information from the environment variables.
@@ -41511,7 +41505,6 @@ var _ensureLeadingSlash = __webpack_require__(46);
 var _ensureLeadingSlash2 = _interopRequireDefault(_ensureLeadingSlash);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-/* WEBPACK VAR INJECTION */}.call(exports, "/Users/brianephraim/Sites/monorepo/packages/bernieserver", "/"))
 
 /***/ }),
 /* 365 */
@@ -43039,15 +43032,13 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(__xdirname, __dirname) {
+/* WEBPACK VAR INJECTION */(function(__xdirname) {
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 var _webpack = __webpack_require__(388);
 
@@ -43109,6 +43100,13 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+function getDirname(debug) {
+  console.log('debug', debug);
+  console.log('__xdirname', typeof __xdirname !== 'undefined' && __xdirname);
+  console.log('__dirname', __dirname);
+  return typeof __xdirname !== 'undefined' ? __xdirname : __dirname;
+}
+
 // from universal
 var makeProgressPlugin = function makeProgressPlugin() {
   return new _ProgressPlugin2.default(function (percentage, msg, current, active, modulepath) {
@@ -43125,9 +43123,8 @@ var makeProgressPlugin = function makeProgressPlugin() {
     }
   });
 };
-var res = function res(p) {
-  console.log('typeof __xdirname', typeof __xdirname === 'undefined' ? 'undefined' : _typeof(__xdirname), '/Users/brianephraim/Sites/monorepo/packages/dev_env/webpackConfig.js');
-  return _path2.default.resolve(typeof __xdirname !== 'undefined' ? __xdirname : __dirname, p);
+var res = function res(p, debug) {
+  return _path2.default.resolve(getDirname(debug), p);
 };
 
 function removeKeysWithEmptyVals(obj) {
@@ -43186,7 +43183,7 @@ if (nodeModulesLocation.indexOf('packages/dev_env') !== -1) {
   nodeModulesLocation = nodeModulesLocation + 'node_modules';
 }
 
-var externalsOld = _fsExtra2.default.readdirSync(res(nodeModulesLocation)).filter(function (x) {
+var externalsOld = _fsExtra2.default.readdirSync(res(nodeModulesLocation, 'externalsOldXX')).filter(function (x) {
   return !/\.bin|react-universal-component|require-universal-module|webpack-flush-chunks/.test(x);
 }).reduce(function (externals, mod) {
   externals[mod] = 'commonjs ' + mod;
@@ -43225,16 +43222,17 @@ function generateConfigJson() {
     console.log('RRRR');
     console.log('RRRR');
   }
-  console.log('typeof __xdirname', typeof __xdirname === 'undefined' ? 'undefined' : _typeof(__xdirname), '/Users/brianephraim/Sites/monorepo/packages/dev_env/webpackConfig.js 222');
   var config = _extends({}, isReact ? {
     name: isClient ? 'client' : 'server'
   } : {}, {
     target: isReact && isClient ? 'web' : 'node'
+  }, !isClient ? { node: { __dirname: false, __filename: false } } : {}, {
+    devtool: 'sourcemap'
   }, !isMocha ? isReact ? {
     entry: [].concat(_toConsumableArray(!isClient && !isDev ? [] : ['babel-polyfill']), [// not sure why non babel-polyfill when server-prod
-    'fetch-everywhere'], _toConsumableArray(isClient && isDev ? ['webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=false&quiet=false&noInfo=false', 'react-hot-loader/patch'] : []), [_path2.default.resolve(typeof __xdirname !== 'undefined' ? __xdirname : __dirname, isClient ? './universal/src/clientRender.js' : isUniversal ? './universal/server/render.js' : './universal/server/nonUniversalRender.js')]),
+    'fetch-everywhere'], _toConsumableArray(isClient && isDev ? ['webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=false&quiet=false&noInfo=false', 'react-hot-loader/patch'] : []), [_path2.default.resolve(getDirname('entryXX'), isClient ? './universal/src/clientRender.js' : isUniversal ? './universal/server/render.js' : './universal/server/nonUniversalRender.js')]),
     output: _extends({
-      path: res(isClient ? './universal/buildClient' : './universal/buildServer'),
+      path: res(isClient ? './universal/buildClient' : './universal/buildServer', 'outputXX'),
       filename: isClient && !isDev ? '[name].[chunkhash].js' : '[name].js',
       publicPath: '/staticx/'
     }, isClient ? { chunkFilename: isDev ? '[name].js' : '[name].[chunkhash].js' } : { libraryTarget: 'commonjs2' })
@@ -43251,7 +43249,7 @@ function generateConfigJson() {
   } : {}, isReact ? !isClient ? { externals: externalsOld } : {} : {
     externals: [(0, _webpackNodeExternals2.default)({
       // modulesFromFile: true,
-      modulesDir: _path2.default.resolve((typeof __xdirname !== 'undefined' ? __xdirname : __dirname).split('/packages/dev_env')[0], './node_modules')
+      modulesDir: _path2.default.resolve(getDirname('externalsXX').split('/packages/dev_env')[0], './node_modules')
     })]
   }, {
     // ...(
@@ -43358,7 +43356,7 @@ function generateConfigJson() {
       },
       sourceMap: true
     }), new _webpack2.default.HashedModuleIdsPlugin()] : []), [new _autodllWebpackPlugin2.default({
-      context: _path2.default.join(typeof __xdirname !== 'undefined' ? __xdirname : __dirname, '..'),
+      context: _path2.default.join(getDirname('AutoDllXX'), '..'),
       filename: '[name].js',
       entry: {
         vendor: ['react', 'react-dom', 'react-redux', 'redux', 'history/createBrowserHistory', 'transition-group', 'redux-first-router', 'redux-first-router-link', 'fetch-everywhere', 'babel-polyfill', 'redux-devtools-extension/logOnlyInProduction']
@@ -43391,6 +43389,10 @@ function generateConfigJson() {
         setModuleConstant('__xdirname', function (module) {
           return module.context;
         });
+
+        setModuleConstant('__dirnameWhenCompiled', function (module) {
+          return module.context;
+        });
       }
     }] : [
     // for node start
@@ -43421,16 +43423,12 @@ function generateConfigJson() {
         setModuleConstant('__xdirname', function (module) {
           return module.context;
         });
+
+        setModuleConstant('__dirnameWhenCompiled', function (module) {
+          return module.context;
+        });
       }
-    }] : []), [
-    // new webpack.DefinePlugin({
-    //   '__nodeenv': JSON.stringify(isDev ? 'development' : 'production')
-    // }),
-    makeProgressPlugin()])), [
-    // for node end
-    new _webpack2.default.DefinePlugin({
-      '__nodeenv': JSON.stringify(isDev ? 'development' : 'production')
-    }), new _webpack2.default.EnvironmentPlugin({
+    }] : []), [makeProgressPlugin()])), [new _webpack2.default.EnvironmentPlugin({
       NODE_ENV: isDev ? 'development' : 'production' // use 'development' unless process.env.NODE_ENV is defined
       // DEBUG: false
     }), makeProgressPlugin()])
@@ -43441,7 +43439,7 @@ function generateConfigJson() {
 }
 
 exports.default = generateConfigJson;
-/* WEBPACK VAR INJECTION */}.call(exports, "/Users/brianephraim/Sites/monorepo/packages/dev_env", "/"))
+/* WEBPACK VAR INJECTION */}.call(exports, "/Users/brianephraim/Sites/monorepo/packages/dev_env"))
 
 /***/ }),
 /* 388 */
@@ -43861,3 +43859,4 @@ module.exports = require("single-line-log");
 
 /***/ })
 /******/ ]);
+//# sourceMappingURL=main.js.map

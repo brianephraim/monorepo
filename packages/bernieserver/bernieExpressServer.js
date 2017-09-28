@@ -32,10 +32,6 @@ import ensureLeadingSlash from '@defualt/ensure-leading-slash';
 
 export default function ({app, nameSpace})  {
   const mongooseStuff = startMongooseStuff();
-  app.set('views', (typeof __xdirname !== 'undefined' ? __xdirname : __dirname) + '/views');
-  app.engine('html', ejs.renderFile);
-
-  app.use(express.static(path.join((typeof __xdirname !== 'undefined' ? __xdirname : __dirname), 'public')));
 
   /*
    * Load the S3 information from the environment variables.

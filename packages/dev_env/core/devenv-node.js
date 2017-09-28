@@ -17,11 +17,10 @@ const toCompileSplit = toCompile.split('/');
 const fileName = toCompileSplit.pop();
 const tempFileName = fileName.replace('.js', '.temp.js');
 const toCompileFolder = toCompileSplit.join('/');
-console.log('typeof __xdirname',typeof __xdirname,'/Users/brianephraim/Sites/monorepo/packages/dev_env/core/devenv-node.js')
-if (isWithinMonoRepo(typeof __xdirname !== 'undefined' ? __xdirname : __dirname)) {
+if (isWithinMonoRepo(__dirname)) {
   // Determine some paths, with logic that is resilient to
-  // unlikely situation of nested /dev_env/ instances is __xdirname
-  const devEnvRoot = getDevEnvRoot(typeof __xdirname !== 'undefined' ? __xdirname : __dirname);
+  // unlikely situation of nested /dev_env/ instances is __dirname
+  const devEnvRoot = getDevEnvRoot(__dirname);
 
   const babelNodePath = path.resolve(devEnvRoot, './node_modules/.bin/babel-node');
   const devEnvCommandLinePath = path.resolve(devEnvRoot, './core/devEnvCommandLine.js');
@@ -56,7 +55,10 @@ if (isWithinMonoRepo(typeof __xdirname !== 'undefined' ? __xdirname : __dirname)
     '\n',
   ].join('');
 
-  console.log('cmd', cmd);
+  /* eslint-disable no-console */
+  console.log('devenv-node.js shell command using');
+  console.log(cmd);
+  /* eslint-enable no-console */
 
   // VARIATION WITHOUT SYSTEM TEMP FILE
   // const cmd = [
@@ -74,8 +76,10 @@ if (isWithinMonoRepo(typeof __xdirname !== 'undefined' ? __xdirname : __dirname)
   shellCommand(cmd);
 } else {
   const tempFilePath = `${toCompileFolder}/${tempFileName}`;
-  console.log('typeof __xdirname',typeof __xdirname,'/Users/brianephraim/Sites/monorepo/packages/dev_env/core/devenv-node.js 222')
-  const devEnvDistPath = path.resolve(typeof __xdirname !== 'undefined' ? __xdirname : __dirname, '../dist/dev_env.js');
+   /* eslint-disable no-console */
+  console.log('IF THERE IS A PROBLEM, IT COULD BE DUE TO __DIRNAME AND COMPILATION ISSUES - devenv-node.js');
+  /* eslint-enable no-console */
+  const devEnvDistPath = path.resolve(__dirname, '../dist/dev_env.js');
   const cmd = `(cd ${toCompileFolder} && node ${devEnvDistPath} --entry=${toCompile} --output=${tempFilePath}) && node ${tempFilePath} ${process.argv.slice(3).join(' ')} && rm ${tempFilePath}`;
   shellCommand(cmd);
 }

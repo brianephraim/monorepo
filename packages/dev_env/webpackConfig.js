@@ -13,6 +13,13 @@ import jsonImporter from 'node-sass-json-importer';
 import WriteFilePlugin from 'write-file-webpack-plugin';
 import webpackConfigResolve from './core/webpack-config-resolve';
 
+function getDirname(debug) {
+  console.log('debug',debug);
+  console.log('__xdirname', typeof __xdirname !== 'undefined' && __xdirname);
+  console.log('__dirname',__dirname);
+  return typeof __xdirname !== 'undefined' ? __xdirname : __dirname;
+}
+
 // from universal
 const makeProgressPlugin = () => {
   return new ProgressPlugin((percentage, msg, current, active, modulepath) => {
@@ -29,9 +36,8 @@ const makeProgressPlugin = () => {
     }
   })
 };
-const res = (p) => {
-  console.log('typeof __xdirname',typeof __xdirname,'/Users/brianephraim/Sites/monorepo/packages/dev_env/webpackConfig.js')
-  return path.resolve(typeof __xdirname !== 'undefined' ? __xdirname : __dirname, p);
+const res = (p,debug) => {
+  return path.resolve(getDirname(debug), p);
 };
 
 
@@ -113,7 +119,7 @@ if (nodeModulesLocation.indexOf('packages/dev_env') !== -1){
 
 
 const externalsOld = fs
-  .readdirSync(res(nodeModulesLocation))
+  .readdirSync(res(nodeModulesLocation,'externalsOldXX'))
   .filter((x) => {
     return !/\.bin|react-universal-component|require-universal-module|webpack-flush-chunks/.test(x);      
   })
@@ -145,12 +151,12 @@ function generateConfigJson(options = {}) {
     console.log('RRRR')
     console.log('RRRR')
   }
-  console.log('typeof __xdirname',typeof __xdirname,'/Users/brianephraim/Sites/monorepo/packages/dev_env/webpackConfig.js 222')
   const config = {
     ...(isReact ? {
         name: isClient ? 'client' : 'server'
     }: {}),
     target: isReact && isClient ? 'web' : 'node',
+    ...(!isClient ? {node: { __dirname: false, __filename: false, }} : {}),
     devtool: 'sourcemap',
     //  cheap-module-eval-source-map
     // new webpack.EvalSourceMapDevToolPlugin()
@@ -170,7 +176,7 @@ function generateConfigJson(options = {}) {
               'react-hot-loader/patch',
               ] : []
             ),
-            path.resolve(typeof __xdirname !== 'undefined' ? __xdirname : __dirname,
+            path.resolve(getDirname('entryXX'),
               isClient
               ?
               './universal/src/clientRender.js'
@@ -185,7 +191,7 @@ function generateConfigJson(options = {}) {
             )
           ],
           output: {
-            path: res(isClient ? './universal/buildClient' : './universal/buildServer'),
+            path: res(isClient ? './universal/buildClient' : './universal/buildServer','outputXX'),
             filename: isClient && !isDev ? '[name].[chunkhash].js' : '[name].js',
             publicPath: '/staticx/',
             ...(
@@ -236,7 +242,7 @@ function generateConfigJson(options = {}) {
         externals: [
           nodeExternals({
             // modulesFromFile: true,
-            modulesDir: path.resolve((typeof __xdirname !== 'undefined' ? __xdirname : __dirname).split('/packages/dev_env')[0], './node_modules'),
+            modulesDir: path.resolve(getDirname('externalsXX').split('/packages/dev_env')[0], './node_modules'),
           }),
         ],
       }
@@ -419,7 +425,7 @@ function generateConfigJson(options = {}) {
                 []
             ),
             new AutoDllPlugin({
-              context: path.join(typeof __xdirname !== 'undefined' ? __xdirname : __dirname, '..'),
+              context: path.join(getDirname('AutoDllXX'), '..'),
               filename: '[name].js',
               entry: {
                 vendor: [
@@ -472,6 +478,10 @@ function generateConfigJson(options = {}) {
                 setModuleConstant('__xdirname', (module) => {
                   return module.context;
                 });
+
+                setModuleConstant('__dirnameWhenCompiled', (module) => {
+                  return module.context;
+                });
               },
             },
             // makeProgressPlugin(),
@@ -511,6 +521,10 @@ function generateConfigJson(options = {}) {
                   setModuleConstant('__xdirname', (module) => {
                     return module.context;
                   });
+
+                  setModuleConstant('__dirnameWhenCompiled', (module) => {
+                  return module.context;
+                });
                 },
               },
             ]
