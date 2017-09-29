@@ -96,11 +96,15 @@ export function payloadRefineAction({ type, payload }, appNameSpace) {
   };
 }
 
+function Div(){
+  return <div />
+}
+
 const routes = [
   {
     action: 'HOME_PROFILE_FRAMER',
     urlEnd: '',
-    component: HomeLayoutWithUploadCallback,
+    component: Div,
   },
   
   {
@@ -379,6 +383,17 @@ export default function(constants) {
     }
   )(HeaderStuff));
 
+  function HomeLayoutHideShower(props) {
+    const style = !props.hide ? {} : {
+      overflow: 'hidden',
+      height: 0,
+    };
+    return (
+      <div style={style}>
+        <HomeLayoutWithUploadCallback />
+      </div>
+    );
+  }
 
   let Routing = class extends Component {
     componentWillMount() {
@@ -386,11 +401,14 @@ export default function(constants) {
     }
     render() {
       const Comp = screenComponentMap[this.props.activeAppScreen];
+      const isLoading = this.props.loading.length;
+      const hideHome = isLoading || this.props.activeAppScreen !== 'HOME_PROFILE_FRAMER';
       return (
         <div>
           <HeaderStuff />
+          <HomeLayoutHideShower hide={hideHome} />
           <Comp />
-          {this.props.loading.length && (
+          {isLoading && (
             <div style={{position:'fixed',top:0,left:0,zIndex:99999,}}>{JSON.stringify(this.props.loading,null,2)}</div>
           )}
         </div>
