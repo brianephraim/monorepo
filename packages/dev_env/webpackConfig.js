@@ -1,130 +1,127 @@
-import webpack from 'webpack';
-import { argv } from 'yargs';
-import fs from 'fs-extra';
-import globby from 'globby';
-import nodeExternals from 'webpack-node-externals';
-import path from 'path';
-import findNodeModules from 'find-node-modules';
-import ExtractCssChunks from 'extract-css-chunks-webpack-plugin';
-import AutoDllPlugin from 'autodll-webpack-plugin';
-import StatsPlugin from 'stats-webpack-plugin';
-import ProgressPlugin from 'webpack/lib/ProgressPlugin';
-import jsonImporter from 'node-sass-json-importer';
-import WriteFilePlugin from 'write-file-webpack-plugin';
-import webpackConfigResolve from './core/webpack-config-resolve';
+import webpack from "webpack";
+import { argv } from "yargs";
+import fs from "fs-extra";
+import globby from "globby";
+import path from "path";
+import findNodeModules from "find-node-modules";
+import ExtractCssChunks from "extract-css-chunks-webpack-plugin";
+import AutoDllPlugin from "autodll-webpack-plugin";
+import StatsPlugin from "stats-webpack-plugin";
+import ProgressPlugin from "webpack/lib/ProgressPlugin";
+import jsonImporter from "node-sass-json-importer";
+import WriteFilePlugin from "write-file-webpack-plugin";
+import webpackConfigResolve from "./core/webpack-config-resolve";
 
-function getDirname(debug) {
-  return typeof __dirnameWhenCompiled !== 'undefined' ? __dirnameWhenCompiled : __dirname;
+function getDirname(/* debug */) {
+  return typeof __dirnameWhenCompiled !== "undefined"
+    ? __dirnameWhenCompiled
+    : __dirname;
 }
 
-// from universal
 const makeProgressPlugin = () => {
   return new ProgressPlugin((percentage, msg, current, active, modulepath) => {
     if (process.stdout.isTTY && percentage < 1) {
       process.stdout.cursorTo(0);
-      modulepath = modulepath ? ` …${modulepath.substr(modulepath.length - 30)}` : '';
-      current = current ? ` ${current}` : '';
-      active = active ? ` ${active}` : '';
-      process.stdout.write(`${(percentage * 100).toFixed(0)}% ${msg}${current}${active}${modulepath} `)
-      process.stdout.clearLine(1)
+      modulepath = modulepath
+        ? ` …${modulepath.substr(modulepath.length - 30)}`
+        : "";
+      current = current ? ` ${current}` : "";
+      active = active ? ` ${active}` : "";
+      process.stdout.write(
+        `${(percentage * 100).toFixed(
+          0
+        )}% ${msg}${current}${active}${modulepath} `
+      );
+      process.stdout.clearLine(1);
     } else if (percentage === 1) {
-      process.stdout.write('\n')
-      console.log('webpack: done.')
+      process.stdout.write("\n");
+      console.log("webpack: done.");
     }
-  })
+  });
 };
-const res = (p,debug) => {
+
+const res = (p, debug) => {
   return path.resolve(getDirname(debug), p);
 };
 
-
-
-function removeKeysWithEmptyVals(obj){
+// *** Non-mocha Non-React
+function removeKeysWithEmptyVals(obj) {
   return Object.keys(obj).reduce((accum, key) => {
     if (obj[key].length) {
       accum[key] = obj[key];
     }
     return accum;
-  }, {})
+  }, {});
 }
 
+// *** Non-mocha Non-React
 function makeOutputSettingsFromFilePath(filePath) {
   let output = filePath;
-  output = output.split('/');
+  output = output.split("/");
 
   output = {
     filename: output.pop(),
-    path: output.join('/'),
+    path: output.join("/")
   };
   return output;
 }
 
-function makeOutputFiles({libraryNameReduced,isBuild}) {
+// *** Non-mocha Non-React
+function makeOutputFiles({ libraryNameReduced, isBuild }) {
   const outputFiles = {};
   if (isBuild) {
     outputFiles.library = `dist/${libraryNameReduced}`;
     outputFiles.libraryMin = `dist/${libraryNameReduced}.min`;
-    outputFiles.demo = 'dist/demo/index';
+    outputFiles.demo = "dist/demo/index";
   } else {
-    outputFiles.demo = 'boot';
+    outputFiles.demo = "boot";
     outputFiles.library = `${libraryNameReduced}`;
   }
   return outputFiles;
 }
 
-function makeEntry({libraryName,isBuild,dirRoot}) {
-  const libraryNameReduced = libraryName.split('/')[1] || libraryName.split('/')[0];
-  const outputFiles = makeOutputFiles({libraryNameReduced,isBuild});
+// *** Non-mocha Non-React
+function makeEntry({ libraryName, isBuild, dirRoot }) {
+  const libraryNameReduced =
+    libraryName.split("/")[1] || libraryName.split("/")[0];
+  const outputFiles = makeOutputFiles({ libraryNameReduced, isBuild });
   return removeKeysWithEmptyVals(
-    argv['demo-entry']
-    ?
-    {
-      [outputFiles.demo]: [argv['demo-entry']],
-    }
-    :
-    {
-      MainApp: globby.sync([`${dirRoot}/packages/MainApp/demo.js`]),
-      [outputFiles.library]: globby.sync([
-        `${dirRoot}/${libraryNameReduced}.js`,
-        `${dirRoot}/src/library/index.js`,
-      ]),
-      ...(
-        outputFiles.libraryMin ? {
-          [outputFiles.libraryMin]: globby.sync([`${dirRoot}/src/library/index.js`]),
-        } : {}
-      ),
-      [outputFiles.demo]: globby.sync([
-        `${dirRoot}/*.demo.js`,
-        `${dirRoot}/demo.js`,
-        `${dirRoot}/**/*/*.demo.js`,
-        `${dirRoot}/**/*/demo.js`,
-        `!${dirRoot}/packages/**/*`,
-        `${dirRoot}/packages/MainApp/demo.js`,
-        `!${dirRoot}/node_modules/**/*`,
-      ]),
-    }
-  )
+    argv["demo-entry"]
+      ? {
+          [outputFiles.demo]: [argv["demo-entry"]]
+        }
+      : {
+          MainApp: globby.sync([`${dirRoot}/packages/MainApp/demo.js`]),
+          [outputFiles.library]: globby.sync([
+            `${dirRoot}/${libraryNameReduced}.js`,
+            `${dirRoot}/src/library/index.js`
+          ]),
+          ...(outputFiles.libraryMin
+            ? {
+                [outputFiles.libraryMin]: globby.sync([
+                  `${dirRoot}/src/library/index.js`
+                ])
+              }
+            : {}),
+          [outputFiles.demo]: globby.sync([
+            `${dirRoot}/*.demo.js`,
+            `${dirRoot}/demo.js`,
+            `${dirRoot}/**/*/*.demo.js`,
+            `${dirRoot}/**/*/demo.js`,
+            `!${dirRoot}/packages/**/*`,
+            `${dirRoot}/packages/MainApp/demo.js`,
+            `!${dirRoot}/node_modules/**/*`
+          ])
+        }
+  );
 }
-// /Users/brianephraim/Sites/monorepo/packages/dev_env/universal/webpack/universalWebpackConfig.js
-// /Users/brianephraim/Sites/monorepo/packages/dev_env/         /       /webpackConfig.js
+
 const nodeModulesLocationsArray = findNodeModules({ relative: false });
 let nodeModulesLocation = nodeModulesLocationsArray[0];
-if (nodeModulesLocation.indexOf('packages/dev_env') !== -1){
-  nodeModulesLocation = nodeModulesLocation.split('packages/dev_env')[0];
-  nodeModulesLocation = `${nodeModulesLocation}node_modules`
+if (nodeModulesLocation.indexOf("packages/dev_env") !== -1) {
+  nodeModulesLocation = nodeModulesLocation.split("packages/dev_env")[0];
+  nodeModulesLocation = `${nodeModulesLocation}node_modules`;
 }
-
-
-const externalsOld = fs
-  .readdirSync(res(nodeModulesLocation,'externalsOldXX'))
-  .filter((x) => {
-    return !/\.bin|react-universal-component|require-universal-module|webpack-flush-chunks/.test(x);      
-  })
-  .reduce((externals, mod) => {
-    externals[mod] = `commonjs ${mod}`
-    return externals
-  }, {});
-
 
 /* eslint-disable no-nested-ternary */
 // prettier-ignore
@@ -139,10 +136,15 @@ function generateConfigJson(options = {}) {
   const libraryName = packageJson.name;
 
   // NOTE!!!!!!!
-  // Non-React is always server (node) right now.
-  // This will be a problem when publish packages out of the monorepo
-  // that are designed for client.
-  // Be aware.
+  // 1. Non-React is always server (node) right now.
+  //    This will be a problem when publish packages out of the monorepo
+  //    that are designed for client.
+  //    Be aware.
+  //
+  // 2. Comments below with a format like this
+  //      // *** React Client
+  //    indicates which configurations the code below controls.
+  //    These are seen adjacent to ternaries.
   const config = {
     ...(isReact ? {
         name: isClient ? 'client' : 'server'
@@ -154,10 +156,10 @@ function generateConfigJson(options = {}) {
     // new webpack.EvalSourceMapDevToolPlugin()
     ...(
       isMocha ? {} :(
-        // Non-mocha
+        // *** Non-mocha
         isReact
         ?
-        // Non-mocha React
+        // *** Non-mocha React
         {
           entry: [
             ...(!isClient && !isDev ? [] : ['babel-polyfill']), // not sure why non babel-polyfill when server-prod
@@ -196,7 +198,7 @@ function generateConfigJson(options = {}) {
           },
         }
         :
-        // Non-mocha Non-React
+        // *** Non-mocha Non-React
         {
           entry: isCommandLine ? argv.entry : makeEntry({libraryName,isBuild,dirRoot}),
           output: isCommandLine ? makeOutputSettingsFromFilePath(argv.output) : {
@@ -211,32 +213,34 @@ function generateConfigJson(options = {}) {
       )
     ),
     ...(
-      isReact
-      ?
-      (isClient ? {} : {
-        // React Server
-        externals:externalsOld
-      })
-      :
-      {
-        // Non-React
-        externals: [
-          nodeExternals({
-            // modulesFromFile: true,
-            modulesDir: path.resolve(getDirname('externalsXX').split('/packages/dev_env')[0], './node_modules'),
-          }),
-        ],
+      // *** React Server or Non-React
+      !(!isReact || !isClient) ? {} : {
+        // Specify externals to leave unbundled, but tell Webpack
+        // to still bundle `react-universal-component`, `webpack-flush-chunks` and
+        // `require-universal-module` so that they know they are running
+        // within Webpack and can properly make connections to client modules:
+        externals: fs
+        .readdirSync(res(nodeModulesLocation, "externalsOldXX"))
+        .filter(x => {
+          return !/\.bin|react-universal-component|require-universal-module|webpack-flush-chunks/.test(
+            x
+          );
+        })
+        .reduce((externals, mod) => {
+          externals[mod] = `commonjs ${mod}`;
+          return externals;
+        }, {})
       }
     ),
 
     module: {
       rules: [
-        // Non-React
+        // *** Non-React
         ...(isReact ? [] : [
           { test: /rx\.lite\.aggregates\.js/, use: 'imports-loader?define=>false' },
           { test: /async\.js/, use: 'imports-loader?define=>false' },
         ]),
-        // All configs
+        // *** All configs
         {
           test: /\.(js)?$/,
           loader: 'babel-loader',
@@ -246,7 +250,7 @@ function generateConfigJson(options = {}) {
           !isReact ? [] : (
             isClient
             ?
-            // React Client
+            // *** React Client
             [
               {
                 test: /\.css$/,
@@ -279,7 +283,7 @@ function generateConfigJson(options = {}) {
             ]
             :
 
-            // React Server
+            // *** React Server
             [
               {
                 test: /\.css$/,
@@ -317,10 +321,10 @@ function generateConfigJson(options = {}) {
       ...(
         !isReact ? [] : (
 
-          // React Client
+          // *** React Client
           !isClient ? [] : [
 
-            // React Client Dev and Prod
+            // *** React Client Dev and Prod
             (
               isDev 
                 ?
@@ -329,19 +333,21 @@ function generateConfigJson(options = {}) {
                 new StatsPlugin('stats.json')
             ), 
             new ExtractCssChunks(),
+
+            // Needed for code splitting.
             new webpack.optimize.CommonsChunkPlugin({
               names: ['bootstrap'], // needed to put webpack bootstrap code before chunks
               filename: isDev ? '[name].js' : '[name].[chunkhash].js',
               minChunks: Infinity
             }),
 
-            // React Client Dev
+            // *** React Client Dev
             ...(!isDev ? [] : [
               new webpack.HotModuleReplacementPlugin(),
               new webpack.NoEmitOnErrorsPlugin(),
             ]),
 
-            // React Client Prod
+            // *** React Client Prod
             ...(isDev ? [] : [
               new webpack.optimize.UglifyJsPlugin({
                 compress: {
@@ -360,7 +366,11 @@ function generateConfigJson(options = {}) {
               new webpack.HashedModuleIdsPlugin(), // not needed for strategy to work (just good practice)
             ]),
 
-            // React Client Dev and Prod
+            // *** React Client Dev and Prod
+
+            // This creates file vendor.js
+            // AutoDllPlugin caches vendor bundle between build initiation.
+            // So compiling is faster.  Google it. It's interesting.
             new AutoDllPlugin({
               context: path.join(getDirname('AutoDllXX'), '..'),
               filename: '[name].js',
@@ -384,11 +394,15 @@ function generateConfigJson(options = {}) {
         )
       ),
 
-      // If not react or is react but is server
+      // *** If not react or is react but is server
       ...(!(!isReact || !isClient) ? [] : [
+        // In case Node code uses import(...) code splitting
+        // put chunks in one file instead of multiple
         new webpack.optimize.LimitChunkCountPlugin({
           maxChunks: 1
         }),
+
+        // needed for sourcemap stacktrace in node
         new webpack.BannerPlugin({
           banner: 'require("source-map-support").install();',
           raw: true,
@@ -396,7 +410,7 @@ function generateConfigJson(options = {}) {
         }),
       ]),
 
-      // Everything gets these
+      // *** Everything gets these
       {
         apply(compiler) {
           function setModuleConstant(expressionName, fn) {
@@ -409,20 +423,25 @@ function generateConfigJson(options = {}) {
               });
             });
           }
-
+          // In bundles, where `__filename` appears, replace with string
+          // consisting of the original file path withere `__filename` appeared
           setModuleConstant('__filename', (module) => {
             return module.resource;
           });
 
+          // In bundles, where `__dirnameWhenCompiled` appears, replace with string
+          // consisting of the original directory path withere `__dirnameWhenCompiled` appeared
           setModuleConstant('__dirnameWhenCompiled', (module) => {
-          return module.context;
-        });
+            return module.context;
+          });
         },
       },
+      // Give bundled code global access to `process.env.NODE_ENV`, with a value defined below.
       new webpack.EnvironmentPlugin({
         NODE_ENV: isDev ? 'development' : 'production', // use 'development' unless process.env.NODE_ENV is defined
         // DEBUG: false
       }),
+      // Terminal visualizer for bundling progress
       makeProgressPlugin(),
     ]
   };
