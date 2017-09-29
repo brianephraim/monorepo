@@ -22,6 +22,8 @@ let UploadCompositeImageSetter = props => {
   return (
     <Upload
       onSuccess={onSuccess}
+      onLoading={props.onLoading}
+      onError={props.onError}
       backendApiPrefix={props.constants.backendApiPrefix}
     >
       {props.children}

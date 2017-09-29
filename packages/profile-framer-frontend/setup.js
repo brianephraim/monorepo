@@ -275,6 +275,15 @@ export default function(constants) {
       }
       return featured;
     },
+    loading: (state = [], action) => {
+      if (action.type === 'LOADING') {
+        return [...state, ...[action.where]];
+      }
+      if (action.type === 'STOP_LOADING') {
+        return state.filter((id) => { return id !== action.where});
+      }
+      return state;
+    },
   };
 
   const nameSpacedResponsiveStatusesDictReducer = makeNameSpacedResponsiveStatusesDictReducer(
@@ -381,6 +390,9 @@ export default function(constants) {
         <div>
           <HeaderStuff />
           <Comp />
+          {this.props.loading.length && (
+            <div style={{position:'fixed',top:0,left:0,zIndex:99999,}}>{JSON.stringify(this.props.loading,null,2)}</div>
+          )}
         </div>
       );
     }
@@ -393,6 +405,7 @@ export default function(constants) {
     (state /* , { params }*/) => {
       return {
         activeAppScreen: state[constants.appNameSpace].activeAppScreen,
+        loading: state[constants.appNameSpace].loading,
       };
     },
     {

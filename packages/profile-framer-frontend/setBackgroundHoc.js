@@ -7,7 +7,8 @@ import ancestorConstantsHoc from './ancestorConstantsHoc';
 export default function setBackgroundHoc(Comp) {
   return ancestorConstantsHoc(
     appConnect(null, {
-      setBackground: (imgSrc, ownProps) => {
+      setBackground: (imgSrc,attemptId, ownProps) => {
+        console.log(imgSrc,attemptId);
         imgSrc = typeof imgSrc === 'object' ? imgSrc.src : imgSrc;
         return (dispatch, getState) => {
           return getNormalizedImageInfo(
@@ -28,10 +29,14 @@ export default function setBackgroundHoc(Comp) {
               ownProps.constants.appNameSpace
             );
             dispatch(action);
+            dispatch({
+              type: 'STOP_LOADING',
+              where: `setBackgroundHoc_${attemptId}`,
+            });
           });
         };
       },
-      setBackgroundTemplateUploader: (imgSrc, ownProps) => {
+      setBackgroundTemplateUploader: (imgSrc,attemptId, ownProps) => {
         imgSrc = typeof imgSrc === 'object' ? imgSrc.src : imgSrc;
         return (dispatch, getState) => {
           return getNormalizedImageInfo(
@@ -55,7 +60,29 @@ export default function setBackgroundHoc(Comp) {
               ownProps.constants.appNameSpace
             );
             dispatch(action);
+            dispatch({
+              type: 'STOP_LOADING',
+              where: `setBackgroundHoc_${attemptId}`,
+            });
           });
+        };
+      },
+      onLoading:(attemptId) => {
+        console.log('onloading',attemptId);
+        return (dispatch, getState) => {
+          dispatch({
+            type: 'LOADING',
+            where: `setBackgroundHoc_${attemptId}`
+          })
+        };
+      },
+      onError:(attemptId) => {
+        console.log('onloading',attemptId);
+        return (dispatch, getState) => {
+          dispatch({
+            type: 'LOADINGERROR',
+            where: `setBackgroundHoc_${attemptId}`
+          })
         };
       },
     })(Comp)
