@@ -6,8 +6,8 @@ import { combineReducers } from 'redux';
 import { addRoutesToApp } from '@defualt/redux-routing-app-root-component';
 import { makeNameSpacedResponsiveStatusesDictReducer } from '@defualt/responsive/nameSpaceResponsive';
 
-import { generateCompositeImgSrcUrl,getDefaultCompositeImageData } from './compositeImage';
-import { standardModesRegexArrayString } from './deriveUrlInfo';
+import { generateCompositeImgSrcUrl,getDefaultCompositeImageData, paramsIntoCompositeImage } from './compositeImage';
+import { standardModesRegexArrayString, formUrl } from './deriveUrlInfo';
 import {
   buttonGroupComponentsRegexArrayString,
   ButtonGroupFeaturedRouteScreen,
@@ -22,13 +22,11 @@ import {
 //   // TemplateUploadScreenWithUploadCallback,
 } from './routingComponents';
 
-import { paramsIntoCompositeImage } from './compositeImage';
 
 import { setAncestorConstantsHoc } from './ancestorConstantsHoc';
 
 import { appConnect } from './nameSpacedResponsive';
 
-import { formUrl } from './deriveUrlInfo';
 
 import Privacy from './Privacy';
 import Terms from './Terms';
@@ -394,6 +392,12 @@ export default function(constants) {
       </div>
     );
   }
+  HomeLayoutHideShower.propTypes = {
+    hide: PropTypes.bool
+  };
+  HomeLayoutHideShower.defaultProps = {
+    hide: false
+  };
 
   let Routing = class extends Component {
     componentWillMount() {
@@ -401,7 +405,7 @@ export default function(constants) {
     }
     render() {
       const Comp = screenComponentMap[this.props.activeAppScreen];
-      const isLoading = this.props.loading.length;
+      const isLoading = !!this.props.loading.length;
       const hideHome = isLoading || this.props.activeAppScreen !== 'HOME_PROFILE_FRAMER';
       return (
         <div>
@@ -416,11 +420,12 @@ export default function(constants) {
     }
   };
   Routing.propTypes = {
+    loading: PropTypes.array.isRequired,
     activeAppScreen: PropTypes.string.isRequired,
     setConstants: PropTypes.func.isRequired,
   };
   Routing = connect(
-    (state /* , { params }*/) => {
+    (state) => {
       return {
         activeAppScreen: state[constants.appNameSpace].activeAppScreen,
         loading: state[constants.appNameSpace].loading,
