@@ -20,8 +20,7 @@ export default function setBackgroundHoc(Comp) {
               imgSrc,
               ownProps.constants.backendApiPrefix
             ).then(response => {
-              console.log('getState',getState().loading.filter((item) => { return item === `setBackgroundHoc_${attemptId}`}));
-              const stillLoading = getState().loading.filter((item) => { return item === `setBackgroundHoc_${attemptId}`}).length;
+              const stillLoading = getState().loading;
               if (stillLoading) {
                 const action = payloadRefineAction(
                   {

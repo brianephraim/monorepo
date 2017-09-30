@@ -277,12 +277,12 @@ export default function(constants) {
       }
       return featured;
     },
-    loading: (state = [], action) => {
+    loading: (state = '', action) => {
       if (action.type === 'LOADING') {
-        return [...state, ...[action.where]];
+        return action.where;
       }
       if (action.type === 'STOP_LOADING') {
-        return state.filter((id) => { return id !== action.where});
+        return '';
       }
       return state;
     },
@@ -414,14 +414,14 @@ export default function(constants) {
           <HomeLayoutHideShower hide={hideHome} />
           <Comp />
           {isLoading && (
-            <div style={{position:'fixed',top:0,left:0,zIndex:99999,}}>{JSON.stringify(this.props.loading,null,2)}</div>
+            <div style={{position:'fixed',top:0,left:0,zIndex:99999,}}>{this.props.loading}</div>
           )}
         </div>
       );
     }
   };
   Routing.propTypes = {
-    loading: PropTypes.array.isRequired,
+    loading: PropTypes.string.isRequired,
     activeAppScreen: PropTypes.string.isRequired,
     setConstants: PropTypes.func.isRequired,
   };
