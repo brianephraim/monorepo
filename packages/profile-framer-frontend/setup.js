@@ -286,6 +286,7 @@ export default function(constants) {
       }
       return state;
     },
+    // canceledLoads:
   };
 
   const nameSpacedResponsiveStatusesDictReducer = makeNameSpacedResponsiveStatusesDictReducer(
