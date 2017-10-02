@@ -114,7 +114,7 @@ class ResponsiveElRecords {
   }
 }
 const responsiveElRecords = new ResponsiveElRecords();
-
+const thresh = 70;
 class ResizeRegistry {
   constructor() {
     // this.cache //
@@ -136,11 +136,18 @@ class ResizeRegistry {
     this.assessAndStyleDeb = debounce(0, null, (timeout) => {
       assessAndStyleDebTimeout = timeout;
     });
+    this.initialHeight = windowSizer.dimensions.height;
     windowSizer.addCb(() => {
       clearTimeout(assessAndStyleDebTimeout);
       Object.keys(this.cache).forEach((name) => {
-        const cb = this.cache[name].assessResponsiveEls;
-        cb();
+        if (typeof this.cache[name].lastHeight === 'undefined') {
+          this.cache[name].lastHeight = this.initialHeight;
+        }
+        if (Math.abs(this.cache[name].lastHeight - windowSizer.dimensions.height) > thresh) {
+          this.cache[name].lastHeight = windowSizer.dimensions.height;
+          const cb = this.cache[name].assessResponsiveEls;
+          cb();
+        }
       });
     });
   }
