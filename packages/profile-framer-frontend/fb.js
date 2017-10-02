@@ -2,6 +2,8 @@
 /* eslint-disable no-alert */
 import root from 'window-or-global'
 import deferred from './deferred';
+import { appConnect } from './nameSpacedResponsive';
+import ancestorConstantsHoc from './ancestorConstantsHoc';
 
 // window.FB is initially undefined, because lazy-loaded facebook SDK defines FB.
 // So references to FB are via this getter.
@@ -297,6 +299,71 @@ export function makeActionFetchPhotos(ownProps) {
     });
   };
 }
+
+
+let attemptId = 0;
+export function fetchFacebookPhotosHoc(Comp) {
+  return ancestorConstantsHoc(
+    appConnect(
+      (appState) => {
+        return {
+          images: appState.facebookPhotos,
+        };
+      },
+      {
+        fetchFacebookPhotos: (ownProps,...args) => {
+          console.log(args);
+          return (dispatch  , getState) => {
+            const currentAttamptId = attemptId++;
+            dispatch({
+              type: 'LOADING',
+              where: `fetchFacebookPhotos_${currentAttamptId}`
+            })
+            console.log(ownProps);
+            const imagesFromFBPromise = imagesFromFBPromises[ownProps.constants.appNameSpace] || fbManager.importStuff();
+            imagesFromFBPromises[ownProps.constants.appNameSpace] = imagesFromFBPromise;
+            setTimeout(() => {
+              return imagesFromFBPromise.then(response => {
+                if (getState().loading === `fetchFacebookPhotos_${currentAttamptId}` && response && response.data && response.data.length) {
+                  const images = response.data.reduce((accum, imageObj) => {
+                    if (
+                      imageObj &&
+                      imageObj.images &&
+                      imageObj.images[0] &&
+                      imageObj.images[0].source
+                    ) {
+                      return [
+                        ...accum,
+                        {
+                          src: imageObj.images[0].source,
+                        },
+                      ];
+                    }
+                    return accum;
+                  }, []);
+                  dispatch({
+                    type: 'FETCH_FACEBOOK_PHOTOS',
+                    images,
+                  });
+                  dispatch({
+                    type: 'STOP_LOADING',
+                    where: `fetchFacebookPhotos_${currentAttamptId}`,
+                  });
+                }
+              });
+            },2000);
+          };
+        },
+      },
+      // (stateProps, dispatchProps, ownProps) => {
+      //   console.log('stateProps, dispatchProps, ownProps',stateProps, dispatchProps, ownProps)
+      //   return Object.assign({}, ownProps, stateProps, dispatchProps);
+      // }
+    )(Comp)
+  );
+}
+
+
 const postToWall = fbManager.postToWall.bind(fbManager);
 const exportStuff = fbManager.exportStuff.bind(fbManager);
 export {postToWall,exportStuff}

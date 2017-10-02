@@ -401,6 +401,26 @@ export default function(constants) {
     hide: false
   };
 
+  function HideShower(props) {
+    const style = !props.hide ? {} : {
+      overflow: 'hidden',
+      height: 0,
+      position: 'relative',
+    };
+    return (
+      <div style={style}>
+        {props.children}
+      </div>
+    );
+  }
+  HideShower.propTypes = {
+    hide: PropTypes.bool,
+    children: PropTypes.node.isRequired,
+  };
+  HideShower.defaultProps = {
+    hide: false
+  };
+
   let LoadingScreen = (props) => {
     return (
       <div style={{position:'fixed',top:0,left:0,zIndex:99999,}}>
@@ -437,8 +457,12 @@ export default function(constants) {
       return (
         <div>
           <HeaderStuff />
-          <HomeLayoutHideShower hide={hideHome} />
-          <Comp />
+          <HideShower hide={hideHome} >
+            <HomeLayoutWithUploadCallback />
+          </HideShower>
+          <HideShower hide={isLoading} >
+            <Comp />
+          </HideShower>
           {isLoading && (
             <LoadingScreen />
           )}
