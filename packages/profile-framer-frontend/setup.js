@@ -282,6 +282,7 @@ export default function(constants) {
         return action.where;
       }
       if (action.type === 'STOP_LOADING') {
+        console.log("STOP")
         return '';
       }
       return state;
@@ -400,6 +401,31 @@ export default function(constants) {
     hide: false
   };
 
+  let LoadingScreen = (props) => {
+    return (
+      <div style={{position:'fixed',top:0,left:0,zIndex:99999,}}>
+        <p>{props.loading}</p>
+        <div onClick={props.cancelLoading}>CANCEL!!!!!!!</div>
+      </div>
+    );
+  }
+  LoadingScreen = appConnect(
+    (appState) => {
+      return {
+        loading: appState.loading,
+      };
+    },
+    {
+      cancelLoading: () => {
+        return (dispatch) => {
+          dispatch({
+            type: "STOP_LOADING"
+          });
+        }
+      },
+    }
+  )(LoadingScreen)
+
   let Routing = class extends Component {
     componentWillMount() {
       this.props.setConstants(constants);
@@ -414,7 +440,7 @@ export default function(constants) {
           <HomeLayoutHideShower hide={hideHome} />
           <Comp />
           {isLoading && (
-            <div style={{position:'fixed',top:0,left:0,zIndex:99999,}}>{this.props.loading}</div>
+            <LoadingScreen />
           )}
         </div>
       );
