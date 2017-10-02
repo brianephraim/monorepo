@@ -17,7 +17,6 @@ function makeSetImageHandler (type) {
       
     }
     imgSrc = typeof imgSrc === 'object' ? imgSrc.src : imgSrc;
-    console.log(imgSrc,attemptId, ownProps);
     return (dispatch, getState) => {
       if (!priorLoading) {
         dispatch({
@@ -25,13 +24,11 @@ function makeSetImageHandler (type) {
           where: `setBackgroundHoc_${attemptId}`,
         });
       }
-      console.log('GG')
       return getNormalizedImageInfo(
         imgSrc,
         ownProps.constants.backendApiPrefix
       ).then(response => {
         const stillLoading = getState().loading;
-        console.log('HH',stillLoading,response)
         if (stillLoading) {
           const compositeImageData = {...getState().compositeImageData};
           const actionRaw = {
@@ -56,6 +53,13 @@ function makeSetImageHandler (type) {
             where: `setBackgroundHoc_${attemptId}`,
           });
         }
+      })
+      .catch((e) => {
+        alert(e)
+        dispatch({
+          type: 'STOP_LOADING',
+          where: `setBackgroundHoc_${attemptId}`,
+        });
       });
     };
   };
@@ -80,10 +84,13 @@ export default function setBackgroundHoc(Comp) {
             })
           };
         },
-        onError:(attemptId) => {
+        onError:(attemptId,e) => {
           return (dispatch, getState) => {
+            if (e && e.message) {
+              alert(e.message);
+            }
             dispatch({
-              type: 'LOADINGERROR',
+              type: 'STOP_LOADING',
               where: `setBackgroundHoc_${attemptId}`
             })
           };
