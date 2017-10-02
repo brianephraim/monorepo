@@ -1,20 +1,17 @@
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {Helmet} from "react-helmet";
 import { combineReducers } from 'redux';
 import { addRoutesToApp } from '@defualt/redux-routing-app-root-component';
 import { makeNameSpacedResponsiveStatusesDictReducer } from '@defualt/responsive/nameSpaceResponsive';
 
 import { generateCompositeImgSrcUrl,getDefaultCompositeImageData, paramsIntoCompositeImage } from './compositeImage';
-import { standardModesRegexArrayString, formUrl } from './deriveUrlInfo';
+import { standardModesRegexArrayString } from './deriveUrlInfo';
 import {
   buttonGroupComponentsRegexArrayString,
   ButtonGroupFeaturedRouteScreen,
-  ImportButtonGroup
 } from './buttonGroups';
 import {
-  HomeLayoutWithUploadCallback,
   ImagePickerFacebookWithOnClick,
   ImagePickerTemplateWithOnClick,
   CropperWithFgBgCompletion,
@@ -25,11 +22,9 @@ import {
 
 import { setAncestorConstantsHoc } from './ancestorConstantsHoc';
 
-import { appConnect } from './nameSpacedResponsive';
-
-
 import Privacy from './Privacy';
 import Terms from './Terms';
+import AppScreens from './AppScreens';
 
 
 const geoPathFrag =
@@ -65,7 +60,7 @@ const routeModes = [
       return `${prepend}`;
     },
 
-    match: payload => {
+    match: () => {
       return true;
     },
   },
@@ -282,7 +277,6 @@ export default function(constants) {
         return action.where;
       }
       if (action.type === 'STOP_LOADING') {
-        console.log("STOP")
         return '';
       }
       return state;
@@ -314,137 +308,8 @@ export default function(constants) {
     },
   });
 
-  
-  let HeaderStuff = (props) => {
-    const constants = props.constants;
-    const compositeImageUrl = props.compositeImageUrl;
-    let metaOgUrl = `${props.serverClientOrigin}${props.constants.urlAppNameSpace}/${formUrl(props.compositeImageData)}`;
-    if (`${props.serverClientOrigin}${props.constants.urlAppNameSpace}` === `${props.serverClientUrl}`) {
-      metaOgUrl = props.serverClientUrl;
-    }
+ 
 
-    return (
-      <Helmet>
-        <meta charSet="utf-8" />
-        <meta httpEquiv="x-ua-compatible" content="ie=edge" />
-        <meta name="viewport" content="initial-scale=1, maximum-scale=1" />
-        <title>{constants.headTitle}</title>
-        <meta name="description" content={constants.headDescription} />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        
-        <link href={`https://fonts.googleapis.com/css?family=${constants.googleFonts}`} rel='stylesheet' type='text/css' />
-
-        <meta property="og:title" content={constants.headMetaOgTitle} />
-        <meta property="og:site_name" content={constants.headMetaOgSiteName} />
-        <meta property="og:url" content={metaOgUrl} />
-        <meta property="og:description" content={constants.headMetaOgDescription} />
-        <meta property="fb:app_id" content={constants.headMetaFbAppId} />
-        <meta property="og:type" content={constants.headMetaOgType} />
-        <meta property="og:locale" content={constants.headMetaOgLocale} />
-        <meta property="og:image" content={compositeImageUrl} />
-        <meta property="og:image:width" content={constants.headMetaOgImageWidth} />
-        <meta property="og:image:height" content={constants.headMetaOgImageHeight} />
-
-        <meta name="twitter:card" content={constants.headMetaTwitterCard} />
-        <meta name="twitter:site" content={constants.headMetaTwitterSite} />
-        <meta name="twitter:creator" content={constants.headMetaTwitterCreator} />
-        <meta name="twitter:title" content={constants.headMetaTwitterTitle} />
-        <meta name="twitter:description" content={constants.headMetaTwitterDescription} />
-        <meta name="twitter:image" content={props.compositeImageUrl} />
-      </Helmet>
-    );
-  };
-  HeaderStuff.propTypes = {
-    constants: PropTypes.object.isRequired,
-    compositeImageData: PropTypes.object.isRequired,
-    compositeImageUrl: PropTypes.string.isRequired,
-    serverClientOrigin: PropTypes.string.isRequired,
-    serverClientUrl: PropTypes.string.isRequired,
-  };
-  HeaderStuff.defaultProps = {
-    serverClientOrigin: '',
-    serverClientUrl: '',
-  };
-  HeaderStuff = 
-  connect(
-    (state) => {
-      return {
-        serverClientUrl: state.serverClientUrl,
-        serverClientOrigin: state.serverClientOrigin,
-      };
-    }
-  )(appConnect(
-    (appState) => {
-      return {
-        compositeImageData: appState.compositeImageData,
-        compositeImageUrl: appState.compositeImageData.compositeImageUrl,
-        constants: appState.constants
-      };
-    }
-  )(HeaderStuff));
-
-  function HomeLayoutHideShower(props) {
-    const style = !props.hide ? {} : {
-      overflow: 'hidden',
-      height: 0,
-    };
-    return (
-      <div style={style}>
-        <HomeLayoutWithUploadCallback />
-      </div>
-    );
-  }
-  HomeLayoutHideShower.propTypes = {
-    hide: PropTypes.bool
-  };
-  HomeLayoutHideShower.defaultProps = {
-    hide: false
-  };
-
-  function HideShower(props) {
-    const style = !props.hide ? {} : {
-      overflow: 'hidden',
-      height: 0,
-      position: 'relative',
-    };
-    return (
-      <div style={style}>
-        {props.children}
-      </div>
-    );
-  }
-  HideShower.propTypes = {
-    hide: PropTypes.bool,
-    children: PropTypes.node.isRequired,
-  };
-  HideShower.defaultProps = {
-    hide: false
-  };
-
-  let LoadingScreen = (props) => {
-    return (
-      <div style={{position:'fixed',top:0,left:0,zIndex:99999,}}>
-        <p>{props.loading}</p>
-        <div onClick={props.cancelLoading}>CANCEL!!!!!!!</div>
-      </div>
-    );
-  }
-  LoadingScreen = appConnect(
-    (appState) => {
-      return {
-        loading: appState.loading,
-      };
-    },
-    {
-      cancelLoading: () => {
-        return (dispatch) => {
-          dispatch({
-            type: "STOP_LOADING"
-          });
-        }
-      },
-    }
-  )(LoadingScreen)
 
   let Routing = class extends Component {
     componentWillMount() {
@@ -452,26 +317,14 @@ export default function(constants) {
     }
     render() {
       const Comp = screenComponentMap[this.props.activeAppScreen];
-      const isLoading = !!this.props.loading.length;
-      const hideHome = isLoading || this.props.activeAppScreen !== 'HOME_PROFILE_FRAMER';
       return (
-        <div>
-          <HeaderStuff />
-          <HideShower hide={hideHome} >
-            <HomeLayoutWithUploadCallback />
-          </HideShower>
-          <HideShower hide={isLoading} >
-            <Comp />
-          </HideShower>
-          {isLoading && (
-            <LoadingScreen />
-          )}
-        </div>
+        <AppScreens>
+          <Comp />
+        </AppScreens>
       );
     }
   };
   Routing.propTypes = {
-    loading: PropTypes.string.isRequired,
     activeAppScreen: PropTypes.string.isRequired,
     setConstants: PropTypes.func.isRequired,
   };
@@ -479,7 +332,6 @@ export default function(constants) {
     (state) => {
       return {
         activeAppScreen: state[constants.appNameSpace].activeAppScreen,
-        loading: state[constants.appNameSpace].loading,
       };
     },
     {

@@ -70,29 +70,29 @@ html .branding_title{
 
 
 // SPINNER
-.spinnerShowing{
-	background: url("/images/spinner.gif") transparent no-repeat 50% 150px;
-	.homeLayout,.modal {
-		display:none;
-	}
-	.spinnerBonusImage{
-		display:block;
-	}
-	&.iframeUploadButton {
-		background: url("/images/spinner.gif") white no-repeat 50% 0;
-		* {
-			display:none;
-		}
-	}
-}
-.spinnerBonusImage{
-	display:none;
-}
-.literalAppSelfie{
-	position:absolute;
-	bottom:0;
-	left:0;
-}
+// .spinnerShowing{
+// 	background: url("/images/spinner.gif") transparent no-repeat 50% 150px;
+// 	.homeLayout,.modal {
+// 		display:none;
+// 	}
+// 	.spinnerBonusImage{
+// 		display:block;
+// 	}
+// 	&.iframeUploadButton {
+// 		background: url("/images/spinner.gif") white no-repeat 50% 0;
+// 		* {
+// 			display:none;
+// 		}
+// 	}
+// }
+// .spinnerBonusImage{
+// 	display:none;
+// }
+// .literalAppSelfie{
+// 	position:absolute;
+// 	bottom:0;
+// 	left:0;
+// }
 
 
 //SOCIAL WIDGET
