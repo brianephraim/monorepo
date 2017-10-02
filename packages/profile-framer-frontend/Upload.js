@@ -70,11 +70,10 @@ class Upload extends Component {
       );
       if (this.props.onSuccess) {
         myAjax.then((imgSrc)=>{this.props.onSuccess(imgSrc,uploadAttemptId)}).catch((e) => {
-          console.log('EERRRR',e);
           this.props.onError(uploadAttemptId,e)
         });
       }
-      myAjax.catch((...args)=>{console.log('UPLOAD ERROR',args);this.props.onError(uploadAttemptId)});
+      myAjax.catch((...args)=>{this.props.onError(uploadAttemptId)});
     } else {
       myAjax = {
         then: cb => {
