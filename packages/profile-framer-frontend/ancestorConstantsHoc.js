@@ -24,7 +24,6 @@ export function setAncestorConstantsHoc(Comp, constantsInjection) {
       };
     }
     render() {
-      console.log(this.props);
       return <Comp />;
     }
   }
