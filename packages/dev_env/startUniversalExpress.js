@@ -15,10 +15,6 @@ import webpackParseStatsForDepProblems from './webpackParseStatsForDepProblems';
 
 import startExpress from './startExpress';
 
-const res = (p) => {
-  return path.resolve(typeof __xdirname !== 'undefined' ? __xdirname : __dirname, p)
-};
-
 function compileAndServeWebpackDevMiddlewareHMRUniversalExpress(clientDevConfig, serverDevConfig) {
   return new Promise((resolve) => {
     startExpress((app) => {
@@ -65,7 +61,7 @@ function clearCompileAndServeProductionUniversalExpress(clientConfig,serverConfi
         // This calls the production bundle of the Universal React App just created.
         // This includes an express server.
         if (serve) {
-          __non_webpack_require__(res('./universal/buildServer/main.js'));
+          __non_webpack_require__(path.resolve(__dirnameWhenCompiled, './universal/buildServer/main.js'));
         }
       });
     });

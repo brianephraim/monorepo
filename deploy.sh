@@ -6,17 +6,17 @@ else
     branch=$(git branch | sed -n -e 's/^\* \(.*\)/\1/p')
     echo "DEPLOY SCIPT: DEPLOYING HASH: $commitHash"
     echo "DEPLOY SCIPT: ORIGINAL BRANCH: $branch"
-    # create `deploy` branch if it doesn't exist
+    # create `staging` branch if it doesn't exist
     echo "DEPLOY SCIPT: CREATE DEPLOY BRANCH IF IT DOES NOT EXIST"
-    git checkout deploy 2>/dev/null || git checkout -b deploy
+    git checkout staging 2>/dev/null || git checkout -b staging
     # checkout the branch where you started
     git checkout $branch
     echo "DEPLOY SCIPT: CREATE/CHECKOUT CLEAN DEPLOY-TEMP BRANCH"
-    git branch -D deploy-temp
-    git checkout -b deploy-temp
-    # move your commit over to the deploy branch with message referring to the commit's original hash
+    git branch -D staging-temp
+    git checkout -b staging-temp
+    # move your commit over to the staging branch with message referring to the commit's original hash
     echo "DEPLOY SCIPT: RESET CURRENT FILES ON TOP OF DEPLOY BRANCH HISTORY"
-    git reset deploy
+    git reset staging
     # collect all the deps in all nested folders, and use to create master deps list for package.json
     # necessary because deploy bundle has external references to node_modules contents
     echo "DEPLOY SCIPT: AGGREGATE NESTED PACKAGE.JSON DEPS INTO ROOT LEVEL PACKAGE.JSON"
@@ -35,12 +35,12 @@ else
     git add -A .
     git commit -m "deployed $commitHash"
     echo "DEPLOY SCIPT: REBASING DEPLOY-TEMP ONTO DEPLOY"
-    git checkout deploy
-    git rebase deploy-temp
+    git checkout staging
+    git rebase staging-temp
     echo "DEPLOY SCIPT: DELETING DEPLOY-TEMP"
-    git branch -D deploy-temp
+    git branch -D staging-temp
     echo "DEPLOY SCIPT: PUSHING DEPLOY"
-    git push -u origin deploy
+    git push -u origin staging
     echo "DEPLOY SCIPT: DONE DEPLOYING, RETURNING TO BRANCH: $branch"
     git checkout $branch
     echo "DEPLOY SCIPT: WATCHING HEROKU TAIL FOR DEPLOYMENT"

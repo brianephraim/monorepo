@@ -128,7 +128,7 @@ const render = ({ clientStats }) => async (req, res, next) => {
         </head>
         <body>
           <script>window.REDUX_STATE = ${stateJson}</script>
-          <div id="root">${appString}</div>
+          <div id="root" class="universal">${appString}</div>
           ${cssHash}
           <script type='text/javascript' src='/staticx/vendor.js'></script>
           ${js}
@@ -141,7 +141,7 @@ export default render;
 
 
 // When this script is called from within the production bundle...
-if (__nodeenv === 'production') {
+if (process.env.NODE_ENV === 'production') {
   // We are launching an express server with `startExpress`.
   // `startExpress` includes all the app's endpoints and the localhost port listener.
   startExpress((app) => {

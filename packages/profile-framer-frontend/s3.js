@@ -93,7 +93,7 @@ function getSignedRequest(file, folder, mustBeSquare, backendApiPrefix) {
             .then(imageUrl => {
               return getNormalizedImageInfo(imageUrl, backendApiPrefix);
             })
-            .then(resolve);
+            .then(resolve).catch(reject);
         } else {
           const response = JSON.parse(xhr.responseText);
           let message = 'There was a problem.  Try again.';

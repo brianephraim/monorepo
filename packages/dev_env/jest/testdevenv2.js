@@ -13,8 +13,8 @@ import getDevEnvRoot from '../core/getDevEnvRoot';
 
 
 
-const devEnvRoot = getDevEnvRoot(__xdirname);
-const monorepoDir = path.resolve(__xdirname, '../../../');
+const devEnvRoot = getDevEnvRoot(__dirnameWhenCompiled);
+const monorepoDir = path.resolve(__dirnameWhenCompiled, '../../../');
 
 const symlinkNodeModulesContents = (nodeModulesOriginalPath, nodeModulesCopyPath) => {
   const promises = [];
@@ -173,7 +173,7 @@ function duringServer({
   early,
   onStderr,
 }) {
-  const scrapeDir = path.resolve(__xdirname, './scrape');
+  const scrapeDir = path.resolve(__dirnameWhenCompiled, './scrape');
   let once = false;
   duringProcess({
     onStderr,

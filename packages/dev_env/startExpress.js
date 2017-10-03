@@ -23,7 +23,7 @@ function asyncRecurseStartApps(app,serverNamespaces) {
     function recurse(backendAppNamespace) {
       console.log('backendAppNamespace',backendAppNamespace);
       const someBackendApp = extraServers[backendAppNamespace];
-      // const someBackendApp = __non_webpack_require__(path.resolve(__xdirname, `../../packages/${backendAppNamespace}/${backendAppNamespace}.express`));
+      // const someBackendApp = __non_webpack_require__(path.resolve(__ydirname, `../../packages/${backendAppNamespace}/${backendAppNamespace}.express`));
       // import(`../../packages/${backendAppNamespace}/${backendAppNamespace}.express`).then((someBackendApp) => {
       const serveBackendApp = someBackendApp.default || someBackendApp;
       const backendAppSettings = {

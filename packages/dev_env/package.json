@@ -90,7 +90,6 @@
     "webpack-flush-chunks": "^1.1.23",
     "webpack-hot-middleware": "^2.19.1",
     "webpack-hot-server-middleware": "^0.1.0",
-    "webpack-node-externals": "^1.6.0",
     "webpack-node-utils": "^2.1.0",
     "website-scraper": "^3.1.0",
     "write-file-webpack-plugin": "^4.1.0 ",

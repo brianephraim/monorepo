@@ -26,7 +26,11 @@ export default function nameSpaceConnect(appNameSpace) {
               };
               dispatch(newAction,...args3);
             };
-            return oldSomeAction(newDispatch, getState, ...args2)
+            const newGetState = (...args) => {
+              const refinedAppNameSpace = typeof appNameSpace === 'function' ? appNameSpace(ownProps) : appNameSpace;
+              return getState(...args)[refinedAppNameSpace];
+            };
+            return oldSomeAction(newDispatch, newGetState, ...args2)
           };
         }
         return oldSomeAction;

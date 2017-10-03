@@ -76,7 +76,7 @@ function ensureAuthenticated(req, res, next) {
   // persistent login sessions (recommended).
   c.app.use(passport.initialize());
   c.app.use(passport.session());
-  c.app.use(express.static(__xdirname + '/public'));
+  c.app.use(express.static(__dirname + '/public'));
 
 
 

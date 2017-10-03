@@ -24,6 +24,7 @@ const bs = {
 const offline = false;
 
 let uploadizerId = 0;
+let attemptId = 0;
 class Upload extends Component {
   constructor() {
     super();
@@ -56,7 +57,9 @@ class Upload extends Component {
     // e.target.value ----- C:\fakepath\dude-with-hat.JPG
     // this.props.onSuccess();
     // return;
-    bs.loader.load();
+    attemptId++;
+    const uploadAttemptId = `Upload_${attemptId}`;
+    this.props.onLoading(uploadAttemptId);
     let myAjax;
     if (!offline) {
       myAjax = initUpload(
@@ -66,9 +69,11 @@ class Upload extends Component {
         this.props.backendApiPrefix
       );
       if (this.props.onSuccess) {
-        myAjax.then(this.props.onSuccess);
+        myAjax.then((imgSrc)=>{this.props.onSuccess(imgSrc,uploadAttemptId)}).catch((e) => {
+          this.props.onError(uploadAttemptId,e)
+        });
       }
-      myAjax.catch(this.props.onError);
+      myAjax.catch((...args)=>{this.props.onError(uploadAttemptId)});
     } else {
       myAjax = {
         then: cb => {
@@ -133,11 +138,13 @@ Upload.propTypes = {
   children: PropTypes.node.isRequired,
   onSuccess: PropTypes.func,
   onError: PropTypes.func,
+  onLoading: PropTypes.func,
   backendApiPrefix: PropTypes.string.isRequired,
 };
 Upload.defaultProps = {
   onSuccess: () => {},
   onError: () => {},
+  onLoading: () => {},
 };
 export default Upload;
 /*

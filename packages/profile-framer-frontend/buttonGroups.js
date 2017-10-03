@@ -240,11 +240,13 @@ const StyledButtonInnerSpan = styled.span`
 
 
 
+
 let AppButtonGroup = class extends Component {
   constructor() {
     super();
     this.state = {};
   }
+
   render() {
     const icon =
       this.props.icon &&
@@ -448,7 +450,7 @@ function makeButtonGroupComponent(
     const imageUrl = `${props.serverClientOrigin}${props.compositeImageUrl}`
 
     options =
-      typeof options === 'function' ? options(props.constants,props.shareUrl, imageUrl) : options;
+      typeof options === 'function' ? options(props.constants,props.shareUrl, imageUrl, props.postToWall, props.exportStuff) : options;
     const ButtonGroup = <AppButtonGroup {...props} {...options} />;
     if (props.isModal) {
       return (
@@ -467,6 +469,7 @@ function makeButtonGroupComponent(
     isModal: false,
   };
 
+  let attemptId = 0;
   return shareUrlHoc(connect(
     (state) => {
       return {
@@ -480,6 +483,54 @@ function makeButtonGroupComponent(
         compositeImageUrl: appState.compositeImageData.compositeImageUrl,
         constants: appState.constants
       };
+    },
+    {
+      exportStuff: (imageUrl) => {
+        return (dispatch, getState) => {
+          const currentAttamptId = attemptId++;
+          dispatch({
+            type: 'LOADING',
+            where: `exportStuff_${currentAttamptId}`,
+          });
+          exportStuff(imageUrl).then(() => {
+            dispatch({
+              type: 'STOP_LOADING',
+              where: `exportStuff_${currentAttamptId}`,
+            });
+            alert('SUCCESSFULLY POSTED PHOTO TO FACEBOOK');
+            
+          }).catch(() => {
+            dispatch({
+              type: 'STOP_LOADING',
+              where: `exportStuff_${currentAttamptId}`,
+            });
+            alert('ERROR TRYING TO POST PHOT TO FACEBOOK');
+          });
+        };
+      },
+      postToWall: (shareUrl) => {
+        return (dispatch, getState) => {
+          const currentAttamptId = attemptId++;
+          dispatch({
+            type: 'LOADING',
+            where: `postToWall_${currentAttamptId}`,
+          });
+          postToWall(shareUrl).then(() => {
+            dispatch({
+              type: 'STOP_LOADING',
+              where: `postToWall_${currentAttamptId}`,
+            });
+            alert('SUCCESSFULLY POSTED TO FACEBOOK WALL');
+            
+          }).catch(() => {
+            dispatch({
+              type: 'STOP_LOADING',
+              where: `postToWall_${currentAttamptId}`,
+            });
+            alert('ERROR TRYING TO POST TO FACEBOOK WALL');
+          });
+        };
+      },
     }
   )(ButtonGroup)));
 }
@@ -509,7 +560,7 @@ const ImportButtonGroup = makeButtonGroupComponent({
 });
 buttonGroupComponents.import = ImportButtonGroup;
 
-const ShareButtonGroup = makeButtonGroupComponent((constants, shareUrl, imageUrl) => {
+const ShareButtonGroup = makeButtonGroupComponent((constants, shareUrl, imageUrl, postToWall, exportStuff) => {
   return {
     urlFragment: 'share',
     headline: 'Share this via:',

@@ -98,8 +98,8 @@ export default (history, preLoadedState) => {
   if (typeof window !== 'undefined') {
     window.ss = store;
   }
-  console.log('__nodeenv',__nodeenv);
-  if (module.hot && __nodeenv === 'development') {
+  console.log('process.env.NODE_ENV',process.env.NODE_ENV);
+  if (module.hot && process.env.NODE_ENV === 'development') {
     module.hot.accept('./reducers/index', () => {
       const reducers = require('./reducers/index')
       const rootReducer = combineReducers({...moreReducers, ...reducers, ...routeData.allReducers, location: reducer })

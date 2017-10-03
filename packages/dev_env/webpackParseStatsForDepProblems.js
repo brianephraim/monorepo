@@ -42,14 +42,6 @@ function findDependenciesProblems(dependencies, packageDotJsonContent) {
   dependencies.forEach((dep) => {
     if (dep.module) {
       const rawRequest = dep.module.rawRequest;
-      // if (rawRequest.indexOf('/Users/brianephraim/Sites/monorepo/packages') === 0) {
-      //   console.info('\x1b[33m', 'depWTF', rawRequest, '\x1b[0m');
-      //   console.log('depWTF', dep);
-      // } else {
-      //   console.info('\x1b[33m', 'depGGG', rawRequest, '\x1b[0m');
-      //   console.log('depGGG', dep);
-      // }
-
       // not a relative dependency
       // not an absolut dependency
       // we are only concerned with depenencies referenced like
@@ -84,7 +76,6 @@ function findDependenciesProblems(dependencies, packageDotJsonContent) {
           ].filter((msg) => {
             return msg !== 'name can only contain URL-friendly characters';
           });
-          // console.log(validationResult);
           if (info.length) {
             problems[rawRequest] = {
               msg: 'BAD FORMATTING',
