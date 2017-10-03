@@ -238,6 +238,29 @@ const StyledButtonInnerSpan = styled.span`
       .white};
 `;
 
+function onClickerHoc(Comp){
+  class OnClicker extends Component {
+    constructor(){
+      super();
+      this.onClick = this.onClick.bind(this);
+    }
+    onClick(e){
+      console.log('ONCLSICKER',this.props)
+      this.props.onClickx(e,this.props);
+    }
+    render(){
+      return (
+        <Comp
+          onClick={this.onClick}
+          {...this.props}
+        />
+      );
+    }
+  }
+  return OnClicker;
+}
+
+const StyledButtonInnerSpanOnClicker = onClickerHoc(StyledButtonInnerSpan);
 
 
 let AppButtonGroup = class extends Component {
@@ -245,6 +268,7 @@ let AppButtonGroup = class extends Component {
     super();
     this.state = {};
   }
+
   render() {
     const icon =
       this.props.icon &&
@@ -320,13 +344,13 @@ let AppButtonGroup = class extends Component {
             );
           } else if (btnDetails.onClick) {
             btnInner = (
-              <StyledButtonInnerSpan
-                onClick={btnDetails.onClick}
+              <StyledButtonInnerSpanOnClicker
+                onClickx={btnDetails.onClick}
                 role="button"
                 tabIndex="0"
               >
                 {btnDetails.text}
-              </StyledButtonInnerSpan>
+              </StyledButtonInnerSpanOnClicker>
             );
           } else {
             btnInner = (
@@ -448,7 +472,7 @@ function makeButtonGroupComponent(
     const imageUrl = `${props.serverClientOrigin}${props.compositeImageUrl}`
 
     options =
-      typeof options === 'function' ? options(props.constants,props.shareUrl, imageUrl) : options;
+      typeof options === 'function' ? options(props.constants,props.shareUrl, imageUrl, props.postToWall, props.exportStuff) : options;
     const ButtonGroup = <AppButtonGroup {...props} {...options} />;
     if (props.isModal) {
       return (
@@ -467,6 +491,7 @@ function makeButtonGroupComponent(
     isModal: false,
   };
 
+  let attemptId = 0;
   return shareUrlHoc(connect(
     (state) => {
       return {
@@ -480,6 +505,54 @@ function makeButtonGroupComponent(
         compositeImageUrl: appState.compositeImageData.compositeImageUrl,
         constants: appState.constants
       };
+    },
+    {
+      exportStuff: (imageUrl) => {
+        return (dispatch, getState) => {
+          const currentAttamptId = attemptId++;
+          dispatch({
+            type: 'LOADING',
+            where: `exportStuff_${currentAttamptId}`,
+          });
+          exportStuff(imageUrl).then(() => {
+            dispatch({
+              type: 'STOP_LOADING',
+              where: `exportStuff_${currentAttamptId}`,
+            });
+            alert('SUCCESSFULLY POSTED PHOTO TO FACEBOOK');
+            
+          }).catch(() => {
+            dispatch({
+              type: 'STOP_LOADING',
+              where: `exportStuff_${currentAttamptId}`,
+            });
+            alert('ERROR TRYING TO POST PHOT TO FACEBOOK');
+          });
+        };
+      },
+      postToWall: (shareUrl) => {
+        return (dispatch, getState) => {
+          const currentAttamptId = attemptId++;
+          dispatch({
+            type: 'LOADING',
+            where: `postToWall_${currentAttamptId}`,
+          });
+          postToWall(shareUrl).then(() => {
+            dispatch({
+              type: 'STOP_LOADING',
+              where: `postToWall_${currentAttamptId}`,
+            });
+            alert('SUCCESSFULLY POSTED TO FACEBOOK WALL');
+            
+          }).catch(() => {
+            dispatch({
+              type: 'STOP_LOADING',
+              where: `postToWall_${currentAttamptId}`,
+            });
+            alert('ERROR TRYING TO POST TO FACEBOOK WALL');
+          });
+        };
+      },
     }
   )(ButtonGroup)));
 }
@@ -509,7 +582,7 @@ const ImportButtonGroup = makeButtonGroupComponent({
 });
 buttonGroupComponents.import = ImportButtonGroup;
 
-const ShareButtonGroup = makeButtonGroupComponent((constants, shareUrl, imageUrl) => {
+const ShareButtonGroup = makeButtonGroupComponent((constants, shareUrl, imageUrl, postToWall, exportStuff) => {
   return {
     urlFragment: 'share',
     headline: 'Share this via:',

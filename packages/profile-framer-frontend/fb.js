@@ -214,15 +214,21 @@ class FbManager {
     bs.loader.load();
     return this.asyncInitPromise
       .then(() => {
-        FB().ui(
-          {
-            method: 'share',
-            href: url,
-          },
-          () => {
-            console.log('DONE');
-          }
-        );
+        return new Promise((resolve, reject) => {
+          FB().ui(
+            {
+              method: 'share',
+              href: url,
+            },
+            (response) => {
+              if (response && !response.error_message) {
+                resolve();
+              } else {
+                reject();
+              }              
+            }
+          );
+        });
       })
       // .always(() => {
       //   bs.loader.unload();
@@ -239,14 +245,14 @@ class FbManager {
         // .fail(statusChangeCallback)
         // .then(getMyInfo)
         // .then(this.uploadPhoto)
-        .then((x) => {
-          console.log('SUCCESS',x)
-          return x;
-        })
-        .catch((x) => {
-          console.log('ERROR',x)
-          alert('sorry, that did not work');
-        })
+        // .then((x) => {
+        //   console.log('SUCCESS',x)
+        //   return x;
+        // })
+        // .catch((x) => {
+        //   console.log('ERROR',x)
+        //   alert('sorry, that did not work');
+        // })
         // .always(() => {
         //   this.urlToExport = null;
         //   bs.loader.unload();
