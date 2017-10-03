@@ -261,7 +261,6 @@ class FbManager {
   }
   uploadPhoto(url) {
     return (response) => {
-      console.log('url',url);
       return fbApi(`/${response.id}/photos`, 'post', {
         url: url.replace('localhost.bernieselfie.com:3000','www.bernieselfie.com'),
       });
@@ -318,14 +317,12 @@ export function fetchFacebookPhotosHoc(Comp) {
       },
       {
         fetchFacebookPhotos: (ownProps,...args) => {
-          console.log(args);
           return (dispatch  , getState) => {
             const currentAttamptId = attemptId++;
             dispatch({
               type: 'LOADING',
               where: `fetchFacebookPhotos_${currentAttamptId}`
             })
-            console.log(ownProps);
             const imagesFromFBPromise = imagesFromFBPromises[ownProps.constants.appNameSpace] || fbManager.importStuff();
             imagesFromFBPromises[ownProps.constants.appNameSpace] = imagesFromFBPromise;
             setTimeout(() => {

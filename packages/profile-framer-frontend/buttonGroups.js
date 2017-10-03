@@ -238,29 +238,7 @@ const StyledButtonInnerSpan = styled.span`
       .white};
 `;
 
-function onClickerHoc(Comp){
-  class OnClicker extends Component {
-    constructor(){
-      super();
-      this.onClick = this.onClick.bind(this);
-    }
-    onClick(e){
-      console.log('ONCLSICKER',this.props)
-      this.props.onClickx(e,this.props);
-    }
-    render(){
-      return (
-        <Comp
-          onClick={this.onClick}
-          {...this.props}
-        />
-      );
-    }
-  }
-  return OnClicker;
-}
 
-const StyledButtonInnerSpanOnClicker = onClickerHoc(StyledButtonInnerSpan);
 
 
 let AppButtonGroup = class extends Component {
@@ -344,13 +322,13 @@ let AppButtonGroup = class extends Component {
             );
           } else if (btnDetails.onClick) {
             btnInner = (
-              <StyledButtonInnerSpanOnClicker
-                onClickx={btnDetails.onClick}
+              <StyledButtonInnerSpan
+                onClick={btnDetails.onClick}
                 role="button"
                 tabIndex="0"
               >
                 {btnDetails.text}
-              </StyledButtonInnerSpanOnClicker>
+              </StyledButtonInnerSpan>
             );
           } else {
             btnInner = (
