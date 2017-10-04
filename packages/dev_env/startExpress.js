@@ -3,41 +3,32 @@ import { argv } from 'yargs';
 import demoEndpoints from './universal/server/demoEndpoints';
 import path from 'path';
 import fs from 'fs-extra';
-// problem deps
-import bernieServer from '@defualt/bernieserver/bernieserver.express';
-import junkServer from '@defualt/junk-express/junk-express.express';
-
-
-
-
 
 function asyncRecurseStartApps(app,serverNamespaces) {
-  // I want to asynchronously load these endpoint modules.
-  // but this is tricky.  Fix this later.
-  const extraServers = {
-    bernieserver: bernieServer,
-    'junk-express': junkServer,
-  };
   return new Promise((resolve) => {
     let i = 0;
     function recurse(backendAppNamespace) {
-      console.log('backendAppNamespace',backendAppNamespace);
-      const someBackendApp = extraServers[backendAppNamespace];
-      // const someBackendApp = __non_webpack_require__(path.resolve(__ydirname, `../../packages/${backendAppNamespace}/${backendAppNamespace}.express`));
-      // import(`../../packages/${backendAppNamespace}/${backendAppNamespace}.express`).then((someBackendApp) => {
-      const serveBackendApp = someBackendApp.default || someBackendApp;
-      const backendAppSettings = {
-        nameSpace: backendAppNamespace,
-      };
-      backendAppSettings.app = app;
-      serveBackendApp(backendAppSettings);
-      const nextNamespace = serverNamespaces[++i];
-      if (nextNamespace) {
-        recurse(nextNamespace);
-      } else {
-        resolve(app);
-      }
-      // });
+      // I want to specify additional express servers to integrate from command line.
+      // I can accomplish this with Webpack's code-splitting .
+      // I tried import(...) but it wouldn't work in my compiled node situation.
+      // require.ensure works.
+      require.ensure([], (require) => {
+        /* eslint-disable import/no-dynamic-require */
+        const someBackendApp = require(`../../packages/${backendAppNamespace}/${backendAppNamespace}.express`);
+        /* eslint-enable import/no-dynamic-require */
+        const serveBackendApp = someBackendApp.default || someBackendApp;
+        const backendAppSettings = {
+          nameSpace: backendAppNamespace,
+        };
+        backendAppSettings.app = app;
+        serveBackendApp(backendAppSettings);
+        const nextNamespace = serverNamespaces[++i];
+        if (nextNamespace) {
+          recurse(nextNamespace);
+        } else {
+          resolve(app);
+        }
+      });
     }
     recurse(serverNamespaces[i]);
   });  
