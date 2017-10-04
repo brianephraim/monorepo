@@ -1,11 +1,11 @@
 import express from 'express';
 import { argv } from 'yargs';
 import demoEndpoints from './universal/server/demoEndpoints';
-import bernieServer from '@defualt/bernieserver/bernieserver.express';
-import junkServer from '@defualt/junk-express/junk-express.express';
 import path from 'path';
 import fs from 'fs-extra';
-// import _eval from 'eval';
+// problem deps
+import bernieServer from '@defualt/bernieserver/bernieserver.express';
+import junkServer from '@defualt/junk-express/junk-express.express';
 
 
 

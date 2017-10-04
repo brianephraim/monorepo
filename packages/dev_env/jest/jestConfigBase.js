@@ -1,4 +1,9 @@
 /* eslint-disable no-useless-escape */
+function getDirname(/* debug */) {
+  return typeof __dirnameWhenCompiled !== "undefined"
+    ? __dirnameWhenCompiled
+    : __dirname;
+}
 module.exports = {
   verbose: true,
   testMatch: ['**'],
@@ -6,10 +11,10 @@ module.exports = {
   // rootDir: process.cwd(),
   moduleDirectories: ['node_modules', 'packages'],
   moduleNameMapper: {
-    '\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$': `${__dirnameWhenCompiled}/__mocks__/fileMock.js`,
+    '\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$': `${getDirname()}/__mocks__/fileMock.js`,
     '\\.(css|less)$': 'identity-obj-proxy',
   },
-  resolver: `${__dirnameWhenCompiled}/jestWebpackResolver.js`,
+  resolver: `${getDirname()}/jestWebpackResolver.js`,
   moduleFileExtensions: ['js', 'jsx'],
   modulePathIgnorePatterns: [
     '<rootDir>.*\/node_modules\/.*',
