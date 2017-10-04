@@ -4844,9 +4844,11 @@ exports.default = function () {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.routeData = undefined;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+// problem deps
+
 
 var _react = __webpack_require__(0);
 
@@ -4862,8 +4864,6 @@ exports.default = function (props) {
   return _react2.default.createElement(_MainApp2.default, _extends({}, props, { hithere: 123 }));
 };
 // export default () => <div>asdfasdfasdf</div>
-
-exports.routeData = _MainApp.routeData;
 
 /***/ }),
 /* 59 */
@@ -9207,19 +9207,25 @@ module.exports = function getIndexFromCoords(col, row, width) {
 
 /***/ }),
 /* 94 */
+/***/ (function(module, exports) {
+
+module.exports = require("fs-extra");
+
+/***/ }),
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var jD = __webpack_require__(15);
-var sharp = __webpack_require__(95);
+var sharp = __webpack_require__(96);
 var prepareModuleWithDefaults = __webpack_require__(47);
 var parseUrl = __webpack_require__(25).parse;
 module.exports = prepareModuleWithDefaults(function (s) {
   var dfd = jD.Deferred();
   var buffer = s.Body;
-  var sharp = __webpack_require__(95);
+  var sharp = __webpack_require__(96);
   var image = sharp(buffer);
   image.metadata(function (err, meta) {
     if (err) {
@@ -9257,13 +9263,13 @@ module.exports = prepareModuleWithDefaults(function (s) {
 });
 
 /***/ }),
-/* 95 */
+/* 96 */
 /***/ (function(module, exports) {
 
 module.exports = require("sharp");
 
 /***/ }),
-/* 96 */
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9275,7 +9281,7 @@ var prepareModuleWithDefaults = __webpack_require__(47);
 module.exports = prepareModuleWithDefaults(function (s) {
   s = Object.assign({}, s);
   if (!s.ContentType) {
-    var mime = __webpack_require__(376);
+    var mime = __webpack_require__(377);
     var extension = s.Key.split('.').pop();
     s.ContentType = mime.lookup(extension);
   }
@@ -9301,12 +9307,6 @@ module.exports = prepareModuleWithDefaults(function (s) {
   });
   return dfd.promise();
 });
-
-/***/ }),
-/* 97 */
-/***/ (function(module, exports) {
-
-module.exports = require("fs-extra");
 
 /***/ }),
 /* 98 */
@@ -17291,6 +17291,9 @@ Object.defineProperty(exports, "__esModule", {
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
+// problem deps
+
+
 var _reduxFirstRouter = __webpack_require__(19);
 
 var _utils = __webpack_require__(163);
@@ -17641,11 +17644,11 @@ var _path = __webpack_require__(18);
 
 var _path2 = _interopRequireDefault(_path);
 
-var _fsExtra = __webpack_require__(97);
+var _fsExtra = __webpack_require__(94);
 
 var _fsExtra2 = _interopRequireDefault(_fsExtra);
 
-var _webpackConfig = __webpack_require__(391);
+var _webpackConfig = __webpack_require__(392);
 
 var _webpackConfig2 = _interopRequireDefault(_webpackConfig);
 
@@ -40504,6 +40507,9 @@ Object.defineProperty(exports, "__esModule", {
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
+// problem deps
+
+
 var _redux = __webpack_require__(24);
 
 var _logOnlyInProduction = __webpack_require__(346);
@@ -40933,6 +40939,9 @@ Object.defineProperty(exports, "__esModule", {
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
+// problem deps
+
+
 var _reduxFirstRouter = __webpack_require__(19);
 
 var _MainApp = __webpack_require__(59);
@@ -41275,54 +41284,41 @@ var _demoEndpoints = __webpack_require__(364);
 
 var _demoEndpoints2 = _interopRequireDefault(_demoEndpoints);
 
-var _bernieserver = __webpack_require__(367);
-
-var _bernieserver2 = _interopRequireDefault(_bernieserver);
-
-var _junkExpress = __webpack_require__(390);
-
-var _junkExpress2 = _interopRequireDefault(_junkExpress);
-
 var _path = __webpack_require__(18);
 
 var _path2 = _interopRequireDefault(_path);
 
-var _fsExtra = __webpack_require__(97);
+var _fsExtra = __webpack_require__(94);
 
 var _fsExtra2 = _interopRequireDefault(_fsExtra);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// import _eval from 'eval';
-
-
 function asyncRecurseStartApps(app, serverNamespaces) {
-  // I want to asynchronously load these endpoint modules.
-  // but this is tricky.  Fix this later.
-  var extraServers = {
-    bernieserver: _bernieserver2.default,
-    'junk-express': _junkExpress2.default
-  };
   return new Promise(function (resolve) {
     var i = 0;
     function recurse(backendAppNamespace) {
-      console.log('backendAppNamespace', backendAppNamespace);
-      var someBackendApp = extraServers[backendAppNamespace];
-      // const someBackendApp = __non_webpack_require__(path.resolve(__ydirname, `../../packages/${backendAppNamespace}/${backendAppNamespace}.express`));
-      // import(`../../packages/${backendAppNamespace}/${backendAppNamespace}.express`).then((someBackendApp) => {
-      var serveBackendApp = someBackendApp.default || someBackendApp;
-      var backendAppSettings = {
-        nameSpace: backendAppNamespace
-      };
-      backendAppSettings.app = app;
-      serveBackendApp(backendAppSettings);
-      var nextNamespace = serverNamespaces[++i];
-      if (nextNamespace) {
-        recurse(nextNamespace);
-      } else {
-        resolve(app);
-      }
-      // });
+      // I want to specify additional express servers to integrate from command line.
+      // I can accomplish this with Webpack's code-splitting .
+      // I tried import(...) but it wouldn't work in my compiled node situation.
+      // require.ensure works.
+      new Promise(function(resolve) { resolve(); }).then((function (require) {
+        /* eslint-disable import/no-dynamic-require */
+        var someBackendApp = __webpack_require__(367)("./" + backendAppNamespace + '/' + backendAppNamespace + '.express');
+        /* eslint-enable import/no-dynamic-require */
+        var serveBackendApp = someBackendApp.default || someBackendApp;
+        var backendAppSettings = {
+          nameSpace: backendAppNamespace
+        };
+        backendAppSettings.app = app;
+        serveBackendApp(backendAppSettings);
+        var nextNamespace = serverNamespaces[++i];
+        if (nextNamespace) {
+          recurse(nextNamespace);
+        } else {
+          resolve(app);
+        }
+      }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
     }
     recurse(serverNamespaces[i]);
   });
@@ -41665,6 +41661,30 @@ var allVideos = reactReduxVideos.concat(dbGraphqlVideos, fpVideos);
 /* 367 */
 /***/ (function(module, exports, __webpack_require__) {
 
+var map = {
+	"./bernieserver/bernieserver.express": 368,
+	"./junk-express/junk-express.express": 391
+};
+function webpackContext(req) {
+	return __webpack_require__(webpackContextResolve(req));
+};
+function webpackContextResolve(req) {
+	var id = map[req];
+	if(!(id + 1)) // check for number or string
+		throw new Error("Cannot find module '" + req + "'.");
+	return id;
+};
+webpackContext.keys = function webpackContextKeys() {
+	return Object.keys(map);
+};
+webpackContext.resolve = webpackContextResolve;
+module.exports = webpackContext;
+webpackContext.id = 367;
+
+/***/ }),
+/* 368 */
+/***/ (function(module, exports, __webpack_require__) {
+
 "use strict";
 
 
@@ -41672,7 +41692,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _bernieExpressServer = __webpack_require__(368);
+var _bernieExpressServer = __webpack_require__(369);
 
 var _bernieExpressServer2 = _interopRequireDefault(_bernieExpressServer);
 
@@ -41681,7 +41701,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _bernieExpressServer2.default;
 
 /***/ }),
-/* 368 */
+/* 369 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41880,7 +41900,7 @@ exports.default = function (_ref) {
     return app;
 };
 
-var _mymodule = __webpack_require__(369);
+var _mymodule = __webpack_require__(370);
 
 var _mymodule2 = _interopRequireDefault(_mymodule);
 
@@ -41888,7 +41908,7 @@ var _express = __webpack_require__(65);
 
 var _express2 = _interopRequireDefault(_express);
 
-var _ejs = __webpack_require__(370);
+var _ejs = __webpack_require__(371);
 
 var _ejs2 = _interopRequireDefault(_ejs);
 
@@ -41904,27 +41924,27 @@ var _fs = __webpack_require__(130);
 
 var _fs2 = _interopRequireDefault(_fs);
 
-var _mongooseStuff = __webpack_require__(371);
+var _mongooseStuff = __webpack_require__(372);
 
 var _mongooseStuff2 = _interopRequireDefault(_mongooseStuff);
 
-var _endpointCompositeImage = __webpack_require__(374);
+var _endpointCompositeImage = __webpack_require__(375);
 
 var _endpointCompositeImage2 = _interopRequireDefault(_endpointCompositeImage);
 
-var _endpointGetNormalizedImageInfo = __webpack_require__(379);
+var _endpointGetNormalizedImageInfo = __webpack_require__(380);
 
 var _endpointGetNormalizedImageInfo2 = _interopRequireDefault(_endpointGetNormalizedImageInfo);
 
-var _endpointGetS3SignedUploadUrl = __webpack_require__(385);
+var _endpointGetS3SignedUploadUrl = __webpack_require__(386);
 
 var _endpointGetS3SignedUploadUrl2 = _interopRequireDefault(_endpointGetS3SignedUploadUrl);
 
-var _endpointIframeUpload = __webpack_require__(386);
+var _endpointIframeUpload = __webpack_require__(387);
 
 var _endpointIframeUpload2 = _interopRequireDefault(_endpointIframeUpload);
 
-var _generateUrlRegexNamespace = __webpack_require__(389);
+var _generateUrlRegexNamespace = __webpack_require__(390);
 
 var _generateUrlRegexNamespace2 = _interopRequireDefault(_generateUrlRegexNamespace);
 
@@ -41939,7 +41959,7 @@ var _ensureLeadingSlash2 = _interopRequireDefault(_ensureLeadingSlash);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ }),
-/* 369 */
+/* 370 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42258,13 +42278,13 @@ var isNode = function () {
 })( false ? undefined[mymoduleName] = {} : exports);
 
 /***/ }),
-/* 370 */
+/* 371 */
 /***/ (function(module, exports) {
 
 module.exports = require("ejs");
 
 /***/ }),
-/* 371 */
+/* 372 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42277,8 +42297,8 @@ Object.defineProperty(exports, "__esModule", {
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 var jD = __webpack_require__(15);
-var mongoose = __webpack_require__(372);
-var uriUtil = __webpack_require__(373);
+var mongoose = __webpack_require__(373);
+var uriUtil = __webpack_require__(374);
 var i = 0;
 var MongooseStuff = function MongooseStuff() {
   var _mongoose$Schema;
@@ -42531,19 +42551,19 @@ exports.default = function () {
 };
 
 /***/ }),
-/* 372 */
+/* 373 */
 /***/ (function(module, exports) {
 
 module.exports = require("mongoose");
 
 /***/ }),
-/* 373 */
+/* 374 */
 /***/ (function(module, exports) {
 
 module.exports = require("mongodb-uri");
 
 /***/ }),
-/* 374 */
+/* 375 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42567,7 +42587,7 @@ var _ensureLeadingSlash = __webpack_require__(46);
 
 var _ensureLeadingSlash2 = _interopRequireDefault(_ensureLeadingSlash);
 
-var _getAllS3Objects = __webpack_require__(375);
+var _getAllS3Objects = __webpack_require__(376);
 
 var _getAllS3Objects2 = _interopRequireDefault(_getAllS3Objects);
 
@@ -42575,7 +42595,7 @@ var _getS3ObjectData = __webpack_require__(165);
 
 var _getS3ObjectData2 = _interopRequireDefault(_getS3ObjectData);
 
-var _meldAndCropImages = __webpack_require__(377);
+var _meldAndCropImages = __webpack_require__(378);
 
 var _meldAndCropImages2 = _interopRequireDefault(_meldAndCropImages);
 
@@ -42715,7 +42735,7 @@ exports.default = function (_ref) {
 };
 
 /***/ }),
-/* 375 */
+/* 376 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42775,7 +42795,7 @@ module.exports = function (s) {
                   Bucket: retryBucket
                 }).then(function () {
                   var args = arguments;
-                  var normalizeImageFileData = __webpack_require__(94)({
+                  var normalizeImageFileData = __webpack_require__(95)({
                     prepareModuleWithDefaults: true,
                     filename: filename,
                     parseSettings: function parseSettings(s) {
@@ -42783,7 +42803,7 @@ module.exports = function (s) {
                       return s;
                     }
                   });
-                  var uploadToS3 = __webpack_require__(96)({
+                  var uploadToS3 = __webpack_require__(97)({
                     prepareModuleWithDefaults: true,
                     accessKeyId: s.accessKeyId,
                     secretAccessKey: s.secretAccessKey,
@@ -42823,22 +42843,22 @@ module.exports = function (s) {
 };
 
 /***/ }),
-/* 376 */
+/* 377 */
 /***/ (function(module, exports) {
 
 module.exports = require("mime-types");
 
 /***/ }),
-/* 377 */
+/* 378 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 /* eslint-disable */
-var sharp = __webpack_require__(95);
+var sharp = __webpack_require__(96);
 var jD = __webpack_require__(15);
-var calcOverlayAndTemplateProcessingSettings = __webpack_require__(378);
+var calcOverlayAndTemplateProcessingSettings = __webpack_require__(379);
 
 // Normally, this will meld a foreground and a background image together,
 // and crop them to a square, as a new image jpeg.
@@ -42913,7 +42933,7 @@ module.exports = function (overlaySettings, responses) {
 };
 
 /***/ }),
-/* 378 */
+/* 379 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42971,7 +42991,7 @@ module.exports = function (cropSettings, userPhotoWidthHeight) {
 };
 
 /***/ }),
-/* 379 */
+/* 380 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43006,8 +43026,8 @@ exports.default = function (_ref) {
       urlPattern = _ref.urlPattern,
       MakeUserTemplate = _ref.MakeUserTemplate;
 
-  var urlToFileData = __webpack_require__(380);
-  var uploadToS3 = __webpack_require__(96)({
+  var urlToFileData = __webpack_require__(381);
+  var uploadToS3 = __webpack_require__(97)({
     prepareModuleWithDefaults: true,
     accessKeyId: accessKeyId,
     secretAccessKey: secretAccessKey,
@@ -43016,7 +43036,7 @@ exports.default = function (_ref) {
 
   var parseUrl = __webpack_require__(25).parse;
 
-  var normalizeImageFileData = __webpack_require__(94)({
+  var normalizeImageFileData = __webpack_require__(95)({
     prepareModuleWithDefaults: true,
     parseSettings: function parseSettings(s) {
       var filename;
@@ -43049,8 +43069,8 @@ exports.default = function (_ref) {
       return s;
     }
   });
-  var deep = __webpack_require__(383);
-  var deleteS3Object = __webpack_require__(384)({
+  var deep = __webpack_require__(384);
+  var deleteS3Object = __webpack_require__(385)({
     prepareModuleWithDefaults: true,
     parseSettings: function parseSettings(s) {
       s.Key = deep(s, 'originalFilename');
@@ -43108,7 +43128,7 @@ exports.default = function (_ref) {
 };
 
 /***/ }),
-/* 380 */
+/* 381 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43123,9 +43143,9 @@ module.exports = function (originalUrl) {
   var options = url.parse(originalUrl);
   var http;
   if (isHttps) {
-    http = __webpack_require__(381);
-  } else {
     http = __webpack_require__(382);
+  } else {
+    http = __webpack_require__(383);
   }
   console.log('http get');
   http.get(options, function (response) {
@@ -43153,25 +43173,25 @@ module.exports = function (originalUrl) {
 };
 
 /***/ }),
-/* 381 */
+/* 382 */
 /***/ (function(module, exports) {
 
 module.exports = require("https");
 
 /***/ }),
-/* 382 */
+/* 383 */
 /***/ (function(module, exports) {
 
 module.exports = require("http");
 
 /***/ }),
-/* 383 */
+/* 384 */
 /***/ (function(module, exports) {
 
 module.exports = require("deep-get-set");
 
 /***/ }),
-/* 384 */
+/* 385 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43209,7 +43229,7 @@ module.exports = prepareModuleWithDefaults(function (s) {
 });
 
 /***/ }),
-/* 385 */
+/* 386 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43273,7 +43293,7 @@ exports.default = function (_ref) {
    */
 
 /***/ }),
-/* 386 */
+/* 387 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43298,7 +43318,7 @@ exports.default = function (_ref) {
 
   app.post(urlPattern, function (req, res, next) {
     var parseUrl = __webpack_require__(25).parse;
-    var normalizeImageFileData = __webpack_require__(94)({
+    var normalizeImageFileData = __webpack_require__(95)({
       prepareModuleWithDefaults: true,
       parseSettings: function parseSettings(s) {
         var filename = s.filename;
@@ -43314,13 +43334,13 @@ exports.default = function (_ref) {
         return s;
       }
     });
-    var uploadToS3 = __webpack_require__(96)({
+    var uploadToS3 = __webpack_require__(97)({
       prepareModuleWithDefaults: true,
       accessKeyId: accessKeyId,
       secretAccessKey: secretAccessKey,
       Bucket: Bucket
     });
-    var apiRequestIntoBufferData = __webpack_require__(387);
+    var apiRequestIntoBufferData = __webpack_require__(388);
     apiRequestIntoBufferData(req).then(normalizeImageFileData).then(uploadToS3).then(function (r) {
       var details = {
         url: r.url
@@ -43341,7 +43361,7 @@ exports.default = function (_ref) {
 };
 
 /***/ }),
-/* 387 */
+/* 388 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43349,7 +43369,7 @@ exports.default = function (_ref) {
 
 var jD = __webpack_require__(15);
 var prepareModuleWithDefaults = __webpack_require__(47);
-var Busboy = __webpack_require__(388);
+var Busboy = __webpack_require__(389);
 
 module.exports = prepareModuleWithDefaults(function (req) {
   var dfd = jD.Deferred();
@@ -43406,13 +43426,13 @@ module.exports = prepareModuleWithDefaults(function (req) {
 });
 
 /***/ }),
-/* 388 */
+/* 389 */
 /***/ (function(module, exports) {
 
 module.exports = require("busboy");
 
 /***/ }),
-/* 389 */
+/* 390 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43432,7 +43452,7 @@ module.exports = function (standardModes) {
 };
 
 /***/ }),
-/* 390 */
+/* 391 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43460,7 +43480,7 @@ var _ensureLeadingSlash2 = _interopRequireDefault(_ensureLeadingSlash);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ }),
-/* 391 */
+/* 392 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43472,17 +43492,17 @@ Object.defineProperty(exports, "__esModule", {
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _webpack = __webpack_require__(392);
+var _webpack = __webpack_require__(393);
 
 var _webpack2 = _interopRequireDefault(_webpack);
 
 var _yargs = __webpack_require__(164);
 
-var _fsExtra = __webpack_require__(97);
+var _fsExtra = __webpack_require__(94);
 
 var _fsExtra2 = _interopRequireDefault(_fsExtra);
 
-var _globby = __webpack_require__(393);
+var _globby = __webpack_require__(394);
 
 var _globby2 = _interopRequireDefault(_globby);
 
@@ -43490,35 +43510,35 @@ var _path = __webpack_require__(18);
 
 var _path2 = _interopRequireDefault(_path);
 
-var _findNodeModules = __webpack_require__(394);
+var _findNodeModules = __webpack_require__(395);
 
 var _findNodeModules2 = _interopRequireDefault(_findNodeModules);
 
-var _extractCssChunksWebpackPlugin = __webpack_require__(395);
+var _extractCssChunksWebpackPlugin = __webpack_require__(396);
 
 var _extractCssChunksWebpackPlugin2 = _interopRequireDefault(_extractCssChunksWebpackPlugin);
 
-var _autodllWebpackPlugin = __webpack_require__(396);
+var _autodllWebpackPlugin = __webpack_require__(397);
 
 var _autodllWebpackPlugin2 = _interopRequireDefault(_autodllWebpackPlugin);
 
-var _statsWebpackPlugin = __webpack_require__(397);
+var _statsWebpackPlugin = __webpack_require__(398);
 
 var _statsWebpackPlugin2 = _interopRequireDefault(_statsWebpackPlugin);
 
-var _ProgressPlugin = __webpack_require__(398);
+var _ProgressPlugin = __webpack_require__(399);
 
 var _ProgressPlugin2 = _interopRequireDefault(_ProgressPlugin);
 
-var _nodeSassJsonImporter = __webpack_require__(399);
+var _nodeSassJsonImporter = __webpack_require__(400);
 
 var _nodeSassJsonImporter2 = _interopRequireDefault(_nodeSassJsonImporter);
 
-var _writeFileWebpackPlugin = __webpack_require__(400);
+var _writeFileWebpackPlugin = __webpack_require__(401);
 
 var _writeFileWebpackPlugin2 = _interopRequireDefault(_writeFileWebpackPlugin);
 
-var _webpackConfigResolve = __webpack_require__(401);
+var _webpackConfigResolve = __webpack_require__(402);
 
 var _webpackConfigResolve2 = _interopRequireDefault(_webpackConfigResolve);
 
@@ -43843,43 +43863,43 @@ exports.default = generateConfigJson;
 /* WEBPACK VAR INJECTION */}.call(exports, "/Users/brianephraim/Sites/monorepo/packages/dev_env"))
 
 /***/ }),
-/* 392 */
+/* 393 */
 /***/ (function(module, exports) {
 
 module.exports = require("webpack");
 
 /***/ }),
-/* 393 */
+/* 394 */
 /***/ (function(module, exports) {
 
 module.exports = require("globby");
 
 /***/ }),
-/* 394 */
+/* 395 */
 /***/ (function(module, exports) {
 
 module.exports = require("find-node-modules");
 
 /***/ }),
-/* 395 */
+/* 396 */
 /***/ (function(module, exports) {
 
 module.exports = require("extract-css-chunks-webpack-plugin");
 
 /***/ }),
-/* 396 */
+/* 397 */
 /***/ (function(module, exports) {
 
 module.exports = require("autodll-webpack-plugin");
 
 /***/ }),
-/* 397 */
+/* 398 */
 /***/ (function(module, exports) {
 
 module.exports = require("stats-webpack-plugin");
 
 /***/ }),
-/* 398 */
+/* 399 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44078,26 +44098,26 @@ module.exports = ProgressPlugin;
 
 
 /***/ }),
-/* 399 */
+/* 400 */
 /***/ (function(module, exports) {
 
 module.exports = require("node-sass-json-importer");
 
 /***/ }),
-/* 400 */
+/* 401 */
 /***/ (function(module, exports) {
 
 module.exports = require("write-file-webpack-plugin");
 
 /***/ }),
-/* 401 */
+/* 402 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var DirectoryNamedWebpackPlugin = __webpack_require__(402);
-var parseRequestResolvePlugin = __webpack_require__(403);
+var DirectoryNamedWebpackPlugin = __webpack_require__(403);
+var parseRequestResolvePlugin = __webpack_require__(404);
 var path = __webpack_require__(18);
 
 var basename = path.basename;
@@ -44193,20 +44213,20 @@ module.exports = {
 };
 
 /***/ }),
-/* 402 */
+/* 403 */
 /***/ (function(module, exports) {
 
 module.exports = require("directory-named-webpack-plugin");
 
 /***/ }),
-/* 403 */
+/* 404 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 /* eslint-disable func-names */
-var singleLineLog = __webpack_require__(404).stdout;
+var singleLineLog = __webpack_require__(405).stdout;
 
 function printProgress(progress) {
   if (!process || !process.stdout || !process.stdout.clearLine) {
@@ -44247,7 +44267,7 @@ function parseRequestResolvePlugin() {
 module.exports = parseRequestResolvePlugin;
 
 /***/ }),
-/* 404 */
+/* 405 */
 /***/ (function(module, exports) {
 
 module.exports = require("single-line-log");
