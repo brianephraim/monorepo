@@ -1,6 +1,6 @@
 import { NOT_FOUND } from 'redux-first-router'
 
-// problem deps
+// problem deps routesMap ... routeData.routesMap
 import {routeData} from 'MainApp';
 
 export default (state = 'HOME_UNIVERSAL_DEMO', action = {}) => { 

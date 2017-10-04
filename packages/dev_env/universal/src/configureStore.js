@@ -8,7 +8,7 @@ import options from './options'
 import * as reducers from './reducers'
 import * as actionCreators from './actions'
 
-// problem deps
+// problem deps ... routeData.allReducers
 import {routeData} from 'MainApp';
 
 

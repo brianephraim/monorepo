@@ -1,7 +1,7 @@
 import { redirect, NOT_FOUND } from 'redux-first-router'
 import { fetchData } from './utils'
 
-// problem deps
+// problem deps ... routeData.routesMap
 import {routeData} from 'MainApp';
 
 export default {

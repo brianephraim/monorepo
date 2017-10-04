@@ -25,8 +25,14 @@ const UniversalComponent = universal(
     if (page === 'BATTLESHIP') {
       page = 'Migration';
     }
-    const imported = import(`./${page}`)
-    // imported.then((...args) => {console.log('!!!',args)})
+    if (page === 'Migration') {
+      // MainApp is not necessary for build now.
+      // This can be better decoupled but its ok like this.
+      const mainAppName= 'MainApp';
+      const imported = import(`../../../../MainApp/${mainAppName}`);
+      return imported
+    }
+    const imported = import(`./${page}`);
     return imported
   },
   {
