@@ -3,10 +3,11 @@ import ReactDOM from 'react-dom'
 import createBrowserHistory from 'history/createBrowserHistory'
 import configureStore from './configureStore'
 import AppContainer from 'react-hot-loader/lib/AppContainer'
+import App from './components/App'
 
-export default function (App) {
+export default function renderClient (App) {
   const history = createBrowserHistory();
-
+  console.log('MAYBE I SHOULD DO SOMETHING SIMILR WITH MAINAPP ROUTESMAP AS REDUX_STATE BELOW')
   const { store } = configureStore(history, window.REDUX_STATE);
 
   function getRootEl() {
@@ -39,7 +40,7 @@ export default function (App) {
     })
   }
 }
-
+renderClient(App)
 
 
 

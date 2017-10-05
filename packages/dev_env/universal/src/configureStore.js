@@ -1,6 +1,6 @@
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux'
 import { composeWithDevTools } from 'redux-devtools-extension/logOnlyInProduction'
-import { connectRoutes } from 'redux-first-router'
+import { connectRoutes,addRoutes } from 'redux-first-router'
 import reduxThunk from 'redux-thunk';
 
 import routesMap from './routesMap'
@@ -10,9 +10,6 @@ import * as actionCreators from './actions'
 
 // problem deps ... routeData.allReducers
 import {routeData} from 'MainApp';
-
-
-
 
 
 // `appNameSpace` is an action property
@@ -70,11 +67,16 @@ const composeEnhancers = (...args) =>
 
 
 export default (history, preLoadedState) => {
-  const { reducer, middleware, enhancer, thunk } = connectRoutes(
+  const { reducer, middleware, enhancer, thunk, initialDispatch } = connectRoutes(
     history,
     routesMap,
-    options
+    // {...routeData.routesMap,...routesMap},
+    {
+      ...options,
+      initialDispatch:false
+    }
   )
+ 
   const moreReducers = {
     serverClientUrl: (state = '', action = '') => {
       if (action.type === 'UDPATE_SERVER_CLIENT_URL') {
@@ -95,11 +97,13 @@ export default (history, preLoadedState) => {
   const middlewares = applyMiddleware(reduxThunk,middleware,redundantAppNameSpaceMiddleware)
 
   const enhancers = composeEnhancers(enhancer, middlewares)
-  const store = createStore(rootReducer, preLoadedState, enhancers)
+  const store = createStore(rootReducer, preLoadedState, enhancers);
+  const aThunk = addRoutes(routeData.routesMap); // export new routes from component file
+  store.dispatch(aThunk);
+  initialDispatch();
   if (typeof window !== 'undefined') {
     window.ss = store;
   }
-  console.log('process.env.NODE_ENV',process.env.NODE_ENV);
   if (module.hot && process.env.NODE_ENV === 'development') {
     module.hot.accept('./reducers/index', () => {
       const reducers = require('./reducers/index')

@@ -14,8 +14,8 @@ const doesRedirect = ({ kind, pathname }, res) => {
 }
 
 
-export default ({ clientStats }) => async (req, res, next) => {
-
+export default ({ clientStats,findme }) => async (req, res, next) => {
+  console.log('findme',findme);
   // =====START configureStoreX ===
   const jwToken = req.cookies.jwToken // see server/index.js to change jwToken
   const preLoadedState = { jwToken } // onBeforeChange will authenticate using this
@@ -69,7 +69,7 @@ export default ({ clientStats }) => async (req, res, next) => {
 
   // const appString = ReactDOM.renderToString(<App store={store} />)
   // const helmet = Helmet.renderStatic();
-  // const stateJson = JSON.stringify(store.getState())
+  const stateJson = JSON.stringify(store.getState())
   const chunkNames = flushChunkNames()
   const { js, styles, cssHash } = flushChunks(clientStats, { chunkNames })
 
@@ -86,6 +86,7 @@ export default ({ clientStats }) => async (req, res, next) => {
           <link rel="stylesheet prefetch" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
         </head>
         <body>
+          <script>window.REDUX_STATE = ${stateJson}</script>
           <div id="root" class="nonUniversal"></div>
           ${cssHash}
           <script type='text/javascript' src='/staticx/vendor.js'></script>

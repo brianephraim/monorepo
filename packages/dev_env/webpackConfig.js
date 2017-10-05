@@ -12,7 +12,7 @@ import jsonImporter from "node-sass-json-importer";
 import WriteFilePlugin from "write-file-webpack-plugin";
 import webpackConfigResolve from "./core/webpack-config-resolve";
 
-function getDirname(/* debug */) {
+function getDirname() {
   return typeof __dirnameWhenCompiled !== "undefined"
     ? __dirnameWhenCompiled
     : __dirname;
@@ -40,8 +40,8 @@ const makeProgressPlugin = () => {
   });
 };
 
-const res = (p, debug) => {
-  return path.resolve(getDirname(debug), p);
+const res = (p) => {
+  return path.resolve(getDirname(), p);
 };
 
 // *** Non-mocha Non-React
@@ -91,7 +91,6 @@ function makeEntry({ libraryName, isBuild, dirRoot }) {
           [outputFiles.demo]: [argv["demo-entry"]]
         }
       : {
-          MainApp: globby.sync([`${dirRoot}/packages/MainApp/demo.js`]),
           [outputFiles.library]: globby.sync([
             `${dirRoot}/${libraryNameReduced}.js`,
             `${dirRoot}/src/library/index.js`
@@ -109,7 +108,6 @@ function makeEntry({ libraryName, isBuild, dirRoot }) {
             `${dirRoot}/**/*/*.demo.js`,
             `${dirRoot}/**/*/demo.js`,
             `!${dirRoot}/packages/**/*`,
-            `${dirRoot}/packages/MainApp/demo.js`,
             `!${dirRoot}/node_modules/**/*`
           ])
         }
@@ -170,10 +168,10 @@ function generateConfigJson(options = {}) {
               'react-hot-loader/patch',
               ] : []
             ),
-            path.resolve(getDirname('entryXX'),
+            path.resolve(getDirname(),
               isClient
               ?
-              './universal/src/clientRender.js'
+              './universal/src/renderClient.js'
               :
               (
                 isUniversal
@@ -372,7 +370,7 @@ function generateConfigJson(options = {}) {
             // AutoDllPlugin caches vendor bundle between build initiation.
             // So compiling is faster.  Google it. It's interesting.
             new AutoDllPlugin({
-              context: path.join(getDirname('AutoDllXX'), '..'),
+              context: path.join(getDirname(), '..'),
               filename: '[name].js',
               entry: {
                 vendor: [

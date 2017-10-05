@@ -39,7 +39,8 @@ const doesRedirect = ({ kind, pathname }, res) => {
   return false;
 }
 
-const render = ({ clientStats }) => async (req, res, next) => {
+const render = ({ clientStats, findme }) => async (req, res, next) => {
+  console.log('findme',findme);
   // const store = await configureStoreX(req, res)
   // if (!store) return // no store means redirect was already served
 
@@ -151,6 +152,10 @@ if (process.env.NODE_ENV === 'production') {
     const publicPath = clientProdConfig.output.publicPath
     const outputPath = 'packages/dev_env/universal/buildClient';
     app.use(publicPath, express.static(outputPath))
-    app.use(render({ clientStats, outputPath })) 
+    app.use(render({
+      clientStats,
+      outputPath,
+      findme: 'Foundme2'
+    })) 
   });
 }

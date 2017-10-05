@@ -2,11 +2,11 @@ import { redirect, NOT_FOUND } from 'redux-first-router'
 import { fetchData } from './utils'
 
 // problem deps ... routeData.routesMap
-import {routeData} from 'MainApp';
+// import {routeData} from 'MainApp';
 
 export default {
-  ...routeData.routesMap,
-  ROOT:'/',
+  // ...routeData.routesMap,
+  // ROOT:'/',
   HOME_UNIVERSAL_DEMO: '/willard',
   LIST: {
     path: '/willard/list/:category',

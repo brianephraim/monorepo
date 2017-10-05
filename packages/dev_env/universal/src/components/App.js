@@ -29,7 +29,7 @@ const UniversalComponent = universal(
       // MainApp is not necessary for build now.
       // This can be better decoupled but its ok like this.
       const mainAppName= 'MainApp';
-      const imported = import(`../../../../MainApp/${mainAppName}`);
+      const imported = import(`/Users/brianephraim/Sites/monorepo/packages/MainApp/${mainAppName}`);
       return imported
     }
     const imported = import(`./${page}`);
@@ -40,19 +40,22 @@ const UniversalComponent = universal(
     loading: Loading,
     error: Err,
     onLoad: (module, info, props, context) => {
-      // console.log('module',module)
-      // console.log('info',info)
-      // console.log('props',props)
-      // console.log('context',context)
-  /*
-       const aThunk = addRoutes(module.newRoutes) // export new routes from component file
-       context.store.dispatch(aThunk)
+      console.log('module',module)
+      console.log('info',info)
+      console.log('props',props)
+      console.log('context',context)
+      // if(module && module.routeData && module.routeData.routesMap) {
+      //   // console.log('ADD ROUTES', module.routeData.routesMap)
+      //   // const aThunk = addRoutes(module.routeData.routesMap) // export new routes from component file
+      //   // console.log(aThunk);
+      //   // context.store.dispatch(aThunk)
+      // }
 
-       context.store.replaceReducer({ ...otherReducers, foo: module.fooReducer })
+      // // context.store.replaceReducer({ ...otherReducers, foo: module.fooReducer })
 
-       // if a route triggered component change, new reducers needs to reflect it
-       context.store.dispatch({ type: 'INIT_ACTION_FOR_ROUTE', payload: { param: props.param } })
-       */
+      // // if a route triggered component change, new reducers needs to reflect it
+      // context.store.dispatch({ type: 'INIT_ACTION_FOR_ROUTE', payload: { param: props.param } })
+       
     }
   }
 )
