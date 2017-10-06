@@ -19,21 +19,18 @@ import Err from './Error'
 import isLoading from '../selectors/isLoading'
 import switcherStyles from '../css/Switcher'
 
+import Virtual from 'virtual-module';
+
+// function load() {
+//   return Promise.all([]).then(function (proms) {
+//     return proms[0];
+//   });
+// }
 
 const UniversalComponent = universal(
   ({ page }) => {
-    if (page === 'BATTLESHIP') {
-      page = 'Migration';
-    }
-    if (page === 'Migration') {
-      // MainApp is not necessary for build now.
-      // This can be better decoupled but its ok like this.
-      const mainAppName= 'MainApp';
-      const imported = import(`/Users/brianephraim/Sites/monorepo/packages/MainApp/${mainAppName}`);
-      return imported
-    }
     const imported = import(`./${page}`);
-    return imported
+    return imported;
   },
   {
     minDelay: 500,
@@ -91,10 +88,20 @@ DemoWrapper = connect(({ page, direction,location }) => ({
 }))(DemoWrapper)
 
 
-let Switcher = ({ page, isLoading }) =>
-  <DemoWrapper>
-    <UniversalComponent page={page} isLoading={isLoading} />
-  </DemoWrapper>
+let Switcher = ({ page, isLoading }) => {
+ if (page === 'BATTLESHIP') {
+    page = 'Migration';
+  }
+  if (page === 'Migration') {
+
+  }
+  const Comp = page === 'Migration' ? Virtual : UniversalComponent;
+  return (
+    <DemoWrapper>
+      <Comp page={page} isLoading={isLoading} />
+    </DemoWrapper>
+  );
+};
 
 Switcher = connect(({ page, ...state }) => ({
   page,

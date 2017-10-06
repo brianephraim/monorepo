@@ -9,7 +9,11 @@ import * as reducers from './reducers'
 import * as actionCreators from './actions'
 
 // problem deps ... routeData.allReducers
-import {routeData} from 'MainApp';
+import {routeData} from 'virtual-module';
+
+import {foo} from 'module-foo';
+
+console.log('FOOO@@@22',foo);
 
 
 // `appNameSpace` is an action property

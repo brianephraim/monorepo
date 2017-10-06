@@ -7,7 +7,6 @@ import App from './components/App'
 
 export default function renderClient (App) {
   const history = createBrowserHistory();
-  console.log('MAYBE I SHOULD DO SOMETHING SIMILR WITH MAINAPP ROUTESMAP AS REDUX_STATE BELOW')
   const { store } = configureStore(history, window.REDUX_STATE);
 
   function getRootEl() {

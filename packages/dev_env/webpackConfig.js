@@ -10,7 +10,10 @@ import StatsPlugin from "stats-webpack-plugin";
 import ProgressPlugin from "webpack/lib/ProgressPlugin";
 import jsonImporter from "node-sass-json-importer";
 import WriteFilePlugin from "write-file-webpack-plugin";
+// import VirtualModulePlugin from 'virtual-module-webpack-plugin';
+import VirtualModulesPlugin from 'webpack-virtual-modules';
 import webpackConfigResolve from "./core/webpack-config-resolve";
+
 
 function getDirname() {
   return typeof __dirnameWhenCompiled !== "undefined"
@@ -316,10 +319,11 @@ function generateConfigJson(options = {}) {
     },
     resolve: webpackConfigResolve.resolve,
     plugins: [
+      
       ...(
         !isReact ? [] : (
 
-          // *** React Client
+          // *** React just Client
           !isClient ? [] : [
 
             // *** React Client Dev and Prod
@@ -437,8 +441,27 @@ function generateConfigJson(options = {}) {
       // Give bundled code global access to `process.env.NODE_ENV`, with a value defined below.
       new webpack.EnvironmentPlugin({
         NODE_ENV: isDev ? 'development' : 'production', // use 'development' unless process.env.NODE_ENV is defined
+        ...(!isReact ? {} : {
+
+        }),
         // DEBUG: false
       }),
+      
+      ...(
+        // *** React Client And Server
+        isReact && argv.initialApp  ? [
+          new VirtualModulesPlugin({
+            'node_modules/virtual-module.js': `
+              import Comp, {routeData} from '${path.resolve(dirRoot, argv.initialApp)}';
+              export default Comp;
+              export {routeData};
+            `,
+            'node_modules/module-foo.js': `module.exports = { foo: "foo------- ${dirRoot + ' __ ' + argv.initialApp+' ====== ' + getDirname()} +++ ${path.resolve(dirRoot, argv.initialApp)}" };`,
+
+            'node_modules/module-bar.js': 'module.exports = { bar: "bar" };'
+          }),
+        ] : []
+      ),
       // Terminal visualizer for bundling progress
       makeProgressPlugin(),
     ]
