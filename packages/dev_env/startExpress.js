@@ -3,6 +3,7 @@ import { argv } from 'yargs';
 import demoEndpoints from './universal/server/demoEndpoints';
 import path from 'path';
 import fs from 'fs-extra';
+import serverCollection, {asdf} from 'virtual-module-server-collection';
 
 function asyncRecurseStartApps(app,serverNamespaces) {
   return new Promise((resolve) => {
@@ -12,10 +13,15 @@ function asyncRecurseStartApps(app,serverNamespaces) {
       // I can accomplish this with Webpack's code-splitting .
       // I tried import(...) but it wouldn't work in my compiled node situation.
       // require.ensure works.
-      require.ensure([], (require) => {
+      // require.ensure([], (require) => {
         /* eslint-disable import/no-dynamic-require */
-        const someBackendApp = require(`../../packages/${backendAppNamespace}/${backendAppNamespace}.express`);
+        // const someBackendApp = require(`../../packages/${backendAppNamespace}/${backendAppNamespace}.express`);
         /* eslint-enable import/no-dynamic-require */
+        console.log('asdf',asdf);
+        console.log('serverNamespaces',serverNamespaces);
+        console.log('argv',argv);
+        console.log(serverCollection);
+        const someBackendApp = serverCollection[i];
         const serveBackendApp = someBackendApp.default || someBackendApp;
         const backendAppSettings = {
           nameSpace: backendAppNamespace,
@@ -28,7 +34,7 @@ function asyncRecurseStartApps(app,serverNamespaces) {
         } else {
           resolve(app);
         }
-      });
+      // });
     }
     recurse(serverNamespaces[i]);
   });  
@@ -62,9 +68,9 @@ function startWebpack(app,renderAndUse) {
 }
 
 export default function startServer(renderAndUse) {
-  const serverNamespaces = argv.servers && argv.servers.split(',');
+  const serverNamespaces = serverCollection;
   const app = express();
-  if (serverNamespaces) {
+  if (serverNamespaces.length > 0) {
     asyncRecurseStartApps(app,serverNamespaces).then(() => {
       startWebpack(app,renderAndUse)
     });

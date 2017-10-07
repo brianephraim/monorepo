@@ -13,6 +13,9 @@ import WriteFilePlugin from "write-file-webpack-plugin";
 import VirtualModulesPlugin from 'webpack-virtual-modules';
 import webpackConfigResolve from "./core/webpack-config-resolve";
 
+if (argv.isReact && !argv.initialApp) {
+  throw new Error('MISSING REQUIRED argv.initialApp');
+}
 
 function getDirname() {
   return typeof __dirnameWhenCompiled !== "undefined"
@@ -123,9 +126,13 @@ if (nodeModulesLocation.indexOf("packages/dev_env") !== -1) {
   nodeModulesLocation = `${nodeModulesLocation}node_modules`;
 }
 
+
+
+
 /* eslint-disable no-nested-ternary */
 // prettier-ignore
 function generateConfigJson(options = {}) {
+
   const isCommandLine = options.isCommandLine || argv.entry;
   const isMocha = options.isMocha;
   const {isReact = false, isClient = false, isDev = false, isUniversal = false} = options;
@@ -134,6 +141,28 @@ function generateConfigJson(options = {}) {
   const dirRoot = argv.dirroot || process.cwd();
   const packageJson = fs.readJsonSync(`${dirRoot}/package.json`);
   const libraryName = packageJson.name;
+
+
+  function makeServerCollection () {
+    let id = 0;
+    console.log('ARVVbGV',argv);
+    const servers = !argv.servers ? [] : argv.servers.split(',').map((item) => {
+      return {
+        varName: `varName${id++}`,
+        path: path.resolve(dirRoot, item.trim()),
+      }
+    });
+    const importSection = servers.reduce((accum,item) => {
+      const line = `import ${item.varName} from '${item.path}';`;
+      return `${accum}${'\n'}${line}`;
+    },'');
+    const exportSection = `export default [${servers.map((item) => {
+      return `${item.varName}`;
+    }).join(',')}]; const asdf = '1234'; export {asdf};`;
+    const toReturn = `${importSection}${'\n'}console.log('UUUUUUUUUU',typeof varName0 !== 'undefined' && varName0);${'\n'}${exportSection}`;
+    return `console.log('rrrrrrrr',${'`'}${toReturn}${'`'},'RRRRRRR');${'\n'}${toReturn}`;
+  }
+  console.log(makeServerCollection());
 
   // NOTE!!!!!!!
   // 1. Non-React is always server (node) right now.
@@ -441,19 +470,23 @@ function generateConfigJson(options = {}) {
         NODE_ENV: isDev ? 'development' : 'production', // use 'development' unless process.env.NODE_ENV is defined
         // DEBUG: false
       }),
-      
-      ...(
-        // *** React Client And Server
-        isReact && argv.initialApp  ? [
-          new VirtualModulesPlugin({
-            'node_modules/virtual-module.js': `
-              import Comp, {routeData} from '${path.resolve(dirRoot, argv.initialApp)}';
-              export default Comp;
-              export {routeData};
-            `,
-          }),
-        ] : []
-      ),
+      new VirtualModulesPlugin({
+        
+        'node_modules/virtual-module-server-collection': makeServerCollection(),
+        ...(!argv.isReact ? {} : {
+          'node_modules/virtual-module.js': `
+            import Comp, {routeData} from '${path.resolve(dirRoot, argv.initialApp)}';
+            export default Comp;
+            export {routeData};
+          `,
+        }),
+        // ...(!argv.servers ? {} : {
+        //   'node_modules/virtual-module-server-collection': `
+
+        //   `
+        // })
+        
+      }),
       // Terminal visualizer for bundling progress
       makeProgressPlugin(),
     ]
