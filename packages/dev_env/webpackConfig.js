@@ -145,13 +145,19 @@ function generateConfigJson(options = {}) {
 
   function makeServerCollection () {
     let id = 0;
-    console.log('ARVVbGV',argv);
+    console.log('WTF ARGV CONFIG',!argv.servers ? argv : '');
+    console.log('argv.dirroot', argv.dirroot)
+    console.log('process.cwd()', process.cwd());
+    console.log('previousProcessCwd', argv.previousProcessCwd);
     const servers = !argv.servers ? [] : argv.servers.split(',').map((item) => {
+      console.log('dirRoot',dirRoot);
+      console.log('item.trim()',item.trim());
       return {
         varName: `varName${id++}`,
-        path: path.resolve(dirRoot, item.trim()),
+        path: path.resolve(argv.previousProcessCwd || dirRoot, item.trim()),
       }
     });
+    
     const importSection = servers.reduce((accum,item) => {
       const line = `import ${item.varName} from '${item.path}';`;
       return `${accum}${'\n'}${line}`;
@@ -159,10 +165,9 @@ function generateConfigJson(options = {}) {
     const exportSection = `export default [${servers.map((item) => {
       return `${item.varName}`;
     }).join(',')}]; const asdf = '1234'; export {asdf};`;
-    const toReturn = `${importSection}${'\n'}console.log('UUUUUUUUUU',typeof varName0 !== 'undefined' && varName0);${'\n'}${exportSection}`;
-    return `console.log('rrrrrrrr',${'`'}${toReturn}${'`'},'RRRRRRR');${'\n'}${toReturn}`;
+    const toReturn = `${importSection}${'\n'}${'\n'}${exportSection}`;
+    return `${'\n'}${toReturn}`;
   }
-  console.log(makeServerCollection());
 
   // NOTE!!!!!!!
   // 1. Non-React is always server (node) right now.
@@ -470,23 +475,31 @@ function generateConfigJson(options = {}) {
         NODE_ENV: isDev ? 'development' : 'production', // use 'development' unless process.env.NODE_ENV is defined
         // DEBUG: false
       }),
+      ...(
+        // *** React Client And Server
+        isReact && argv.initialApp  ? [
+          new VirtualModulesPlugin({
+            'node_modules/virtual-module.js': `
+              import Comp, {routeData} from '${path.resolve(dirRoot, argv.initialApp)}';
+              export default Comp;
+              export {routeData};
+            `,
+          }),
+        ] : []
+      ),
+
       new VirtualModulesPlugin({
         
         'node_modules/virtual-module-server-collection': makeServerCollection(),
-        ...(!argv.isReact ? {} : {
-          'node_modules/virtual-module.js': `
-            import Comp, {routeData} from '${path.resolve(dirRoot, argv.initialApp)}';
-            export default Comp;
-            export {routeData};
-          `,
-        }),
-        // ...(!argv.servers ? {} : {
-        //   'node_modules/virtual-module-server-collection': `
-
-        //   `
-        // })
-        
+      //   ...(!argv.isReact ? {} : {
+      //     'node_modules/virtual-module.js': `
+      //       import Comp, {routeData} from '${path.resolve(dirRoot, argv.initialApp)}';
+      //       export default Comp;
+      //       export {routeData};
+      //     `,
+      //   }),
       }),
+
       // Terminal visualizer for bundling progress
       makeProgressPlugin(),
     ]

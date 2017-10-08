@@ -4,6 +4,7 @@
 
 const path = require('path');
 const makeUuid = require('node-uuid').v4;
+const argv = require('yargs').argv;
 const shellCommand = require('./shellCommand');
 const isWithinMonoRepo = require('./isWithinMonoRepo');
 const getDevEnvRoot = require('./getDevEnvRoot');
@@ -30,15 +31,15 @@ if (isWithinMonoRepo(__dirname)) {
     // Make a temp file
     `TMPFILE=\`mktemp -u ${tempFilePath} \` &&`,
     // Use parens so parent shell doesn't change directories.
-    '(',
+    // '(',
     // Cd to the directory of the file we are compiling.
-    `cd ${toCompileFolder}`,
-    ' && ',
+    // `cd ${toCompileFolder}`,
+    // ' && ',
     // Compile the file as the temp file we created.
     // `${babelNodePath} --inspect=9225 ${devEnvCommandLinePath} --entry=${toCompile} --output=$TMPFILE`,
     // `${babelNodePath} ${devEnvCommandLinePath} --entry=${toCompile} --output=$TMPFILE`,
-    `${babelNodePath} --trace-warnings ${devEnvCommandLinePath} --entry=${toCompile} --output=$TMPFILE`,
-    ')',
+    `${babelNodePath} --trace-warnings ${devEnvCommandLinePath} --entry=${toCompile} --output=$TMPFILE --previousProcessCwd=${process.cwd()}${!argv.servers ? '' : ` --servers=${argv.servers}`}`,
+    // ')',
     ' && ',
     // We are manually setting the node path because
     // we are running the file we just compiled with node from the temp directory,

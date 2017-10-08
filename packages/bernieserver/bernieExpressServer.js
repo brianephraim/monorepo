@@ -30,7 +30,7 @@ import ensureLeadingSlash from '@defualt/ensure-leading-slash';
  * Set-up the Express app.
  */
 
-export default function ({app, nameSpace})  {
+export default function ({app, nameSpace = 'bernieserver'})  {
   const mongooseStuff = startMongooseStuff();
 
   /*
