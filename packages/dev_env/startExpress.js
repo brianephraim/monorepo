@@ -1,9 +1,9 @@
 import express from 'express';
-import { argv } from 'yargs';
+/* eslint-disable import/no-extraneous-dependencies */
+import serverCollection from 'virtual-module-server-collection';
+/* eslint-enable import/no-extraneous-dependencies */
 import demoEndpoints from './universal/server/demoEndpoints';
-import path from 'path';
-import fs from 'fs-extra';
-import serverCollection, {asdf} from 'virtual-module-server-collection';
+
 
 export default function startServer(renderAndUse) {
   const app = express();
