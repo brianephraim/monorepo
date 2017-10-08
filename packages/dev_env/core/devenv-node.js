@@ -9,7 +9,7 @@ const shellCommand = require('./shellCommand');
 const isWithinMonoRepo = require('./isWithinMonoRepo');
 const getDevEnvRoot = require('./getDevEnvRoot');
 const getNodePathShVar = require('./getNodePathShVar');
-
+const getDoubleDashArgumentsPassthrough = require('./getDoubleDashArgumentsPassthrough');
 
 const os = require('os');
 
@@ -27,6 +27,7 @@ if (isWithinMonoRepo(__dirname)) {
   const devEnvCommandLinePath = path.resolve(devEnvRoot, './core/devEnvCommandLine.js');
 
   const tempFilePath = path.resolve(os.tmpdir(), `./${makeUuid()}XXX.js`);
+  console.log('ARGV',argv);
   const cmd = [
     // Make a temp file
     `TMPFILE=\`mktemp -u ${tempFilePath} \` &&`,
@@ -38,7 +39,7 @@ if (isWithinMonoRepo(__dirname)) {
     // Compile the file as the temp file we created.
     // `${babelNodePath} --inspect=9225 ${devEnvCommandLinePath} --entry=${toCompile} --output=$TMPFILE`,
     // `${babelNodePath} ${devEnvCommandLinePath} --entry=${toCompile} --output=$TMPFILE`,
-    `${babelNodePath} --trace-warnings ${devEnvCommandLinePath} --entry=${toCompile} --output=$TMPFILE --previousProcessCwd=${process.cwd()}${!argv.servers ? '' : ` --servers=${argv.servers}`}`,
+    `${babelNodePath} --trace-warnings ${devEnvCommandLinePath} --entry=${toCompile} --output=$TMPFILE${getDoubleDashArgumentsPassthrough()}`,
     // ')',
     ' && ',
     // We are manually setting the node path because
@@ -81,6 +82,6 @@ if (isWithinMonoRepo(__dirname)) {
   console.log('IF THERE IS A PROBLEM, IT COULD BE DUE TO __DIRNAME AND COMPILATION ISSUES - devenv-node.js');
   /* eslint-enable no-console */
   const devEnvDistPath = path.resolve(__dirname, '../dist/dev_env.js');
-  const cmd = `(cd ${toCompileFolder} && node ${devEnvDistPath} --entry=${toCompile} --output=${tempFilePath}) && node ${tempFilePath} ${process.argv.slice(3).join(' ')} && rm ${tempFilePath}`;
+  const cmd = `(cd ${toCompileFolder} && node ${devEnvDistPath} --entry=${toCompile} --output=${tempFilePath}${!argv.servers ? '' : ` --servers=${argv.servers}`}) && node ${tempFilePath} ${process.argv.slice(3).join(' ')} && rm ${tempFilePath}`;
   shellCommand(cmd);
 }

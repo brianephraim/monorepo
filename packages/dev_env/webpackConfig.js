@@ -145,16 +145,10 @@ function generateConfigJson(options = {}) {
 
   function makeServerCollection () {
     let id = 0;
-    console.log('WTF ARGV CONFIG',!argv.servers ? argv : '');
-    console.log('argv.dirroot', argv.dirroot)
-    console.log('process.cwd()', process.cwd());
-    console.log('previousProcessCwd', argv.previousProcessCwd);
     const servers = !argv.servers ? [] : argv.servers.split(',').map((item) => {
-      console.log('dirRoot',dirRoot);
-      console.log('item.trim()',item.trim());
       return {
         varName: `varName${id++}`,
-        path: path.resolve(argv.previousProcessCwd || dirRoot, item.trim()),
+        path: path.resolve(dirRoot, item.trim()),
       }
     });
     

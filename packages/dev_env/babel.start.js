@@ -14,6 +14,7 @@
 const path = require('path');
 const shellCommand = require('./core/shellCommand');
 const fs = require('fs-extra');
+const getDoubleDashArgumentsPassthrough = require('./core/getDoubleDashArgumentsPassthrough');
 
 const argumentsPassThrough = process.argv.reduce((accum, argString) => {
   const toAppend = argString.indexOf('--') === 0 ? ` ${argString}` : '';
@@ -22,5 +23,5 @@ const argumentsPassThrough = process.argv.reduce((accum, argString) => {
 
 const pathToCheckFile = path.resolve('../../', '.lernahoist-running');
 if (!fs.existsSync(pathToCheckFile)) {
-  shellCommand(`${path.resolve(__dirname, './bin/devenv-node.js')} ${path.resolve(__dirname, './dev_env.js')}${argumentsPassThrough}`);
+  shellCommand(`${path.resolve(__dirname, './bin/devenv-node.js')} ${path.resolve(__dirname, './dev_env.js')}${getDoubleDashArgumentsPassthrough()}`);
 }
