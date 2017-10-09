@@ -5,7 +5,7 @@ import React from 'react';
 import integrateBernie from 'profile-framer-frontend/setup'
 import makeStandardConstants from 'profile-framer-frontend/makeStandardConstants';
 // import integrateToDoApp from 'todo_app/mainAppIntegration'
-import integrateBattleship from 'battleship/mainAppIntegration'
+import {routeData as integrateBattleship} from 'battleship/mainAppIntegration'
 import RouteLinksList from './RouteLinksList';
 import './reset.css';
 
@@ -24,7 +24,7 @@ const routeData = [
     },
     routeRootComponent: RouteLinksList,
   },
-].reduce((accum, {routesMap,routeRootComponent,reducers}) => {
+].reduce((accum, {routesMap,routeRootComponent,reducers,}) => {
   if (routesMap && routeRootComponent) {
     const newRoutesActionTypeToComponentDict = Object.keys(routesMap).reduce((accum1,routeKey) => {
       accum1[routeKey] = routeRootComponent;
@@ -54,6 +54,15 @@ routeData.routeRootComponent = connect(
   }
 )(RootComponent);
 
+routeData.pageMap = Object.keys(routeData.routesMap).reduce((accum, key) => {
+    accum[key] = 'Migration';
+    return accum;
+},{});
+
+routeData.pageMap = {
+  ...routeData.pageMap,
+  TODOS: 'todo_app',
+  BATTLESHIP: 'Migration',
+};
+
 export default routeData;
-
-

@@ -33,13 +33,13 @@ const UniversalComponent = universal(
     error: Err,
     onLoad: (module, info, props, context) => {
       console.log(module);
-      if(module){
-        if (module.routesMap) {
-          const aThunk = addRoutes(module.routesMap) // export new routes from component file
+      if(module && module.routeData){
+        if (module.routeData.routesMap) {
+          const aThunk = addRoutes(module.routeData.routesMap) // export new routes from component file
           context.store.dispatch(aThunk)
         }
-        if (module.reducers) {
-          context.store.replaceReducer(combineReducers(props.addReducers(module.reducers)))
+        if (module.routeData.reducers) {
+          context.store.replaceReducer(combineReducers(props.addReducers(module.routeData.reducers)))
         }
       }
 
@@ -83,9 +83,6 @@ DemoWrapper = connect(({ page, direction,location }) => ({
 
 let Switcher = ({ page, isLoading, addReducers }) => {
   console.log('page!!',page);
- if (page === 'BATTLESHIP') {
-    page = 'Migration';
-  }
   const Comp = page === 'Migration' ? routeData.routeRootComponent : UniversalComponent;
   return (
     <DemoWrapper>

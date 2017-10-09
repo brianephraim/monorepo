@@ -47,7 +47,6 @@ export default {
     }
   },
   LOGIN: '/willard/login',
-  MIGRATION: '/willard/migration',
   ADMIN: {
     path: '/willard/admin', // TRY: visit this path or dispatch ADMIN
     role: 'admin' // + change jwToken to 'real' in server/index.js
