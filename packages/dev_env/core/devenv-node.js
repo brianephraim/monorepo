@@ -82,6 +82,6 @@ if (isWithinMonoRepo(__dirname)) {
   console.log('IF THERE IS A PROBLEM, IT COULD BE DUE TO __DIRNAME AND COMPILATION ISSUES - devenv-node.js');
   /* eslint-enable no-console */
   const devEnvDistPath = path.resolve(__dirname, '../dist/dev_env.js');
-  const cmd = `(cd ${toCompileFolder} && node ${devEnvDistPath} --entry=${toCompile} --output=${tempFilePath}${!argv.servers ? '' : ` --servers=${argv.servers}`}) && node ${tempFilePath} ${process.argv.slice(3).join(' ')} && rm ${tempFilePath}`;
+  const cmd = `(cd ${toCompileFolder} && node ${devEnvDistPath} --entry=${toCompile} --output=${tempFilePath}${getDoubleDashArgumentsPassthrough()}) && node ${tempFilePath} ${process.argv.slice(3).join(' ')} && rm ${tempFilePath}`;
   shellCommand(cmd);
 }
