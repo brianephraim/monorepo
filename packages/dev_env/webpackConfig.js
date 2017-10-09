@@ -483,8 +483,7 @@ function generateConfigJson(options = {}) {
         isReact && argv.initialApp  ? [
           new VirtualModulesPlugin({
             'node_modules/virtual-module-initial-app.js': `
-              import Comp, {routeData} from '${path.resolve(dirRoot, argv.initialApp)}';
-              export default Comp;
+              import {routeData} from '${path.resolve(dirRoot, argv.initialApp)}';
               export {routeData};
             `,
           }),

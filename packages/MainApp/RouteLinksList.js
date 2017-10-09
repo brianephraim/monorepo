@@ -11,6 +11,11 @@ export default function (){
         </Link>
       </p>
       <p>
+        <Link to='/'>
+          bernie
+        </Link>
+      </p>
+      <p>
         <Link to='/behemoth'>
           behemoth
         </Link>

@@ -19,7 +19,7 @@ import Err from './Error'
 import isLoading from '../selectors/isLoading'
 import switcherStyles from '../css/Switcher'
 
-import Virtual from 'virtual-module-initial-app';
+import {routeData} from 'virtual-module-initial-app';
 
 const UniversalComponent = universal(
   ({ page }) => {
@@ -86,7 +86,7 @@ let Switcher = ({ page, isLoading }) => {
  if (page === 'BATTLESHIP') {
     page = 'Migration';
   }
-  const Comp = page === 'Migration' ? Virtual : UniversalComponent;
+  const Comp = page === 'Migration' ? routeData.routeRootComponent : UniversalComponent;
   return (
     <DemoWrapper>
       <Comp page={page} isLoading={isLoading} />

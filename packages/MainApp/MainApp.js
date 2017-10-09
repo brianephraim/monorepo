@@ -10,25 +10,7 @@ import RouteLinksList from './RouteLinksList';
 import './reset.css';
 
 
-
-
-
 let actionTypeToComponentDict = {};
-
-function RootComponent (props){
-  const Comp = actionTypeToComponentDict[props.nameOfScreenComponent] || actionTypeToComponentDict.FALLBACK_ROUTE;
-  return (<Comp />);
-}
-RootComponent.propTypes = {
-  nameOfScreenComponent: PropTypes.string.isRequired,
-};
-export default connect(
-  (state) => {
-    return {
-      nameOfScreenComponent: state.location.type,
-    };
-  }
-)(RootComponent);
 
 const routeData = [
   integrateBernie(makeStandardConstants('bernie',true)),
@@ -38,7 +20,7 @@ const routeData = [
   integrateBattleship,
   {
     routesMap:{
-      FALLBACK_ROUTE: '/doesnt-matter-bacause-key-is-FALLBACK_ROUTED-which-is-special'
+      ROUTELINKLIST: '/routes'
     },
     routeRootComponent: RouteLinksList,
   },
@@ -55,6 +37,22 @@ const routeData = [
   accum.reducers = {...accum.reducers,...reducers};
   return accum;
 },{});
+
+
+function RootComponent (props){
+  const Comp = actionTypeToComponentDict[props.nameOfScreenComponent] || actionTypeToComponentDict.FALLBACK_ROUTE;
+  return (<Comp />);
+}
+RootComponent.propTypes = {
+  nameOfScreenComponent: PropTypes.string.isRequired,
+};
+routeData.routeRootComponent = connect(
+  (state) => {
+    return {
+      nameOfScreenComponent: state.location.type,
+    };
+  }
+)(RootComponent);
 
 export {routeData};
 
