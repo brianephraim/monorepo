@@ -1,11 +1,10 @@
 import Battleship from './battleship';
-import {addRoutesToApp} from 'redux-routing-app-root-component';
 
 export default function () {
-  addRoutesToApp({
+  return {
     routesMap:{
       BATTLESHIP: '/battleship'
     },
     routeRootComponent: Battleship,
-  });
+  };
 }
