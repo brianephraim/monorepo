@@ -144,6 +144,15 @@ function generateConfigJson(options = {}) {
 
 
   function makeServerCollection () {
+    /*
+      // if argv.servers, Will produce a module like this
+      import varName1 from '/Users/brianephraim/Sites/monorepo/packages/someServer1/someServer1.js'
+      import varName2 from '/Users/brianephraim/Sites/monorepo/packages/someServer2/someServer2.js'
+      export default [varName1,varName2];
+
+      //if not argv.servers, Will produce a module like this
+      export default [];
+    */
     let id = 0;
     const servers = !argv.servers ? [] : argv.servers.split(',').map((item) => {
       return {
@@ -158,7 +167,7 @@ function generateConfigJson(options = {}) {
     },'');
     const exportSection = `export default [${servers.map((item) => {
       return `${item.varName}`;
-    }).join(',')}]; const asdf = '1234'; export {asdf};`;
+    }).join(',')}];`;
     const toReturn = `${importSection}${'\n'}${'\n'}${exportSection}`;
     return `${'\n'}${toReturn}`;
   }
@@ -473,7 +482,7 @@ function generateConfigJson(options = {}) {
         // *** React Client And Server
         isReact && argv.initialApp  ? [
           new VirtualModulesPlugin({
-            'node_modules/virtual-module.js': `
+            'node_modules/virtual-module-initial-app.js': `
               import Comp, {routeData} from '${path.resolve(dirRoot, argv.initialApp)}';
               export default Comp;
               export {routeData};
@@ -483,15 +492,7 @@ function generateConfigJson(options = {}) {
       ),
 
       new VirtualModulesPlugin({
-        
         'node_modules/virtual-module-server-collection': makeServerCollection(),
-      //   ...(!argv.isReact ? {} : {
-      //     'node_modules/virtual-module.js': `
-      //       import Comp, {routeData} from '${path.resolve(dirRoot, argv.initialApp)}';
-      //       export default Comp;
-      //       export {routeData};
-      //     `,
-      //   }),
       }),
 
       // Terminal visualizer for bundling progress

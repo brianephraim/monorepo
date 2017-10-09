@@ -1,5 +1,5 @@
 import { NOT_FOUND } from 'redux-first-router'
-import {routeData} from 'virtual-module';
+import {routeData} from 'virtual-module-initial-app';
 
 export default (state = 'HOME_UNIVERSAL_DEMO', action = {}) => { 
   // console.log(state,action);
