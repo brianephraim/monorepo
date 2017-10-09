@@ -34,8 +34,8 @@ const routeData = [
   integrateBernie(makeStandardConstants('bernie',true)),
   integrateBernie(makeStandardConstants('boomer')),
   integrateBernie(makeStandardConstants('behemoth')),
-  integrateToDoApp(),
-  integrateBattleship(),
+  integrateToDoApp,
+  integrateBattleship,
   {
     routesMap:{
       FALLBACK_ROUTE: '/doesnt-matter-bacause-key-is-FALLBACK_ROUTED-which-is-special'
@@ -52,7 +52,7 @@ const routeData = [
   }
 
   accum.routesMap = {...accum.routesMap,...routesMap};
-  accum.allReducers = {...accum.allReducers,...reducers};
+  accum.reducers = {...accum.reducers,...reducers};
   return accum;
 },{});
 

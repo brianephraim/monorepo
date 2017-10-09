@@ -3,15 +3,13 @@ import ToDosReducers from './src/toDos/state/reducers';
 import { usersReducers } from './src/users';
 
 
-export default function () {
-  return {
-    routesMap:{
-      TODOS: '/todos/:filter'
-    },
-    routeRootComponent: ToDoUserAssignmentScreen,
-    reducers: {
-      toDos: ToDosReducers,
-      users: usersReducers,
-    },
-  };
+export default {
+  routesMap:{
+    TODOS: '/todos/:filter'
+  },
+  routeRootComponent: ToDoUserAssignmentScreen,
+  reducers: {
+    toDos: ToDosReducers,
+    users: usersReducers,
+  },
 }

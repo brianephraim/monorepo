@@ -92,7 +92,7 @@ export default (history, preLoadedState) => {
     }
   };
 
-  const rootReducer = combineReducers({...moreReducers, ...reducers, ...routeData.allReducers, location: reducer })
+  const rootReducer = combineReducers({...moreReducers, ...reducers, ...routeData.reducers, location: reducer })
   // const middlewares = applyMiddleware(thunk, middleware, redundantAppNameSpaceMiddleware)
   const middlewares = applyMiddleware(reduxThunk,middleware,redundantAppNameSpaceMiddleware)
 
@@ -107,7 +107,7 @@ export default (history, preLoadedState) => {
   if (module.hot && process.env.NODE_ENV === 'development') {
     module.hot.accept('./reducers/index', () => {
       const reducers = require('./reducers/index')
-      const rootReducer = combineReducers({...moreReducers, ...reducers, ...routeData.allReducers, location: reducer })
+      const rootReducer = combineReducers({...moreReducers, ...reducers, ...routeData.reducers, location: reducer })
       store.replaceReducer(rootReducer)
     })
   }
