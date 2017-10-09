@@ -14,8 +14,7 @@ const doesRedirect = ({ kind, pathname }, res) => {
 }
 
 
-export default ({ clientStats,findme }) => async (req, res, next) => {
-  console.log('findme',findme);
+export default ({ clientStats }) => async (req, res, next) => {
   // =====START configureStoreX ===
   const jwToken = req.cookies.jwToken // see server/index.js to change jwToken
   const preLoadedState = { jwToken } // onBeforeChange will authenticate using this

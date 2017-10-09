@@ -21,12 +21,6 @@ import switcherStyles from '../css/Switcher'
 
 import Virtual from 'virtual-module';
 
-// function load() {
-//   return Promise.all([]).then(function (proms) {
-//     return proms[0];
-//   });
-// }
-
 const UniversalComponent = universal(
   ({ page }) => {
     const imported = import(`./${page}`);
@@ -36,24 +30,24 @@ const UniversalComponent = universal(
     minDelay: 500,
     loading: Loading,
     error: Err,
-    onLoad: (module, info, props, context) => {
-      console.log('module',module)
-      console.log('info',info)
-      console.log('props',props)
-      console.log('context',context)
+    // onLoad: (module, info, props, context) => {
+      // console.log('module',module)
+      // console.log('info',info)
+      // console.log('props',props)
+      // console.log('context',context)
       // if(module && module.routeData && module.routeData.routesMap) {
-      //   // console.log('ADD ROUTES', module.routeData.routesMap)
-      //   // const aThunk = addRoutes(module.routeData.routesMap) // export new routes from component file
-      //   // console.log(aThunk);
-      //   // context.store.dispatch(aThunk)
+      //   console.log('ADD ROUTES', module.routeData.routesMap)
+      //   const aThunk = addRoutes(module.routeData.routesMap) // export new routes from component file
+      //   console.log(aThunk);
+      //   context.store.dispatch(aThunk)
       // }
 
-      // // context.store.replaceReducer({ ...otherReducers, foo: module.fooReducer })
+      // context.store.replaceReducer({ ...otherReducers, foo: module.fooReducer })
 
       // // if a route triggered component change, new reducers needs to reflect it
       // context.store.dispatch({ type: 'INIT_ACTION_FOR_ROUTE', payload: { param: props.param } })
        
-    }
+    // }
   }
 )
 
@@ -91,9 +85,6 @@ DemoWrapper = connect(({ page, direction,location }) => ({
 let Switcher = ({ page, isLoading }) => {
  if (page === 'BATTLESHIP') {
     page = 'Migration';
-  }
-  if (page === 'Migration') {
-
   }
   const Comp = page === 'Migration' ? Virtual : UniversalComponent;
   return (

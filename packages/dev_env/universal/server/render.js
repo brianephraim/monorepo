@@ -39,8 +39,7 @@ const doesRedirect = ({ kind, pathname }, res) => {
   return false;
 }
 
-const render = ({ clientStats, findme }) => async (req, res, next) => {
-  console.log('findme',findme);
+const render = ({ clientStats }) => async (req, res, next) => {
   // const store = await configureStoreX(req, res)
   // if (!store) return // no store means redirect was already served
 
@@ -155,7 +154,6 @@ if (process.env.NODE_ENV === 'production') {
     app.use(render({
       clientStats,
       outputPath,
-      findme: 'Foundme2'
     })) 
   });
 }

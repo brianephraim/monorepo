@@ -26,10 +26,7 @@ import Privacy from './Privacy';
 import Terms from './Terms';
 import AppScreens from './AppScreens';
 
-import {foo} from 'module-foo';
-import '/Users/brianephraim/Sites/monorepo/packages/MainApp/here';
 
-console.log('FOOOOOO',foo);
 const geoPathFrag =
   ':fgX([^/|^_]*)_:fgY([^/|^_]*)_:fgW([^/|^_]*)_:fgH([^/|^_]*)_:bgW([^/|^_]*)_:bgH([^/]*)';
 

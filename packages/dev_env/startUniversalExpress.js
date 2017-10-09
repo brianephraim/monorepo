@@ -45,10 +45,7 @@ function compileAndServeWebpackDevMiddlewareHMRUniversalExpress(clientDevConfig,
       app.use(
         // keeps serverRender updated with arg: { clientStats, outputPath }
         webpackHotServerMiddleware(multiCompiler, {
-          serverRendererOptions: {
-            outputPath,
-            findme:'FOUNDME'
-          }
+          serverRendererOptions: { outputPath }
         })
       )
     });

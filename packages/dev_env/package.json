@@ -3,7 +3,7 @@
   "version": "0.0.14",
   "scripts": {
     "xyzpostinstall": "./node_modules/.bin/babel ./ --out-dir ./compiled --ignore compiled,node_modules",
-    "prepublish": "./node_modules/.bin/babel-node ./babel.start.js --env=build --dirroot=$(pwd)",
+    "prepublish925": "./node_modules/.bin/babel-node ./babel.start.js --env=build --dirroot=$(pwd)",
     "prepublishXX": "./node_modules/.bin/babel-node ./babel.start.js --env=build --dirroot=$(pwd) --wtf=\"$(echo !!)\"",
     "prepublishff": "npm_run_item(){ (./node_modules/.bin/babel-node ./babel.start.js --env=build --dirroot=$(pwd) --wtf=\"$@\") };npm_run_item",
     "publish": "echo 'insert text here' > ./postpublishplz.txt && rm -rf ./dist"
@@ -84,7 +84,6 @@
     "terminate": "^2.1.0",
     "transition-group": "^0.0.2",
     "validate-npm-package-name": "^3.0.0",
-    "virtual-module-webpack-plugin": "^0.3.0",
     "walk-sync": "^0.3.2",
     "webpack": "^3.5.6",
     "webpack-dev-middleware": "^1.12.0",

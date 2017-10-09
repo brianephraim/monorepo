@@ -8,12 +8,9 @@ import options from './options'
 import * as reducers from './reducers'
 import * as actionCreators from './actions'
 
-// problem deps ... routeData.allReducers
 import {routeData} from 'virtual-module';
 
-import {foo} from 'module-foo';
 
-console.log('FOOO@@@22',foo);
 
 
 // `appNameSpace` is an action property
@@ -74,7 +71,6 @@ export default (history, preLoadedState) => {
   const { reducer, middleware, enhancer, thunk, initialDispatch } = connectRoutes(
     history,
     routesMap,
-    // {...routeData.routesMap,...routesMap},
     {
       ...options,
       initialDispatch:false
