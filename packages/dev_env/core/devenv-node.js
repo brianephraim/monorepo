@@ -4,7 +4,6 @@
 
 const path = require('path');
 const makeUuid = require('node-uuid').v4;
-const argv = require('yargs').argv;
 const shellCommand = require('./shellCommand');
 const isWithinMonoRepo = require('./isWithinMonoRepo');
 const getDevEnvRoot = require('./getDevEnvRoot');
@@ -27,7 +26,6 @@ if (isWithinMonoRepo(__dirname)) {
   const devEnvCommandLinePath = path.resolve(devEnvRoot, './core/devEnvCommandLine.js');
 
   const tempFilePath = path.resolve(os.tmpdir(), `./${makeUuid()}XXX.js`);
-  console.log('ARGV',argv);
   const cmd = [
     // Make a temp file
     `TMPFILE=\`mktemp -u ${tempFilePath} \` &&`,
