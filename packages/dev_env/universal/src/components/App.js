@@ -19,7 +19,7 @@ import Err from './Error'
 import isLoading from '../selectors/isLoading'
 import switcherStyles from '../css/Switcher'
 
-import {routeData} from 'virtual-module-initial-app';
+import routeData from 'virtual-module-initial-app';
 
 const UniversalComponent = universal(
   ({ page }) => {
