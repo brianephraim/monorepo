@@ -2,12 +2,11 @@ import { NOT_FOUND } from 'redux-first-router'
 import routeData from 'virtual-module-initial-app';
 
 export default (state = 'HOME_UNIVERSAL_DEMO', action = {}) => { 
-  // console.log(state,action);
   return components[action.type] || state;
 }
 
 const MainAppShim = Object.keys(routeData.routesMap).reduce((accum, key) => {
-  accum[key] = 'Migration'; return accum;
+    accum[key] = 'Migration'; return accum;
 },{});
 const components = {
   HOME_UNIVERSAL_DEMO: 'Home',
@@ -16,7 +15,7 @@ const components = {
   ROOT: 'Migration',
   MIGRATION: 'Migration',
   BATTLESHIP: 'Migration',
-  TODOS: 'Migration',
+  TODOS: 'todo_app',
   ADMIN: 'Admin',
   LOGIN: 'Login',
   [NOT_FOUND]: 'NotFound',

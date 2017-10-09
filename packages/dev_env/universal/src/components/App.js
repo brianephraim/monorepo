@@ -6,6 +6,7 @@ import { connect } from 'react-redux'
 import { TransitionGroup, Transition } from 'transition-group'
 import universal from 'react-universal-component'
 import { addRoutes } from 'redux-first-router'
+import { combineReducers } from 'redux'
 
 import DevTools from './DevTools'
 import Sidebar from './Sidebar'
@@ -30,24 +31,22 @@ const UniversalComponent = universal(
     minDelay: 500,
     loading: Loading,
     error: Err,
-    // onLoad: (module, info, props, context) => {
-      // console.log('module',module)
-      // console.log('info',info)
-      // console.log('props',props)
-      // console.log('context',context)
-      // if(module && module.routeData && module.routeData.routesMap) {
-      //   console.log('ADD ROUTES', module.routeData.routesMap)
-      //   const aThunk = addRoutes(module.routeData.routesMap) // export new routes from component file
-      //   console.log(aThunk);
-      //   context.store.dispatch(aThunk)
-      // }
-
-      // context.store.replaceReducer({ ...otherReducers, foo: module.fooReducer })
+    onLoad: (module, info, props, context) => {
+      console.log(module);
+      if(module){
+        if (module.routesMap) {
+          const aThunk = addRoutes(module.routesMap) // export new routes from component file
+          context.store.dispatch(aThunk)
+        }
+        if (module.reducers) {
+          context.store.replaceReducer(combineReducers(props.addReducers(module.reducers)))
+        }
+      }
 
       // // if a route triggered component change, new reducers needs to reflect it
       // context.store.dispatch({ type: 'INIT_ACTION_FOR_ROUTE', payload: { param: props.param } })
        
-    // }
+    }
   }
 )
 
@@ -82,14 +81,15 @@ DemoWrapper = connect(({ page, direction,location }) => ({
 }))(DemoWrapper)
 
 
-let Switcher = ({ page, isLoading }) => {
+let Switcher = ({ page, isLoading, addReducers }) => {
+  console.log('page!!',page);
  if (page === 'BATTLESHIP') {
     page = 'Migration';
   }
   const Comp = page === 'Migration' ? routeData.routeRootComponent : UniversalComponent;
   return (
     <DemoWrapper>
-      <Comp page={page} isLoading={isLoading} />
+      <Comp page={page} isLoading={isLoading} addReducers={addReducers} />
     </DemoWrapper>
   );
 };
@@ -110,13 +110,16 @@ let HeadStuff = () => {
 
 
 
-export default (props) =>
-  <Provider store={props.store}>
-    <div>
-      <HeadStuff />
-      <Switcher />
-    </div>
-  </Provider>
+export default ({store,addReducers}) => {
+  return (
+    <Provider store={store} >
+      <div>
+        <HeadStuff />
+        <Switcher addReducers={addReducers} />
+      </div>
+    </Provider>
+  );
+};
 
 /*
 import 'babel-polyfill';

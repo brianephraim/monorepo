@@ -70,7 +70,10 @@ const composeEnhancers = (...args) =>
 export default (history, preLoadedState) => {
   const { reducer, middleware, enhancer, thunk, initialDispatch } = connectRoutes(
     history,
-    routesMap,
+    {
+      ...routesMap,
+      TODOS: '/todos/:filter',
+    },
     {
       ...options,
       initialDispatch:false
@@ -92,7 +95,13 @@ export default (history, preLoadedState) => {
     }
   };
 
-  const rootReducer = combineReducers({...moreReducers, ...reducers, ...routeData.reducers, location: reducer })
+  let allReducers = {...moreReducers, ...reducers, ...routeData.reducers, location: reducer };
+  function addReducers(newReducers) {
+    allReducers = {...allReducers, ...newReducers };
+    return allReducers;
+  }
+
+  const rootReducer = combineReducers(addReducers(reducers))
   // const middlewares = applyMiddleware(thunk, middleware, redundantAppNameSpaceMiddleware)
   const middlewares = applyMiddleware(reduxThunk,middleware,redundantAppNameSpaceMiddleware)
 
@@ -106,12 +115,12 @@ export default (history, preLoadedState) => {
   }
   if (module.hot && process.env.NODE_ENV === 'development') {
     module.hot.accept('./reducers/index', () => {
-      const reducers = require('./reducers/index')
-      const rootReducer = combineReducers({...moreReducers, ...reducers, ...routeData.reducers, location: reducer })
-      store.replaceReducer(rootReducer)
+      const reducers = require('./reducers/index');
+      const rootReducer = combineReducers(addReducers(reducers));
+      store.replaceReducer(rootReducer);
     })
   }
 
-  return { store, thunk }
+  return { store, thunk, addReducers }
 }
 

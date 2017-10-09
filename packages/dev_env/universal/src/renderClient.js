@@ -5,9 +5,9 @@ import configureStore from './configureStore'
 import AppContainer from 'react-hot-loader/lib/AppContainer'
 import App from './components/App'
 
-export default function renderClient (App) {
+export default function renderClient (App1) {
   const history = createBrowserHistory();
-  const { store } = configureStore(history, window.REDUX_STATE);
+  const { store, addReducers } = configureStore(history, window.REDUX_STATE);
 
   function getRootEl() {
     let rootEl = document.getElementById('root');
@@ -20,22 +20,22 @@ export default function renderClient (App) {
   }
 
 
-  const render = App => {
+  const render = App3 => {
     const root = getRootEl();
 
     ReactDOM.render(
       <AppContainer>
-        <App store={store} />
+        <App3 store={store} addReducers={addReducers} />
       </AppContainer>,
       root
     )
   }
 
-  render(App);
+  render(App1);
   if (module.hot && process.env.NODE_ENV === 'development') {
     module.hot.accept('./components/App', () => {
-      const App = require('./components/App').default
-      render(App)
+      const App2 = require('./components/App').default
+      render(App2)
     })
   }
 }

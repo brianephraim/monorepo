@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import React from 'react';
 import integrateBernie from 'profile-framer-frontend/setup'
 import makeStandardConstants from 'profile-framer-frontend/makeStandardConstants';
-import integrateToDoApp from 'todo_app/mainAppIntegration'
+// import integrateToDoApp from 'todo_app/mainAppIntegration'
 import integrateBattleship from 'battleship/mainAppIntegration'
 import RouteLinksList from './RouteLinksList';
 import './reset.css';
@@ -16,7 +16,7 @@ const routeData = [
   integrateBernie(makeStandardConstants('bernie',true)),
   integrateBernie(makeStandardConstants('boomer')),
   integrateBernie(makeStandardConstants('behemoth')),
-  integrateToDoApp,
+  // integrateToDoApp,
   integrateBattleship,
   {
     routesMap:{
