@@ -349,9 +349,5 @@ export default function(constants) {
     routesMap,
     routeRootComponent: Routing,
     reducers: { [constants.appNameSpace]: reducers },
-    routeInfo: {
-      description: constants.appNameSpace,
-      path: `/${constants.appNameSpace}`,
-    },
   });
 }

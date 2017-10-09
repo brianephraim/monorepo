@@ -14,10 +14,5 @@ export default function () {
       toDos: ToDosReducers,
       users: usersReducers,
     },
-    routeInfo: {
-      description: 'Todos',
-      path: '/todos/:filter',
-      demoPath: '/todos/all',
-    },
   });
 }

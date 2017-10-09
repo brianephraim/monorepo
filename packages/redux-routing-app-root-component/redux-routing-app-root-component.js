@@ -43,24 +43,18 @@ export default connect(
 )(RootComponent);
 
 let allReducers = {
-  routeInfos: (state = [], action) => {
-    switch (action.type) {
-      case 'ADD_ROUTE_INFO':
-        return [...state, action.routeInfo];
-      default:
-        return state;
-    }
-  },
+  // routeInfos: (state = [], action) => {
+  //   switch (action.type) {
+  //     case 'ADD_ROUTE_INFO':
+  //       return [...state, action.routeInfo];
+  //     default:
+  //       return state;
+  //   }
+  // },
 };
 
 export const routeData = {};
-export function addRoutesToApp({routesMap,routeRootComponent,reducers, routeInfo}) {
-  // if (routeInfo) {
-  //   store.dispatch({
-  //     type: 'ADD_ROUTE_INFO',
-  //     routeInfo,
-  //   });
-  // }
+export function addRoutesToApp({routesMap,routeRootComponent,reducers}) {
   if (routesMap && routeRootComponent) {
     const newRoutesActionTypeToComponentDict = Object.keys(routesMap).reduce((accum,routeKey) => {
       accum[routeKey] = routeRootComponent;
@@ -78,8 +72,6 @@ export function addRoutesToApp({routesMap,routeRootComponent,reducers, routeInfo
 
   routeData.routesMap = {...routeData.routesMap,...routesMap};
   routeData.allReducers = allReducers;
-  routeData.actionTypeToComponentDict = actionTypeToComponentDict;
-  routeData.routeInfo = routeInfo;
 };
 
 

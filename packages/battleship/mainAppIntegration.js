@@ -7,13 +7,5 @@ export default function () {
       BATTLESHIP: '/battleship'
     },
     routeRootComponent: Battleship,
-    // reducers: {
-    //   toDos: ToDosReducers,
-    //   users: usersReducers,
-    // },
-    routeInfo: {
-      description: 'Battleship',
-      path: '/battleship',
-    },
   });
 }
