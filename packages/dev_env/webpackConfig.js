@@ -215,7 +215,7 @@ function generateConfigJson(options = {}) {
               (
                 isUniversal
                 ?
-                './universal/server/render.js'
+                './universal/server/universalRender.js'
                 :
                 './universal/server/nonUniversalRender.js'
               )
