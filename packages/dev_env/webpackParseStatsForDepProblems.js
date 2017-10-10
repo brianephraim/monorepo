@@ -107,7 +107,12 @@ function webpackParseStatsForDepProblems(stats, shouldShowProblemsInConsole = tr
         let packagesDir = `${process.cwd()}/packages`;
         packagesDir = ensureTrailingSlash(packagesDir);
         // get substring from first trailing slash after whatever packagesDir is
+        // console.log('Object.keys(module)');
+        // console.log(Object.keys(module));
         // console.log(module.resource);
+        if (module.resource.indexOf(packagesDir) === -1) {
+          return
+        }
         const packageFolderName = module.resource.split(packagesDir)[1].split('/')[0];
         packageDotJsonPath = `${packagesDir}${packageFolderName}/package.json`;
       } else {

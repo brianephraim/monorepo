@@ -24,8 +24,15 @@ import routeData from 'virtual-module-initial-app';
 
 const UniversalComponent = universal(
   ({ page }) => {
-    const imported = import(`./${page}`);
-    return imported;
+    console.log('page',page)
+    if (page.importAvenue === 'demo') {
+      const imported = import(`./${page.fileKey}`);
+      return imported;
+    }
+    if (page.importAvenue === 'temp') {
+      const imported = import(`asyncDir_REPLACE_ME${page.fileKey}`)
+      return imported;
+    }
   },
   {
     minDelay: 500,
@@ -83,7 +90,7 @@ DemoWrapper = connect(({ page, direction,location }) => ({
 
 let Switcher = ({ page, isLoading, addReducers }) => {
   console.log('page!!',page);
-  const Comp = page === 'Migration' ? routeData.routeRootComponent : UniversalComponent;
+  const Comp = page.fileKey === 'Migration' ? routeData.routeRootComponent : UniversalComponent;
   return (
     <DemoWrapper>
       <Comp page={page} isLoading={isLoading} addReducers={addReducers} />

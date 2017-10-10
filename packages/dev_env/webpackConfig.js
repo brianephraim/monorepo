@@ -11,7 +11,51 @@ import ProgressPlugin from "webpack/lib/ProgressPlugin";
 import jsonImporter from "node-sass-json-importer";
 import WriteFilePlugin from "write-file-webpack-plugin";
 import VirtualModulesPlugin from 'webpack-virtual-modules';
+import {v4 as makeUuid } from 'node-uuid';
+import StringReplacePlugin from 'string-replace-webpack-plugin';
 import webpackConfigResolve from "./core/webpack-config-resolve";
+
+
+const toIgnore = [];
+function makeAsyncPageFiles() {
+  console.log(makeUuid())
+  console.log('argv',argv)
+  if (!argv.appCompile) {
+    return {};
+  }
+  if (!argv.asyncRoutes || !argv.asyncDir) {
+    return {};
+  }
+  
+  const dirRoot = argv.dirroot || process.cwd();
+  const jsonPath = path.resolve(dirRoot,argv.asyncRoutes);
+  if (!fs.existsSync(jsonPath)) {
+    return {};
+  }
+  const json = fs.readJsonSync(jsonPath);
+  console.log('json',json);
+  const asyncPageMap = Object.keys(json).reduce((accum,key) => {
+    const newFilePath = path.resolve(argv.asyncDir,`${key}.js`);
+    console.log('newFilePath',newFilePath);
+    const originalFilePath = path.resolve(dirRoot,json[key]);
+    console.log('originalFilePath',originalFilePath);
+    const newFileContent = `
+      import Comp from '${originalFilePath}';
+      console.log('xxxxx',Comp);
+      export default Comp;
+      export * from '${originalFilePath}';
+    `;
+    if (!fs.existsSync(newFilePath)) {
+      fs.writeFileSync(newFilePath,newFileContent);
+    }
+    toIgnore.push(newFilePath);
+    accum[key] = key;
+    return accum;
+  },{});
+  return asyncPageMap;
+}
+const asyncPageMap = makeAsyncPageFiles();
+console.log('asyncPageMap',asyncPageMap);
 
 if (argv.isReact && !argv.initialApp) {
   throw new Error('MISSING REQUIRED argv.initialApp');
@@ -183,6 +227,9 @@ function generateConfigJson(options = {}) {
   //    indicates which configurations the code below controls.
   //    These are seen adjacent to ternaries.
   const config = {
+    watchOptions: {
+      ignored: toIgnore,
+    },
     ...(isReact ? {
         name: isClient ? 'client' : 'server'
     }: {}),
@@ -351,10 +398,30 @@ function generateConfigJson(options = {}) {
             ]
           )
         ),
+        { 
+          test: /universal\/src\/components\/App.js$/,
+          loader: StringReplacePlugin.replace({
+            replacements: [
+              {
+                pattern: /asyncDir_REPLACE_ME/ig,
+                replacement: (match, p1, offset, string) => {
+                  if (argv.asyncDir) {
+                    return `${argv.asyncDir}/`;
+                    // const appJsPath = path.resolve(__dirname,'./universal/src/components/App.js');
+                    // console.log('appJsPath',appJsPath);
+                    // return `${path.relative(appJsPath,argv.asyncDir)}/`;
+                  }
+                  return 'asyncDir_REPLACE_ME_NOT_REPLACED';
+                }
+              }
+            ]
+          })
+        }
       ],
     },
     resolve: webpackConfigResolve.resolve,
     plugins: [
+      new StringReplacePlugin(),
       ...(
         !isReact ? [] : (
 
@@ -471,6 +538,14 @@ function generateConfigJson(options = {}) {
           setModuleConstant('__dirnameWhenCompiled', (module) => {
             return module.context;
           });
+
+          if (argv.asyncDir) {
+            const appJsPath = path.resolve(__dirname,'./universal/src/components/App.js');
+            console.log('appJsPath',appJsPath);
+            setModuleConstant('__asyncDir_REPLACE_ME', (module) => {
+              return `${path.relative(appJsPath,argv.asyncDir)}/`;
+            });
+          }
         },
       },
       // Give bundled code global access to `process.env.NODE_ENV`, with a value defined below.
@@ -482,7 +557,7 @@ function generateConfigJson(options = {}) {
         // *** React Client And Server
         isReact && argv.initialApp  ? [
           new VirtualModulesPlugin({
-            'node_modules/virtual-module-initial-app.js': `
+            'packages/virtual-module-initial-app.js': `
               import routeData from '${path.resolve(dirRoot, argv.initialApp)}';
               export default routeData;
             `,
@@ -491,8 +566,15 @@ function generateConfigJson(options = {}) {
       ),
 
       new VirtualModulesPlugin({
-        'node_modules/virtual-module-server-collection': makeServerCollection(),
+        'packages/virtual-module-server-collection': makeServerCollection(),
       }),
+
+      new VirtualModulesPlugin({
+        'packages/virtual-async-page-map': `
+          export default ${JSON.stringify(asyncPageMap)};
+        `,
+      }),
+      
 
       // Terminal visualizer for bundling progress
       makeProgressPlugin(),

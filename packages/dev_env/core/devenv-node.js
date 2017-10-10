@@ -4,11 +4,13 @@
 
 const path = require('path');
 const makeUuid = require('node-uuid').v4;
+const argv = require('yargs').argv;
 const shellCommand = require('./shellCommand');
 const isWithinMonoRepo = require('./isWithinMonoRepo');
 const getDevEnvRoot = require('./getDevEnvRoot');
 const getNodePathShVar = require('./getNodePathShVar');
 const getDoubleDashArgumentsPassthrough = require('./getDoubleDashArgumentsPassthrough');
+
 
 const os = require('os');
 
@@ -29,6 +31,7 @@ if (isWithinMonoRepo(__dirname)) {
   const cmd = [
     // Make a temp file
     `TMPFILE=\`mktemp -u ${tempFilePath} \` &&`,
+    `TMPASYNCDIR=\`mktemp -d \` &&`,
     // Use parens so parent shell doesn't change directories.
     // '(',
     // Cd to the directory of the file we are compiling.
@@ -37,7 +40,7 @@ if (isWithinMonoRepo(__dirname)) {
     // Compile the file as the temp file we created.
     // `${babelNodePath} --inspect=9225 ${devEnvCommandLinePath} --entry=${toCompile} --output=$TMPFILE`,
     // `${babelNodePath} ${devEnvCommandLinePath} --entry=${toCompile} --output=$TMPFILE`,
-    `${babelNodePath} --trace-warnings ${devEnvCommandLinePath} --entry=${toCompile} --output=$TMPFILE${getDoubleDashArgumentsPassthrough()}`,
+    `${babelNodePath} --trace-warnings ${devEnvCommandLinePath} --entry=${toCompile} --output=$TMPFILE --asyncDir=$TMPASYNCDIR${getDoubleDashArgumentsPassthrough()}`,
     // ')',
     ' && ',
     // We are manually setting the node path because
@@ -47,10 +50,14 @@ if (isWithinMonoRepo(__dirname)) {
     `${getNodePathShVar({})} `,
     // Ok, now run the compiled script with node.
     // Passthrough arguments from the parent process.
-    `node $TMPFILE ${process.argv.slice(3).join(' ')}`,
+    `node $TMPFILE ${process.argv.slice(3).join(' ')} --asyncDir=$TMPASYNCDIR --appCompile=true`,
     ' && ',
     // When the compiled scripts process ends, remove the compiled script.
     'rm $TMPFILE',
+    // ' && ',
+    // 'rm -rf $TMPASYNCDIR',
+    // ' && ',
+    // 'echo 123123123123123123123123',
     // ' && echo "$NODE_PATH"',
     '\n',
   ].join('');
