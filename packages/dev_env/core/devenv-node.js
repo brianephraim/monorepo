@@ -50,7 +50,7 @@ if (isWithinMonoRepo(__dirname)) {
     `${getNodePathShVar({})} `,
     // Ok, now run the compiled script with node.
     // Passthrough arguments from the parent process.
-    `node $TMPFILE ${process.argv.slice(3).join(' ')} --asyncDir=$TMPASYNCDIR --appCompile=true`,
+    `node $TMPFILE ${process.argv.slice(3).join(' ')} --asyncDir=$TMPASYNCDIR`,
     ' && ',
     // When the compiled scripts process ends, remove the compiled script.
     'rm $TMPFILE',

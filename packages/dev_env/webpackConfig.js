@@ -16,35 +16,7 @@ import StringReplacePlugin from 'string-replace-webpack-plugin';
 import webpackConfigResolve from "./core/webpack-config-resolve";
 
 
-function makeAsyncPageFiles() {
-  if (!argv.appCompile) {
-    return {};
-  }
-  if (!argv.asyncRoutes || !argv.asyncDir) {
-    return {};
-  }
-  
-  const dirRoot = argv.dirroot || process.cwd();
-  const jsonPath = path.resolve(dirRoot,argv.asyncRoutes);
-  if (!fs.existsSync(jsonPath)) {
-    return {};
-  }
-  const json = fs.readJsonSync(jsonPath);
-  Object.keys(json).forEach((key) => {
-    const newFilePath = path.resolve(argv.asyncDir,`${key}.js`);
-    const originalFilePath = path.resolve(dirRoot,json[key]);
-    const newFileContent = `
-      import Comp from '${originalFilePath}';
-      console.log('xxxxx',Comp);
-      export default Comp;
-      export * from '${originalFilePath}';
-    `;
-    if (!fs.existsSync(newFilePath)) {
-      fs.writeFileSync(newFilePath,newFileContent);
-    }
-  },{});
-}
-makeAsyncPageFiles();
+
 
 if (argv.isReact && !argv.initialApp) {
   throw new Error('MISSING REQUIRED argv.initialApp');
