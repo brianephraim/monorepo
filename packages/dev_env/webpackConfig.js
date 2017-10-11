@@ -16,10 +16,7 @@ import StringReplacePlugin from 'string-replace-webpack-plugin';
 import webpackConfigResolve from "./core/webpack-config-resolve";
 
 
-const toIgnore = [];
 function makeAsyncPageFiles() {
-  console.log(makeUuid())
-  console.log('argv',argv)
   if (!argv.appCompile) {
     return {};
   }
@@ -33,12 +30,9 @@ function makeAsyncPageFiles() {
     return {};
   }
   const json = fs.readJsonSync(jsonPath);
-  console.log('json',json);
-  const asyncPageMap = Object.keys(json).reduce((accum,key) => {
+  Object.keys(json).forEach((key) => {
     const newFilePath = path.resolve(argv.asyncDir,`${key}.js`);
-    console.log('newFilePath',newFilePath);
     const originalFilePath = path.resolve(dirRoot,json[key]);
-    console.log('originalFilePath',originalFilePath);
     const newFileContent = `
       import Comp from '${originalFilePath}';
       console.log('xxxxx',Comp);
@@ -48,14 +42,9 @@ function makeAsyncPageFiles() {
     if (!fs.existsSync(newFilePath)) {
       fs.writeFileSync(newFilePath,newFileContent);
     }
-    toIgnore.push(newFilePath);
-    accum[key] = key;
-    return accum;
   },{});
-  return asyncPageMap;
 }
-const asyncPageMap = makeAsyncPageFiles();
-console.log('asyncPageMap',asyncPageMap);
+makeAsyncPageFiles();
 
 if (argv.isReact && !argv.initialApp) {
   throw new Error('MISSING REQUIRED argv.initialApp');
@@ -227,9 +216,9 @@ function generateConfigJson(options = {}) {
   //    indicates which configurations the code below controls.
   //    These are seen adjacent to ternaries.
   const config = {
-    watchOptions: {
-      ignored: toIgnore,
-    },
+    // watchOptions: {
+    //   ignored: toIgnore,
+    // },
     ...(isReact ? {
         name: isClient ? 'client' : 'server'
     }: {}),
@@ -567,12 +556,6 @@ function generateConfigJson(options = {}) {
 
       new VirtualModulesPlugin({
         'packages/virtual-module-server-collection': makeServerCollection(),
-      }),
-
-      new VirtualModulesPlugin({
-        'packages/virtual-async-page-map': `
-          export default ${JSON.stringify(asyncPageMap)};
-        `,
       }),
       
 

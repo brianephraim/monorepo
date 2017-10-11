@@ -58,11 +58,18 @@ routeData.pageMap = Object.keys(routeData.routesMap).reduce((accum, key) => {
     accum[key] = 'Migration';
     return accum;
 },{});
+routeData.routesMap = {
+  ...routeData.routesMap,
+  TODOS: '/todos/:filter',
+};
 
 routeData.pageMap = {
   ...routeData.pageMap,
-  TODOS: 'todo_app',
   BATTLESHIP: 'Migration',
+};
+
+routeData.asyncPageMap = {
+  TODOS: 'Todos'
 };
 
 export default routeData;

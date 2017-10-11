@@ -30,6 +30,7 @@ const UniversalComponent = universal(
       return imported;
     }
     if (page.importAvenue === 'temp') {
+      console.log('page.fileKey',page.fileKey);
       const imported = import(`asyncDir_REPLACE_ME${page.fileKey}`)
       return imported;
     }

@@ -1,6 +1,5 @@
 import { NOT_FOUND } from 'redux-first-router'
 import routeData from 'virtual-module-initial-app';
-import asyncPageMap from 'virtual-async-page-map';
 
 const components = {
   HOME_UNIVERSAL_DEMO: {
@@ -34,10 +33,10 @@ const components = {
     }
     return accum;
   },{}),
-  ...Object.keys(asyncPageMap).reduce((accum,fileKey) => {
+  ...Object.keys(routeData.asyncPageMap).reduce((accum,fileKey) => {
     accum[fileKey] = {
       importAvenue: 'temp',
-      fileKey:asyncPageMap[fileKey],
+      fileKey:routeData.asyncPageMap[fileKey],
     }
     return accum;
   },{}),

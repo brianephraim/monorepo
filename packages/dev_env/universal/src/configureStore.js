@@ -72,7 +72,6 @@ export default (history, preLoadedState) => {
     history,
     {
       ...routesMap,
-      TODOS: '/todos/:filter',
     },
     {
       ...options,
