@@ -8,9 +8,9 @@ import RouteLinksList from './RouteLinksList';
 import './reset.css';
 
 
-let actionTypeToComponentDict = {};
+// let actionTypeToComponentDict = {};
 
-const routeData = [
+const routeDataAndActionTypeToComponentDict = [
   integrateBernie(makeStandardConstants('bernie',true)),
   integrateBernie(makeStandardConstants('boomer')),
   integrateBernie(makeStandardConstants('behemoth')),
@@ -26,13 +26,20 @@ const routeData = [
       accum1[routeKey] = routeRootComponent;
       return accum1;
     },{});
-    actionTypeToComponentDict = {...actionTypeToComponentDict, ...newRoutesActionTypeToComponentDict};
+    accum.actionTypeToComponentDict = {...accum.actionTypeToComponentDict, ...newRoutesActionTypeToComponentDict};
   }
-
-  accum.routesMap = {...accum.routesMap,...routesMap};
-  accum.reducers = {...accum.reducers,...reducers};
+  accum.routeData.routesMap = {...accum.routeData.routesMap,...routesMap};
+  accum.routeData.reducers = {...accum.routeData.reducers,...reducers};
   return accum;
-},{});
+},{
+  routeData: {
+    routesMap: {},
+    reducers: {}
+  },
+  actionTypeToComponentDict: {}
+});
+
+const {routeData, actionTypeToComponentDict} = routeDataAndActionTypeToComponentDict
 
 
 function RootComponent (props){
@@ -49,20 +56,5 @@ routeData.routeRootComponent = connect(
     };
   }
 )(RootComponent);
-
-routeData.routesMap = {
-  ...routeData.routesMap,
-  TODOS: '/todos/:filter',
-  BATTLESHIP: '/battleship',
-};
-
-routeData.pageMap = {
-  ...(Object.keys(routeData.routesMap).reduce((accum, key) => {
-    accum[key] = 'MainApp';
-    return accum;
-  },{})),
-  BATTLESHIP: 'Battleship',
-  TODOS: 'Todos',
-};
 
 export default routeData;

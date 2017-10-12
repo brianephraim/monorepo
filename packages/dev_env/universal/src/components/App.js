@@ -19,6 +19,9 @@ import Loading from './Loading'
 import Err from './Error'
 import isLoading from '../selectors/isLoading'
 import switcherStyles from '../css/Switcher'
+// import routeData from 'virtual-module-initial-app';
+
+
 
 const UniversalComponent = universal(
   ({ page }) => {
@@ -85,7 +88,8 @@ DemoWrapper = connect(({ page, direction,location }) => ({
 
 
 let Switcher = ({ page, isLoading, addReducers }) => {
-  const Comp = UniversalComponent;
+  const Comp = page.fileKey === 'Migration' ? routeData.routeRootComponent : UniversalComponent;
+
   return (
     <DemoWrapper>
       <Comp page={page} isLoading={isLoading} addReducers={addReducers} />

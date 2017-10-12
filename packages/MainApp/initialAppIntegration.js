@@ -1,4 +1,4 @@
-import mainAppRouteData from './MainApp';
+import mainAppRouteData from './initialApp';
 
 export default mainAppRouteData.routeRootComponent;
 
