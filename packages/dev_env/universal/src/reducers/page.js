@@ -6,6 +6,8 @@ if(typeof window !== 'undefined' && window.pageMapFromInitialApp) {
   windowPageMap = window.pageMapFromInitialApp;
 }
 
+// On the client, routeData.pageMap is empty and windowPageMap is full.
+// On server, the opposite.
 const dynamicPageMap = {...routeData.pageMap,...windowPageMap};
 
 const components = {

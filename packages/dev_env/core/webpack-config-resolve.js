@@ -76,7 +76,6 @@ module.exports = {
       path.resolve('./src/library'),
       path.resolve(process.cwd(), 'packages'),
       path.resolve(process.cwd(), '../../packages'),
-      'virtual_modules',
       'node_modules',
       // path.resolve(process.cwd(), '../monorepo/node_modules'),
       // '../monorepo/node_modules',

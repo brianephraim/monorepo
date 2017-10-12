@@ -20,8 +20,6 @@ import Err from './Error'
 import isLoading from '../selectors/isLoading'
 import switcherStyles from '../css/Switcher'
 
-import routeData from 'virtual-module-initial-app';
-
 const UniversalComponent = universal(
   ({ page }) => {
     if (page.importAvenue === 'demo') {
@@ -87,8 +85,7 @@ DemoWrapper = connect(({ page, direction,location }) => ({
 
 
 let Switcher = ({ page, isLoading, addReducers }) => {
-  const Comp = page.fileKey === 'Migration' ? routeData.routeRootComponent : UniversalComponent;
-  console.log('page',page)
+  const Comp = UniversalComponent;
   return (
     <DemoWrapper>
       <Comp page={page} isLoading={isLoading} addReducers={addReducers} />

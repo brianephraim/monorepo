@@ -11,12 +11,8 @@ import ProgressPlugin from "webpack/lib/ProgressPlugin";
 import jsonImporter from "node-sass-json-importer";
 import WriteFilePlugin from "write-file-webpack-plugin";
 import VirtualModulesPlugin from 'webpack-virtual-modules';
-import {v4 as makeUuid } from 'node-uuid';
 import StringReplacePlugin from 'string-replace-webpack-plugin';
 import webpackConfigResolve from "./core/webpack-config-resolve";
-
-
-
 
 if (argv.isReact && !argv.initialApp) {
   throw new Error('MISSING REQUIRED argv.initialApp');
@@ -365,12 +361,9 @@ function generateConfigJson(options = {}) {
             replacements: [
               {
                 pattern: /asyncDir_REPLACE_ME/ig,
-                replacement: (match, p1, offset, string) => {
+                replacement: (/* match, p1, offset, string */) => {
                   if (argv.asyncDir) {
                     return `${argv.asyncDir}/`;
-                    // const appJsPath = path.resolve(__dirname,'./universal/src/components/App.js');
-                    // console.log('appJsPath',appJsPath);
-                    // return `${path.relative(appJsPath,argv.asyncDir)}/`;
                   }
                   return 'asyncDir_REPLACE_ME_NOT_REPLACED';
                 }
@@ -499,13 +492,6 @@ function generateConfigJson(options = {}) {
           setModuleConstant('__dirnameWhenCompiled', (module) => {
             return module.context;
           });
-
-          if (argv.asyncDir) {
-            const appJsPath = path.resolve(__dirname,'./universal/src/components/App.js');
-            setModuleConstant('__asyncDir_REPLACE_ME', (module) => {
-              return `${path.relative(appJsPath,argv.asyncDir)}/`;
-            });
-          }
         },
       },
       // Give bundled code global access to `process.env.NODE_ENV`, with a value defined below.
@@ -522,13 +508,6 @@ function generateConfigJson(options = {}) {
               ?
               `
                 import routeData from '${path.resolve(dirRoot, argv.initialApp)}';
-                // export default {
-                //   reducers: routeData.reducers,
-                //   routesMap: routeData.routesMap,
-                //   pageMap: routeData.pageMap,
-                //   routeRootComponent: routeData.routeRootComponent
-
-                // };
                 export default routeData;
               `
               :
@@ -550,7 +529,6 @@ function generateConfigJson(options = {}) {
       new VirtualModulesPlugin({
         'packages/virtual-module-server-collection': makeServerCollection(),
       }),
-      
 
       // Terminal visualizer for bundling progress
       makeProgressPlugin(),

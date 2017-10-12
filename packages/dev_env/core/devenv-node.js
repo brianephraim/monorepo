@@ -11,7 +11,6 @@ const getDevEnvRoot = require('./getDevEnvRoot');
 const getNodePathShVar = require('./getNodePathShVar');
 const getDoubleDashArgumentsPassthrough = require('./getDoubleDashArgumentsPassthrough');
 
-
 const os = require('os');
 
 const toCompile = path.resolve(process.cwd(), process.argv[2]);
@@ -51,14 +50,6 @@ if (isWithinMonoRepo(__dirname)) {
     // Ok, now run the compiled script with node.
     // Passthrough arguments from the parent process.
     `node $TMPFILE ${process.argv.slice(3).join(' ')} --asyncDir=$TMPASYNCDIR`,
-    ' && ',
-    // When the compiled scripts process ends, remove the compiled script.
-    'rm $TMPFILE',
-    // ' && ',
-    // 'rm -rf $TMPASYNCDIR',
-    // ' && ',
-    // 'echo 123123123123123123123123',
-    // ' && echo "$NODE_PATH"',
     '\n',
   ].join('');
 

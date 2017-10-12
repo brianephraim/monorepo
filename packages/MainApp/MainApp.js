@@ -4,8 +4,6 @@ import { connect } from 'react-redux';
 import React from 'react';
 import integrateBernie from 'profile-framer-frontend/setup'
 import makeStandardConstants from 'profile-framer-frontend/makeStandardConstants';
-// import integrateToDoApp from 'todo_app/mainAppIntegration'
-// import {routeData as integrateBattleship} from 'battleship/mainAppIntegration'
 import RouteLinksList from './RouteLinksList';
 import './reset.css';
 
@@ -16,15 +14,13 @@ const routeData = [
   integrateBernie(makeStandardConstants('bernie',true)),
   integrateBernie(makeStandardConstants('boomer')),
   integrateBernie(makeStandardConstants('behemoth')),
-  // integrateToDoApp,
-  // integrateBattleship,
   {
     routesMap:{
       ROUTELINKLIST: '/routes'
     },
     routeRootComponent: RouteLinksList,
   },
-].reduce((accum, {routesMap,routeRootComponent,reducers,}) => {
+].reduce((accum, {routesMap,routeRootComponent,reducers}) => {
   if (routesMap && routeRootComponent) {
     const newRoutesActionTypeToComponentDict = Object.keys(routesMap).reduce((accum1,routeKey) => {
       accum1[routeKey] = routeRootComponent;
@@ -54,10 +50,6 @@ routeData.routeRootComponent = connect(
   }
 )(RootComponent);
 
-routeData.pageMap = Object.keys(routeData.routesMap).reduce((accum, key) => {
-    accum[key] = 'MainApp';
-    return accum;
-},{});
 routeData.routesMap = {
   ...routeData.routesMap,
   TODOS: '/todos/:filter',
@@ -65,7 +57,10 @@ routeData.routesMap = {
 };
 
 routeData.pageMap = {
-  ...routeData.pageMap,
+  ...(Object.keys(routeData.routesMap).reduce((accum, key) => {
+    accum[key] = 'MainApp';
+    return accum;
+  },{})),
   BATTLESHIP: 'Battleship',
   TODOS: 'Todos',
 };
