@@ -2,7 +2,6 @@ import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { combineReducers } from 'redux';
-import { addRoutesToApp } from '@defualt/redux-routing-app-root-component';
 import { makeNameSpacedResponsiveStatusesDictReducer } from '@defualt/responsive/nameSpaceResponsive';
 
 import { generateCompositeImgSrcUrl,getDefaultCompositeImageData, paramsIntoCompositeImage } from './compositeImage';
@@ -345,13 +344,9 @@ export default function(constants) {
   )(Routing);
   Routing = setAncestorConstantsHoc(Routing, constants);
 
-  addRoutesToApp({
+  return {
     routesMap,
     routeRootComponent: Routing,
     reducers: { [constants.appNameSpace]: reducers },
-    routeInfo: {
-      description: constants.appNameSpace,
-      path: `/${constants.appNameSpace}`,
-    },
-  });
+  };
 }

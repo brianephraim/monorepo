@@ -6,6 +6,7 @@ import { connect } from 'react-redux'
 import { TransitionGroup, Transition } from 'transition-group'
 import universal from 'react-universal-component'
 import { addRoutes } from 'redux-first-router'
+import { combineReducers } from 'redux'
 
 import DevTools from './DevTools'
 import Sidebar from './Sidebar'
@@ -18,35 +19,39 @@ import Loading from './Loading'
 import Err from './Error'
 import isLoading from '../selectors/isLoading'
 import switcherStyles from '../css/Switcher'
+// import {routeData} from 'virtual-module-initialAppIntegration';
+
 
 
 const UniversalComponent = universal(
   ({ page }) => {
-    if (page === 'BATTLESHIP') {
-      page = 'Migration';
+    if (page.importAvenue === 'demo') {
+      const imported = import(`./${page.fileKey}`);
+      return imported;
     }
-    const imported = import(`./${page}`)
-    // imported.then((...args) => {console.log('!!!',args)})
-    return imported
+    if (page.importAvenue === 'temp') {
+      const imported = import(`asyncDir_REPLACE_ME${page.fileKey}`)
+      return imported;
+    }
   },
   {
     minDelay: 500,
     loading: Loading,
     error: Err,
     onLoad: (module, info, props, context) => {
-      // console.log('module',module)
-      // console.log('info',info)
-      // console.log('props',props)
-      // console.log('context',context)
-  /*
-       const aThunk = addRoutes(module.newRoutes) // export new routes from component file
-       context.store.dispatch(aThunk)
+      if(module && module.routeData){
+        if (module.routeData.routesMap) {
+          const aThunk = addRoutes(module.routeData.routesMap) // export new routes from component file
+          context.store.dispatch(aThunk)
+        }
+        if (module.routeData.reducers) {
+          context.store.replaceReducer(combineReducers(props.addReducers(module.routeData.reducers)))
+        }
+      }
 
-       context.store.replaceReducer({ ...otherReducers, foo: module.fooReducer })
-
-       // if a route triggered component change, new reducers needs to reflect it
-       context.store.dispatch({ type: 'INIT_ACTION_FOR_ROUTE', payload: { param: props.param } })
-       */
+      // // if a route triggered component change, new reducers needs to reflect it
+      // context.store.dispatch({ type: 'INIT_ACTION_FOR_ROUTE', payload: { param: props.param } })
+       
     }
   }
 )
@@ -82,10 +87,15 @@ DemoWrapper = connect(({ page, direction,location }) => ({
 }))(DemoWrapper)
 
 
-let Switcher = ({ page, isLoading }) =>
-  <DemoWrapper>
-    <UniversalComponent page={page} isLoading={isLoading} />
-  </DemoWrapper>
+let Switcher = ({ page, isLoading, addReducers }) => {
+  const Comp = page.fileKey === 'Migration' ? routeData.routeRootComponent : UniversalComponent;
+
+  return (
+    <DemoWrapper>
+      <Comp page={page} isLoading={isLoading} addReducers={addReducers} />
+    </DemoWrapper>
+  );
+};
 
 Switcher = connect(({ page, ...state }) => ({
   page,
@@ -103,13 +113,16 @@ let HeadStuff = () => {
 
 
 
-export default (props) =>
-  <Provider store={props.store}>
-    <div>
-      <HeadStuff />
-      <Switcher />
-    </div>
-  </Provider>
+export default ({store,addReducers}) => {
+  return (
+    <Provider store={store} >
+      <div>
+        <HeadStuff />
+        <Switcher addReducers={addReducers} />
+      </div>
+    </Provider>
+  );
+};
 
 /*
 import 'babel-polyfill';

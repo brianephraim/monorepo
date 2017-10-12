@@ -10,7 +10,6 @@ const Sidebar = ({ onClick, path }) =>
 
     <NavLink activeClassName={styles.active} exact to='/willard'>HOME_UNIVERSAL_DEMO</NavLink>
 
-    <NavLink activeClassName={styles.active} exact to='/willard/migration'>MIGRATION</NavLink>
     <NavLink activeClassName={styles.active} exact to='/willard/battleship'>BATTLESHIP</NavLink>
 
     <NavLink activeClassName={styles.active} to='/willard/list/db-graphql'>
@@ -33,13 +32,6 @@ const Sidebar = ({ onClick, path }) =>
 
     <span className={active(path, '/willard')} onClick={() => onClick('HOME_UNIVERSAL_DEMO')}>
       HOME_UNIVERSAL_DEMO
-    </span>
-
-    <span className={active(path, '/willard/migration')} onClick={() => onClick('MIGRATION')}>
-      MIGRATION
-    </span>
-    <span className={active(path, '/willard/battleship')} onClick={() => onClick('MIGRATION')}>
-      BATTLESHIP
     </span>
 
     <span

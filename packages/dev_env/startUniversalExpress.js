@@ -71,6 +71,34 @@ function clearCompileAndServeProductionUniversalExpress(clientConfig,serverConfi
 
 
 export default function startUniversalExpress() {
+  function makeAsyncPageFiles() {
+    if (!argv.asyncRoutes || !argv.asyncDir) {
+      return {};
+    }
+    
+    const dirRoot = argv.dirroot || process.cwd();
+    const jsonPath = path.resolve(dirRoot,argv.asyncRoutes);
+    if (!fs.existsSync(jsonPath)) {
+      return {};
+    }
+    const json = fs.readJsonSync(jsonPath);
+    Object.keys(json).forEach((key) => {
+      const newFilePath = path.resolve(argv.asyncDir,`${key}.js`);
+      const originalFilePath = path.resolve(dirRoot,json[key]);
+      const newFileContent = `
+        import Comp from '${originalFilePath}';
+        export default Comp;
+        export * from '${originalFilePath}';
+      `;
+      if (!fs.existsSync(newFilePath)) {
+        fs.writeFileSync(newFilePath,newFileContent);
+      }
+    },{});
+  }
+  makeAsyncPageFiles();
+
+
+
   const isDeploy = argv.isDeploy === 'true';
   const isDev = argv.isDev === 'true' && !isDeploy;
   const isUniversal = argv.isUniversal === 'true' || !isDev || isDeploy;

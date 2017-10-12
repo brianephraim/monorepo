@@ -10,9 +10,15 @@ import StatsPlugin from "stats-webpack-plugin";
 import ProgressPlugin from "webpack/lib/ProgressPlugin";
 import jsonImporter from "node-sass-json-importer";
 import WriteFilePlugin from "write-file-webpack-plugin";
+import VirtualModulesPlugin from 'webpack-virtual-modules';
+import StringReplacePlugin from 'string-replace-webpack-plugin';
 import webpackConfigResolve from "./core/webpack-config-resolve";
 
-function getDirname(/* debug */) {
+if (argv.isReact && !argv.initialApp) {
+  throw new Error('MISSING REQUIRED argv.initialApp');
+}
+
+function getDirname() {
   return typeof __dirnameWhenCompiled !== "undefined"
     ? __dirnameWhenCompiled
     : __dirname;
@@ -40,8 +46,8 @@ const makeProgressPlugin = () => {
   });
 };
 
-const res = (p, debug) => {
-  return path.resolve(getDirname(debug), p);
+const res = (p) => {
+  return path.resolve(getDirname(), p);
 };
 
 // *** Non-mocha Non-React
@@ -91,7 +97,6 @@ function makeEntry({ libraryName, isBuild, dirRoot }) {
           [outputFiles.demo]: [argv["demo-entry"]]
         }
       : {
-          MainApp: globby.sync([`${dirRoot}/packages/MainApp/demo.js`]),
           [outputFiles.library]: globby.sync([
             `${dirRoot}/${libraryNameReduced}.js`,
             `${dirRoot}/src/library/index.js`
@@ -109,7 +114,6 @@ function makeEntry({ libraryName, isBuild, dirRoot }) {
             `${dirRoot}/**/*/*.demo.js`,
             `${dirRoot}/**/*/demo.js`,
             `!${dirRoot}/packages/**/*`,
-            `${dirRoot}/packages/MainApp/demo.js`,
             `!${dirRoot}/node_modules/**/*`
           ])
         }
@@ -123,9 +127,13 @@ if (nodeModulesLocation.indexOf("packages/dev_env") !== -1) {
   nodeModulesLocation = `${nodeModulesLocation}node_modules`;
 }
 
+
+
+
 /* eslint-disable no-nested-ternary */
 // prettier-ignore
 function generateConfigJson(options = {}) {
+
   const isCommandLine = options.isCommandLine || argv.entry;
   const isMocha = options.isMocha;
   const {isReact = false, isClient = false, isDev = false, isUniversal = false} = options;
@@ -134,6 +142,36 @@ function generateConfigJson(options = {}) {
   const dirRoot = argv.dirroot || process.cwd();
   const packageJson = fs.readJsonSync(`${dirRoot}/package.json`);
   const libraryName = packageJson.name;
+
+
+  function makeServerCollection () {
+    /*
+      // if argv.servers, Will produce a module like this
+      import varName1 from '/Users/brianephraim/Sites/monorepo/packages/someServer1/someServer1.js'
+      import varName2 from '/Users/brianephraim/Sites/monorepo/packages/someServer2/someServer2.js'
+      export default [varName1,varName2];
+
+      //if not argv.servers, Will produce a module like this
+      export default [];
+    */
+    let id = 0;
+    const servers = !argv.servers ? [] : argv.servers.split(',').map((item) => {
+      return {
+        varName: `varName${id++}`,
+        path: path.resolve(dirRoot, item.trim()),
+      }
+    });
+    
+    const importSection = servers.reduce((accum,item) => {
+      const line = `import ${item.varName} from '${item.path}';`;
+      return `${accum}${'\n'}${line}`;
+    },'');
+    const exportSection = `export default [${servers.map((item) => {
+      return `${item.varName}`;
+    }).join(',')}];`;
+    const toReturn = `${importSection}${'\n'}${'\n'}${exportSection}`;
+    return `${'\n'}${toReturn}`;
+  }
 
   // NOTE!!!!!!!
   // 1. Non-React is always server (node) right now.
@@ -146,6 +184,9 @@ function generateConfigJson(options = {}) {
   //    indicates which configurations the code below controls.
   //    These are seen adjacent to ternaries.
   const config = {
+    // watchOptions: {
+    //   ignored: toIgnore,
+    // },
     ...(isReact ? {
         name: isClient ? 'client' : 'server'
     }: {}),
@@ -170,15 +211,15 @@ function generateConfigJson(options = {}) {
               'react-hot-loader/patch',
               ] : []
             ),
-            path.resolve(getDirname('entryXX'),
+            path.resolve(getDirname(),
               isClient
               ?
-              './universal/src/clientRender.js'
+              './universal/src/renderClient.js'
               :
               (
                 isUniversal
                 ?
-                './universal/server/render.js'
+                './universal/server/universalRender.js'
                 :
                 './universal/server/nonUniversalRender.js'
               )
@@ -314,14 +355,31 @@ function generateConfigJson(options = {}) {
             ]
           )
         ),
+        { 
+          test: /universal\/src\/components\/App.js$/,
+          loader: StringReplacePlugin.replace({
+            replacements: [
+              {
+                pattern: /asyncDir_REPLACE_ME/ig,
+                replacement: (/* match, p1, offset, string */) => {
+                  if (argv.asyncDir) {
+                    return `${argv.asyncDir}/`;
+                  }
+                  return 'asyncDir_REPLACE_ME_NOT_REPLACED';
+                }
+              }
+            ]
+          })
+        }
       ],
     },
     resolve: webpackConfigResolve.resolve,
     plugins: [
+      new StringReplacePlugin(),
       ...(
         !isReact ? [] : (
 
-          // *** React Client
+          // *** React just Client
           !isClient ? [] : [
 
             // *** React Client Dev and Prod
@@ -372,7 +430,7 @@ function generateConfigJson(options = {}) {
             // AutoDllPlugin caches vendor bundle between build initiation.
             // So compiling is faster.  Google it. It's interesting.
             new AutoDllPlugin({
-              context: path.join(getDirname('AutoDllXX'), '..'),
+              context: path.join(getDirname(), '..'),
               filename: '[name].js',
               entry: {
                 vendor: [
@@ -441,6 +499,39 @@ function generateConfigJson(options = {}) {
         NODE_ENV: isDev ? 'development' : 'production', // use 'development' unless process.env.NODE_ENV is defined
         // DEBUG: false
       }),
+      ...(
+        // *** React Client And Server
+        isReact && argv.initialApp  ? [
+          new VirtualModulesPlugin({
+            'packages/virtual-module-initialAppIntegration.js': (
+              !isClient
+              ?
+              `
+                import Comp from '${path.resolve(dirRoot, argv.initialApp)}';
+                export default Comp;
+                export * from '${path.resolve(dirRoot, argv.initialApp)}';
+              `
+              :
+              `
+                import React from 'react';
+                const routeData = {
+                  reducers: {},
+                  routesMap: {},
+                  pageMap: {},
+                  routeRootComponent: () => {return (<div />);},
+                };
+                export default routeData.routeRootComponent;
+                export {routeData};
+              `
+            ),
+          }),
+        ] : []
+      ),
+
+      new VirtualModulesPlugin({
+        'packages/virtual-module-server-collection': makeServerCollection(),
+      }),
+
       // Terminal visualizer for bundling progress
       makeProgressPlugin(),
     ]

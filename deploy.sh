@@ -25,7 +25,7 @@ else
     rm ./package-combined.json
     # compile the bundle
     echo "DEPLOY SCIPT: BUNDLING IN DEPLOY-TEMP... ORIGNAL BRANCH WAS: $branch"
-    ./packages/dev_env/bin/devenv.js --servers='bernieserver,junk-express' --isDev=false --isUniversal=true --isDeploy=true
+    npm run just-bundle-prod
     # b_NO_IGNORE_buildClient
     # b_NO_IGNORE_buildServer
     echo "DEPLOY SCIPT: MODIFYING GITIGNORE TO ALLOW COMMIT OF BUNDLES TO DEPLOY-TEMP / DEPLOY BRANCHES"

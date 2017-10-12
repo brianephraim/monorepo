@@ -1,6 +1,6 @@
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux'
 import { composeWithDevTools } from 'redux-devtools-extension/logOnlyInProduction'
-import { connectRoutes } from 'redux-first-router'
+import { connectRoutes,addRoutes } from 'redux-first-router'
 import reduxThunk from 'redux-thunk';
 
 import routesMap from './routesMap'
@@ -8,9 +8,7 @@ import options from './options'
 import * as reducers from './reducers'
 import * as actionCreators from './actions'
 
-// problem deps
-import {routeData} from 'MainApp';
-
+import {routeData} from 'virtual-module-initialAppIntegration';
 
 
 
@@ -58,7 +56,6 @@ const redundantAppNameSpaceMiddleware = store => {return next => {return action 
     };
     return next(newAction);
   }
-
   return next(action);
 }}}
 
@@ -70,11 +67,22 @@ const composeEnhancers = (...args) =>
 
 
 export default (history, preLoadedState) => {
-  const { reducer, middleware, enhancer, thunk } = connectRoutes(
+  let windowRoutesMap = {};
+  if(typeof window !== 'undefined' && window.REDUX_STATE && window.REDUX_STATE.location && window.REDUX_STATE.location.routesMap) {
+    windowRoutesMap = window.REDUX_STATE.location.routesMap;
+  }
+  const { reducer, middleware, enhancer, thunk, initialDispatch } = connectRoutes(
     history,
-    routesMap,
-    options
+    {
+      ...routesMap,
+      ...windowRoutesMap,
+    },
+    {
+      ...options,
+      initialDispatch:false
+    }
   )
+ 
   const moreReducers = {
     serverClientUrl: (state = '', action = '') => {
       if (action.type === 'UDPATE_SERVER_CLIENT_URL') {
@@ -90,24 +98,31 @@ export default (history, preLoadedState) => {
     }
   };
 
-  const rootReducer = combineReducers({...moreReducers, ...reducers, ...routeData.allReducers, location: reducer })
+  let allReducers = {...moreReducers, ...reducers, ...routeData.reducers, location: reducer };
+  function addReducers(newReducers) {
+    allReducers = {...allReducers, ...newReducers };
+    return allReducers;
+  }
+  const rootReducer = combineReducers(addReducers(reducers))
   // const middlewares = applyMiddleware(thunk, middleware, redundantAppNameSpaceMiddleware)
   const middlewares = applyMiddleware(reduxThunk,middleware,redundantAppNameSpaceMiddleware)
 
   const enhancers = composeEnhancers(enhancer, middlewares)
-  const store = createStore(rootReducer, preLoadedState, enhancers)
+  const store = createStore(rootReducer, preLoadedState, enhancers);
+  const aThunk = addRoutes(routeData.routesMap); // export new routes from component file
+  store.dispatch(aThunk);
+  initialDispatch();
   if (typeof window !== 'undefined') {
     window.ss = store;
   }
-  console.log('process.env.NODE_ENV',process.env.NODE_ENV);
   if (module.hot && process.env.NODE_ENV === 'development') {
     module.hot.accept('./reducers/index', () => {
-      const reducers = require('./reducers/index')
-      const rootReducer = combineReducers({...moreReducers, ...reducers, ...routeData.allReducers, location: reducer })
-      store.replaceReducer(rootReducer)
+      const reducers = require('./reducers/index');
+      const rootReducer = combineReducers(addReducers(reducers));
+      store.replaceReducer(rootReducer);
     })
   }
 
-  return { store, thunk }
+  return { store, thunk, addReducers }
 }
 

@@ -1,12 +1,8 @@
 import { redirect, NOT_FOUND } from 'redux-first-router'
 import { fetchData } from './utils'
 
-// problem deps
-import {routeData} from 'MainApp';
-
 export default {
-  ...routeData.routesMap,
-  ROOT:'/',
+  // ROOT:'/',
   HOME_UNIVERSAL_DEMO: '/willard',
   LIST: {
     path: '/willard/list/:category',
@@ -51,7 +47,6 @@ export default {
     }
   },
   LOGIN: '/willard/login',
-  MIGRATION: '/willard/migration',
   ADMIN: {
     path: '/willard/admin', // TRY: visit this path or dispatch ADMIN
     role: 'admin' // + change jwToken to 'real' in server/index.js
