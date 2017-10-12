@@ -40,8 +40,6 @@ const routeData = [
 
 
 function RootComponent (props){
-  console.log('actionTypeToComponentDict',actionTypeToComponentDict)
-  console.log('props.nameOfScreenComponent',props.nameOfScreenComponent)
   const Comp = actionTypeToComponentDict[props.nameOfScreenComponent] || actionTypeToComponentDict.FALLBACK_ROUTE;
   return (<Comp />);
 }
@@ -68,11 +66,7 @@ routeData.routesMap = {
 routeData.pageMap = {
   ...routeData.pageMap,
   BATTLESHIP: 'MainApp',
-};
-
-routeData.asyncPageMap = {
-  ...routeData.pageMap,
-  TODOS: 'Todos'
+  TODOS: 'Todos',
 };
 
 export default routeData;

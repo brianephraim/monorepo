@@ -6,6 +6,11 @@ export default function (){
     <div>
       <h1>WELCOME</h1>
       <p>
+        <Link to='/willard'>
+          willard
+        </Link>
+      </p>
+      <p>
         <Link to='/boomer'>
           boomer
         </Link>

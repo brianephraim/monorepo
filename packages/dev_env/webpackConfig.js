@@ -502,7 +502,6 @@ function generateConfigJson(options = {}) {
 
           if (argv.asyncDir) {
             const appJsPath = path.resolve(__dirname,'./universal/src/components/App.js');
-            console.log('appJsPath',appJsPath);
             setModuleConstant('__asyncDir_REPLACE_ME', (module) => {
               return `${path.relative(appJsPath,argv.asyncDir)}/`;
             });
@@ -523,16 +522,14 @@ function generateConfigJson(options = {}) {
               ?
               `
                 import routeData from '${path.resolve(dirRoot, argv.initialApp)}';
-                export default {
-                  reducers: routeData.reducers,
-                  // reducers: {},
-                  routesMap: routeData.routesMap,
-                  pageMap: routeData.pageMap,
-                  asyncPageMap: routeData.pageMap,
-                  routeRootComponent: routeData.routeRootComponent
+                // export default {
+                //   reducers: routeData.reducers,
+                //   routesMap: routeData.routesMap,
+                //   pageMap: routeData.pageMap,
+                //   routeRootComponent: routeData.routeRootComponent
 
-                };
-                // export default routeData;
+                // };
+                export default routeData;
               `
               :
               `
@@ -541,7 +538,6 @@ function generateConfigJson(options = {}) {
                   reducers: {},
                   routesMap: {},
                   pageMap: {},
-                  asyncPageMap: {},
                   routeRootComponent: () => {return (<div />);},
                 };
                 export default routeData;

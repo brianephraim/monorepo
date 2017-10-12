@@ -56,7 +56,6 @@ const redundantAppNameSpaceMiddleware = store => {return next => {return action 
     };
     return next(newAction);
   }
-  console.log('action',action);
   return next(action);
 }}}
 
@@ -104,15 +103,12 @@ export default (history, preLoadedState) => {
     allReducers = {...allReducers, ...newReducers };
     return allReducers;
   }
-  console.log('allReducers',allReducers)
   const rootReducer = combineReducers(addReducers(reducers))
   // const middlewares = applyMiddleware(thunk, middleware, redundantAppNameSpaceMiddleware)
   const middlewares = applyMiddleware(reduxThunk,middleware,redundantAppNameSpaceMiddleware)
 
   const enhancers = composeEnhancers(enhancer, middlewares)
-  console.log('preLoadedState',preLoadedState)
   const store = createStore(rootReducer, preLoadedState, enhancers);
-  console.log(store.getState().bernie);
   const aThunk = addRoutes(routeData.routesMap); // export new routes from component file
   store.dispatch(aThunk);
   initialDispatch();

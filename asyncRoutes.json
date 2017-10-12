@@ -1,4 +1,5 @@
 {
+  "Battleship":"./packages/battleship/mainAppIntegration.js",
   "Todos":"./packages/todo_app/mainAppIntegration.js",
   "MainApp": "./packages/MainApp/integration.js"
 }

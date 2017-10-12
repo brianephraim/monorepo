@@ -24,13 +24,11 @@ import routeData from 'virtual-module-initial-app';
 
 const UniversalComponent = universal(
   ({ page }) => {
-    console.log('page',page)
     if (page.importAvenue === 'demo') {
       const imported = import(`./${page.fileKey}`);
       return imported;
     }
     if (page.importAvenue === 'temp') {
-      console.log('page.fileKey',page.fileKey);
       const imported = import(`asyncDir_REPLACE_ME${page.fileKey}`)
       return imported;
     }
@@ -40,8 +38,6 @@ const UniversalComponent = universal(
     loading: Loading,
     error: Err,
     onLoad: (module, info, props, context) => {
-      console.log(module);
-      console.log('module.routeData',module.routeData);
       if(module && module.routeData){
         if (module.routeData.routesMap) {
           const aThunk = addRoutes(module.routeData.routesMap) // export new routes from component file
@@ -91,8 +87,8 @@ DemoWrapper = connect(({ page, direction,location }) => ({
 
 
 let Switcher = ({ page, isLoading, addReducers }) => {
-  console.log('page!!',page);
   const Comp = page.fileKey === 'Migration' ? routeData.routeRootComponent : UniversalComponent;
+  console.log('page',page)
   return (
     <DemoWrapper>
       <Comp page={page} isLoading={isLoading} addReducers={addReducers} />

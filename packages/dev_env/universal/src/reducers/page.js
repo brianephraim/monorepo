@@ -1,6 +1,13 @@
 import { NOT_FOUND } from 'redux-first-router'
 import routeData from 'virtual-module-initial-app';
 
+let windowPageMap = {};
+if(typeof window !== 'undefined' && window.routeDataFromInitialApp) {
+  windowPageMap = window.routeDataFromInitialApp.pageMap;
+}
+
+const dynamicPageMap = {...routeData.pageMap,...windowPageMap};
+
 const components = {
   HOME_UNIVERSAL_DEMO: {
     importAvenue: 'demo',
@@ -26,17 +33,10 @@ const components = {
     importAvenue: 'demo',
     fileKey: 'NotFound',
   },
-  ...Object.keys(routeData.pageMap).reduce((accum,fileKey) => {
-    accum[fileKey] = {
-      importAvenue: 'demo',
-      fileKey:routeData.pageMap[fileKey],
-    }
-    return accum;
-  },{}),
-  ...Object.keys(routeData.asyncPageMap).reduce((accum,fileKey) => {
+  ...Object.keys(dynamicPageMap).reduce((accum,fileKey) => {
     accum[fileKey] = {
       importAvenue: 'temp',
-      fileKey:routeData.asyncPageMap[fileKey],
+      fileKey:dynamicPageMap[fileKey],
     }
     return accum;
   },{}),
