@@ -2,8 +2,8 @@ import { NOT_FOUND } from 'redux-first-router'
 import routeData from 'virtual-module-initial-app';
 
 let windowPageMap = {};
-if(typeof window !== 'undefined' && window.routeDataFromInitialApp) {
-  windowPageMap = window.routeDataFromInitialApp.pageMap;
+if(typeof window !== 'undefined' && window.pageMapFromInitialApp) {
+  windowPageMap = window.pageMapFromInitialApp;
 }
 
 const dynamicPageMap = {...routeData.pageMap,...windowPageMap};

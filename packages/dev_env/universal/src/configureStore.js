@@ -67,9 +67,9 @@ const composeEnhancers = (...args) =>
 
 
 export default (history, preLoadedState) => {
-  let windowRoutesMap = {}
-  if(typeof window !== 'undefined' && window.routeDataFromInitialApp) {
-    windowRoutesMap = window.routeDataFromInitialApp.routesMap;
+  let windowRoutesMap = {};
+  if(typeof window !== 'undefined' && window.REDUX_STATE && window.REDUX_STATE.location && window.REDUX_STATE.location.routesMap) {
+    windowRoutesMap = window.REDUX_STATE.location.routesMap;
   }
   const { reducer, middleware, enhancer, thunk, initialDispatch } = connectRoutes(
     history,

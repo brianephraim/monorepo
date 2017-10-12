@@ -7,5 +7,6 @@ const routeData = {
     BATTLESHIP: '/battleship'
   },
   routeRootComponent: Battleship,
+  reducers: {}
 };
 export {routeData};

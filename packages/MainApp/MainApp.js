@@ -5,7 +5,7 @@ import React from 'react';
 import integrateBernie from 'profile-framer-frontend/setup'
 import makeStandardConstants from 'profile-framer-frontend/makeStandardConstants';
 // import integrateToDoApp from 'todo_app/mainAppIntegration'
-import {routeData as integrateBattleship} from 'battleship/mainAppIntegration'
+// import {routeData as integrateBattleship} from 'battleship/mainAppIntegration'
 import RouteLinksList from './RouteLinksList';
 import './reset.css';
 
@@ -17,7 +17,7 @@ const routeData = [
   integrateBernie(makeStandardConstants('boomer')),
   integrateBernie(makeStandardConstants('behemoth')),
   // integrateToDoApp,
-  integrateBattleship,
+  // integrateBattleship,
   {
     routesMap:{
       ROUTELINKLIST: '/routes'
@@ -61,11 +61,12 @@ routeData.pageMap = Object.keys(routeData.routesMap).reduce((accum, key) => {
 routeData.routesMap = {
   ...routeData.routesMap,
   TODOS: '/todos/:filter',
+  BATTLESHIP: '/battleship',
 };
 
 routeData.pageMap = {
   ...routeData.pageMap,
-  BATTLESHIP: 'MainApp',
+  BATTLESHIP: 'Battleship',
   TODOS: 'Todos',
 };
 
