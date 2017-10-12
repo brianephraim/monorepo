@@ -11,6 +11,7 @@
     "dev1": "npm run dev -- --servers='./packages/bernieserver/bernieserver.express.js,./packages/junk-express/junk-express.express.js' --isDev=true --isUniversal=false --isDeploy=false --initialApp='./packages/MainApp/initialAppIntegration.js' --asyncRoutes='./asyncRoutes.json'",
     "dev2": "npm run dev -- --servers='./packages/bernieserver/bernieserver.express.js,./packages/junk-express/junk-express.express.js' --isDev=true --isUniversal=true --isDeploy=false --initialApp='./packages/MainApp/initialAppIntegration.js' --asyncRoutes='./asyncRoutes.json'",
     "prod": "npm run dev -- --servers='./packages/bernieserver/bernieserver.express.js,./packages/junk-express/junk-express.express.js' --isDev=false --isUniversal=true --isDeploy=false --initialApp='./packages/MainApp/initialAppIntegration.js' --asyncRoutes='./asyncRoutes.json'",
+    "prod2": "npm run just-bundle-prod && npm run runProductionBundle",
     "deploy": "bash deploy.sh",
     "blank1": "___________",
     "blank2": "___________",
