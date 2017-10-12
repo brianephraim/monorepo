@@ -3,7 +3,7 @@ import flushChunks from 'webpack-flush-chunks'
 import createHistory from 'history/createMemoryHistory'
 import { NOT_FOUND } from 'redux-first-router'
 import url from 'url';
-import {routeData} from 'virtual-module-initial-app';
+import {routeData} from 'virtual-module-initialAppIntegration';
 
 import configureStore from '../src/configureStore'
 

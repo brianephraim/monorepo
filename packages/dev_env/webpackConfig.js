@@ -503,7 +503,7 @@ function generateConfigJson(options = {}) {
         // *** React Client And Server
         isReact && argv.initialApp  ? [
           new VirtualModulesPlugin({
-            'packages/virtual-module-initial-app.js': (
+            'packages/virtual-module-initialAppIntegration.js': (
               !isClient
               ?
               `
