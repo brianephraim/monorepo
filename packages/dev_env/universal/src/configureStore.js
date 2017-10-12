@@ -8,7 +8,7 @@ import options from './options'
 import * as reducers from './reducers'
 import * as actionCreators from './actions'
 
-import routeData from 'virtual-module-initial-app';
+import {routeData} from 'virtual-module-initial-app';
 
 
 

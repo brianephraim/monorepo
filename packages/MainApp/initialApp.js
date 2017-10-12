@@ -15,5 +15,6 @@ routeData.pageMap = {
   BATTLESHIP: 'Battleship',
   TODOS: 'Todos',
 };
-
-export default routeData;
+console.log('routeData',routeData);
+export default routeData.routeRootComponent;
+export {routeData};

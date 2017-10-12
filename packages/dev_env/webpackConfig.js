@@ -507,8 +507,9 @@ function generateConfigJson(options = {}) {
               !isClient
               ?
               `
-                import routeData from '${path.resolve(dirRoot, argv.initialApp)}';
-                export default routeData;
+                import Comp, {routeData} from '${path.resolve(dirRoot, argv.initialApp)}';
+                export default Comp;
+                export {routeData};
               `
               :
               `
@@ -519,7 +520,8 @@ function generateConfigJson(options = {}) {
                   pageMap: {},
                   routeRootComponent: () => {return (<div />);},
                 };
-                export default routeData;
+                export default routeData.routeRootComponent;
+                export {routeData};
               `
             ),
           }),

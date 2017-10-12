@@ -1,5 +1,5 @@
 import { NOT_FOUND } from 'redux-first-router'
-import routeData from 'virtual-module-initial-app';
+import {routeData} from 'virtual-module-initial-app';
 
 let windowPageMap = {};
 if(typeof window !== 'undefined' && window.pageMapFromInitialApp) {

@@ -1,6 +1,5 @@
-import mainAppRouteData from './initialApp';
+import Comp, {routeData} from './initialApp';
 
-export default mainAppRouteData.routeRootComponent;
+export default Comp;
 
-const routeData = mainAppRouteData;
 export {routeData};
