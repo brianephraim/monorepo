@@ -57,4 +57,5 @@ routeData.routeRootComponent = connect(
   }
 )(RootComponent);
 
-export default routeData;
+export default routeData.routeRootComponent;
+export {routeData};

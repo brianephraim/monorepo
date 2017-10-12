@@ -507,9 +507,9 @@ function generateConfigJson(options = {}) {
               !isClient
               ?
               `
-                import Comp, {routeData} from '${path.resolve(dirRoot, argv.initialApp)}';
+                import Comp from '${path.resolve(dirRoot, argv.initialApp)}';
                 export default Comp;
-                export {routeData};
+                export * from '${path.resolve(dirRoot, argv.initialApp)}';
               `
               :
               `
