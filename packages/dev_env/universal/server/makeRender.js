@@ -3,6 +3,7 @@ import flushChunks from 'webpack-flush-chunks'
 import createHistory from 'history/createMemoryHistory'
 import { NOT_FOUND } from 'redux-first-router'
 import url from 'url';
+import routeData from 'virtual-module-initial-app';
 
 import configureStore from '../src/configureStore'
 
@@ -88,7 +89,10 @@ export default function makeRender(makeHtmlConstituents = () => { return {}; }) 
             <link rel="stylesheet prefetch" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
           </head>
           <body>
-            <script>window.REDUX_STATE = ${stateJson}</script>
+            <script>
+              window.REDUX_STATE = ${stateJson};
+              window.routeDataFromInitialApp = ${JSON.stringify(routeData, null, 2)};
+            </script>
 
             ${bodyContent}
 

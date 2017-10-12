@@ -329,6 +329,7 @@ export default function(constants) {
   };
   Routing = connect(
     (state) => {
+      console.log('constants.appNameSpace',constants.appNameSpace);
       return {
         activeAppScreen: state[constants.appNameSpace].activeAppScreen,
       };

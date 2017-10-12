@@ -518,10 +518,35 @@ function generateConfigJson(options = {}) {
         // *** React Client And Server
         isReact && argv.initialApp  ? [
           new VirtualModulesPlugin({
-            'packages/virtual-module-initial-app.js': `
-              import routeData from '${path.resolve(dirRoot, argv.initialApp)}';
-              export default routeData;
-            `,
+            'packages/virtual-module-initial-app.js': (
+              !isClient
+              ?
+              `
+                import routeData from '${path.resolve(dirRoot, argv.initialApp)}';
+                export default {
+                  reducers: routeData.reducers,
+                  // reducers: {},
+                  routesMap: routeData.routesMap,
+                  pageMap: routeData.pageMap,
+                  asyncPageMap: routeData.pageMap,
+                  routeRootComponent: routeData.routeRootComponent
+
+                };
+                // export default routeData;
+              `
+              :
+              `
+                import React from 'react';
+                const routeData = {
+                  reducers: {},
+                  routesMap: {},
+                  pageMap: {},
+                  asyncPageMap: {},
+                  routeRootComponent: () => {return (<div />);},
+                };
+                export default routeData;
+              `
+            ),
           }),
         ] : []
       ),

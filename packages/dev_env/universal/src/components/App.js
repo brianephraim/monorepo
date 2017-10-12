@@ -41,6 +41,7 @@ const UniversalComponent = universal(
     error: Err,
     onLoad: (module, info, props, context) => {
       console.log(module);
+      console.log('module.routeData',module.routeData);
       if(module && module.routeData){
         if (module.routeData.routesMap) {
           const aThunk = addRoutes(module.routeData.routesMap) // export new routes from component file

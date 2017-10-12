@@ -40,6 +40,8 @@ const routeData = [
 
 
 function RootComponent (props){
+  console.log('actionTypeToComponentDict',actionTypeToComponentDict)
+  console.log('props.nameOfScreenComponent',props.nameOfScreenComponent)
   const Comp = actionTypeToComponentDict[props.nameOfScreenComponent] || actionTypeToComponentDict.FALLBACK_ROUTE;
   return (<Comp />);
 }
@@ -55,7 +57,7 @@ routeData.routeRootComponent = connect(
 )(RootComponent);
 
 routeData.pageMap = Object.keys(routeData.routesMap).reduce((accum, key) => {
-    accum[key] = 'Migration';
+    accum[key] = 'MainApp';
     return accum;
 },{});
 routeData.routesMap = {
@@ -65,10 +67,11 @@ routeData.routesMap = {
 
 routeData.pageMap = {
   ...routeData.pageMap,
-  BATTLESHIP: 'Migration',
+  BATTLESHIP: 'MainApp',
 };
 
 routeData.asyncPageMap = {
+  ...routeData.pageMap,
   TODOS: 'Todos'
 };
 
