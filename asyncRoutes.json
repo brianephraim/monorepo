@@ -1,5 +1,5 @@
 {
   "Battleship":"./packages/battleship/mainAppIntegration.js",
   "Todos":"./packages/todo_app/mainAppIntegration.js",
-  "InitialApp": "./packages/MainApp/initialApp.js"
+  "InitialApp": "./packages/MainApp/initialAppIntegration.js"
 }
