@@ -91,7 +91,7 @@ export default function makeRender(makeHtmlConstituents = () => { return {}; }) 
           <body>
             <script>
               window.REDUX_STATE = ${stateJson};
-              window.pageMapFromInitialApp = ${JSON.stringify(routeData.pageMap, null, 2)};
+              window.routeDataFromInitialApp = ${JSON.stringify(routeData, null, 2)};
             </script>
 
             ${bodyContent}
