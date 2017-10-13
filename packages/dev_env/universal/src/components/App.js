@@ -50,6 +50,9 @@ const UniversalComponent = universal(
       }
 
       // // if a route triggered component change, new reducers needs to reflect it
+      const state = context.store.getState();
+      context.store.dispatch({ type: state.location.type, payload: state.location.payload })
+
       // context.store.dispatch({ type: 'INIT_ACTION_FOR_ROUTE', payload: { param: props.param } })
        
     }
