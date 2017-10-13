@@ -19,14 +19,14 @@ export function compositeImageIntoParams(compositeImageData) {
 }
 export function paramsIntoCompositeImage(params, constants) {
   const placeholder = {
-    fgX: 142,
-    fgY: 98,
-    fgW: 305,
-    fgH: 305,
+    fgX: 363,
+    fgY: 44,
+    fgW: 554,
+    fgH: 554,
     bgW: 1200,
     bgH: 1200,
-    bgSrcKey: 'zephyr1476401787491',
-    fgSrcKey: 'h3',
+    bgSrcKey: '160608135318-01-bernie-sanders-0608-super-1691507902935062',
+    fgSrcKey: 'ahgqjgkcz55chapma9wu',
   };
   const paramsToUse = {
     ...placeholder,
