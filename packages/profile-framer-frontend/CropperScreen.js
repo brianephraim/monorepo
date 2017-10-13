@@ -130,13 +130,15 @@ class CropperScreen extends Component {
       },
     };
 
-    const reactCropperOptions = {
+    const otherReactCropperOptions = {
       zoomOnWheel: false,
       aspectRatio: 1 / 1,
       responsive: true,
       guides: false,
       autoCropArea: 0.9,
       rotatable: false,
+    };
+    const reactCropperOptions = {
       crop: this.crop,
       src: this.state.background.src,
       cropSrc: this.state.foreground.src,
@@ -150,15 +152,15 @@ class CropperScreen extends Component {
         : null,
       //{width: 200, height: 200, x: 10, y: 10, scaleX: 1, scaleY: 1,}
     };
-    reactCropperOptions.strict = false;
+    otherReactCropperOptions.strict = false;
 
     if (isTouchDevice) {
-      Object.assign(reactCropperOptions, {
-        mouseWheelZoom: false,
+      Object.assign(otherReactCropperOptions, {
+        zoomOnWheel: false,
         cropBoxMovable: false,
         movable: true,
         cropBoxResizable: false,
-        dragCrop: false,
+        dragMode: 'move',
         minCropBoxWidth: windowSizer.dimensions.width - 20,
       });
     }
@@ -172,7 +174,7 @@ class CropperScreen extends Component {
         {!this.props.hideControlsBar && <ControlsBar windowWidth={this.state.windowWidth} />}
         {this.props.hideControlsBar && <div style={{height: '4em'}} />}
         <div className="cropContainer" style={styles.cropContainer}>
-          <ReactCropperEnhanced {...reactCropperOptions} />
+          <ReactCropperEnhanced {...reactCropperOptions} otherReactCropperOptions={otherReactCropperOptions} />
         </div>
         <CompletionInterface
           useClickHandledButton={this.props.useClickHandledButton}

@@ -3283,21 +3283,21 @@ var UniversalComponent = (0, _reactUniversalComponent2.default)(function (_ref) 
   }
   if (page.importAvenue === 'temp') {
     var _imported = (0, _universalImport3.default)({
-      id: '/var/folders/t0/dms578js4lg8x73s9jzmvcp40000gn/T/tmp.f6VthYXw/',
+      id: '/var/folders/t0/dms578js4lg8x73s9jzmvcp40000gn/T/tmp.8YxmvKLd/',
       file: '/Users/brianephraim/Sites/monorepo/packages/dev_env/universal/src/components/App.js',
       load: function load() {
-        return Promise.all([__webpack_require__(274)("./" + page.fileKey), (0, _importCss3.default)('var/folders/t0/dms578js4lg8x73s9jzmvcp40000gn/T/tmp.f6VthYXw/' + page.fileKey)]).then(function (proms) {
+        return Promise.all([__webpack_require__(274)("./" + page.fileKey), (0, _importCss3.default)('var/folders/t0/dms578js4lg8x73s9jzmvcp40000gn/T/tmp.8YxmvKLd/' + page.fileKey)]).then(function (proms) {
           return proms[0];
         });
       },
       path: function path() {
-        return _path3.default.join(__dirname, '/var/folders/t0/dms578js4lg8x73s9jzmvcp40000gn/T/tmp.f6VthYXw/' + page.fileKey);
+        return _path3.default.join(__dirname, '/var/folders/t0/dms578js4lg8x73s9jzmvcp40000gn/T/tmp.8YxmvKLd/' + page.fileKey);
       },
       resolve: function resolve() {
         return /*require.resolve*/(__webpack_require__(341).resolve("./" + page.fileKey));
       },
       chunkName: function chunkName() {
-        return 'var/folders/t0/dms578js4lg8x73s9jzmvcp40000gn/T/tmp.f6VthYXw/' + page.fileKey;
+        return 'var/folders/t0/dms578js4lg8x73s9jzmvcp40000gn/T/tmp.8YxmvKLd/' + page.fileKey;
       }
     });
     return _imported;
@@ -3318,6 +3318,9 @@ var UniversalComponent = (0, _reactUniversalComponent2.default)(function (_ref) 
     }
 
     // // if a route triggered component change, new reducers needs to reflect it
+    var state = context.store.getState();
+    context.store.dispatch({ type: state.location.type, payload: state.location.payload });
+
     // context.store.dispatch({ type: 'INIT_ACTION_FOR_ROUTE', payload: { param: props.param } })
   }
 });
@@ -3814,14 +3817,14 @@ function compositeImageIntoParams(compositeImageData) {
 }
 function paramsIntoCompositeImage(params, constants) {
   var placeholder = {
-    fgX: 142,
-    fgY: 98,
-    fgW: 305,
-    fgH: 305,
+    fgX: 363,
+    fgY: 44,
+    fgW: 554,
+    fgH: 554,
     bgW: 1200,
     bgH: 1200,
-    bgSrcKey: 'zephyr1476401787491',
-    fgSrcKey: 'h3'
+    bgSrcKey: '160608135318-01-bernie-sanders-0608-super-1691507902935062',
+    fgSrcKey: 'ahgqjgkcz55chapma9wu'
   };
   var paramsToUse = _extends({}, placeholder, params);
   var compositeImageData = {
@@ -15019,7 +15022,7 @@ var ReactCropperEnhanced = function (_Component) {
           crop: this.crop,
           cropmove: this.cropmove,
           cropend: this.cropend
-        }));
+        }, this.props.otherReactCropperOptions));
       }
       return null;
     }
@@ -15034,7 +15037,8 @@ ReactCropperEnhanced.propTypes = {
   crop: _propTypes2.default.func,
   ready: _propTypes2.default.func,
   data: _propTypes2.default.object,
-  cropSrc: _propTypes2.default.string
+  cropSrc: _propTypes2.default.string,
+  otherReactCropperOptions: _propTypes2.default.object
 };
 ReactCropperEnhanced.defaultProps = {
   cropend: function cropend() {},
@@ -15042,7 +15046,8 @@ ReactCropperEnhanced.defaultProps = {
   crop: function crop() {},
   ready: function ready() {},
   data: null,
-  cropSrc: ''
+  cropSrc: '',
+  otherReactCropperOptions: {}
 };
 
 exports.default = ReactCropperEnhanced;
@@ -30058,33 +30063,24 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
   }
 */
 
-var docEl = _vanilla2.default.docEl,
-    docBody = _vanilla2.default.docBody,
-    getWinWidth = _vanilla2.default.getWinWidth,
-    getWinHeight = _vanilla2.default.getWinHeight,
-    getDocumentHeight = _vanilla2.default.getDocumentHeight,
-    getOffset = _vanilla2.default.getOffset,
-    domEfficiencyCache = _vanilla2.default.domEfficiencyCache;
+var getOffset = _vanilla2.default.getOffset;
 
 
-var generateGiantSquareDetails = function generateGiantSquareDetails($el) {
+function getDims($el) {
+  return {
+    windowHeight: _windowSizer2.default.dimensions.height - _windowSizer.heightTweak,
+    top: getOffset($el).top
+  };
+};
+function generateGiantSquareDetails($el) {
   var bottomGap = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
 
-
-  var getDims = function getDims($el) {
-    return {
-      windowHeight: _windowSizer2.default.dimensions.height - _windowSizer.heightTweak,
-      documentHeight: getDocumentHeight(),
-      top: getOffset($el).top
-    };
-  };
   var dims = getDims($el);
 
   var heightVal = dims.windowHeight - dims.top;
 
-  var windowWidth = getWinWidth();
+  var windowWidth = _windowSizer2.default.dimensions.width;
   var measurement = windowWidth < heightVal ? windowWidth : heightVal;
-
   if (measurement <= windowWidth) {
     var gap = dims.windowHeight - (dims.top + measurement);
     if (gap < bottomGap) {
@@ -31012,28 +31008,30 @@ var CropperScreen = function (_Component) {
         }
       };
 
-      var reactCropperOptions = {
+      var otherReactCropperOptions = {
         zoomOnWheel: false,
         aspectRatio: 1 / 1,
         responsive: true,
         guides: false,
         autoCropArea: 0.9,
-        rotatable: false,
+        rotatable: false
+      };
+      var reactCropperOptions = {
         crop: this.crop,
         src: this.state.background.src,
         cropSrc: this.state.foreground.src,
         data: this.state.foreground ? (0, _whitelistFilterProps2.default)(this.state.foreground, ['width', 'height', 'x', 'y']) : null
         //{width: 200, height: 200, x: 10, y: 10, scaleX: 1, scaleY: 1,}
       };
-      reactCropperOptions.strict = false;
+      otherReactCropperOptions.strict = false;
 
       if (isTouchDevice) {
-        Object.assign(reactCropperOptions, {
-          mouseWheelZoom: false,
+        Object.assign(otherReactCropperOptions, {
+          zoomOnWheel: false,
           cropBoxMovable: false,
           movable: true,
           cropBoxResizable: false,
-          dragCrop: false,
+          dragMode: 'move',
           minCropBoxWidth: _windowSizer2.default.dimensions.width - 20
         });
       }
@@ -31050,7 +31048,7 @@ var CropperScreen = function (_Component) {
         _react2.default.createElement(
           'div',
           { className: 'cropContainer', style: styles.cropContainer },
-          _react2.default.createElement(ReactCropperEnhanced, reactCropperOptions)
+          _react2.default.createElement(ReactCropperEnhanced, _extends({}, reactCropperOptions, { otherReactCropperOptions: otherReactCropperOptions }))
         ),
         _react2.default.createElement(_CompletionInterface2.default, {
           useClickHandledButton: this.props.useClickHandledButton,
