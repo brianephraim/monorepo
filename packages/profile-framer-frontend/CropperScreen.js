@@ -9,8 +9,7 @@ import ControlsBar, { controlsBarHeights } from './ControlsBar';
 import CompletionInterface, {
   completionInterfaceHeights,
 } from './CompletionInterface';
-
-const isTouchDevice = root.document && root.document.documentElement && 'ontouchstart' in document.documentElement;
+import isTouchDevice from './isTouchDevice';
 
 const hasDom = typeof window !== 'undefined';
 

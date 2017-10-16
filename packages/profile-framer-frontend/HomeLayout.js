@@ -24,6 +24,8 @@ import {
   appConnect,
 } from './nameSpacedResponsive';
 
+import isTouchDevice from './isTouchDevice';
+
 const StyledHomeLayout = styled.div`position: relative;`;
 
 const StyledTopBanner = ConnectResponsiveStatusesDictHOC(styled.div`
@@ -154,34 +156,23 @@ const StyledLeftPillar = ConnectResponsiveStatusesDictHOC(styled.div`
     return '';
   }};
 `);
-let AppHero = class extends Component {
-  constructor() {
-    super();
-    this.state = {};
-    this.onChange = (a, b, c) => {
-      this.setState({
-        measurement: c.measurement,
-      });
-    };
-  }
-  render() {
-    return (
-      <StyledLeftPillar className="app_body_leftPillar">
-        <AppMainSelfieFrameResponsive>
-          <StyledInstructions className="app_body_leftPillar_selfieFrame_instructions ">
-            <span className="selfieFrame_instructions_text">
-              Right click to save{this.state.measurement}
-            </span>
-          </StyledInstructions>
-          <StyledSelfie
-            className="app_body_leftPillar_selfieFrame_selfie"
-            src={this.props.imSrc}
-            alt={this.props.constants.heroImageAltText}
-          />
-        </AppMainSelfieFrameResponsive>
-      </StyledLeftPillar>
-    );
-  }
+function AppHero(props) {
+  return (
+    <StyledLeftPillar className="app_body_leftPillar">
+      <AppMainSelfieFrameResponsive>
+        <StyledInstructions className="app_body_leftPillar_selfieFrame_instructions ">
+          <span className="selfieFrame_instructions_text">
+            {isTouchDevice ? 'Press and hold image to save' : 'Right click to save'}
+          </span>
+        </StyledInstructions>
+        <StyledSelfie
+          className="app_body_leftPillar_selfieFrame_selfie"
+          src={props.imSrc}
+          alt={props.constants.heroImageAltText}
+        />
+      </AppMainSelfieFrameResponsive>
+    </StyledLeftPillar>
+  );
 };
 
 AppHero.propTypes = {
