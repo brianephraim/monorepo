@@ -3282,21 +3282,21 @@ var UniversalComponent = (0, _reactUniversalComponent2.default)(function (_ref) 
   }
   if (page.importAvenue === 'temp') {
     var _imported = (0, _universalImport3.default)({
-      id: '/var/folders/t0/dms578js4lg8x73s9jzmvcp40000gn/T/tmp.yw8Woza4/',
+      id: '/var/folders/t0/dms578js4lg8x73s9jzmvcp40000gn/T/tmp.oM1EgXzM/',
       file: '/Users/brianephraim/Sites/monorepo/packages/dev_env/universal/src/components/App.js',
       load: function load() {
-        return Promise.all([__webpack_require__(275)("./" + page.fileKey), (0, _importCss3.default)('var/folders/t0/dms578js4lg8x73s9jzmvcp40000gn/T/tmp.yw8Woza4/' + page.fileKey)]).then(function (proms) {
+        return Promise.all([__webpack_require__(275)("./" + page.fileKey), (0, _importCss3.default)('var/folders/t0/dms578js4lg8x73s9jzmvcp40000gn/T/tmp.oM1EgXzM/' + page.fileKey)]).then(function (proms) {
           return proms[0];
         });
       },
       path: function path() {
-        return _path3.default.join(__dirname, '/var/folders/t0/dms578js4lg8x73s9jzmvcp40000gn/T/tmp.yw8Woza4/' + page.fileKey);
+        return _path3.default.join(__dirname, '/var/folders/t0/dms578js4lg8x73s9jzmvcp40000gn/T/tmp.oM1EgXzM/' + page.fileKey);
       },
       resolve: function resolve() {
         return /*require.resolve*/(__webpack_require__(342).resolve("./" + page.fileKey));
       },
       chunkName: function chunkName() {
-        return 'var/folders/t0/dms578js4lg8x73s9jzmvcp40000gn/T/tmp.yw8Woza4/' + page.fileKey;
+        return 'var/folders/t0/dms578js4lg8x73s9jzmvcp40000gn/T/tmp.oM1EgXzM/' + page.fileKey;
       }
     });
     return _imported;
@@ -39777,7 +39777,7 @@ function startServer(renderAndUse) {
     serverScript({ app: app });
   });
   app.use('/favicon', _express2.default.static('packages/favicon'));
-  app.use((0, _serveFavicon2.default)(_path2.default.resolve(__dirnameBeforeCompiled, '../favicon/favicon.ico')));
+  app.use((0, _serveFavicon2.default)('packages/favicon/favicon.ico'));
   app.use('/images', _express2.default.static('packages/images'));
   app.use('/fonts', _express2.default.static('packages/fonts'));
   (0, _demoEndpoints2.default)({ app: app });
