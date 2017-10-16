@@ -155,6 +155,7 @@ class AppHeader extends Component {
     }
   }
   render(){
+    console.log(this.props.metaOgUrl);
     const encodedShareUrl = encodeURIComponent(this.props.shareUrl);
     const tweetUrl = `https://twitter.com/intent/tweet?url=${encodedShareUrl}&via=bernieselfie&hashtags=BernieSanders%2Cfeelthebern%2Cbernieselfie&related=BernieSanders`;
     const pinUrl = `//www.pinterest.com/pin/create/button/?url=${encodedShareUrl}&description=${encodeURIComponent('Use BernieSelfie.com support Bernie Sanders to your friends and followers')}`;
@@ -177,10 +178,17 @@ class AppHeader extends Component {
             </StyledSocialWidget>
             <StyledSocialWidget
               className="fb-like app_header_leftPillar_socialRow_socialWidget"
+              data-href={this.props.metaOgUrl}
               data-share="true"
               data-width="450"
               data-layout="button_count"
               data-show-faces="true"
+            />
+            <StyledSocialWidget
+              className="fb-share-button"
+              data-hrefxxx={this.props.metaOgUrl}
+              data-href="http://www.bernieselfie.com"
+              data-layout="button_count"
             />
 
             <StyledSocialWidget className="app_header_leftPillar_socialRow_socialWidget">

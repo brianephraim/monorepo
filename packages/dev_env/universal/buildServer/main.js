@@ -3282,21 +3282,21 @@ var UniversalComponent = (0, _reactUniversalComponent2.default)(function (_ref) 
   }
   if (page.importAvenue === 'temp') {
     var _imported = (0, _universalImport3.default)({
-      id: '/var/folders/t0/dms578js4lg8x73s9jzmvcp40000gn/T/tmp.bA58ZdHu/',
+      id: '/var/folders/t0/dms578js4lg8x73s9jzmvcp40000gn/T/tmp.yYa4YzRU/',
       file: '/Users/brianephraim/Sites/monorepo/packages/dev_env/universal/src/components/App.js',
       load: function load() {
-        return Promise.all([__webpack_require__(275)("./" + page.fileKey), (0, _importCss3.default)('var/folders/t0/dms578js4lg8x73s9jzmvcp40000gn/T/tmp.bA58ZdHu/' + page.fileKey)]).then(function (proms) {
+        return Promise.all([__webpack_require__(275)("./" + page.fileKey), (0, _importCss3.default)('var/folders/t0/dms578js4lg8x73s9jzmvcp40000gn/T/tmp.yYa4YzRU/' + page.fileKey)]).then(function (proms) {
           return proms[0];
         });
       },
       path: function path() {
-        return _path3.default.join(__dirname, '/var/folders/t0/dms578js4lg8x73s9jzmvcp40000gn/T/tmp.bA58ZdHu/' + page.fileKey);
+        return _path3.default.join(__dirname, '/var/folders/t0/dms578js4lg8x73s9jzmvcp40000gn/T/tmp.yYa4YzRU/' + page.fileKey);
       },
       resolve: function resolve() {
         return /*require.resolve*/(__webpack_require__(342).resolve("./" + page.fileKey));
       },
       chunkName: function chunkName() {
-        return 'var/folders/t0/dms578js4lg8x73s9jzmvcp40000gn/T/tmp.bA58ZdHu/' + page.fileKey;
+        return 'var/folders/t0/dms578js4lg8x73s9jzmvcp40000gn/T/tmp.yYa4YzRU/' + page.fileKey;
       }
     });
     return _imported;
@@ -14596,19 +14596,29 @@ var _deriveUrlInfo = __webpack_require__(29);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function ensureTrailingSlash(str) {
+  return str.replace(/\/?$/, '/');
+}
+
 function shareUrlHoc(CompToEnhance) {
   function Comp(props) {
+    var metaOgUrl = '' + props.serverClientOrigin + props.constants.urlAppNameSpace + '/' + (0, _deriveUrlInfo.formUrl)(props.compositeImageData);
+    if (ensureTrailingSlash('' + props.serverClientOrigin + props.constants.urlAppNameSpace) === ensureTrailingSlash('' + props.serverClientUrl)) {
+      metaOgUrl = ensureTrailingSlash(props.serverClientUrl);
+    }
     var shareUrl = '' + props.serverClientOrigin + props.constants.urlAppNameSpace + '/' + (0, _deriveUrlInfo.formUrl)(props.compositeImageData);
-    return _react2.default.createElement(CompToEnhance, _extends({}, props, { shareUrl: shareUrl }));
+    return _react2.default.createElement(CompToEnhance, _extends({}, props, { shareUrl: shareUrl, metaOgUrl: metaOgUrl }));
   }
   Comp.propTypes = {
     serverClientOrigin: _propTypes2.default.string.isRequired,
     constants: _propTypes2.default.object.isRequired,
-    compositeImageData: _propTypes2.default.object.isRequired
+    compositeImageData: _propTypes2.default.object.isRequired,
+    serverClientUrl: _propTypes2.default.string.isRequired
   };
   return (0, _reactRedux.connect)(function (state) {
     return {
-      serverClientOrigin: state.serverClientOrigin
+      serverClientOrigin: state.serverClientOrigin,
+      serverClientUrl: state.serverClientUrl
     };
   })((0, _nameSpacedResponsive.appConnect)(function (appState) {
     return {
@@ -14619,6 +14629,20 @@ function shareUrlHoc(CompToEnhance) {
   })(Comp));
 }
 exports.default = shareUrlHoc;
+
+/*
+    function ensureTrailingSlash(str) {
+      return str.replace(/\/?$/, '/');
+    }
+
+    function HtmlHeadInjection(props) {
+      const constants = this.props.constants;
+      const compositeImageUrl = props.compositeImageUrl;
+      let metaOgUrl = `${props.serverClientOrigin}${props.constants.urlAppNameSpace}/${formUrl(props.compositeImageData)}`;
+      if (ensureTrailingSlash(`${props.serverClientOrigin}${props.constants.urlAppNameSpace}`) === ensureTrailingSlash(`${props.serverClientUrl}`)) {
+        metaOgUrl = ensureTrailingSlash(props.serverClientUrl);
+      }
+*/
 
 /***/ }),
 /* 157 */
@@ -36364,6 +36388,7 @@ var AppHeader = function (_Component) {
   }, {
     key: 'render',
     value: function render() {
+      console.log(this.props.metaOgUrl);
       var encodedShareUrl = encodeURIComponent(this.props.shareUrl);
       var tweetUrl = 'https://twitter.com/intent/tweet?url=' + encodedShareUrl + '&via=bernieselfie&hashtags=BernieSanders%2Cfeelthebern%2Cbernieselfie&related=BernieSanders';
       var pinUrl = '//www.pinterest.com/pin/create/button/?url=' + encodedShareUrl + '&description=' + encodeURIComponent('Use BernieSelfie.com support Bernie Sanders to your friends and followers');
@@ -36401,10 +36426,17 @@ var AppHeader = function (_Component) {
             ),
             _react2.default.createElement(StyledSocialWidget, {
               className: 'fb-like app_header_leftPillar_socialRow_socialWidget',
+              'data-href': this.props.metaOgUrl,
               'data-share': 'true',
               'data-width': '450',
               'data-layout': 'button_count',
               'data-show-faces': 'true'
+            }),
+            _react2.default.createElement(StyledSocialWidget, {
+              className: 'fb-share-button',
+              'data-hrefxxx': this.props.metaOgUrl,
+              'data-href': 'http://www.bernieselfie.com',
+              'data-layout': 'button_count'
             }),
             _react2.default.createElement(
               StyledSocialWidget,
