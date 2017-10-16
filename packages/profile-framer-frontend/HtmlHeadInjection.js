@@ -5,13 +5,16 @@ import {Helmet} from "react-helmet";
 import { appConnect } from './nameSpacedResponsive';
 import { formUrl } from './deriveUrlInfo';
 
+function ensureTrailingSlash(str) {
+  return str.replace(/\/?$/, '/');
+}
 
 function HtmlHeadInjection(props) {
   const constants = props.constants;
   const compositeImageUrl = props.compositeImageUrl;
   let metaOgUrl = `${props.serverClientOrigin}${props.constants.urlAppNameSpace}/${formUrl(props.compositeImageData)}`;
-  if (`${props.serverClientOrigin}${props.constants.urlAppNameSpace}` === `${props.serverClientUrl}`) {
-    metaOgUrl = props.serverClientUrl;
+  if (ensureTrailingSlash(`${props.serverClientOrigin}${props.constants.urlAppNameSpace}`) === ensureTrailingSlash(`${props.serverClientUrl}`)) {
+    metaOgUrl = ensureTrailingSlash(props.serverClientUrl);
   }
 
   return (
