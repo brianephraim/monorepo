@@ -1,4 +1,6 @@
 import express from 'express';
+import favicon from 'serve-favicon';
+import path from 'path';
 /* eslint-disable import/no-extraneous-dependencies */
 import serverCollection from 'virtual-module-server-collection';
 /* eslint-enable import/no-extraneous-dependencies */
@@ -6,10 +8,15 @@ import demoEndpoints from './universal/server/demoEndpoints';
 
 
 export default function startServer(renderAndUse) {
+  console.log('__dirnameBeforeCompiled',__dirnameBeforeCompiled);
+  console.log('__dirname',__dirname);
+  console.log("path.resolve(__dirnameBeforeCompiled,'../favicon/favicon.ico')",path.resolve(__dirnameBeforeCompiled,'../favicon/favicon.ico'))
   const app = express();
   serverCollection.forEach((serverScript) => {
     serverScript({ app });
   });
+  app.use('/favicon', express.static('packages/favicon'));
+  app.use(favicon(path.resolve(__dirnameBeforeCompiled,'../favicon/favicon.ico')));
   app.use('/images', express.static('packages/images'));
   app.use('/fonts', express.static('packages/fonts'));
   demoEndpoints({app}) 

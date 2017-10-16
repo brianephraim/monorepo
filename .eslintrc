@@ -29,7 +29,7 @@
     "node": true
   },
   "globals": {
-    "__dirnameWhenCompiled": true,
+    "__dirnameBeforeCompiled": true,
     "__non_webpack_require__": true
   }
 }

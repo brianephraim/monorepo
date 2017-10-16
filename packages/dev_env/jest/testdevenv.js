@@ -17,7 +17,7 @@ describe('asdf', function() {
     let bundleHasContent = false;
     beforeEach(function (done) {
       // this.timeout(60000);
-      const monorepoDir = path.resolve(__dirnameWhenCompiled, '../../../');
+      const monorepoDir = path.resolve(__dirnameBeforeCompiled, '../../../');
       const testdevenvMain = path.resolve(monorepoDir, './packages/testdevenv-main');
       const testdevenvMainJs = path.resolve(testdevenvMain, './testdevenv-main.js');
       fs.ensureDirSync(testdevenvMain);

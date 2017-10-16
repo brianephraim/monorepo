@@ -1,4 +1,4 @@
-const dirName = __dirnameWhenCompiled.replace('/src/import-examples/', /import-examples/);
+const dirName = __dirnameBeforeCompiled.replace('/src/import-examples/', /import-examples/);
 const config = {
 	entry:{
 		'index-compiled': `${dirName}/index.js`,
