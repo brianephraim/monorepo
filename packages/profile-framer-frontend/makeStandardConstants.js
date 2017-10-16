@@ -17,7 +17,7 @@ export default function makeProfileFrameConstants(namingBasis,isUrlRoot) {
   
   const NamingBasis = capitalizeFirstLetter(namingBasis);
   const topBanner = {
-    href: `http://www.${appPublishDomain}/`,
+    href: `http://www.berniesanders.com/`,
     text: `Contribute to ${NamingBasis}`
   };
   const backendApiPrefix = '/bernieserver';
