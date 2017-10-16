@@ -3282,21 +3282,21 @@ var UniversalComponent = (0, _reactUniversalComponent2.default)(function (_ref) 
   }
   if (page.importAvenue === 'temp') {
     var _imported = (0, _universalImport3.default)({
-      id: '/var/folders/t0/dms578js4lg8x73s9jzmvcp40000gn/T/tmp.oM1EgXzM/',
+      id: '/var/folders/t0/dms578js4lg8x73s9jzmvcp40000gn/T/tmp.bA58ZdHu/',
       file: '/Users/brianephraim/Sites/monorepo/packages/dev_env/universal/src/components/App.js',
       load: function load() {
-        return Promise.all([__webpack_require__(275)("./" + page.fileKey), (0, _importCss3.default)('var/folders/t0/dms578js4lg8x73s9jzmvcp40000gn/T/tmp.oM1EgXzM/' + page.fileKey)]).then(function (proms) {
+        return Promise.all([__webpack_require__(275)("./" + page.fileKey), (0, _importCss3.default)('var/folders/t0/dms578js4lg8x73s9jzmvcp40000gn/T/tmp.bA58ZdHu/' + page.fileKey)]).then(function (proms) {
           return proms[0];
         });
       },
       path: function path() {
-        return _path3.default.join(__dirname, '/var/folders/t0/dms578js4lg8x73s9jzmvcp40000gn/T/tmp.oM1EgXzM/' + page.fileKey);
+        return _path3.default.join(__dirname, '/var/folders/t0/dms578js4lg8x73s9jzmvcp40000gn/T/tmp.bA58ZdHu/' + page.fileKey);
       },
       resolve: function resolve() {
         return /*require.resolve*/(__webpack_require__(342).resolve("./" + page.fileKey));
       },
       chunkName: function chunkName() {
-        return 'var/folders/t0/dms578js4lg8x73s9jzmvcp40000gn/T/tmp.oM1EgXzM/' + page.fileKey;
+        return 'var/folders/t0/dms578js4lg8x73s9jzmvcp40000gn/T/tmp.bA58ZdHu/' + page.fileKey;
       }
     });
     return _imported;
@@ -37660,12 +37660,16 @@ var _deriveUrlInfo = __webpack_require__(29);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function ensureTrailingSlash(str) {
+  return str.replace(/\/?$/, '/');
+}
+
 function HtmlHeadInjection(props) {
   var constants = props.constants;
   var compositeImageUrl = props.compositeImageUrl;
   var metaOgUrl = '' + props.serverClientOrigin + props.constants.urlAppNameSpace + '/' + (0, _deriveUrlInfo.formUrl)(props.compositeImageData);
-  if ('' + props.serverClientOrigin + props.constants.urlAppNameSpace === '' + props.serverClientUrl) {
-    metaOgUrl = props.serverClientUrl;
+  if (ensureTrailingSlash('' + props.serverClientOrigin + props.constants.urlAppNameSpace) === ensureTrailingSlash('' + props.serverClientUrl)) {
+    metaOgUrl = ensureTrailingSlash(props.serverClientUrl);
   }
 
   return _react2.default.createElement(
