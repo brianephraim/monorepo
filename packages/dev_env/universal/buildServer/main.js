@@ -3282,21 +3282,21 @@ var UniversalComponent = (0, _reactUniversalComponent2.default)(function (_ref) 
   }
   if (page.importAvenue === 'temp') {
     var _imported = (0, _universalImport3.default)({
-      id: '/var/folders/t0/dms578js4lg8x73s9jzmvcp40000gn/T/tmp.yYa4YzRU/',
+      id: '/var/folders/t0/dms578js4lg8x73s9jzmvcp40000gn/T/tmp.HgendHRj/',
       file: '/Users/brianephraim/Sites/monorepo/packages/dev_env/universal/src/components/App.js',
       load: function load() {
-        return Promise.all([__webpack_require__(275)("./" + page.fileKey), (0, _importCss3.default)('var/folders/t0/dms578js4lg8x73s9jzmvcp40000gn/T/tmp.yYa4YzRU/' + page.fileKey)]).then(function (proms) {
+        return Promise.all([__webpack_require__(275)("./" + page.fileKey), (0, _importCss3.default)('var/folders/t0/dms578js4lg8x73s9jzmvcp40000gn/T/tmp.HgendHRj/' + page.fileKey)]).then(function (proms) {
           return proms[0];
         });
       },
       path: function path() {
-        return _path3.default.join(__dirname, '/var/folders/t0/dms578js4lg8x73s9jzmvcp40000gn/T/tmp.yYa4YzRU/' + page.fileKey);
+        return _path3.default.join(__dirname, '/var/folders/t0/dms578js4lg8x73s9jzmvcp40000gn/T/tmp.HgendHRj/' + page.fileKey);
       },
       resolve: function resolve() {
         return /*require.resolve*/(__webpack_require__(342).resolve("./" + page.fileKey));
       },
       chunkName: function chunkName() {
-        return 'var/folders/t0/dms578js4lg8x73s9jzmvcp40000gn/T/tmp.yYa4YzRU/' + page.fileKey;
+        return 'var/folders/t0/dms578js4lg8x73s9jzmvcp40000gn/T/tmp.HgendHRj/' + page.fileKey;
       }
     });
     return _imported;
@@ -36427,15 +36427,14 @@ var AppHeader = function (_Component) {
             _react2.default.createElement(StyledSocialWidget, {
               className: 'fb-like app_header_leftPillar_socialRow_socialWidget',
               'data-href': this.props.metaOgUrl,
-              'data-share': 'true',
+              'data-share': 'false',
               'data-width': '450',
               'data-layout': 'button_count',
               'data-show-faces': 'true'
             }),
             _react2.default.createElement(StyledSocialWidget, {
               className: 'fb-share-button',
-              'data-hrefxxx': this.props.metaOgUrl,
-              'data-href': 'http://www.bernieselfie.com',
+              'data-href': this.props.metaOgUrl,
               'data-layout': 'button_count'
             }),
             _react2.default.createElement(
@@ -37698,7 +37697,7 @@ function ensureTrailingSlash(str) {
 
 function HtmlHeadInjection(props) {
   var constants = props.constants;
-  var compositeImageUrl = props.compositeImageUrl;
+  var compositeImageUrl = '' + props.serverClientOrigin + props.compositeImageUrl;
   var metaOgUrl = '' + props.serverClientOrigin + props.constants.urlAppNameSpace + '/' + (0, _deriveUrlInfo.formUrl)(props.compositeImageData);
   if (ensureTrailingSlash('' + props.serverClientOrigin + props.constants.urlAppNameSpace) === ensureTrailingSlash('' + props.serverClientUrl)) {
     metaOgUrl = ensureTrailingSlash(props.serverClientUrl);
@@ -37733,7 +37732,7 @@ function HtmlHeadInjection(props) {
     _react2.default.createElement('meta', { name: 'twitter:creator', content: constants.headMetaTwitterCreator }),
     _react2.default.createElement('meta', { name: 'twitter:title', content: constants.headMetaTwitterTitle }),
     _react2.default.createElement('meta', { name: 'twitter:description', content: constants.headMetaTwitterDescription }),
-    _react2.default.createElement('meta', { name: 'twitter:image', content: props.compositeImageUrl }),
+    _react2.default.createElement('meta', { name: 'twitter:image', content: compositeImageUrl }),
     _react2.default.createElement('link', { rel: 'apple-touch-icon', sizes: '57x57', href: '/favicon/apple-icon-57x57.png' }),
     _react2.default.createElement('link', { rel: 'apple-touch-icon', sizes: '60x60', href: '/favicon/apple-icon-60x60.png' }),
     _react2.default.createElement('link', { rel: 'apple-touch-icon', sizes: '72x72', href: '/favicon/apple-icon-72x72.png' }),
