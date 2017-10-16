@@ -16,7 +16,7 @@ export default function startServer(renderAndUse) {
     serverScript({ app });
   });
   app.use('/favicon', express.static('packages/favicon'));
-  app.use(favicon(path.resolve(__dirnameBeforeCompiled,'../favicon/favicon.ico')));
+  app.use(favicon('packages/favicon/favicon.ico'));
   app.use('/images', express.static('packages/images'));
   app.use('/fonts', express.static('packages/fonts'));
   demoEndpoints({app}) 
