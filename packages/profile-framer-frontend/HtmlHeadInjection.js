@@ -11,7 +11,7 @@ function ensureTrailingSlash(str) {
 
 function HtmlHeadInjection(props) {
   const constants = props.constants;
-  const compositeImageUrl = props.compositeImageUrl;
+  const compositeImageUrl = `${props.serverClientOrigin}${props.compositeImageUrl}`;
   let metaOgUrl = `${props.serverClientOrigin}${props.constants.urlAppNameSpace}/${formUrl(props.compositeImageData)}`;
   if (ensureTrailingSlash(`${props.serverClientOrigin}${props.constants.urlAppNameSpace}`) === ensureTrailingSlash(`${props.serverClientUrl}`)) {
     metaOgUrl = ensureTrailingSlash(props.serverClientUrl);
@@ -44,7 +44,7 @@ function HtmlHeadInjection(props) {
       <meta name="twitter:creator" content={constants.headMetaTwitterCreator} />
       <meta name="twitter:title" content={constants.headMetaTwitterTitle} />
       <meta name="twitter:description" content={constants.headMetaTwitterDescription} />
-      <meta name="twitter:image" content={props.compositeImageUrl} />
+      <meta name="twitter:image" content={compositeImageUrl} />
       <link rel="apple-touch-icon" sizes="57x57" href="/favicon/apple-icon-57x57.png" />
       <link rel="apple-touch-icon" sizes="60x60" href="/favicon/apple-icon-60x60.png" />
       <link rel="apple-touch-icon" sizes="72x72" href="/favicon/apple-icon-72x72.png" />

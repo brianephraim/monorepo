@@ -179,15 +179,14 @@ class AppHeader extends Component {
             <StyledSocialWidget
               className="fb-like app_header_leftPillar_socialRow_socialWidget"
               data-href={this.props.metaOgUrl}
-              data-share="true"
+              data-share="false"
               data-width="450"
               data-layout="button_count"
               data-show-faces="true"
             />
             <StyledSocialWidget
               className="fb-share-button"
-              data-hrefxxx={this.props.metaOgUrl}
-              data-href="http://www.bernieselfie.com"
+              data-href={this.props.metaOgUrl}
               data-layout="button_count"
             />
 
