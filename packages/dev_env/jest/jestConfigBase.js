@@ -1,7 +1,7 @@
 /* eslint-disable no-useless-escape */
 function getDirname(/* debug */) {
-  return typeof __dirnameWhenCompiled !== "undefined"
-    ? __dirnameWhenCompiled
+  return typeof __dirnameBeforeCompiled !== "undefined"
+    ? __dirnameBeforeCompiled
     : __dirname;
 }
 module.exports = {

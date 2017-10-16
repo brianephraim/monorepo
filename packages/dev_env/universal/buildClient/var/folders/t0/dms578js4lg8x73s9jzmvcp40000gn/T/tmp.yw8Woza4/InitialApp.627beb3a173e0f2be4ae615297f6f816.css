@@ -58,8 +58,6 @@ table {
   font-family: 'Material Icons';
   font-weight: normal;
   font-style: normal;
-  font-size: 1em;
-  /* Preferred icon size */
   display: inline-block;
   width: 1em;
   height: 1em;
@@ -100,8 +98,6 @@ B:78
   font-family: 'Material Icons';
   font-weight: normal;
   font-style: normal;
-  font-size: 1em;
-  /* Preferred icon size */
   display: inline-block;
   width: 1em;
   height: 1em;
@@ -130,14 +126,6 @@ B:78
 
 body, html {
   margin: 0; }
-
-html {
-  font-size: 16px;
-  color: #087ED7;
-  font-family: "Cantarell", sans-serif; }
-
-html .branding_title {
-  font-family: "Fjalla One", sans-serif; }
 
 .loadingAssets .buttonGroup, .loadingAssets .iframeUploadButton {
   display: none; }
@@ -432,4 +420,4 @@ html .branding_title {
 .cropper-disabled .cropper-point {
   cursor: not-allowed; }
 
-/*# sourceMappingURL=InitialApp.d62edc44db1e8751135048993776f737.css.map*/
+/*# sourceMappingURL=InitialApp.627beb3a173e0f2be4ae615297f6f816.css.map*/

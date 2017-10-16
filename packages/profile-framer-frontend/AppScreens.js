@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { appConnect } from './nameSpacedResponsive';
+import styled from 'styled-components';
+import styleConstants from './style-constants';
 import {
   HomeLayoutWithUploadCallback,
 } from './routingComponents';
@@ -8,11 +10,17 @@ import WeakHider from './WeakHider';
 import HtmlHeadInjection from './HtmlHeadInjection';
 import LoadingScreen from './LoadingScreen';
 
+const StyledAppEverythingWrap = styled.div`
+  font-size:16px;
+  color: ${styleConstants.colors.blue};
+  font-family: ${styleConstants.font2};
+`;
+
 function AppScreens (props) {
   const isLoading = !!props.loading.length;
   const hideHome = isLoading || props.activeAppScreen !== 'HOME_PROFILE_FRAMER';
   return (
-    <div>
+    <StyledAppEverythingWrap>
       <HtmlHeadInjection />
       <WeakHider when={hideHome} >
         <HomeLayoutWithUploadCallback />
@@ -23,7 +31,7 @@ function AppScreens (props) {
       {isLoading && (
         <LoadingScreen />
       )}
-    </div>
+    </StyledAppEverythingWrap>
   );
 }
 

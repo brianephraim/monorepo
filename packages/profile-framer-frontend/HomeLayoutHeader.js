@@ -92,7 +92,7 @@ const StyledFbLikePageWrap = ConnectResponsiveStatusesDictHOC(styled.div`
 const StyledFbLikePageWidget = ConnectResponsiveStatusesDictHOC(styled.img`
   ${styleConstants.mixins.socialWidget_rightTop()};
 `);
-const StyledSocialWidgetRight = ConnectResponsiveStatusesDictHOC(styled.img`
+const StyledSocialWidgetRight = ConnectResponsiveStatusesDictHOC(styled.div`
   ${styleConstants.mixins.socialWidget_rightBottom()} ${styleConstants.mixins.socialWidgetClass()};
 `);
 const StyledSocialRowRight = ConnectResponsiveStatusesDictHOC(styled.div`
@@ -103,7 +103,7 @@ const StyledHeader = ConnectResponsiveStatusesDictHOC(styled.div`
 `);
 
 class AppHeader extends Component {
-  componentWillMount(){
+  componentDidMount(){
     if(typeof window !== 'undefined') {
       // TWITTER
       window.twttr = (function(d, s, id) {
@@ -139,7 +139,7 @@ class AppHeader extends Component {
           };
          
           return t;
-        }(document, "script", "twitter-wjs"));
+        }(document, "script", "pintrest-js"));
 
       // GOOGLE ANALYTICS
       if (window.location.host.indexOf('bernieselfie.com') !== -1){
@@ -226,23 +226,12 @@ class AppHeader extends Component {
             </div>
           </StyledFbLikePageWrap>
           <StyledSocialRowRight className="app_header_rightPillar_socialRow">
-            <div className="app_header_leftPillar_socialRow_socialWidget socialWidget">
-                <a className="twitter-share-button"
-                  href={tweetUrl}
-                  >
-                Tweet</a>
-            </div>
-            <div
-              className="fb-like app_header_leftPillar_socialRow_socialWidget socialWidget"
-              data-share="true"
-              data-width="450"
-              data-layout="button_count" 
-              data-show-faces="true">
-            </div>
-
-            <div className="app_header_leftPillar_socialRow_socialWidget socialWidget">
-                <a href="//www.pinterest.com/pin/create/button/?url=<%= urlInfo.customUrlQueryString %>&description=<%= urlInfo.serialize('Use BernieSelfie.com support Bernie Sanders to your friends and followers') %>" data-pin-do="buttonPin" data-pin-config="beside" data-pin-color="red"><img src="//assets.pinterest.com/images/pidgets/pinit_fg_en_rect_red_20.png" /></a>
-            </div>
+            <StyledSocialWidgetRight>
+              <a style={{fontSize:'9px'}} className="twitter-follow-button" href="https://twitter.com/bernieselfie">Follow @bernieselfie</a>
+            </StyledSocialWidgetRight>
+            <StyledSocialWidgetRight>
+              <a data-pin-do="buttonFollow" href="https://www.pinterest.com/bernieselfie/">bernieselfie.com</a>
+            </StyledSocialWidgetRight>
           </StyledSocialRowRight>
           {/*
           <StyledSocialRowRight className="app_header_rightPillar_socialRow">

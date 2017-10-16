@@ -19,8 +19,8 @@ if (argv.isReact && !argv.initialApp) {
 }
 
 function getDirname() {
-  return typeof __dirnameWhenCompiled !== "undefined"
-    ? __dirnameWhenCompiled
+  return typeof __dirnameBeforeCompiled !== "undefined"
+    ? __dirnameBeforeCompiled
     : __dirname;
 }
 
@@ -487,9 +487,9 @@ function generateConfigJson(options = {}) {
             return module.resource;
           });
 
-          // In bundles, where `__dirnameWhenCompiled` appears, replace with string
-          // consisting of the original directory path withere `__dirnameWhenCompiled` appeared
-          setModuleConstant('__dirnameWhenCompiled', (module) => {
+          // In bundles, where `__dirnameBeforeCompiled` appears, replace with string
+          // consisting of the original directory path withere `__dirnameBeforeCompiled` appeared
+          setModuleConstant('__dirnameBeforeCompiled', (module) => {
             return module.context;
           });
         },

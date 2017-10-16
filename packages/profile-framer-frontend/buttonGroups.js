@@ -555,6 +555,7 @@ const ImportButtonGroup = makeButtonGroupComponent({
     },
     {
       text: 'Storage',
+      isUploadCompositeImageSetter: true,
     },
   ],
 });

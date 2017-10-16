@@ -1,7 +1,6 @@
 import React from 'react'
 import { Provider } from 'react-redux'
 
-import {Helmet} from "react-helmet";
 import { connect } from 'react-redux'
 import { TransitionGroup, Transition } from 'transition-group'
 import universal from 'react-universal-component'
@@ -25,6 +24,7 @@ import switcherStyles from '../css/Switcher'
 
 const UniversalComponent = universal(
   ({ page }) => {
+    // debugger;
     if (page.importAvenue === 'demo') {
       const imported = import(`./${page.fileKey}`);
       return imported;
@@ -106,12 +106,7 @@ Switcher = connect(({ page, ...state }) => ({
 }))(Switcher)
 
 
-let HeadStuff = () => {
-  return (<Helmet>
-      <meta charSet="utf-8" />
-      <title>My Title</title>
-  </Helmet>)
-};
+
 
 
 
@@ -120,7 +115,6 @@ export default ({store,addReducers}) => {
   return (
     <Provider store={store} >
       <div>
-        <HeadStuff />
         <Switcher addReducers={addReducers} />
       </div>
     </Provider>

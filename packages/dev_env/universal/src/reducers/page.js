@@ -2,8 +2,8 @@ import { NOT_FOUND } from 'redux-first-router'
 import {routeData} from 'virtual-module-initialAppIntegration';
 
 let windowPageMap = {};
-if(typeof window !== 'undefined' && window.pageMapFromInitialApp) {
-  windowPageMap = window.pageMapFromInitialApp;
+if(typeof window !== 'undefined' && window.routeDataFromInitialApp) {
+  windowPageMap = window.routeDataFromInitialApp.pageMap;
 }
 
 // On the client, routeData.pageMap is empty and windowPageMap is full.
