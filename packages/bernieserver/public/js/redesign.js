@@ -158,7 +158,7 @@
             //don't refresh under these conditions
             var newWindowHeight = getWinHeight() - window.bs.heightTweak;
             var newWindowWidth = getWinWidth();
-            var threshTest = Math.abs(lastRefreshHeight - newWindowHeight) > 70;
+            var threshTest = Math.abs(lastRefreshHeight - newWindowHeight) > 80;
             if(threshTest || lastRefreshWidth !== newWindowWidth){
                 
                 resizeDeb().then(function(){

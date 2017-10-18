@@ -114,7 +114,7 @@ class ResponsiveElRecords {
   }
 }
 const responsiveElRecords = new ResponsiveElRecords();
-const thresh = 70;
+const thresh = 80;
 class ResizeRegistry {
   constructor() {
     // this.cache //
@@ -139,6 +139,19 @@ class ResizeRegistry {
     this.initialHeight = windowSizer.dimensions.height;
     this.initialWidth = windowSizer.dimensions.width;
     windowSizer.addCb(() => {
+
+      // const div = document.getElementById('findme') || document.createElement("div");
+      // div.id = 'findme';
+      // div.style.width = "100px";
+      // div.style.height = "100px";
+      // div.style.background = "red";
+      // div.style.color = "white";
+      // div.style.position = "fixed";
+      // div.style.top = "0";
+      // div.style.zIndex = "9999";
+      // div.innerHTML = `${windowSizer.dimensions.height} FINDME`;
+      // document.body.appendChild(div);
+
       clearTimeout(assessAndStyleDebTimeout);
       Object.keys(this.cache).forEach((name) => {
         if (typeof this.cache[name].lastHeight === 'undefined') {
