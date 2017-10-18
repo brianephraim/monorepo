@@ -16,7 +16,7 @@ const dimensions = {
 
 // const isTouchDevice = 'ontouchstart' in document.documentElement;
 // const danger_of_url_bar_disappearing_and_thus_window_height_will_change = isTouchDevice;
-const heightTweak = root.document && root.document.documentElement && 'ontouchstart' in root.document.documentElement ? 75  : 0;
+const heightTweak = root.document && root.document.documentElement && 'ontouchstart' in root.document.documentElement ? 80  : 0;
 export { heightTweak };
 
 const resizeDeb = debounce(300,null);
@@ -45,7 +45,7 @@ root.addEventListener && root.addEventListener('resize', () => {
   // don't refresh under these conditions
   const newWindowHeight = dimensions.height - heightTweak;
   const newWindowWidth = dimensions;
-  const threshTest = Math.abs((lastDimensions.height - heightTweak) - newWindowHeight) > 70;
+  const threshTest = Math.abs((lastDimensions.height - heightTweak) - newWindowHeight) > 80;
   if(threshTest || lastDimensions.width !== newWindowWidth){
     resizeDeb().then(() => {
       resizing = false;
