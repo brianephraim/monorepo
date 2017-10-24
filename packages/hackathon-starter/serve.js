@@ -23,7 +23,7 @@ var fs = require('fs-extra');
 
 let pwdTxt;
 if (fs.existsSync('/app/pwd.txt')) {
-  pwdTxt = fs.readFileSyn('/app/pwd.txt');
+  pwdTxt = fs.readFileSync('/app/pwd.txt');
   console.log('pwdTxt',pwdTxt);
 }
 
