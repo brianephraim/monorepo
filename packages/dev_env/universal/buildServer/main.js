@@ -3330,21 +3330,21 @@ var UniversalComponent = (0, _reactUniversalComponent2.default)(function (_ref) 
   }
   if (page.importAvenue === 'temp') {
     var _imported = (0, _universalImport3.default)({
-      id: '/var/folders/t0/dms578js4lg8x73s9jzmvcp40000gn/T/tmp.Un2VX3nw/',
+      id: '/var/folders/t0/dms578js4lg8x73s9jzmvcp40000gn/T/tmp.7Izm7r57/',
       file: '/Users/brianephraim/Sites/monorepo/packages/dev_env/universal/src/components/App.js',
       load: function load() {
-        return Promise.all([__webpack_require__(288)("./" + page.fileKey), (0, _importCss3.default)('var/folders/t0/dms578js4lg8x73s9jzmvcp40000gn/T/tmp.Un2VX3nw/' + page.fileKey)]).then(function (proms) {
+        return Promise.all([__webpack_require__(288)("./" + page.fileKey), (0, _importCss3.default)('var/folders/t0/dms578js4lg8x73s9jzmvcp40000gn/T/tmp.7Izm7r57/' + page.fileKey)]).then(function (proms) {
           return proms[0];
         });
       },
       path: function path() {
-        return _path3.default.join(__dirname, '/var/folders/t0/dms578js4lg8x73s9jzmvcp40000gn/T/tmp.Un2VX3nw/' + page.fileKey);
+        return _path3.default.join(__dirname, '/var/folders/t0/dms578js4lg8x73s9jzmvcp40000gn/T/tmp.7Izm7r57/' + page.fileKey);
       },
       resolve: function resolve() {
         return /*require.resolve*/(__webpack_require__(359).resolve("./" + page.fileKey));
       },
       chunkName: function chunkName() {
-        return 'var/folders/t0/dms578js4lg8x73s9jzmvcp40000gn/T/tmp.Un2VX3nw/' + page.fileKey;
+        return 'var/folders/t0/dms578js4lg8x73s9jzmvcp40000gn/T/tmp.7Izm7r57/' + page.fileKey;
       }
     });
     return _imported;
@@ -43059,9 +43059,9 @@ module.exports = function (ns) {
       });
       var mailOptions = {
         to: user.email,
-        from: 'hackathon@starter.com',
+        from: 'admin@bernieselfie.com',
         subject: 'Reset your password on Hackathon Starter',
-        text: 'You are receiving this email because you (or someone else) have requested the reset of the password for your account.\n\n\n          Please click on the following link, or paste this into your browser to complete the process:\n\n\n          http://' + req.headers.host + '/reset/' + token + '\n\n\n          If you did not request this, please ignore this email and your password will remain unchanged.\n'
+        text: 'You are receiving this email because you (or someone else) have requested the reset of the password for your account.\n\n\n          Please click on the following link, or paste this into your browser to complete the process:\n\n\n          http://' + req.headers.host + ns('/reset') + '/' + token + '\n\n\n          If you did not request this, please ignore this email and your password will remain unchanged.\n'
       };
       return transporter.sendMail(mailOptions).then(function () {
         req.flash('info', { msg: 'An e-mail has been sent to ' + user.email + ' with further instructions.' });
