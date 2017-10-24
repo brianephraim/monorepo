@@ -269,7 +269,7 @@ export default function(constants) {
       if (action.type === 'FETCH_TEMPLATES') {
         return [...featured, ...action.images];
       }
-      return featured;
+      return state || featured;
     },
     loading: (state = '', action) => {
       if (action.type === 'LOADING') {
