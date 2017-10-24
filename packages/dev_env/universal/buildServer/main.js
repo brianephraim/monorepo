@@ -3330,21 +3330,21 @@ var UniversalComponent = (0, _reactUniversalComponent2.default)(function (_ref) 
   }
   if (page.importAvenue === 'temp') {
     var _imported = (0, _universalImport3.default)({
-      id: '/var/folders/t0/dms578js4lg8x73s9jzmvcp40000gn/T/tmp.6nXpTY11/',
+      id: '/var/folders/t0/dms578js4lg8x73s9jzmvcp40000gn/T/tmp.gfb7L2HK/',
       file: '/Users/brianephraim/Sites/monorepo/packages/dev_env/universal/src/components/App.js',
       load: function load() {
-        return Promise.all([__webpack_require__(288)("./" + page.fileKey), (0, _importCss3.default)('var/folders/t0/dms578js4lg8x73s9jzmvcp40000gn/T/tmp.6nXpTY11/' + page.fileKey)]).then(function (proms) {
+        return Promise.all([__webpack_require__(288)("./" + page.fileKey), (0, _importCss3.default)('var/folders/t0/dms578js4lg8x73s9jzmvcp40000gn/T/tmp.gfb7L2HK/' + page.fileKey)]).then(function (proms) {
           return proms[0];
         });
       },
       path: function path() {
-        return _path3.default.join(__dirname, '/var/folders/t0/dms578js4lg8x73s9jzmvcp40000gn/T/tmp.6nXpTY11/' + page.fileKey);
+        return _path3.default.join(__dirname, '/var/folders/t0/dms578js4lg8x73s9jzmvcp40000gn/T/tmp.gfb7L2HK/' + page.fileKey);
       },
       resolve: function resolve() {
         return /*require.resolve*/(__webpack_require__(359).resolve("./" + page.fileKey));
       },
       chunkName: function chunkName() {
-        return 'var/folders/t0/dms578js4lg8x73s9jzmvcp40000gn/T/tmp.6nXpTY11/' + page.fileKey;
+        return 'var/folders/t0/dms578js4lg8x73s9jzmvcp40000gn/T/tmp.gfb7L2HK/' + page.fileKey;
       }
     });
     return _imported;
@@ -42278,7 +42278,7 @@ function getDirname() {
   return typeof __dirnameBeforeCompiled !== "undefined" ? __dirnameBeforeCompiled : __dirname;
 }
 
-var upload = multer({ dest: path.join(getDirname(), 'uploads') });
+// const upload = multer({ dest: path.join(getDirname(), 'uploads') });
 
 module.exports = function (settings) {
   var nameSpace = settings.nameSpace;
@@ -42366,7 +42366,7 @@ module.exports = function (settings) {
   app.use(passport.session());
   app.use(flash());
   app.use(function (req, res, next) {
-    if (req.path === ns('/api/upload') || req.url.indexOf(nameSpace) === -1) {
+    if ( /*req.path === ns('/api/upload') ||*/req.url.indexOf(nameSpace) === -1) {
       next();
     } else {
       lusca.csrf()(req, res, next);
@@ -42439,8 +42439,8 @@ module.exports = function (settings) {
   app.get(ns('/api/paypal/success'), apiController.getPayPalSuccess);
   app.get(ns('/api/paypal/cancel'), apiController.getPayPalCancel);
   app.get(ns('/api/lob'), apiController.getLob);
-  app.get(ns('/api/upload'), apiController.getFileUpload);
-  app.post(ns('/api/upload'), upload.single('myFile'), apiController.postFileUpload);
+  // app.get(ns('/api/upload'), apiController.getFileUpload);
+  // app.post(ns('/api/upload'), upload.single('myFile'), apiController.postFileUpload);
   app.get(ns('/api/pinterest'), passportConfig.isAuthenticated, passportConfig.isAuthorized, apiController.getPinterest);
   app.post(ns('/api/pinterest'), passportConfig.isAuthenticated, passportConfig.isAuthorized, apiController.postPinterest);
   app.get(ns('/api/google-maps'), apiController.getGoogleMaps);

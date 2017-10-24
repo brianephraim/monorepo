@@ -27,7 +27,7 @@ function getDirname() {
     : __dirname;
 }
 
-const upload = multer({ dest: path.join(getDirname(), 'uploads') });
+// const upload = multer({ dest: path.join(getDirname(), 'uploads') });
 
 module.exports = function (settings){
   const nameSpace = settings.nameSpace;
@@ -119,7 +119,7 @@ module.exports = function (settings){
   app.use(passport.session());
   app.use(flash());
   app.use((req, res, next) => {
-    if (req.path === ns('/api/upload') || req.url.indexOf(nameSpace) === -1) {
+    if (/*req.path === ns('/api/upload') ||*/ req.url.indexOf(nameSpace) === -1) {
       next();
     } else {
       lusca.csrf()(req, res, next);
@@ -197,8 +197,8 @@ module.exports = function (settings){
   app.get(ns('/api/paypal/success'), apiController.getPayPalSuccess);
   app.get(ns('/api/paypal/cancel'), apiController.getPayPalCancel);
   app.get(ns('/api/lob'), apiController.getLob);
-  app.get(ns('/api/upload'), apiController.getFileUpload);
-  app.post(ns('/api/upload'), upload.single('myFile'), apiController.postFileUpload);
+  // app.get(ns('/api/upload'), apiController.getFileUpload);
+  // app.post(ns('/api/upload'), upload.single('myFile'), apiController.postFileUpload);
   app.get(ns('/api/pinterest'), passportConfig.isAuthenticated, passportConfig.isAuthorized, apiController.getPinterest);
   app.post(ns('/api/pinterest'), passportConfig.isAuthenticated, passportConfig.isAuthorized, apiController.postPinterest);
   app.get(ns('/api/google-maps'), apiController.getGoogleMaps);
