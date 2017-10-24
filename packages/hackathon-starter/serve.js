@@ -34,6 +34,8 @@ function getDirname() {
     console.log('__dirnameBeforeCompiled', __dirnameBeforeCompiled);
     console.log('pwdTxt', pwdTxt);
     console.log('process.cwd', process.cwd())
+    console.log('indexof', __dirnameBeforeCompiled.indexOf(pwdTxt));
+    console.log(__dirnameBeforeCompiled.replace(pwdTxt,'xxxxxxx'))
     console.log('toReturn',toReturn)
     return toReturn;
   }
