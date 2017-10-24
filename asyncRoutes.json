@@ -1,5 +1,6 @@
 {
   "Battleship":"./packages/battleship/battleshipIntegration.js",
   "Todos":"./packages/todo_app/todosIntegration.js",
-  "InitialApp": "./packages/MainApp/initialAppIntegration.js"
+  "InitialApp": "./packages/MainApp/initialAppIntegration.js",
+  "Apollostarter": "./packages/apollo-simple-starter/client/index.js"
 }

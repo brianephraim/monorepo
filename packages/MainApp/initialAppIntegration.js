@@ -6,6 +6,7 @@ const routeData = {
     ...variousBernieRouteData.routesMap,
     TODOS: '/todos/:filter',
     BATTLESHIP: '/battleship',
+    APOLLOSTARTER: '/apollostarter',
   },
   pageMap: {
     ...(Object.keys(variousBernieRouteData.routesMap).reduce((accum, key) => {
@@ -14,6 +15,7 @@ const routeData = {
     },{})),
     BATTLESHIP: 'Battleship',
     TODOS: 'Todos',
+    APOLLOSTARTER: 'Apollostarter',
   },
 };
 

@@ -1,0 +1,112 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+
+html, body {
+	background: #EEE;
+	color: #444;
+	font-family: 'Proxima Nova', 'Lato', sans-serif;
+	font-size: 14px;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+button {
+	cursor: pointer;
+}
+
+input:focus, button:focus {
+	outline: none;
+}
+
+.index__todaApollo--10SWh {
+	margin: auto;
+	margin-top: 150px;
+	background-color: #fff;
+	width: 25rem;
+	max-width: 100%;
+	box-shadow: 3px 3px 6px #ccc;
+}
+
+form > input, form > button {
+	height: 3.5rem;
+	border: none;
+}
+
+form > input {
+	width: 70%;
+	border-bottom: 1px dotted #ddd;
+	padding: 0 1rem;
+}
+
+form > button {
+	width: 30%;
+	background-color: royalblue;
+	color: #fff;
+}
+
+/* Transitions */
+.index__todaApollo__list-item-appear--TrMvt {
+	opacity: 0.01;
+}
+
+.index__todaApollo__list-item-appear--TrMvt.index__todaApollo__list-item-appear-active--1BCXU {
+	opacity: 1;
+	transition: opacity .5s ease-in;
+}
+/* End Transitions */
+
+.index__todaApollo__list--3k535 {
+	display: flex;
+	flex-direction: column-reverse;
+	align-items: flex-start;
+	box-sizing: border-box;
+}
+
+.index__todaApollo__list-none--t8G_p, .index__todaApollo__list-loader--IXQEy {
+	text-align: center;
+	padding: 2rem;
+	color: rgba(245, 20, 30, .7);
+	font-size: 20px;
+}
+
+.index__todaApollo__list-item--2Y0SN {
+	list-style: none;
+	padding: 1.4rem;
+	width: 100%;
+	color: #444;
+	letter-spacing: 0.7px;
+	border-bottom: 1px solid #ddd;
+	box-sizing: border-box;
+}
+
+.index__todaApollo__list-item--2Y0SN:first-child {
+	border-bottom: none;
+}
+
+.index__todaApollo__list-item--2Y0SN button {
+	background-color: rgba(245, 20, 30, .7);
+	box-shadow: 3px 3px 6px #ccc;
+	border: none;
+	color: #fff;
+	border-radius: 100%;
+	height: 3rem;
+	width: 3rem;
+	margin-right: .45rem;
+}
+
+.index__todaApollo__list-item--2Y0SN > button:hover {
+	background-color: rgba(245, 20, 30, .5);
+	transition-duration: .5s;
+}
+
+footer {
+	margin-top: 1.5rem;
+	text-align: center;
+}
+
+footer p {
+	margin-top: 1rem;
+}
+/*# sourceMappingURL=Apollostarter.8f618407d430df67f890c4313c6a094e.css.map*/
