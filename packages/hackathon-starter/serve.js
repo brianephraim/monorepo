@@ -19,9 +19,24 @@ const expressValidator = require('express-validator');
 const expressStatusMonitor = require('express-status-monitor');
 const sass = require('node-sass-middleware');
 const multer = require('multer');
+var fs = require('fs-extra');
+
+let pwdTxt;
+if (fs.existsSync('/app/pwd.txt')) {
+  pwdTxt = fs.readFileSyn('/app/pwd.txt');
+  console.log('pwdTxt',pwdTxt);
+}
 
 
 function getDirname() {
+  if (pwdTxt && __dirnameBeforeCompiled) {
+    const toReturn = __dirnameBeforeCompiled.replace(pwdTxt, process.cwd());
+    console.log('__dirnameBeforeCompiled', __dirnameBeforeCompiled);
+    console.log('pwdTxt', pwdTxt);
+    console.log('process.cwd', process.cwd())
+    console.log('toReturn',toReturn)
+    return toReturn;
+  }
   return typeof __dirnameBeforeCompiled !== "undefined"
     ? __dirnameBeforeCompiled
     : __dirname;
