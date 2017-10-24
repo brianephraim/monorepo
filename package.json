@@ -5,7 +5,7 @@
   "version": "0.0.0",
   "description": "Redux ToDos example",
   "scripts": {
-    "start": "npm run runProductionBundle",
+    "start": "pwd && cat ./pwd.txt && npm run runProductionBundle",
     "runProductionBundle": "node ./packages/dev_env/universal/buildServer/main.js --servers='./packages/bernieserver/bernieserver.express.js,./packages/junk-express/junk-express.express.js,./packages/hackathon-starter/app.js,./packages/apollo-simple-starter/server/index.js'",
     "just-bundle-prod": "npm run dev -- --servers='./packages/bernieserver/bernieserver.express.js,./packages/junk-express/junk-express.express.js,./packages/hackathon-starter/app.js,./packages/apollo-simple-starter/server/index.js' --isDev=false --isUniversal=true --isDeploy=true --initialApp='./packages/MainApp/initialAppIntegration.js' --asyncRoutes='./asyncRoutes.json'",
     "dev1": "npm run dev -- --servers='./packages/bernieserver/bernieserver.express.js,./packages/junk-express/junk-express.express.js,./packages/hackathon-starter/app.js,./packages/apollo-simple-starter/server/index.js' --isDev=true --isUniversal=false --isDeploy=false --initialApp='./packages/MainApp/initialAppIntegration.js' --asyncRoutes='./asyncRoutes.json'",
@@ -84,9 +84,9 @@
     "lerna": "^2.2.0"
   },
   "dependencies": {
-    "foreach": "^2.0.5",
     "babel-polyfill": "^6.3.14",
     "lodash": "^4.11.2",
+    "foreach": "^2.0.5",
     "body-parser": "^1.17.1",
     "express": "^4.15.4",
     "graphql-server-express": "^0.7.2",
@@ -232,12 +232,12 @@
     "case": "^1.5.2",
     "child-process-es6-promise": "^1.1.0",
     "inquirer": "^3.1.0",
+    "react-redux": "^4.4.5",
     "commander": "2.2.0",
     "concat-stream": "1.4.6",
     "dive": "0.3.0",
     "npmenv": "0.0.1",
     "npmlog": "~0.1.1",
-    "react-redux": "^4.4.5",
     "cropperjs": "^0.8.1",
     "prop-types": "^15.5.8",
     "react-cropper": "^0.12.0",
