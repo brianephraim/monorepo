@@ -52,7 +52,7 @@ module.exports = function (settings){
   /**
    * Load environment variables from .env file, where API keys and passwords are configured.
    */
-  dotenv.load({ path: path.resolve(getDirname(), './.env.example') });
+  dotenv.load({ path: path.resolve(getDirname(), './envexample') });
 
   /**
    * Controllers (route handlers).
@@ -119,7 +119,7 @@ module.exports = function (settings){
   app.use(passport.session());
   app.use(flash());
   app.use((req, res, next) => {
-    if (req.path === '/api/upload') {
+    if (req.path === ns('/api/upload') || req.url.indexOf(nameSpace) === -1) {
       next();
     } else {
       lusca.csrf()(req, res, next);

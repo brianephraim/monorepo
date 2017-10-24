@@ -35,6 +35,11 @@ export default function (){
           todos
         </Link>
       </p>
+      <p>
+        <Link to='/apollostarter'>
+          Apollo Starter
+        </Link>
+      </p>
     </div>
   );
 }
