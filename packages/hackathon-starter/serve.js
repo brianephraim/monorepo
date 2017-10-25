@@ -82,7 +82,9 @@ module.exports = function (settings){
   /**
    * API keys and Passport configuration.
    */
-  const passportConfig = require('./config/passport');
+  const makePassportConfig = require('./config/passport').default;
+  console.log(makePassportConfig);
+  const passportConfig = makePassportConfig(ns);
 
   /**
    * Create Express server.
@@ -154,7 +156,7 @@ module.exports = function (settings){
     if (!req.user &&
         req.path !== ns('/login') &&
         req.path !== ns('/signup') &&
-        !req.path.match(new RegExp(`^${ns('/auth')}`)) &&
+        !req.path.match(new RegExp(`^${ns('/social')}`)) &&
         !req.path.match(/\./)) {
       req.session.returnTo = req.path;
     } else if (req.user &&
@@ -223,48 +225,48 @@ module.exports = function (settings){
   /**
    * OAuth authentication routes. (Sign in)
    */
-  app.get(ns('/auth/instagram'), passport.authenticate('instagram'));
-  app.get(ns('/auth/instagram/callback'), passport.authenticate('instagram', { failureRedirect: ns('/login') }), (req, res) => {
+  app.get(ns('/social/instagram'), passport.authenticate('instagram'));
+  app.get(ns('/social/instagram/callback'), passport.authenticate('instagram', { failureRedirect: ns('/login') }), (req, res) => {
     res.redirect(req.session.returnTo || ns('/'));
   });
-  app.get(ns('/auth/facebook'), passport.authenticate('facebook', { scope: ['email', 'public_profile'] }));
-  app.get(ns('/auth/facebook/callback'), passport.authenticate('facebook', { failureRedirect: ns('/login') }), (req, res) => {
+  app.get(ns('/social/facebook'), passport.authenticate('facebook', { scope: ['email', 'public_profile'] }));
+  app.get(ns('/social/facebook/callback'), passport.authenticate('facebook', { failureRedirect: ns('/login') }), (req, res) => {
     res.redirect(req.session.returnTo || ns('/'));
   });
-  app.get(ns('/auth/github'), passport.authenticate('github'));
-  app.get(ns('/auth/github/callback'), passport.authenticate('github', { failureRedirect: ns('/login') }), (req, res) => {
+  app.get(ns('/social/github'), passport.authenticate('github'));
+  app.get(ns('/social/github/callback'), passport.authenticate('github', { failureRedirect: ns('/login') }), (req, res) => {
     res.redirect(req.session.returnTo || ns('/'));
   });
-  app.get(ns('/auth/google'), passport.authenticate('google', { scope: 'profile email' }));
-  app.get(ns('/auth/google/callback'), passport.authenticate('google', { failureRedirect: ns('/login') }), (req, res) => {
+  app.get(ns('/social/google'), passport.authenticate('google', { scope: 'profile email' }));
+  app.get(ns('/social/google/callback'), passport.authenticate('google', { failureRedirect: ns('/login') }), (req, res) => {
     res.redirect(req.session.returnTo || ns('/'));
   });
-  app.get(ns('/auth/twitter'), passport.authenticate('twitter'));
-  app.get(ns('/auth/twitter/callback'), passport.authenticate('twitter', { failureRedirect: ns('/login') }), (req, res) => {
+  app.get(ns('/social/twitter'), passport.authenticate('twitter'));
+  app.get(ns('/social/twitter/callback'), passport.authenticate('twitter', { failureRedirect: ns('/login') }), (req, res) => {
     res.redirect(req.session.returnTo || ns('/'));
   });
-  app.get(ns('/auth/linkedin'), passport.authenticate('linkedin', { state: 'SOME STATE' }));
-  app.get(ns('/auth/linkedin/callback'), passport.authenticate('linkedin', { failureRedirect: ns('/login') }), (req, res) => {
+  app.get(ns('/social/linkedin'), passport.authenticate('linkedin', { state: 'SOME STATE' }));
+  app.get(ns('/social/linkedin/callback'), passport.authenticate('linkedin', { failureRedirect: ns('/login') }), (req, res) => {
     res.redirect(req.session.returnTo || ns('/'));
   });
 
   /**
    * OAuth authorization routes. (API examples)
    */
-  app.get(ns('/auth/foursquare'), passport.authorize('foursquare'));
-  app.get(ns('/auth/foursquare/callback'), passport.authorize('foursquare', { failureRedirect: ns('/api') }), (req, res) => {
+  app.get(ns('/social/foursquare'), passport.authorize('foursquare'));
+  app.get(ns('/social/foursquare/callback'), passport.authorize('foursquare', { failureRedirect: ns('/api') }), (req, res) => {
     res.redirect(ns('/api/foursquare'));
   });
-  app.get(ns('/auth/tumblr'), passport.authorize('tumblr'));
-  app.get(ns('/auth/tumblr/callback'), passport.authorize('tumblr', { failureRedirect: ns('/api') }), (req, res) => {
+  app.get(ns('/social/tumblr'), passport.authorize('tumblr'));
+  app.get(ns('/social/tumblr/callback'), passport.authorize('tumblr', { failureRedirect: ns('/api') }), (req, res) => {
     res.redirect(ns('/api/tumblr'));
   });
-  app.get(ns('/auth/steam'), passport.authorize('openid', { state: 'SOME STATE' }));
-  app.get(ns('/auth/steam/callback'), passport.authorize('openid', { failureRedirect: ns('/login') }), (req, res) => {
+  app.get(ns('/social/steam'), passport.authorize('openid', { state: 'SOME STATE' }));
+  app.get(ns('/social/steam/callback'), passport.authorize('openid', { failureRedirect: ns('/login') }), (req, res) => {
     res.redirect(req.session.returnTo || '/');
   });
-  app.get(ns('/auth/pinterest'), passport.authorize('pinterest', { scope: 'read_public write_public' }));
-  app.get(ns('/auth/pinterest/callback'), passport.authorize('pinterest', { failureRedirect: ns('/login') }), (req, res) => {
+  app.get(ns('/social/pinterest'), passport.authorize('pinterest', { scope: 'read_public write_public' }));
+  app.get(ns('/social/pinterest/callback'), passport.authorize('pinterest', { failureRedirect: ns('/login') }), (req, res) => {
     res.redirect(ns('/api/pinterest'));
   });
 

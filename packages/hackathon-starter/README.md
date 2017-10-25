@@ -167,14 +167,14 @@ them with *your credentials* when you are ready to deploy an app.
 - In the *Create Client ID* modal dialog:
  - **Application Type**: Web Application
  - **Authorized Javascript origins**: http://localhost:3000
- - **Authorized redirect URI**: http://localhost:3000/auth/google/callback
+ - **Authorized redirect URI**: http://localhost:3000/social/google/callback
 - Click on **Create Client ID** button
 - Copy and paste *Client ID* and *Client secret* keys into `.env`
 
 **Note:** When you ready to deploy to production don't forget to
 add your new url to *Authorized Javascript origins* and *Authorized redirect URI*,
 e.g. `http://my-awesome-app.herokuapp.com` and
-`http://my-awesome-app.herokuapp.com/auth/google/callback` respectively.
+`http://my-awesome-app.herokuapp.com/social/google/callback` respectively.
 The same goes for other providers.
 
 <hr>
@@ -204,7 +204,7 @@ The same goes for other providers.
 - Select **Applications** from the sidebar
 - Then inside **Developer applications** click on **Register new application**
 - Enter *Application Name* and *Homepage URL*
-- For *Authorization Callback URL*: http://localhost:3000/auth/github/callback
+- For *Authorization Callback URL*: http://localhost:3000/social/github/callback
 - Click **Register application**
 - Now copy and paste *Client ID* and *Client Secret* keys into `.env` file
 
@@ -215,7 +215,7 @@ The same goes for other providers.
 - Sign in at <a href="https://apps.twitter.com/" target="_blank">https://apps.twitter.com</a>
 - Click **Create a new application**
 - Enter your application name, website and description
-- For **Callback URL**: http://127.0.0.1:3000/auth/twitter/callback
+- For **Callback URL**: http://127.0.0.1:3000/social/twitter/callback
 - Go to **Settings** tab
 - Under *Application Type* select **Read and Write** access
 - Check the box **Allow this application to be used to Sign in with Twitter**
@@ -231,7 +231,7 @@ The same goes for other providers.
  - *It may ask you to sign in once again*
 - Click **+ Add New Application** button
 - Fill out all the *required* fields
- - **OAuth 2.0 Redirect URLs**: http://localhost:3000/auth/linkedin/callback
+ - **OAuth 2.0 Redirect URLs**: http://localhost:3000/social/linkedin/callback
  - **JavaScript API Domains**: http://localhost:3000
 - For **Default Application Permissions** make sure at least the following is checked:
  - `r_basicprofile`
@@ -269,7 +269,7 @@ The same goes for other providers.
 - Click on **My Apps** in the top menu
 - Click the **Create A New App** button
 - Enter *App Name*, *Welcome page url*,
-- For **Redirect URI**: http://localhost:3000/auth/foursquare/callback
+- For **Redirect URI**: http://localhost:3000/social/foursquare/callback
 - Click **Save Changes**
 - Copy and paste *Client ID* and *Client Secret* keys into `.env` file
 
@@ -280,7 +280,7 @@ The same goes for other providers.
 - Go to <a href="http://www.tumblr.com/oauth/apps" target="_blank">http://www.tumblr.com/oauth/apps</a>
 - Once signed in, click **+Register application**
 - Fill in all the details
-- For **Default Callback URL**: `http://localhost:3000/auth/tumblr/callback`
+- For **Default Callback URL**: `http://localhost:3000/social/tumblr/callback`
 - Click **✔Register**
 - Copy and paste *OAuth consumer key* and *OAuth consumer secret* keys into `.env` file
 
