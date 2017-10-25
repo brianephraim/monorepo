@@ -8,7 +8,12 @@ import {
 
 import TodaApollo from './TodaApollo';
 
-const networkInterface = createNetworkInterface({ uri: '/graphql' });
+const networkInterface = createNetworkInterface({
+	uri: '/graphql',
+	opts: {
+    credentials: 'same-origin',
+  },
+});
 
 const client = new ApolloClient({
 	dataIdFromObject: result => result.id || null,

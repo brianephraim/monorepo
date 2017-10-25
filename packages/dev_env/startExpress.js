@@ -1,6 +1,7 @@
 import express from 'express';
 import favicon from 'serve-favicon';
 import path from 'path';
+import fs from 'fs-extra';
 /* eslint-disable import/no-extraneous-dependencies */
 import serverCollection from 'virtual-module-server-collection';
 /* eslint-enable import/no-extraneous-dependencies */
@@ -8,9 +9,20 @@ import demoEndpoints from './universal/server/demoEndpoints';
 
 
 export default function startServer(renderAndUse) {
+  console.log('A BUNCH OF RELEVANT PATHS')
   console.log('__dirnameBeforeCompiled',__dirnameBeforeCompiled);
   console.log('__dirname',__dirname);
-  console.log("path.resolve(__dirnameBeforeCompiled,'../favicon/favicon.ico')",path.resolve(__dirnameBeforeCompiled,'../favicon/favicon.ico'))
+  let pwdTxt;
+  if (fs.existsSync('/app/pwd.txt')) {
+    pwdTxt = fs.readFileSync('/app/pwd.txt', 'utf8').trim();
+    console.log('pwdTxt',pwdTxt);
+  }
+  if (pwdTxt && __dirnameBeforeCompiled) {
+    console.log('process.cwd', process.cwd())
+    console.log('__dirnameBeforeCompiled.replace(pwdTxt, process.cwd())',__dirnameBeforeCompiled.replace(pwdTxt, process.cwd()));
+  }
+
+
   const app = express();
   serverCollection.forEach((serverScript) => {
     serverScript({ app });
