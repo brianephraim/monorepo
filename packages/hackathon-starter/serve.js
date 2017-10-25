@@ -19,15 +19,32 @@ const expressValidator = require('express-validator');
 const expressStatusMonitor = require('express-status-monitor');
 const sass = require('node-sass-middleware');
 const multer = require('multer');
+var fs = require('fs-extra');
+
+let pwdTxt;
+if (fs.existsSync('/app/pwd.txt')) {
+  pwdTxt = fs.readFileSync('/app/pwd.txt', 'utf8').trim();
+  console.log('pwdTxt',pwdTxt);
+}
 
 
 function getDirname() {
+  if (pwdTxt && __dirnameBeforeCompiled) {
+    const toReturn = __dirnameBeforeCompiled.replace(pwdTxt, process.cwd());
+    console.log('__dirnameBeforeCompiled', __dirnameBeforeCompiled);
+    console.log('pwdTxt', pwdTxt);
+    console.log('process.cwd', process.cwd())
+    console.log('indexof', __dirnameBeforeCompiled.indexOf(pwdTxt));
+    console.log(__dirnameBeforeCompiled.replace(pwdTxt,'xxxxxxx'))
+    console.log('toReturn',toReturn)
+    return toReturn;
+  }
   return typeof __dirnameBeforeCompiled !== "undefined"
     ? __dirnameBeforeCompiled
     : __dirname;
 }
 
-const upload = multer({ dest: path.join(getDirname(), 'uploads') });
+// const upload = multer({ dest: path.join(getDirname(), 'uploads') });
 
 module.exports = function (settings){
   const nameSpace = settings.nameSpace;
@@ -119,7 +136,7 @@ module.exports = function (settings){
   app.use(passport.session());
   app.use(flash());
   app.use((req, res, next) => {
-    if (req.path === ns('/api/upload') || req.url.indexOf(nameSpace) === -1) {
+    if (/*req.path === ns('/api/upload') ||*/ req.url.indexOf(nameSpace) === -1) {
       next();
     } else {
       lusca.csrf()(req, res, next);
@@ -197,8 +214,8 @@ module.exports = function (settings){
   app.get(ns('/api/paypal/success'), apiController.getPayPalSuccess);
   app.get(ns('/api/paypal/cancel'), apiController.getPayPalCancel);
   app.get(ns('/api/lob'), apiController.getLob);
-  app.get(ns('/api/upload'), apiController.getFileUpload);
-  app.post(ns('/api/upload'), upload.single('myFile'), apiController.postFileUpload);
+  // app.get(ns('/api/upload'), apiController.getFileUpload);
+  // app.post(ns('/api/upload'), upload.single('myFile'), apiController.postFileUpload);
   app.get(ns('/api/pinterest'), passportConfig.isAuthenticated, passportConfig.isAuthorized, apiController.getPinterest);
   app.post(ns('/api/pinterest'), passportConfig.isAuthenticated, passportConfig.isAuthorized, apiController.postPinterest);
   app.get(ns('/api/google-maps'), apiController.getGoogleMaps);

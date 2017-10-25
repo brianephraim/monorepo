@@ -31,6 +31,8 @@ else
     echo "DEPLOY SCIPT: MODIFYING GITIGNORE TO ALLOW COMMIT OF BUNDLES TO DEPLOY-TEMP / DEPLOY BRANCHES"
     sed -i '' -e 's/buildClient/b_NO_IGNORE_uildClient/g' ./.gitignore
     sed -i '' -e 's/buildServer/b_NO_IGNORE_uildServer/g' ./.gitignore
+    echo "CREATING pwd.txt"
+    pwd > pwd.txt
     echo "DEPLOY SCIPT: COMMITTING BUNDLE AND GITIGNORE TO DEPLOY-TEMP"
     git add -A .
     git commit -m "deployed $commitHash"

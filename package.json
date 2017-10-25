@@ -5,9 +5,9 @@
   "version": "0.0.0",
   "description": "Redux ToDos example",
   "scripts": {
-    "start": "npm run runProductionBundle",
+    "start": "pwd && cat ./pwd.txt && npm run runProductionBundle",
     "runProductionBundle": "node ./packages/dev_env/universal/buildServer/main.js --servers='./packages/bernieserver/bernieserver.express.js,./packages/junk-express/junk-express.express.js,./packages/hackathon-starter/app.js,./packages/apollo-simple-starter/server/index.js'",
-    "just-bundle-prod": "npm run dev -- --servers='./packages/bernieserver/bernieserver.express.js,./packages/junk-express/junk-express.express.js' --isDev=false --isUniversal=true --isDeploy=true --initialApp='./packages/MainApp/initialAppIntegration.js' --asyncRoutes='./asyncRoutes.json'",
+    "just-bundle-prod": "npm run dev -- --servers='./packages/bernieserver/bernieserver.express.js,./packages/junk-express/junk-express.express.js,./packages/hackathon-starter/app.js,./packages/apollo-simple-starter/server/index.js' --isDev=false --isUniversal=true --isDeploy=true --initialApp='./packages/MainApp/initialAppIntegration.js' --asyncRoutes='./asyncRoutes.json'",
     "dev1": "npm run dev -- --servers='./packages/bernieserver/bernieserver.express.js,./packages/junk-express/junk-express.express.js,./packages/hackathon-starter/app.js,./packages/apollo-simple-starter/server/index.js' --isDev=true --isUniversal=false --isDeploy=false --initialApp='./packages/MainApp/initialAppIntegration.js' --asyncRoutes='./asyncRoutes.json'",
     "dev2": "npm run dev -- --servers='./packages/bernieserver/bernieserver.express.js,./packages/junk-express/junk-express.express.js,./packages/hackathon-starter/app.js,./packages/apollo-simple-starter/server/index.js' --isDev=true --isUniversal=true --isDeploy=false --initialApp='./packages/MainApp/initialAppIntegration.js' --asyncRoutes='./asyncRoutes.json'",
     "prod": "npm run dev -- --servers='./packages/bernieserver/bernieserver.express.js,./packages/junk-express/junk-express.express.js,./packages/hackathon-starter/app.js,./packages/apollo-simple-starter/server/index.js' --isDev=false --isUniversal=true --isDeploy=false --initialApp='./packages/MainApp/initialAppIntegration.js' --asyncRoutes='./asyncRoutes.json'",
