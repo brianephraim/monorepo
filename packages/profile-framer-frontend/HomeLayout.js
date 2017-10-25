@@ -26,6 +26,8 @@ import {
 
 import isTouchDevice from './isTouchDevice';
 
+import TodaApollo from 'apollo-simple-starter/client/components/App';
+
 const StyledHomeLayout = styled.div`position: relative;`;
 
 const StyledTopBanner = ConnectResponsiveStatusesDictHOC(styled.div`
@@ -320,6 +322,9 @@ function HomeLayout(props) {
         <ContributeBanner />
         <HomeLayoutHeader />
         <StyledAppBody className="app_body">
+          <div style={{position:'fixed',top:0,left:0,background:'#eee',padding:'10px'}}>
+            <TodaApollo />
+          </div>
           <AppHero {...props} />
           <AppBusiness section="design">
             {
