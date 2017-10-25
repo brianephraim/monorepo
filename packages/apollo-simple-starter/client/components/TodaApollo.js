@@ -1,15 +1,21 @@
 import React from 'react';
-import { gql, graphql } from 'react-apollo';
+import { gql, graphql, compose } from 'react-apollo';
 
-import TodaApolloForm from './TodaApolloForm';
-import TodaApolloList from './TodaApolloList';
+import Form from './Form';
+import List from './List';
 
-import { todaApolloListQuery } from './TodaApolloList';
+const todaApolloListQuery = gql`
+  query todaApollos {
+    todaApollos {
+      id
+      text
+    }
+  }
+`;
 
-const TodaApollo = ({ mutate }) => {
+const TodaApollo = (props) => {
 	const removeTodaApollo = todaApollo => {
-		// Update DB
-		mutate({
+		props.removeTodaApolloMutation({
 			variables: {
 				id: todaApollo.id
 			},
@@ -30,12 +36,35 @@ const TodaApollo = ({ mutate }) => {
 		});
 	};
 
+	const addTodaApollo = text => {
+		return props.addTodaApolloMutation({
+			variables: {
+				text
+			},
+			optimisticResponse: {
+				addTodaApollo: {
+					__typename: 'TodaApollo',
+					id: Math.random(),
+					text
+				}
+			},
+			update: (store, { data: { addTodaApollo } }) => {
+				// Read the data from our cache for this query
+				const data = store.readQuery({ query: todaApolloListQuery });
+				// Add our TodaApollo from the mutation to the end
+				data.todaApollos.push(addTodaApollo);
+				// Write our data back to the cache.
+				store.writeQuery({ query: todaApolloListQuery, data });
+			}
+		})
+	};
+
 	return (
-		<div className="todaApollo">
-			<TodaApolloForm />
-			<TodaApolloList removeTodaApollo={removeTodaApollo} />
-		</div>
-	);
+    <div className="todaApollo">
+      <Form onSubmit={addTodaApollo} />
+      <List data={props.todaApolloListQuery.todaApollos} loading={props.todaApolloListQuery.loading} onClick={removeTodaApollo} />
+    </div>
+  );
 };
 
 
@@ -47,4 +76,25 @@ const removeTodaApolloMutation = gql`
 	}
 `;
 
-export default graphql(removeTodaApolloMutation)(TodaApollo);
+const addTodaApolloMutation = gql`
+	mutation addTodaApollo($text: String!) {
+		addTodaApollo(text: $text) {
+			id
+			text
+		}
+	}
+`;
+
+export default compose(
+  graphql(removeTodaApolloMutation, {
+    name : 'removeTodaApolloMutation'
+  }),
+  graphql(addTodaApolloMutation, {
+    name: 'addTodaApolloMutation'
+  }),
+  graphql(todaApolloListQuery, {
+    name : 'todaApolloListQuery'
+  }),
+)(TodaApollo)
+
+// export default graphql(removeTodaApolloMutation)(TodaApollo);

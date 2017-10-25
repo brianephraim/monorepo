@@ -20,18 +20,8 @@ const client = new ApolloClient({
 	networkInterface
 });
 
-// Import our components
-
-
-// Wrap our App with ApolloProvider
 export default () => (
 	<ApolloProvider client={client}>
-		<div className="app">
-			<TodaApollo />
-		</div>
+		<TodaApollo />
 	</ApolloProvider>
 );
-
-// export default () => {
-// 	return <div>asdfasdf</div>
-// }
