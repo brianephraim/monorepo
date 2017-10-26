@@ -7,6 +7,7 @@ import serverCollection from 'virtual-module-server-collection';
 /* eslint-enable import/no-extraneous-dependencies */
 import demoEndpoints from './universal/server/demoEndpoints';
 
+import apolloIntegration from './apolloIntegration';
 
 export default function startServer(renderAndUse) {
   console.log('A BUNCH OF RELEVANT PATHS')
@@ -27,6 +28,8 @@ export default function startServer(renderAndUse) {
   serverCollection.forEach((serverScript) => {
     serverScript({ app });
   });
+  apolloIntegration({app})
+
   app.use('/favicon', express.static('packages/favicon'));
   app.use(favicon('packages/favicon/favicon.ico'));
   app.use('/images', express.static('packages/images'));
