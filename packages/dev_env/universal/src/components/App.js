@@ -18,7 +18,7 @@ import Loading from './Loading'
 import Err from './Error'
 import isLoading from '../selectors/isLoading'
 import switcherStyles from '../css/Switcher'
-import ApolloProviderPrepared from 'apollo-simple-starter/client/components/ApolloProviderPrepared';
+import ApolloProviderPrepared from '../../../ApolloProviderPrepared';
 // import {routeData} from 'virtual-module-initialAppIntegration';
 
 

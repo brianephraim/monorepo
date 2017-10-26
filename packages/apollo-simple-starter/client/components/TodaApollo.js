@@ -3,7 +3,7 @@ import { gql } from 'react-apollo';
 
 import Form from './Form';
 import List from './List';
-import apolloClientHoc from './apolloClientHoc';
+import apolloClientHoc from 'dev_env/apolloClientHoc';
 
 function TodaApollo(props) {
   return (

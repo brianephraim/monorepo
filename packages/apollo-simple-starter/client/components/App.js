@@ -2,7 +2,7 @@
 
 import React from 'react';
 import TodaApollo from './TodaApollo';
-import ApolloProviderPrepared from './ApolloProviderPrepared';
+import ApolloProviderPrepared from 'dev_env/ApolloProviderPrepared';
 
 export default () => (
 	<ApolloProviderPrepared>
