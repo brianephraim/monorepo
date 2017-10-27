@@ -27,6 +27,7 @@ import {
 import isTouchDevice from './isTouchDevice';
 
 import TodaApollo from 'apollo-simple-starter/client/components/TodaApollo';
+import ToduApollo from './components/ToduApollo';
 
 const StyledHomeLayout = styled.div`position: relative;`;
 
@@ -324,6 +325,9 @@ function HomeLayout(props) {
         <StyledAppBody className="app_body">
           <div style={{position:'fixed',top:0,left:0,background:'#eee',padding:'10px'}}>
             <TodaApollo />
+          </div>
+          <div style={{position:'fixed',bottom:0,right:0,background:'#eee',padding:'10px'}}>
+            <ToduApollo />
           </div>
           <AppHero {...props} />
           <AppBusiness section="design">

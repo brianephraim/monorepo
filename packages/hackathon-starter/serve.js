@@ -19,7 +19,9 @@ const expressValidator = require('express-validator');
 const expressStatusMonitor = require('express-status-monitor');
 const sass = require('node-sass-middleware');
 const multer = require('multer');
-var fs = require('fs-extra');
+const fs = require('fs-extra');
+
+const apolloIntegration = require('./apolloIntegration').default;
 
 let pwdTxt;
 if (fs.existsSync('/app/pwd.txt')) {
@@ -184,6 +186,7 @@ module.exports = function (settings){
   app.post(ns('/contact'), contactController.postContact);
   app.get(ns('/account'), passportConfig.isAuthenticated, userController.getAccount);
   app.get(ns('/account.json'), passportConfig.isAuthenticated, userController.getAccountJson);
+  apolloIntegration({ app });
   app.post(ns('/account/profile'), passportConfig.isAuthenticated, userController.postUpdateProfile);
   app.post(ns('/account/password'), passportConfig.isAuthenticated, userController.postUpdatePassword);
   app.post(ns('/account/delete'), passportConfig.isAuthenticated, userController.postDeleteAccount);
