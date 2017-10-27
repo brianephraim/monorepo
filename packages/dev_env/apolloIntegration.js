@@ -5,7 +5,8 @@ import {makeExecutableSchema} from 'graphql-tools';
 
 export default function ({app})  {
   app.apolloAppConfigs = app.apolloAppConfigs || [];
-  
+  app.apolloContextParsers = app.apolloContextParsers || [];
+
   const resolvers = {
     Query: {},
     Mutation: {}
@@ -67,7 +68,12 @@ export default function ({app})  {
     graphqlExpress((req) => {
       return {
         schema,
-        context: { user: req.user }
+        context: app.apolloContextParsers.reduce((accum, parser) => {
+          return {
+            ...accum,
+            ...parser(req),
+          };
+        },{})
       }
     })
     

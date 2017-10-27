@@ -1,5 +1,20 @@
 import mongoose from 'mongoose';
 
+
+import User from './models/User.js';
+/*
+
+{ user:
+{ _id: 59ef6f4135a3bc7852d07d31,
+ updatedAt: 2017-10-24T16:50:09.386Z,
+ createdAt: 2017-10-24T16:50:09.386Z,
+ email: 'asdf@asdf.com',
+ password: '$2a$10$a4LrOhG4RlyNTNWOh9AwTe565VPD0GnyRg2NNQmrkWDlBp9OMYcAu',
+ __v: 0,
+ tokens: [] } }
+
+*/
+
 const Schema = mongoose.Schema;
 const ToduApolloSchema = Schema({
   text: String
@@ -11,11 +26,19 @@ const resolvers = {
       return new Promise((resolve) => {
         console.log('context',context);
         setTimeout(() => {
-          resolve(ToduApollo.find())
+          resolve(ToduApollo.find());
           // resolve([{"id":"59ee19ae862df53be978dfb8","text":"asdf11111","__typename":"ToduApollo"},{"id":"59ee19e5862df53be978dfba","text":"zxcvzxcv","__typename":"ToduApollo"},{"id":"59f0d201c30b2b2579132003","text":"xxx","__typename":"ToduApollo"}])
         },500);
       });
       // return ToduApollo.find();
+    },
+    user(obj, args, context, info) {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          resolve(context.user);
+          // resolve([{"id":"59ee19ae862df53be978dfb8","text":"asdf11111","__typename":"ToduApollo"},{"id":"59ee19e5862df53be978dfba","text":"zxcvzxcv","__typename":"ToduApollo"},{"id":"59f0d201c30b2b2579132003","text":"xxx","__typename":"ToduApollo"}])
+        },500);
+      });
     }
   },
   Mutation: {
@@ -33,6 +56,16 @@ const resolvers = {
 };
 
 const typeDefs = [
+  `
+    type User {
+      email: String
+    }
+  `,
+  `
+    extend type Query {
+      user: User
+    }
+  `,
   `
     type ToduApollo {
       id: ID
@@ -61,4 +94,9 @@ const typeDefs = [
 export default function ({app})  {
   app.apolloAppConfigs = app.apolloAppConfigs || [];
   app.apolloAppConfigs.push({resolvers, typeDefs});
+
+  app.apolloContextParsers = app.apolloContextParsers || [];
+  app.apolloContextParsers.push((req) => {
+    return { user: req.user }
+  });
 }

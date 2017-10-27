@@ -6,8 +6,10 @@ import List from './List';
 import apolloClientHoc from 'dev_env/apolloClientHoc';
 
 function ToduApollo(props) {
+  const email = props.userQuery && props.userQuery.user && props.userQuery.user.email;
   return (
     <div className="toduApollo">
+      <p>email: {email}</p>
       <Form onSubmit={props.addToduApolloMutation} />
       <List data={props.toduApolloListQuery.toduApollos} loading={props.toduApolloListQuery.loading} onClick={props.removeToduApolloMutation} />
     </div>
@@ -15,6 +17,15 @@ function ToduApollo(props) {
 }
 
 const gqlActions = {
+  userQuery: {
+    gql: gql`
+      query user {
+        user {
+          email
+        }
+      }
+    `
+  },
   toduApolloListQuery: {
     gql: gql`
       query toduApollos {
