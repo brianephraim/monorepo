@@ -18,7 +18,9 @@ import Loading from './Loading'
 import Err from './Error'
 import isLoading from '../selectors/isLoading'
 import switcherStyles from '../css/Switcher'
-import ApolloProviderPrepared from '../../../ApolloProviderPrepared';
+import {
+  ApolloProvider,
+} from 'react-apollo';
 // import {routeData} from 'virtual-module-initialAppIntegration';
 
 
@@ -112,13 +114,13 @@ Switcher = connect(({ page, ...state }) => ({
 
 
 
-export default ({store,addReducers}) => {
+export default ({store,addReducers,client}) => {
   return (
-    <ApolloProviderPrepared store={store} >
+    <ApolloProvider store={store} client={client} >
       <div>
         <Switcher addReducers={addReducers} />
       </div>
-    </ApolloProviderPrepared>
+    </ApolloProvider>
   );
 };
 

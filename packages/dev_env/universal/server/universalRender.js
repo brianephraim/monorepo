@@ -12,11 +12,11 @@ import startExpress from '../../startExpress';
 import webpackConfig from '../../webpackConfig';
 import makeRender from './makeRender';
 
-const render = makeRender(({store,styles,addReducers}) => {
+const render = makeRender(({store,styles,addReducers,client}) => {
   const sheet = new ServerStyleSheet()
 
   const appString = ReactDOM.renderToString(
-    sheet.collectStyles(<App store={store} addReducers={addReducers} />)
+    sheet.collectStyles(<App store={store} addReducers={addReducers} client={client} />)
   );
 
   const styledComponentsRenderedTags = sheet.getStyleTags()

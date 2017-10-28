@@ -10,6 +10,12 @@ import * as actionCreators from './actions'
 
 import {routeData} from 'virtual-module-initialAppIntegration';
 
+import {
+  ApolloClient,
+  createNetworkInterface
+} from 'react-apollo';
+
+
 
 
 
@@ -71,6 +77,19 @@ export default (history, preLoadedState) => {
   if(typeof window !== 'undefined' && window.routeDataFromInitialApp) {
     windowRoutesMap = window.routeDataFromInitialApp.routesMap;
   }
+
+  const networkInterface = createNetworkInterface({
+    uri: '/graphql',
+    opts: {
+      credentials: 'same-origin',
+    },
+  });
+
+  const client = new ApolloClient({
+    dataIdFromObject: result => result.id || null,
+    networkInterface
+  });
+
   const { reducer, middleware, enhancer, thunk, initialDispatch } = connectRoutes(
     history,
     {
@@ -98,7 +117,14 @@ export default (history, preLoadedState) => {
     }
   };
 
-  let allReducers = {...moreReducers, ...reducers, ...routeData.reducers, location: reducer };
+  let allReducers = {
+    ...moreReducers,
+    ...reducers,
+    ...routeData.reducers,
+    location: reducer,
+    apollo: client.reducer(),
+  };
+
   function addReducers(newReducers) {
     allReducers = {...allReducers, ...newReducers };
     return allReducers;
@@ -123,6 +149,6 @@ export default (history, preLoadedState) => {
     })
   }
 
-  return { store, thunk, addReducers }
+  return { store, thunk, addReducers, client }
 }
 
