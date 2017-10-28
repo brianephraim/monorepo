@@ -31,7 +31,7 @@ import ensureLeadingSlash from '@defualt/ensure-leading-slash';
  */
 
 export default function ({app, nameSpace = 'bernieserver'})  {
-  const mongooseStuff = startMongooseStuff();
+  const mongooseStuff = startMongooseStuff({app});
 
   /*
    * Load the S3 information from the environment variables.

@@ -1,33 +1,11 @@
 import React, {Component} from 'react';
 import { graphql, compose } from 'react-apollo';
 
-function apolloClientHoc(Comp, gqlActions) {
+function apolloClientHoc(gqlActions) {
 
-  class Wrapper extends Component {
-    constructor(){
-      super();
-      
-      this.methods = Object.keys(gqlActions).reduce((accum,actionKey) => {
-        const gqlAction = gqlActions[actionKey];
-        if (gqlAction.configMethod) {
-          const configMethod = gqlAction.configMethod.bind(this)
-          accum[actionKey] = (...args) => {
-            return this.props[actionKey](configMethod(...args));
-          };
-        }
-        return accum;
-      },{})
-    }
+  
 
-    render() {
-      return (
-        <Comp {...this.props} {...this.methods} />
-      );
-    }
-  };
-
-
-  return compose(
+  const composed = compose(
     ...(Object.keys(gqlActions).reduce((accum,actionKey) => {
       const gqlAction = gqlActions[actionKey];
       accum.push(graphql(gqlAction.gql, {
@@ -35,7 +13,34 @@ function apolloClientHoc(Comp, gqlActions) {
       }))
       return accum;
     },[]))
-  )(Wrapper)
+  )
+
+  return (Comp) => {
+    class Wrapper extends Component {
+      constructor(){
+        super();
+        
+        this.methods = Object.keys(gqlActions).reduce((accum,actionKey) => {
+          const gqlAction = gqlActions[actionKey];
+          if (gqlAction.configMethod) {
+            const configMethod = gqlAction.configMethod.bind(this)
+            accum[actionKey] = (...args) => {
+              return this.props[actionKey](configMethod(...args));
+            };
+          }
+          return accum;
+        },{})
+      }
+
+      render() {
+        return (
+          <Comp {...this.props} {...this.methods} />
+        );
+      }
+    };
+
+    return composed(Wrapper)
+  };
   // return compose(
   //   graphql(gqlActions.removeTodaApolloMutation.gql, {
   //     name : 'removeTodaApolloMutation'

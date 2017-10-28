@@ -7,9 +7,24 @@ export default function ({app})  {
   app.apolloAppConfigs = app.apolloAppConfigs || [];
   app.apolloContextParsers = app.apolloContextParsers || [];
 
+  // Apollo doesn't have a native Date scalar.
+  // Notice how custom scalar for Date is created below.
+  // https://janikvonrotz.ch/2016/10/09/graphql-with-apollo-meteor-and-react/
+
   const resolvers = {
     Query: {},
-    Mutation: {}
+    Mutation: {},
+    Date: {
+      __parseValue(value) {
+        return new Date(value); // value from the client
+      },
+      __serialize(value) {
+        return value.toISOString(); // value sent to the client
+      },
+      __parseLiteral(ast) {
+        return ast.value;
+      },
+    },
   };
 
   app.apolloAppConfigs.forEach((config) => {
@@ -22,6 +37,9 @@ export default function ({app})  {
   });
 
   const typeDefs = [
+    `
+      scalar Date
+    `,
     `
       type Blank {
         id: ID

@@ -27,7 +27,7 @@ import {
 import isTouchDevice from './isTouchDevice';
 
 import TodaApollo from 'apollo-simple-starter/client/components/TodaApollo';
-import ToduApollo from './components/ToduApollo';
+import ToduApollo from './ToduApollo';
 
 const StyledHomeLayout = styled.div`position: relative;`;
 

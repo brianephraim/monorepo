@@ -54,7 +54,8 @@ const resolvers = {
     }
   }
 };
-
+/* scalar types */
+/*String, Int, Float, Boolean, and ID*/
 const typeDefs = [
   `
     type User {

@@ -1,20 +1,5 @@
-import React from 'react';
 import { gql } from 'react-apollo';
-
-import Form from './Form';
-import List from './List';
 import apolloClientHoc from 'dev_env/apolloClientHoc';
-
-function ToduApollo(props) {
-  const email = props.userQuery && props.userQuery.user && props.userQuery.user.email;
-  return (
-    <div className="toduApollo">
-      <p>email: {email}</p>
-      <Form onSubmit={props.addToduApolloMutation} />
-      <List data={props.toduApolloListQuery.toduApollos} loading={props.toduApolloListQuery.loading} onClick={props.removeToduApolloMutation} />
-    </div>
-  );
-}
 
 const gqlActions = {
   userQuery: {
@@ -22,6 +7,16 @@ const gqlActions = {
       query user {
         user {
           email
+        }
+      }
+    `
+  },
+  userTemplatesQuery: {
+    gql: gql`
+      query userTemplates {
+        userTemplates {
+          customTemplate
+          created
         }
       }
     `
@@ -102,5 +97,5 @@ const gqlActions = {
   },
 };
 
-export default apolloClientHoc(ToduApollo, gqlActions);
+export default apolloClientHoc(gqlActions);
 // export default graphql(removeToduApolloMutation)(ToduApollo);

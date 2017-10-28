@@ -91,5 +91,5 @@ const gqlActions = {
   },
 };
 
-export default apolloClientHoc(TodaApollo, gqlActions);
+export default apolloClientHoc(gqlActions)(TodaApollo);
 // export default graphql(removeTodaApolloMutation)(TodaApollo);

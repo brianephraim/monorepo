@@ -24,6 +24,7 @@ class ApolloProviderPrepared extends Component {
   }
   
   render() {
+    window.tt = this.props.store;
     return (
       <ApolloProvider client={this.client} store={this.props.store}>
         {this.props.children}
