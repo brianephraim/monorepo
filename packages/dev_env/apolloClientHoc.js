@@ -10,6 +10,7 @@ function apolloClientHoc(gqlActions) {
       const gqlAction = gqlActions[actionKey];
       accum.push(graphql(gqlAction.gql, {
         name: actionKey,
+        options: gqlAction.options,
       }))
       return accum;
     },[]))

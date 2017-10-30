@@ -29,7 +29,11 @@ export default function ({app})  {
 
   app.apolloAppConfigs.forEach((config) => {
     if (config.resolvers.Query) {
-      resolvers.Query = {...resolvers.Query, ...config.resolvers.Query}
+      resolvers.Query = new Promise((resolve) => {
+        setTimeout(() => {
+          resolve({...resolvers.Query, ...config.resolvers.Query});
+        },4000)
+      })
     }
     if (config.resolvers.Mutation) {
       resolvers.Mutation = {...resolvers.Mutation, ...config.resolvers.Mutation}

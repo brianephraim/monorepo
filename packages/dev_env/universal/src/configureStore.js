@@ -1,4 +1,4 @@
-import { createStore, applyMiddleware, compose, combineReducers } from 'redux'
+import { createStore, applyMiddleware, compose, combineReducers, applyAfterware } from 'redux'
 import { composeWithDevTools } from 'redux-devtools-extension/logOnlyInProduction'
 import { connectRoutes,addRoutes } from 'redux-first-router'
 import reduxThunk from 'redux-thunk';
@@ -84,6 +84,45 @@ export default (history, preLoadedState) => {
       credentials: 'same-origin',
     },
   });
+  let i = 0;
+  networkInterface.use([{
+    applyMiddleware(req, next) {
+      // console.log('store middle',store.getState());
+      // console.log('req',req);
+      if (!req.options.headers) {
+        req.options.headers = {};  // Create the header object if needed.
+      }
+      req.options.headers.name = `${req.request.operationName}_${i++}`;
+      if(req.request && req.request.variables && req.request.variables.headers) {
+        Object.assign(req.options.headers,req.request.variables.headers);
+        delete req.request.variables.headers;
+      }
+      if (req.options.headers.name) {
+        store.dispatch({
+          type: 'ADD_CURRENTLY_LOADING',
+          name: req.options.headers.name
+        });
+      }
+      // req.options.headers['authorization'] = localStorage.getItem('token') ? localStorage.getItem('token') : null;
+      next();
+    }
+  }]);
+  networkInterface.useAfter([{
+    applyAfterware(x, next) {
+      if (x.options.headers.name) {
+        store.dispatch({
+          type: 'REMOVE_CURRENTLY_LOADING',
+          name: x.options.headers.name
+        });
+      }
+      // console.log('store after',store.getState());
+      // console.log('response',x)
+      // if (response.status === 401) {
+      //   logout();
+      // }
+      next();
+    }
+  }]);
 
   const client = new ApolloClient({
     dataIdFromObject: result => result.id || null,
@@ -114,7 +153,24 @@ export default (history, preLoadedState) => {
         return action.origin
       }
       return state;
-    }
+    },
+    currentlyLoading: (state = [], action = {}) => {
+      if (action.type === 'REMOVE_CURRENTLY_LOADING') {
+        return state.filter((name) => {
+          if (name === action.name) {
+            return false
+          }
+          return true;
+        })
+      }
+      if (action.type === 'ADD_CURRENTLY_LOADING') {
+        return [...state, action.name];
+      }
+      if (action.type === 'CLEAR_CURRENTLY_LOADING') {
+        return [];
+      }
+      return state;
+    },
   };
 
   let allReducers = {

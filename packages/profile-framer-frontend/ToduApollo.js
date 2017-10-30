@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import { connect } from 'react-redux';
 import integrateApollo from './integrateApollo';
 
 class Form extends Component {
@@ -63,6 +64,7 @@ function ToduApollo(props) {
   console.log('userTemplates',userTemplates);
   return (
     <div className="toduApollo">
+      <p>... {props.currentlyLoading && props.currentlyLoading.length}</p>
       <p>email: {email}</p>
       <Form onSubmit={props.addToduApolloMutation} />
       <List data={props.toduApolloListQuery.toduApollos} loading={props.toduApolloListQuery.loading} onClick={props.removeToduApolloMutation} />
@@ -70,5 +72,9 @@ function ToduApollo(props) {
   );
 }
 
-export default integrateApollo(ToduApollo);
+export default connect((state) => {
+  return {
+    currentlyLoading: state.currentlyLoading
+  }
+})(integrateApollo(ToduApollo));
 // export default graphql(removeToduApolloMutation)(ToduApollo);

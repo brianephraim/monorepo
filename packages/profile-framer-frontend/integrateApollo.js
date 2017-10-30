@@ -19,7 +19,16 @@ const gqlActions = {
           created
         }
       }
-    `
+    `,
+    options: {
+      variables: {
+        avatarSize: 100,
+        headers: {
+          b1:1,
+          b2:2,
+        },
+      },
+    },
   },
   toduApolloListQuery: {
     gql: gql`
