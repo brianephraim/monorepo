@@ -1,5 +1,6 @@
 import { gql } from 'react-apollo';
 import apolloClientHoc from 'dev_env/apolloClientHoc';
+import {appApolloClientHoc} from './nameSpacedResponsive';
 
 const gqlActions = {
   userQuery: {
@@ -24,6 +25,7 @@ const gqlActions = {
       variables: {
         avatarSize: 100,
         headers: {
+          showLoader: true,
           b1:1,
           b2:2,
         },
@@ -106,5 +108,5 @@ const gqlActions = {
   },
 };
 
-export default apolloClientHoc(gqlActions);
+export default appApolloClientHoc(gqlActions);
 // export default graphql(removeToduApolloMutation)(ToduApollo);

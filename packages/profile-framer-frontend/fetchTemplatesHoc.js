@@ -1,11 +1,13 @@
 import { appConnect } from './nameSpacedResponsive';
 import ancestorConstantsHoc from './ancestorConstantsHoc';
 
+import { gql } from 'react-apollo';
+
+
 // if already fetching, or fetching already done, be efficient.
 // But accomodate namespace.
 // Different namespaces can have simultaneous fetching,
 // but each namespace on does one fetch.
-const imagesFromFetchPromises = {};
 let attemptId = 0;
 function fetchTemplatesHoc(Comp) {
   return ancestorConstantsHoc(
@@ -13,20 +15,21 @@ function fetchTemplatesHoc(Comp) {
       fetchTemplates: ({ constants }) => {
         const fetchAttemptId = attemptId++;
         const { backendApiPrefix, fgImagePrefix, imageSuffix } = constants;
-        return dispatch => {
+        return (dispatch, getState, client) => {
           dispatch({
             type: 'LOADING',
             where: `fetchTemplatesHoc_${fetchAttemptId}`,
           });
-          const imagesFromFetchPromise =
-            imagesFromFetchPromises[constants.appNameSpace] ||
-            fetch(`${backendApiPrefix}/get_template_list`).then(r => {
-              return r.json();
-            });
-          imagesFromFetchPromises[
-            constants.appNameSpace
-          ] = imagesFromFetchPromise;
-          return imagesFromFetchPromise
+          return client.query({
+            query: gql`
+              query userTemplates {
+                userTemplates {
+                  customTemplate
+                  created
+                }
+              }
+            `,
+          })
           .then(response => {
             dispatch({
               type: 'STOP_LOADING',
@@ -34,10 +37,16 @@ function fetchTemplatesHoc(Comp) {
             });
             if (
               response &&
-              response.userTemplates &&
-              response.userTemplates.length
+              response.data &&
+              response.data.userTemplates &&
+              response.data.userTemplates.length
             ) {
-              const images = response.userTemplates.reduce(
+            // if (
+            //   response &&
+            //   response.userTemplates &&
+            //   response.userTemplates.length
+            // ) {
+              const images = response.data.userTemplates.reduce(
                 (accum, imageObj) => {
                   if (imageObj && imageObj.customTemplate) {
                     return [

@@ -100,7 +100,8 @@ export default (history, preLoadedState) => {
       if (req.options.headers.name) {
         store.dispatch({
           type: 'ADD_CURRENTLY_LOADING',
-          name: req.options.headers.name
+          name: req.options.headers.name,
+          appNameSpace: req.options.headers.appNameSpace
         });
       }
       // req.options.headers['authorization'] = localStorage.getItem('token') ? localStorage.getItem('token') : null;
@@ -112,7 +113,8 @@ export default (history, preLoadedState) => {
       if (x.options.headers.name) {
         store.dispatch({
           type: 'REMOVE_CURRENTLY_LOADING',
-          name: x.options.headers.name
+          name: x.options.headers.name,
+          appNameSpace: x.options.headers.appNameSpace
         });
       }
       // console.log('store after',store.getState());
@@ -154,9 +156,30 @@ export default (history, preLoadedState) => {
       }
       return state;
     },
-    currentlyLoading: (state = [], action = {}) => {
+    currentlyLoading: (state = {all:[]}, action = {}) => {
+      // console.log('action',action)
+      let nameSpacedArray;
+      if (action.appNameSpace) {
+        nameSpacedArray = state[action.appNameSpace] || [];
+        if (action.type === 'REMOVE_CURRENTLY_LOADING') {
+          nameSpacedArray = nameSpacedArray.filter((name) => {
+            if (name === action.name) {
+              return false
+            }
+            return true;
+          })
+        }
+        if (action.type === 'ADD_CURRENTLY_LOADING') {
+          nameSpacedArray = [...nameSpacedArray, action.name];
+        }
+        if (action.type === 'CLEAR_CURRENTLY_LOADING') {
+          nameSpacedArray = [];
+        }
+
+      }
+      let stateAll = state.all || [];
       if (action.type === 'REMOVE_CURRENTLY_LOADING') {
-        return state.filter((name) => {
+        stateAll = stateAll.filter((name) => {
           if (name === action.name) {
             return false
           }
@@ -164,12 +187,19 @@ export default (history, preLoadedState) => {
         })
       }
       if (action.type === 'ADD_CURRENTLY_LOADING') {
-        return [...state, action.name];
+        stateAll = [...stateAll, action.name];
       }
       if (action.type === 'CLEAR_CURRENTLY_LOADING') {
-        return [];
+        stateAll = [];
       }
-      return state;
+      
+      return {
+        ...state,
+        all: stateAll,
+        ...(!action.appNameSpace ? {} : {
+          [action.appNameSpace]: nameSpacedArray
+        })
+      };
     },
   };
 
@@ -180,14 +210,14 @@ export default (history, preLoadedState) => {
     location: reducer,
     apollo: client.reducer(),
   };
-
+  console.log(client.middleware)
   function addReducers(newReducers) {
     allReducers = {...allReducers, ...newReducers };
     return allReducers;
   }
   const rootReducer = combineReducers(addReducers(reducers))
   // const middlewares = applyMiddleware(thunk, middleware, redundantAppNameSpaceMiddleware)
-  const middlewares = applyMiddleware(reduxThunk,middleware,redundantAppNameSpaceMiddleware)
+  const middlewares = applyMiddleware(client.middleware(), reduxThunk.withExtraArgument(client),middleware,redundantAppNameSpaceMiddleware)
 
   const enhancers = composeEnhancers(enhancer, middlewares)
   const store = createStore(rootReducer, preLoadedState, enhancers);

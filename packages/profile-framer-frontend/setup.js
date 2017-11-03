@@ -280,6 +280,13 @@ export default function(constants) {
       }
       return state;
     },
+    todrApollos: (state = [], action) => {
+      if (action.type === 'FETCH_TODR') {
+        console.log('asdfafd');
+        return [...action.response.data.toduApollos];
+      }
+      return state;
+    },
     // canceledLoads:
   };
 

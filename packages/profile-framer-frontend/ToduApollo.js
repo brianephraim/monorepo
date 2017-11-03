@@ -2,6 +2,46 @@ import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import integrateApollo from './integrateApollo';
 
+// import client from './client';
+// import { gql } from 'react-apollo';
+// // client.query({
+// //           userTemplatesQuery: {
+// //             gql: gql`
+// //               query userTemplates {
+// //                 userTemplates {
+// //                   customTemplate
+// //                   created
+// //                 }
+// //               }
+// //             `,
+// //             options: {
+// //               variables: {
+// //                 avatarSize: 100,
+// //                 headers: {
+// //                   showLoader: true,
+// //                   b1:1,
+// //                   b2:2,
+// //                 },
+// //               },
+// //             },
+// //           },
+// //         });
+
+// client.query({
+//   query: gql`
+//     query userTemplates {
+//       userTemplates {
+//         customTemplate
+//         created
+//       }
+//     }
+//   `,
+// })
+// .then(data => console.log('tttttt',data.loading,data))
+// .catch(error => console.error(error));        
+
+// console.log('client',client);
+
 class Form extends Component {
   constructor(props) {
     super(props);
@@ -61,7 +101,7 @@ function List({ onClick, data, loading }) {
 function ToduApollo(props) {
   const email = props.userQuery && props.userQuery.user && props.userQuery.user.email;
   const userTemplates = props.userTemplatesQuery.userTemplates;
-  console.log('userTemplates',userTemplates);
+  // console.log('userTemplates',userTemplates);
   return (
     <div className="toduApollo">
       <p>... {props.currentlyLoading && props.currentlyLoading.length}</p>
@@ -74,7 +114,7 @@ function ToduApollo(props) {
 
 export default connect((state) => {
   return {
-    currentlyLoading: state.currentlyLoading
+    currentlyLoading: state.currentlyLoading.bernie
   }
 })(integrateApollo(ToduApollo));
 // export default graphql(removeToduApolloMutation)(ToduApollo);
