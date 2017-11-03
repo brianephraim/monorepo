@@ -97,7 +97,27 @@ const AppConnected = appConnect(
     }
   },
   {
-    addTodrApolloMutation: () => {},
+    addTodrApolloMutation: (text) => {
+      function generateMutationObject(text) {
+        return {
+          mutation: gql`
+            mutation addToduApollo($text: String!) {
+              addToduApollo(text: $text) {
+                id
+                text
+              }
+            }
+          `,
+          variables: {
+            text
+          },
+          refetchQueries:[`toduApollos`]
+        };
+      }
+      return (dispatch, getState, client) => {
+        return client.mutate(generateMutationObject(text));
+      }
+    },
     removeTodrApolloMutation: (toduApollo) => {
       function generateMutationObject(toduApollo) {
         return {

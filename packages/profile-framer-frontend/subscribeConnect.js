@@ -26,7 +26,9 @@ export default function subscribeConnect(settings,customConnect) {
       componentWillMount() {
         this.subscriptions = Object.keys(mapDispatchToProps).reduce((accum,key) => {
           const subscription = this.props[key]();
-          accum.push(subscription);
+          if (subscription) {
+            accum.push(subscription);
+          }
           return accum;
         },[]);
       }

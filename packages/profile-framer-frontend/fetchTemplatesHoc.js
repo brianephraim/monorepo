@@ -1,53 +1,45 @@
-import { appConnect } from './nameSpacedResponsive';
-import ancestorConstantsHoc from './ancestorConstantsHoc';
-
+import { appSubscribeConnect } from './nameSpacedResponsive';
 import { gql } from 'react-apollo';
 
-
-// if already fetching, or fetching already done, be efficient.
-// But accomodate namespace.
-// Different namespaces can have simultaneous fetching,
-// but each namespace on does one fetch.
 let attemptId = 0;
 function fetchTemplatesHoc(Comp) {
-  return ancestorConstantsHoc(
-    appConnect(null, {
-      fetchTemplates: ({ constants }) => {
-        const fetchAttemptId = attemptId++;
-        const { backendApiPrefix, fgImagePrefix, imageSuffix } = constants;
-        return (dispatch, getState, client) => {
-          dispatch({
-            type: 'LOADING',
-            where: `fetchTemplatesHoc_${fetchAttemptId}`,
-          });
-          return client.query({
-            query: gql`
-              query userTemplates {
-                userTemplates {
-                  customTemplate
-                  created
-                }
+  return appSubscribeConnect({
+    templates: ({ constants, limit }) => {
+      const fetchAttemptId = attemptId++;
+      const { fgImagePrefix, imageSuffix } = constants;
+      return (dispatch, getState, client) => {
+        if (typeof limit !== 'undefined' && limit <= 3) {
+          return null;
+        }
+        dispatch({
+          type: 'LOADING',
+          where: `fetchTemplatesHoc_${fetchAttemptId}`,
+        });
+        const observableQuery =client.watchQuery({
+          query: gql`
+            query userTemplates {
+              userTemplates {
+                customTemplate
+                created
               }
-            `,
-          })
-          .then(response => {
+            }
+          `,
+        });
+        const subscription = observableQuery.subscribe({
+          next: (response) => {
             dispatch({
               type: 'STOP_LOADING',
               where: `fetchTemplatesHoc_${fetchAttemptId}`,
-            });
+            });           
             if (
               response &&
               response.data &&
               response.data.userTemplates &&
               response.data.userTemplates.length
             ) {
-            // if (
-            //   response &&
-            //   response.userTemplates &&
-            //   response.userTemplates.length
-            // ) {
               const images = response.data.userTemplates.reduce(
                 (accum, imageObj) => {
+
                   if (imageObj && imageObj.customTemplate) {
                     return [
                       ...accum,
@@ -66,19 +58,12 @@ function fetchTemplatesHoc(Comp) {
                 images,
               });
             }
-          })
-          .catch((e) => {
-            if (e) {
-              alert(e && e.message);
-            }
-            dispatch({
-              type: 'STOP_LOADING',
-              where: `fetchTemplatesHoc_${fetchAttemptId}`,
-            });
-          })
-        };
-      },
-    })(Comp)
-  );
+          },
+        });
+        return subscription;
+      }
+    }
+  })(Comp);
 }
+
 export default fetchTemplatesHoc;
