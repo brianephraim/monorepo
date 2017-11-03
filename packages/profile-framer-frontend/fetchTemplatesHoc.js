@@ -1,8 +1,30 @@
-import { appSubscribeConnect } from './nameSpacedResponsive';
+import { appConnect, appSubscribeConnect } from './nameSpacedResponsive';
 import { gql } from 'react-apollo';
 
 let attemptId = 0;
 function fetchTemplatesHoc(Comp) {
+  const appConnected = appConnect(
+    null,
+    {
+      removeUserTemplate: (customTemplate) => {
+        return (dispatch, getState, client) => {
+          return client.mutate({
+            mutation: gql`
+              mutation removeUserTemplate($customTemplate: String!) {
+                removeUserTemplate(customTemplate: $customTemplate) {
+                  customTemplate
+                }
+              }
+            `,
+            variables: {
+              customTemplate,
+            },
+            refetchQueries:[`userTemplates`]
+          });
+        }
+      },
+    }
+  )(Comp);
   return appSubscribeConnect({
     templates: ({ constants, limit }) => {
       const fetchAttemptId = attemptId++;
@@ -59,11 +81,18 @@ function fetchTemplatesHoc(Comp) {
               });
             }
           },
+          error: (err) => {
+            alert(err);
+            dispatch({
+              type: 'STOP_LOADING',
+              where: `fetchTemplatesHoc_${fetchAttemptId}`,
+            });   
+          }
         });
         return subscription;
       }
     }
-  })(Comp);
+  })(appConnected);
 }
 
 export default fetchTemplatesHoc;

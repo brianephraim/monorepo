@@ -77,18 +77,16 @@ var MongooseStuff = function({app}) {
         return self.models.UserTemplate.find()
       },
     },
-    // Mutation: {
-    //   addToduApollo(root, args) {
-    //     const toduApollo = new ToduApollo(args);
-    //     toduApollo.save();
-    //     return toduApollo;
-    //   },
-    //   removeToduApollo(root, { id }) {
-    //     ToduApollo.findByIdAndRemove(id).exec().then(() => {
-    //       console.log('ToduApollo Deleted:', id);
-    //     });
-    //   }
-    // }
+    Mutation: {
+      removeUserTemplate(root, { customTemplate }) {
+        self.models.UserTemplate.findOneAndRemove({ customTemplate }).exec().then(() => {});
+      },
+      // addToduApollo(root, args) {
+      //   const toduApollo = new ToduApollo(args);
+      //   toduApollo.save();
+      //   return toduApollo;
+      // },
+    },
   };
   const typeDefs = [
     `
@@ -100,6 +98,11 @@ var MongooseStuff = function({app}) {
     `
       extend type Query {
         userTemplates: [UserTemplate]
+      }
+    `,
+    `
+      extend type Mutation {
+        removeUserTemplate(customTemplate: String!): UserTemplate
       }
     `,
 

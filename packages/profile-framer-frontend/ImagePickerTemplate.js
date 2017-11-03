@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { gql } from 'react-apollo';
 import { appConnect } from './nameSpacedResponsive';
 import ImagePicker from './ImagePicker';
 import { compositeImageIntoParams } from './compositeImage';
 import fetchTemplatesHoc from './fetchTemplatesHoc';
-import {appApolloClientHoc} from './nameSpacedResponsive';
-import ancestorConstantsHoc from './ancestorConstantsHoc';
+import { gql } from 'react-apollo';
 
 class ImagePickerTemplate extends Component {
   constructor() {
@@ -28,15 +26,13 @@ class ImagePickerTemplate extends Component {
     };
   }
   render() {
-    // const userTemplates = this.props.userTemplatesQuery.userTemplates;
-    // console.log('userTemplates',userTemplates);
-    // console.log('this.props.images',this.props.images);
     return (
       <ImagePicker
         images={this.props.templates}
         limit={this.props.limit}
         layoutVariation={this.props.layoutVariation}
         generateLinkTo={this.generateLinkTo}
+        removeItem={this.props.removeUserTemplate}
       />
     );
   }
@@ -56,8 +52,10 @@ ImagePickerTemplate.defaultProps = {
 };
 
 
-export default fetchTemplatesHoc(appConnect((appState) => {
-  return {
-    compositeImageData: appState.compositeImageData,
-  };
-})(ImagePickerTemplate));
+export default fetchTemplatesHoc(appConnect(
+  (appState) => {
+    return {
+      compositeImageData: appState.compositeImageData,
+    };
+  },
+)(ImagePickerTemplate));

@@ -6,6 +6,31 @@ import styled from 'styled-components';
 import styleConstants from './style-constants';
 import AppReduxLink from './AppReduxLink';
 
+class RemoveButton extends Component {
+  constructor(props){
+    super();
+    this.removeItem = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      props.removeItem(props.imgSrcObj.srcKey);
+    };
+  }
+  render(){
+    return (
+      <div 
+        onClick={this.removeItem}
+        style={{
+          width:'40px',
+          height:'40px',
+          background: 'yellow',
+          position: 'absolute',
+          zIndex:'999',
+        }}
+      >X</div>
+    );
+  }
+}
+
 const StyledOuterWrap = styled.div`
   ${props => {
     if (props.layoutVariation === 'vertical') {
@@ -132,9 +157,11 @@ class ImagePicker extends Component {
                 {...InnerWrapProps}
                 layoutVariation={this.props.layoutVariation}
               >
+                <RemoveButton removeItem={this.props.removeItem} imgSrcObj={imgSrcObj} />
                 <StyledPhotoImg
                   {...imgProps}
                   layoutVariation={this.props.layoutVariation}
+
                 />
               </InnerWrap>
             </StyledOuterWrap>
@@ -150,6 +177,7 @@ ImagePicker.propTypes = {
   generateLinkTo: PropTypes.func,
   limit: PropTypes.number,
   layoutVariation: PropTypes.string,
+  removeItem: PropTypes.func,
 };
 ImagePicker.defaultProps = {
   onClick: () => {},
@@ -157,6 +185,7 @@ ImagePicker.defaultProps = {
   generateLinkTo: () => {},
   limit: Infinity,
   layoutVariation: '',
+  removeItem: () => {},
 };
 
 export default ImagePicker;
