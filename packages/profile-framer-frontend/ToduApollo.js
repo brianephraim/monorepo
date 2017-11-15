@@ -105,7 +105,7 @@ function ToduApollo(props) {
   return (
     <div className="toduApollo">
       <p>... {props.currentlyLoading && props.currentlyLoading.length}</p>
-      <p>email: {email}</p>
+      <p>email2: {email}</p>
       <Form onSubmit={props.addToduApolloMutation} />
       <List data={props.toduApolloListQuery.toduApollos} loading={props.toduApolloListQuery.loading} onClick={props.removeToduApolloMutation} />
     </div>

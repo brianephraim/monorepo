@@ -287,6 +287,14 @@ export default function(constants) {
       }
       return state;
     },
+    loggedUser: (state = {}, action) => {
+      if (action.type === 'SET_LOGGED_USER' && action.user) {
+        return {...action.user};
+      }
+      return state;
+    },
+
+    
     // canceledLoads:
   };
 

@@ -23,8 +23,7 @@ const ToduApollo = mongoose.model('ToduApollo', ToduApolloSchema);
 const resolvers = {
   Query: {
     toduApollos(obj, args, context, info) {
-      return new Promise((resolve) => {
-        console.log('context',context);
+      return new Promise((resolve) => {        
         setTimeout(() => {
           resolve(ToduApollo.find());
           // resolve([{"id":"59ee19ae862df53be978dfb8","text":"asdf11111","__typename":"ToduApollo"},{"id":"59ee19e5862df53be978dfba","text":"zxcvzxcv","__typename":"ToduApollo"},{"id":"59f0d201c30b2b2579132003","text":"xxx","__typename":"ToduApollo"}])
@@ -35,7 +34,17 @@ const resolvers = {
     user(obj, args, context, info) {
       return new Promise((resolve) => {
         setTimeout(() => {
-          resolve(context.user);
+          const user = context.user && context.user.toObject();
+          const email = user && user.email;
+          const isAdmin = process.env.ADMIN_EMAIL && process.env.ADMIN_EMAIL === email;
+          const toResolve = {
+            isAdmin,
+            ...user,
+          };
+          // console.log('process.env.ADMIN_EMAIL', process.env.ADMIN_EMAIL, process.env.ADMIN_EMAIL === toResolve.email);
+          // console.log(context.user.toObject());
+          // console.log('toResolve',toResolve);
+          resolve(toResolve);
           // resolve([{"id":"59ee19ae862df53be978dfb8","text":"asdf11111","__typename":"ToduApollo"},{"id":"59ee19e5862df53be978dfba","text":"zxcvzxcv","__typename":"ToduApollo"},{"id":"59f0d201c30b2b2579132003","text":"xxx","__typename":"ToduApollo"}])
         },500);
       });
@@ -60,6 +69,7 @@ const typeDefs = [
   `
     type User {
       email: String
+      isAdmin: Boolean
     }
   `,
   `

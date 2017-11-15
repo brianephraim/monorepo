@@ -63,13 +63,12 @@ function List({ onClick, data, loading }) {
 class TodrApollo extends Component {
   render() {
     const props = this.props;
-    const email = props.userQuery && props.userQuery.user && props.userQuery.user.email;
+    const email = props.loggedUser && props.loggedUser.email;
     const userTemplates = props.userTemplatesQuery.userTemplates;
-    // console.log('userTemplates',userTemplates);
     return (
       <div className="todrApollo">
         <p>... {props.currentlyLoading && props.currentlyLoading.length}</p>
-        <p>email: {email}</p>
+        <p>email1: {email}</p>
         <Form onSubmit={props.addTodrApolloMutation} />
         <List data={props.todrApollos2} loading={props.todrApolloListQuery.loading} onClick={props.removeTodrApolloMutation} />
       </div>
@@ -90,7 +89,8 @@ const Connected = connect((state) => {
 const AppConnected = appConnect(
   (appState) => {
     return {
-      userQuery: {user:{email:'someemail@emadsf.com'}},
+      loggedUser: appState.loggedUser,
+      // userQuery: {user:{email:'someemail@emadsf.com'}},
       userTemplatesQuery: {userTemplates: []},
       todrApolloListQuery: {todrApollos:[]},
       todrApollos2: appState.todrApollos
@@ -143,7 +143,7 @@ const AppConnected = appConnect(
   Connected
 );
 
-const Subscribed = appSubscribeConnect({
+const SubscribedTodrApollos = appSubscribeConnect({
   todrApollos: () => {
     return (dispatch, getState, client) => {
       const observableQuery =client.watchQuery({
@@ -176,4 +176,47 @@ const Subscribed = appSubscribeConnect({
   }
 })(AppConnected);
 
-export default Subscribed;
+function makeSubscribedUser(Comp) {
+  return appSubscribeConnect({
+    // the key `userQuery` below does 2 things
+    //  - if there is appState property of `userQuery`, then makes its value available to component as props.userQuery
+    //  - registers a subscription identified as `userQuery` in the system.  If subscription already exists, no new subscription created
+    //    ( unsubscribe called only when last component subscribing to `userQuery` is destroyed.  )
+    userQuery: () => {
+      return (dispatch, getState, client) => {
+        const observableQuery =client.watchQuery({
+          query: gql`
+            query user {
+              user {
+                email
+                isAdmin
+              }
+            }
+          `,
+        });
+        const subscription = observableQuery.subscribe({
+          next: (response) => {    
+            console.log('response',response);       
+            if (
+              response &&
+              response.data &&
+              response.data.user
+            ) {
+              dispatch({
+                type: 'SET_LOGGED_USER',
+                user: response.data.user,
+              });
+            }
+          },
+        });
+
+        return subscription;
+      }
+    }
+  })(Comp);
+}
+
+const SubscribedUser1 = makeSubscribedUser(SubscribedTodrApollos);
+const SubscribedUser = makeSubscribedUser(SubscribedUser1);
+
+export default SubscribedUser;

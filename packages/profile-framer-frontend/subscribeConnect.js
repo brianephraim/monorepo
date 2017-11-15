@@ -1,5 +1,9 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
+
+// To avoid redundant subscripitons
+const subs = {};
+
 export default function subscribeConnect(settings,customConnect) {
   const connectToUse = customConnect || connect;
 
@@ -25,16 +29,33 @@ export default function subscribeConnect(settings,customConnect) {
     class Wrapper extends Component {
       componentWillMount() {
         this.subscriptions = Object.keys(mapDispatchToProps).reduce((accum,key) => {
-          const subscription = this.props[key]();
+          let subscription;
+          if (!subs[key]) {
+            subscription = this.props[key]();
+            if (subscription) {
+              subs[key] = {
+                count: 1,
+                subscription,
+              };
+            }
+          } else {
+            subscription = subs[key].subscription;
+            subs[key].count++;
+          }
           if (subscription) {
-            accum.push(subscription);
+            accum.push(key);
           }
           return accum;
         },[]);
       }
       componentWillUnmount() {
-        this.subscriptions && this.subscriptions.forEach((subscription) => {
-          subscription.unsubscribe();
+        this.subscriptions && this.subscriptions.forEach((key) => {
+          let count = subs[key].count;
+          count--;
+          if (count < 1) {
+            subs[key].subscription.unsubscribe();
+            delete subs[key];
+          }
         });
       }
       render() {
