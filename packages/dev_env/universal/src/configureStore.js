@@ -1,4 +1,4 @@
-import { createStore, applyMiddleware, compose, combineReducers, applyAfterware } from 'redux'
+import { createStore, applyMiddleware, compose, applyAfterware } from 'redux'
 import { composeWithDevTools } from 'redux-devtools-extension/logOnlyInProduction'
 import { connectRoutes,addRoutes } from 'redux-first-router'
 import reduxThunk from 'redux-thunk';
@@ -15,6 +15,7 @@ import {
   createNetworkInterface
 } from 'react-apollo';
 
+import createStoreAndInjector from 'redux-injector';
 
 
 
@@ -87,8 +88,6 @@ export default (history, preLoadedState) => {
   let i = 0;
   networkInterface.use([{
     applyMiddleware(req, next) {
-      // console.log('store middle',store.getState());
-      // console.log('req',req);
       if (!req.options.headers) {
         req.options.headers = {};  // Create the header object if needed.
       }
@@ -117,11 +116,6 @@ export default (history, preLoadedState) => {
           appNameSpace: x.options.headers.appNameSpace
         });
       }
-      // console.log('store after',store.getState());
-      // console.log('response',x)
-      // if (response.status === 401) {
-      //   logout();
-      // }
       next();
     }
   }]);
@@ -157,7 +151,6 @@ export default (history, preLoadedState) => {
       return state;
     },
     currentlyLoading: (state = {all:[]}, action = {}) => {
-      // console.log('action',action)
       let nameSpacedArray;
       if (action.appNameSpace) {
         nameSpacedArray = state[action.appNameSpace] || [];
@@ -203,24 +196,34 @@ export default (history, preLoadedState) => {
     },
   };
 
-  let allReducers = {
+  const laterReducers = {
     ...moreReducers,
     ...reducers,
     ...routeData.reducers,
+  };
+
+  const rootReducer = {
     location: reducer,
     apollo: client.reducer(),
   };
-  console.log(client.middleware)
-  function addReducers(newReducers) {
-    allReducers = {...allReducers, ...newReducers };
-    return allReducers;
-  }
-  const rootReducer = combineReducers(addReducers(reducers))
   // const middlewares = applyMiddleware(thunk, middleware, redundantAppNameSpaceMiddleware)
-  const middlewares = applyMiddleware(client.middleware(), reduxThunk.withExtraArgument(client),middleware,redundantAppNameSpaceMiddleware)
+  const middlewares = applyMiddleware(
+    client.middleware(),
+    reduxThunk.withExtraArgument({
+      client,
+      injectReducers: (...args) => {
+        injectReducers(...args)
+      }
+    }),
+    middleware,
+    redundantAppNameSpaceMiddleware
+  );
 
-  const enhancers = composeEnhancers(enhancer, middlewares)
-  const store = createStore(rootReducer, preLoadedState, enhancers);
+  const enhancers = composeEnhancers(enhancer, middlewares);
+  const {store,injectReducers} = createStoreAndInjector(rootReducer, preLoadedState, enhancers);
+  injectReducers('',{ddd:() => { return 'eeee'; }});
+  injectReducers('',laterReducers);
+
   const aThunk = addRoutes(routeData.routesMap); // export new routes from component file
   store.dispatch(aThunk);
   initialDispatch();
@@ -230,11 +233,10 @@ export default (history, preLoadedState) => {
   if (module.hot && process.env.NODE_ENV === 'development') {
     module.hot.accept('./reducers/index', () => {
       const reducers = require('./reducers/index');
-      const rootReducer = combineReducers(addReducers(reducers));
-      store.replaceReducer(rootReducer);
+      injectReducers('',reducers, true);
     })
   }
 
-  return { store, thunk, addReducers, client }
+  return { store, thunk, addReducers:injectReducers, client, injectReducers }
 }
 

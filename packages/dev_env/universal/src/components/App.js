@@ -5,7 +5,6 @@ import { connect } from 'react-redux'
 import { TransitionGroup, Transition } from 'transition-group'
 import universal from 'react-universal-component'
 import { addRoutes } from 'redux-first-router'
-import { combineReducers } from 'redux'
 
 import DevTools from './DevTools'
 import Sidebar from './Sidebar'
@@ -48,7 +47,7 @@ const UniversalComponent = universal(
           context.store.dispatch(aThunk)
         }
         if (module.routeData.reducers) {
-          context.store.replaceReducer(combineReducers(props.addReducers(module.routeData.reducers)))
+          props.addReducers('',module.routeData.reducers);
         }
       }
 

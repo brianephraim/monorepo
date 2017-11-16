@@ -1,7 +1,6 @@
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { combineReducers } from 'redux';
 import { makeNameSpacedResponsiveStatusesDictReducer } from '@defualt/responsive/nameSpaceResponsive';
 
 import { generateCompositeImgSrcUrl,getDefaultCompositeImageData, paramsIntoCompositeImage } from './compositeImage';
@@ -282,18 +281,10 @@ export default function(constants) {
     },
     todrApollos: (state = [], action) => {
       if (action.type === 'FETCH_TODR') {
-        console.log('asdfafd');
         return [...action.response.data.toduApollos];
       }
       return state;
     },
-    loggedUser: (state = {}, action) => {
-      if (action.type === 'SET_LOGGED_USER' && action.user) {
-        return {...action.user};
-      }
-      return state;
-    },
-
     
     // canceledLoads:
   };
@@ -311,7 +302,7 @@ export default function(constants) {
         action.type === appRootActionType
       );
   })
-  const reducers = combineReducers({
+  const reducers = {
     ...filteredReducers,
     responsiveStatusesDict: nameSpacedResponsiveStatusesDictReducer,
     constants: (state = {}, action) => {
@@ -320,7 +311,7 @@ export default function(constants) {
       }
       return state;
     },
-  });
+  };
 
  
 

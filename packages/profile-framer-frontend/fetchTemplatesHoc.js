@@ -7,7 +7,7 @@ function fetchTemplatesHoc(Comp) {
     null,
     {
       removeUserTemplate: (customTemplate) => {
-        return (dispatch, getState, client) => {
+        return (dispatch, getState, {client}) => {
           return client.mutate({
             mutation: gql`
               mutation removeUserTemplate($customTemplate: String!) {
@@ -29,7 +29,7 @@ function fetchTemplatesHoc(Comp) {
     templates: ({ constants, limit }) => {
       const fetchAttemptId = attemptId++;
       const { fgImagePrefix, imageSuffix } = constants;
-      return (dispatch, getState, client) => {
+      return (dispatch, getState, {client}) => {
         if (typeof limit !== 'undefined' && limit <= 3) {
           return null;
         }

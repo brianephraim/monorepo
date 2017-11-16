@@ -4,31 +4,30 @@ import { connect } from 'react-redux';
 // To avoid redundant subscripitons
 const subs = {};
 
-export default function subscribeConnect(settings,customConnect) {
+export default function subscribeConnect(mapDispatchToProps,customConnect) {
   const connectToUse = customConnect || connect;
 
   const mapStateToProps = (state) => {
-    // console.log('state',state);
-    const a =  Object.keys(settings).reduce((accum, key) => {
+    const a =  Object.keys(mapDispatchToProps).reduce((accum, key) => {
       accum[key] = state[key];
       return accum;
     },{});
     return a;
   };
 
-  const mapDispatchToProps = Object.keys(settings).reduce((accum,key) => {
-    accum[`${key}_method`] = settings[key];
+  const mapDispatchToPropsToUse = Object.keys(mapDispatchToProps).reduce((accum,key) => {
+    accum[`${key}_method`] = mapDispatchToProps[key];
     return accum;
   },{});
 
   const connected = connectToUse(
     mapStateToProps,
-    mapDispatchToProps
+    mapDispatchToPropsToUse
   );
   return (Comp) => {
     class Wrapper extends Component {
       componentWillMount() {
-        this.subscriptions = Object.keys(mapDispatchToProps).reduce((accum,key) => {
+        this.subscriptions = Object.keys(mapDispatchToPropsToUse).reduce((accum,key) => {
           let subscription;
           if (!subs[key]) {
             subscription = this.props[key]();

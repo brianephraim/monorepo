@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import integrateApollo from './integrateApollo';
 import { appConnect, appSubscribeConnect } from './nameSpacedResponsive';
 import { gql } from 'react-apollo';
+import makeSubscriber from './makeSubscriber';
 
 class Form extends Component {
   constructor(props) {
@@ -63,7 +64,8 @@ function List({ onClick, data, loading }) {
 class TodrApollo extends Component {
   render() {
     const props = this.props;
-    const email = props.loggedUser && props.loggedUser.email;
+    const email = props.userQueryX && props.userQueryX.user && props.userQueryX.user.email;
+    // const email ='zzz';
     const userTemplates = props.userTemplatesQuery.userTemplates;
     return (
       <div className="todrApollo">
@@ -89,8 +91,6 @@ const Connected = connect((state) => {
 const AppConnected = appConnect(
   (appState) => {
     return {
-      loggedUser: appState.loggedUser,
-      // userQuery: {user:{email:'someemail@emadsf.com'}},
       userTemplatesQuery: {userTemplates: []},
       todrApolloListQuery: {todrApollos:[]},
       todrApollos2: appState.todrApollos
@@ -114,7 +114,7 @@ const AppConnected = appConnect(
           refetchQueries:[`toduApollos`]
         };
       }
-      return (dispatch, getState, client) => {
+      return (dispatch, getState, {client}) => {
         return client.mutate(generateMutationObject(text));
       }
     },
@@ -134,7 +134,7 @@ const AppConnected = appConnect(
           refetchQueries:[`toduApollos`]
         };
       }
-      return (dispatch, getState, client) => {
+      return (dispatch, getState, {client}) => {
         return client.mutate(generateMutationObject(toduApollo));
       }
     },
@@ -145,7 +145,7 @@ const AppConnected = appConnect(
 
 const SubscribedTodrApollos = appSubscribeConnect({
   todrApollos: () => {
-    return (dispatch, getState, client) => {
+    return (dispatch, getState, {client}) => {
       const observableQuery =client.watchQuery({
         query: gql`
           query toduApollos {
@@ -176,47 +176,23 @@ const SubscribedTodrApollos = appSubscribeConnect({
   }
 })(AppConnected);
 
-function makeSubscribedUser(Comp) {
-  return appSubscribeConnect({
-    // the key `userQuery` below does 2 things
-    //  - if there is appState property of `userQuery`, then makes its value available to component as props.userQuery
-    //  - registers a subscription identified as `userQuery` in the system.  If subscription already exists, no new subscription created
-    //    ( unsubscribe called only when last component subscribing to `userQuery` is destroyed.  )
-    userQuery: () => {
-      return (dispatch, getState, client) => {
-        const observableQuery =client.watchQuery({
-          query: gql`
-            query user {
-              user {
-                email
-                isAdmin
-              }
-            }
-          `,
-        });
-        const subscription = observableQuery.subscribe({
-          next: (response) => {    
-            console.log('response',response);       
-            if (
-              response &&
-              response.data &&
-              response.data.user
-            ) {
-              dispatch({
-                type: 'SET_LOGGED_USER',
-                user: response.data.user,
-              });
-            }
-          },
-        });
 
-        return subscription;
+
+const subscriber = makeSubscriber({
+  userQueryX: {
+    gql: gql`
+      query user {
+        user {
+          email
+          isAdmin
+        }
       }
-    }
-  })(Comp);
-}
+    `,
+  }
+});
 
-const SubscribedUser1 = makeSubscribedUser(SubscribedTodrApollos);
-const SubscribedUser = makeSubscribedUser(SubscribedUser1);
+
+
+const SubscribedUser = subscriber(SubscribedTodrApollos);
 
 export default SubscribedUser;

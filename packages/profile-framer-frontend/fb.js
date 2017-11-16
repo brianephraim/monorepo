@@ -273,7 +273,7 @@ export default fbManager;
 
 const imagesFromFBPromises = {};
 export function makeActionFetchPhotos(ownProps) {
-  return (dispatch, getState, client) => {
+  return (dispatch, getState, {client}) => {
     const imagesFromFBPromise =
       imagesFromFBPromises[ownProps.constants.appNameSpace] ||
       fbManager.importStuff();
