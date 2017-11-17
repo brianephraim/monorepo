@@ -237,6 +237,6 @@ export default (history, preLoadedState) => {
     })
   }
 
-  return { store, thunk, addReducers:injectReducers, client, injectReducers }
+  return { store, thunk, injectReducers, client, }
 }
 

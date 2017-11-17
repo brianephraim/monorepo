@@ -22,7 +22,7 @@ export default function makeRender(makeHtmlConstituents = () => { return {}; }) 
     const preLoadedState = { jwToken } // onBeforeChange will authenticate using this
 
     const history = createHistory({ initialEntries: [req.path] })
-    const { store, thunk, addReducers, client } = configureStore(history, preLoadedState)
+    const { store, thunk, injectReducers, client } = configureStore(history, preLoadedState)
     function fullUrl(req) {
       return decodeURIComponent(url.format({
         protocol: req.protocol,
@@ -76,7 +76,7 @@ export default function makeRender(makeHtmlConstituents = () => { return {}; }) 
 
     
 
-    const htmlConstituents = makeHtmlConstituents({store,styles,addReducers,client});
+    const htmlConstituents = makeHtmlConstituents({store,styles,injectReducers,client});
 
     const headContent = htmlConstituents.head || `
       <title>redux-first-router-demo</title>

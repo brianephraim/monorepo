@@ -8,7 +8,7 @@ import App from './components/App'
 
 export default function renderClient (App1) {
   const history = createBrowserHistory();
-  const { store, addReducers, client } = configureStore(history, window.REDUX_STATE);
+  const { store, injectReducers, client } = configureStore(history, window.REDUX_STATE);
 
   function getRootEl() {
     let rootEl = document.getElementById('root');
@@ -25,7 +25,7 @@ export default function renderClient (App1) {
 
     ReactDOM.render(
       <AppContainer>
-        <App3 store={store} addReducers={addReducers} client={client} />
+        <App3 store={store} injectReducers={injectReducers} client={client} />
       </AppContainer>,
       root
     )

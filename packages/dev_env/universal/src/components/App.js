@@ -47,7 +47,7 @@ const UniversalComponent = universal(
           context.store.dispatch(aThunk)
         }
         if (module.routeData.reducers) {
-          props.addReducers('',module.routeData.reducers);
+          props.injectReducers('',module.routeData.reducers);
         }
       }
 
@@ -92,12 +92,12 @@ DemoWrapper = connect(({ page, direction,location }) => ({
 }))(DemoWrapper)
 
 
-let Switcher = ({ page, isLoading, addReducers }) => {
+let Switcher = ({ page, isLoading, injectReducers }) => {
   const Comp = page.fileKey === 'Migration' ? routeData.routeRootComponent : UniversalComponent;
 
   return (
     <DemoWrapper>
-      <Comp page={page} isLoading={isLoading} addReducers={addReducers} />
+      <Comp page={page} isLoading={isLoading} injectReducers={injectReducers} />
     </DemoWrapper>
   );
 };
@@ -113,11 +113,11 @@ Switcher = connect(({ page, ...state }) => ({
 
 
 
-export default ({store,addReducers,client}) => {
+export default ({store,injectReducers,client}) => {
   return (
     <ApolloProvider store={store} client={client} >
       <div>
-        <Switcher addReducers={addReducers} />
+        <Switcher injectReducers={injectReducers} />
       </div>
     </ApolloProvider>
   );
