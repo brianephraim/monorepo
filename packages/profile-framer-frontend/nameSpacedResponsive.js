@@ -62,8 +62,8 @@ const appApolloClientHoc = (gqlActions) => {
 
 };
 
-const appSubscribeConnect = (map) => {
-  return subscribeConnect(map, appConnect);
+const appSubscribeConnect = (map,options) => {
+  return subscribeConnect(map, appConnect, options);
 }
 
 export {

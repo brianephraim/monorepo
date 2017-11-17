@@ -1,14 +1,7 @@
 import { createStore, combineReducers } from 'redux';
 import { set, has } from 'lodash';
 
-console.log(combineReducers.toString());
-let combine = (...args) => {
-  try{
-    return combineReducers(...args);
-  } catch(e) {
-    // console.log  (e);
-  }
-};
+let combine = combineReducers;
 
 function combineReducersRecurse(reducers) {
   // If this is a leaf or already combined.
@@ -61,6 +54,7 @@ export default function createStoreAndInjector(initialReducers, ...args) {
 
     set(store.injectedReducers, key, reducer);
     store.replaceReducer(combineReducersRecurse(store.injectedReducers));
+    // store.dispatch({type:'NOTHINGNOTHING2'});
   }
 
   // multiple
@@ -75,6 +69,8 @@ export default function createStoreAndInjector(initialReducers, ...args) {
     } else {
       injectReducer(key, reducerOrDict, force);
     }
+    // store.dispatch({type:'NOTHINGNOTHING'});
+    // console.log('0000000',store.injectedReducers.bernie && Object.keys(store.injectedReducers.bernie));
   }
 
   return {

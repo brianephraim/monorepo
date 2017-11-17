@@ -65,6 +65,8 @@ class TodrApollo extends Component {
   render() {
     const props = this.props;
     const email = props.userQueryX && props.userQueryX.user && props.userQueryX.user.email;
+    console.log('props.userQueryX',props.userQueryX);
+
     // const email ='zzz';
     const userTemplates = props.userTemplatesQuery.userTemplates;
     return (
@@ -188,6 +190,22 @@ const subscriber = makeSubscriber({
         }
       }
     `,
+    defaultState: {
+      appNameSpace: 'bernie',
+      user: {
+        email: 'aaa'
+      }
+    },
+    parse: (data) => {
+      console.log('data',data);
+      return data;
+      // return {
+      //   appNameSpace: 'bernie',
+      //   user: {
+      //     email: 'dddddd'
+      //   }
+      // }
+    }
   }
 });
 
