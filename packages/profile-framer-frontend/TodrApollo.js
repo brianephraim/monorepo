@@ -64,8 +64,9 @@ function List({ onClick, data, loading }) {
 class TodrApollo extends Component {
   render() {
     const props = this.props;
-    const email = props.userQueryX && props.userQueryX.user && props.userQueryX.user.email;
-    console.log('props.userQueryX',props.userQueryX);
+    const user = props.userQueryX.user || props.userQueryX;
+    const email = user && user.email;
+    console.log('email',email);
 
     // const email ='zzz';
     const userTemplates = props.userTemplatesQuery.userTemplates;
@@ -178,10 +179,9 @@ const SubscribedTodrApollos = appSubscribeConnect({
   }
 })(AppConnected);
 
-
-
-const subscriber = makeSubscriber({
+const subscriberUserQueryX = makeSubscriber({
   userQueryX: {
+    determineKeyFromGql: true,
     gql: gql`
       query user {
         user {
@@ -193,24 +193,46 @@ const subscriber = makeSubscriber({
     defaultState: {
       appNameSpace: 'bernie',
       user: {
-        email: 'aaa'
+        email: 'defaultstate@emial.com'
       }
     },
-    parse: (data) => {
-      console.log('data',data);
-      return data;
-      // return {
-      //   appNameSpace: 'bernie',
-      //   user: {
-      //     email: 'dddddd'
-      //   }
-      // }
-    }
+    auto: true,
+    // makeReducer: (actionType) => {
+    //   const defaultState = {
+    //     appNameSpace: 'bernie',
+    //     user: {
+    //       email: 'makereducerdefault@email.ocm'
+    //     }
+    //   };
+    //   return (state = defaultState,action) => {
+    //     if (action.type === actionType) {
+    //       return {
+    //         appNameSpace: 'bernie',
+    //         user: {
+    //           email: `~~${action.payload.user.email}`
+    //         }
+    //       };
+    //       // return action.payload;
+    //     }
+    //     return state;
+    //   }
+    // },
+    // parse: (state = { user: { email: 'parsedefault@email.com'}}, payload) => {
+    //   if (payload && payload.user && payload.user.email) {
+    //     return {
+    //       appNameSpace: 'bernie',
+    //       user: {
+    //         email: 'parse@email.com'
+    //       }
+    //     }
+    //   }
+    //   return state;
+    // },
   }
 });
 
 
 
-const SubscribedUser = subscriber(SubscribedTodrApollos);
+const SubscribedUser = subscriberUserQueryX(SubscribedTodrApollos);
 
 export default SubscribedUser;
