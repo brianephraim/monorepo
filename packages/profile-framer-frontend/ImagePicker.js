@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import styleConstants from './style-constants';
 import AppReduxLink from './AppReduxLink';
+import isAuthConnect from './isAuthConnect';
 
 class RemoveButton extends Component {
   constructor(props){
@@ -122,6 +123,7 @@ class ImagePicker extends Component {
     };
   }
   render() {
+    console.log('-----', this.props);
     // const imgSrc =
     //   'https://scontent.xx.fbcdn.net/v/t1.0-9/14729128_10157953620800725_5026720440547477533_n.jpg?oh=ac158b7c520d1310164aabb3c18fa3ff&amp;oe=59F6F820';
     const images =
@@ -188,4 +190,4 @@ ImagePicker.defaultProps = {
   removeItem: () => {},
 };
 
-export default ImagePicker;
+export default isAuthConnect(ImagePicker);

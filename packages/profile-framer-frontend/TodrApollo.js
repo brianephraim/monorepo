@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import integrateApollo from './integrateApollo';
 import { appConnect, appSubscribeConnect } from './nameSpacedResponsive';
 import { gql } from 'react-apollo';
-import makeSubscriber from './makeSubscriber';
+import makeSubscriber, {quickSubscriber} from './makeSubscriber';
 
 class Form extends Component {
   constructor(props) {
@@ -64,7 +64,7 @@ function List({ onClick, data, loading }) {
 class TodrApollo extends Component {
   render() {
     const props = this.props;
-    const user = props.userQueryX.user || props.userQueryX;
+    const user = props.userQueryY.user || props.userQueryY;
     const email = user && user.email;
     console.log('email',email);
 
@@ -179,60 +179,36 @@ const SubscribedTodrApollos = appSubscribeConnect({
   }
 })(AppConnected);
 
-const subscriberUserQueryX = makeSubscriber({
-  userQueryX: {
-    determineKeyFromGql: true,
-    gql: gql`
-      query user {
+console.log(gql`
+      query user1 {
         user {
           email
           isAdmin
         }
       }
-    `,
-    defaultState: {
-      appNameSpace: 'bernie',
-      user: {
-        email: 'defaultstate@emial.com'
+    `)
+
+
+
+const subscriberUserQueryZ = quickSubscriber({
+  gql: gql`
+    query userQueryY {
+      user {
+        email
+        isAdmin
       }
-    },
-    auto: true,
-    // makeReducer: (actionType) => {
-    //   const defaultState = {
-    //     appNameSpace: 'bernie',
-    //     user: {
-    //       email: 'makereducerdefault@email.ocm'
-    //     }
-    //   };
-    //   return (state = defaultState,action) => {
-    //     if (action.type === actionType) {
-    //       return {
-    //         appNameSpace: 'bernie',
-    //         user: {
-    //           email: `~~${action.payload.user.email}`
-    //         }
-    //       };
-    //       // return action.payload;
-    //     }
-    //     return state;
-    //   }
-    // },
-    // parse: (state = { user: { email: 'parsedefault@email.com'}}, payload) => {
-    //   if (payload && payload.user && payload.user.email) {
-    //     return {
-    //       appNameSpace: 'bernie',
-    //       user: {
-    //         email: 'parse@email.com'
-    //       }
-    //     }
-    //   }
-    //   return state;
-    // },
+    }
+  `,
+  defaultState: {
+    appNameSpace: 'bernie',
+    user: {
+      email: 'defaultstate@emial.com'
+    }
   }
 });
 
 
 
-const SubscribedUser = subscriberUserQueryX(SubscribedTodrApollos);
+const SubscribedUser = subscriberUserQueryZ(SubscribedTodrApollos);
 
 export default SubscribedUser;

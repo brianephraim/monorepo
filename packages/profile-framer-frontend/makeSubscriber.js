@@ -1,3 +1,62 @@
+/* USAGE
+
+
+const subscriberUserQueryX = makeSubscriber({
+  userQueryY: {
+    // determineStateKeyFromGql: true,
+    gql: gql`
+      query whatever {
+        user {
+          email
+          isAdmin
+        }
+      }
+    `,
+    defaultState: {
+      appNameSpace: 'bernie',
+      user: {
+        email: 'defaultstate@emial.com'
+      }
+    },
+    auto: true,
+    // makeReducer: (actionType) => {
+    //   const defaultState = {
+    //     appNameSpace: 'bernie',
+    //     user: {
+    //       email: 'makereducerdefault@email.ocm'
+    //     }
+    //   };
+    //   return (state = defaultState,action) => {
+    //     if (action.type === actionType) {
+    //       return {
+    //         appNameSpace: 'bernie',
+    //         user: {
+    //           email: `~~${action.payload.user.email}`
+    //         }
+    //       };
+    //       // return action.payload;
+    //     }
+    //     return state;
+    //   }
+    // },
+    // parse: (state = { user: { email: 'parsedefault@email.com'}}, payload) => {
+    //   if (payload && payload.user && payload.user.email) {
+    //     return {
+    //       appNameSpace: 'bernie',
+    //       user: {
+    //         email: 'parse@email.com'
+    //       }
+    //     }
+    //   }
+    //   return state;
+    // },
+  }
+});
+
+
+
+*/
+
 import { appSubscribeConnect,appConnect } from './nameSpacedResponsive';
 import { get } from 'lodash';
 
@@ -8,6 +67,11 @@ const mapToBasicMapStateToPropsConnect = (map) => {
   const connectToUse = appConnect;
   const mapStateToProps = (state) => {
     const a =  Object.keys(map).reduce((accum, key) => {
+      const item = map[key];
+      const parsedGql = parseGql(item.gql);
+      if (item.determineStateKeyFromGql){
+        key = parsedGql.operationDefinitionName;
+      }
       accum[key] = state[key];
       return accum;
     },{});
@@ -20,11 +84,16 @@ const mapToBasicMapStateToPropsConnect = (map) => {
 }
 
 function parseGql(gql) {
+  let operationDefinitionName;
   const dotPaths = {};
   const definitions = gql.definitions
   definitions.forEach((definition) => {
     function recurse(definition, dotPath = '',isInitial=true) {
       if (definition) {
+        if (definition.kind === 'OperationDefinition') {
+          operationDefinitionName = definition.name.value;
+        }
+        
         if (definition.selectionSet) {
           if (definition.selectionSet.selections) {
             if (!isInitial) {
@@ -44,7 +113,7 @@ function parseGql(gql) {
     }
     recurse(definition);
   });
-  return {dotPaths};
+  return {dotPaths,operationDefinitionName};
 }
 
 function appApolloSubscribeConnect(map) {
@@ -52,6 +121,10 @@ function appApolloSubscribeConnect(map) {
     const item = map[key];
     const parsedGql = parseGql(item.gql);
     const dotPaths = parsedGql.dotPaths;
+
+    if (item.determineStateKeyFromGql){
+      key = parsedGql.operationDefinitionName;
+    }
 
     accum[key] = ({constants}) => {
       return (dispatch, getState, {client,injectReducers}) => {
@@ -125,9 +198,9 @@ function appApolloSubscribeConnect(map) {
           };
         } else if (item.auto) {
           // optionally define a reducer automatically
-          // take the leaves of your gql setting
-          // use those leaves to extract properties from Apollo payload
-          // set state as object with those leave, with those Apollo values.
+          // take the leafs of your gql setting
+          // use those leafs to extract properties from Apollo payload
+          // set state as object with those leafs, with those Apollo values.
           // Remember to set a default state.
           /* DEMO ------
             defaultState: {
@@ -177,3 +250,16 @@ function makeSubscriber (map) {
 }
 
 export default makeSubscriber;
+
+let quickSubscriberId = 0;
+export function quickSubscriber(options) {
+  return makeSubscriber({
+    [quickSubscriberId++]: {
+      ...options,
+      determineStateKeyFromGql: true,
+      auto: true,
+    }
+  });
+}
+
+
