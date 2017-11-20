@@ -1,5 +1,6 @@
 import { appConnect, appSubscribeConnect } from './nameSpacedResponsive';
 import { gql } from 'react-apollo';
+import root from 'window-or-global'
 
 let attemptId = 0;
 function fetchTemplatesHoc(Comp) {
@@ -82,6 +83,7 @@ function fetchTemplatesHoc(Comp) {
             }
           },
           error: (err) => {
+            const alert = root.alert || console.warn;
             alert(err);
             dispatch({
               type: 'STOP_LOADING',
