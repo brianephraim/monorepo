@@ -172,7 +172,7 @@ function AppHero(props) {
         </StyledInstructions>
         <StyledSelfie
           className="app_body_leftPillar_selfieFrame_selfie"
-          src={props.imSrc}
+          src={props.imgSrc}
           alt={props.constants.heroImageAltText}
         />
       </AppMainSelfieFrameResponsive>
@@ -181,14 +181,26 @@ function AppHero(props) {
 };
 
 AppHero.propTypes = {
-  imSrc: PropTypes.string.isRequired,
+  imgSrc: PropTypes.string.isRequired,
   constants: PropTypes.object.isRequired,
 };
 
 AppHero = ancestorConstantsHoc(
   appConnect((appState /* , { params }*/) => {
+    
+    const imgSrc = (
+      appState &&
+
+      // WHEN acriveAppScreen is UPLOAD_TEMPLATE, use mock selfie.
+      // Because UPLOAD_TEMPLATE is weird in that it switches the overlay with the selfie.
+      // And this would trigger endpointCompositeImage, which would create a template for the current selfie.
+      appState.activeAppScreen !== 'UPLOAD_TEMPLATE' &&
+      appState.compositeImageData &&
+      appState.compositeImageData.compositeImageUrl ||
+      '/images/mock-selfie.png'
+    );
     return {
-      imSrc: appState && appState.compositeImageData && appState.compositeImageData.compositeImageUrl || '/images/mock-selfie.png',
+      imgSrc,
           // ? generateCompositeImgSrcUrl(appState.compositeImageData)
           // : '/images/mock-selfie.png',
       // toBeAssigned: getDetailsOfToBeAssigned(state),

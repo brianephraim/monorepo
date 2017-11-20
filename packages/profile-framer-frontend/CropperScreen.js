@@ -10,7 +10,6 @@ import CompletionInterface, {
   completionInterfaceHeights,
 } from './CompletionInterface';
 import isTouchDevice from './isTouchDevice';
-import ToduApollo from './ToduApollo';
 
 const hasDom = typeof window !== 'undefined';
 
@@ -182,9 +181,6 @@ class CropperScreen extends Component {
           generateCompletionUrl={this.props.generateCompletionUrl}
           onClick={this.props.publishTemplateCrop}
         />
-        <div style={{position:'fixed',bottom:0,right:0,background:'#eee',padding:'10px',zIndex:99999}}>
-          <ToduApollo />
-        </div>
       </div>
     );
   }

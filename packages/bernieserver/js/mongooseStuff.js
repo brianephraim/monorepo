@@ -246,13 +246,18 @@ MongooseStuff.prototype.GetComplexImageAll = function() {
 };
 
 MongooseStuff.prototype.MakeUserTemplate = function(data) {
+  console.log('MakeUserTemplate!')
   var self = this;
   var dfd = jD.Deferred();
   self.connect().then(function() {
     self.models.UserTemplate.findOneAndUpdate(
       { customTemplate: data.customTemplate },
       data,
-      { upsert: true },
+      {
+        upsert: true,
+        new: true,
+        setDefaultsOnInsert: true
+      },
       function() {
         dfd.resolve.apply(null, arguments);
       }

@@ -115,6 +115,7 @@ export default function ({app, nameSpace = 'bernieserver'})  {
   //____________________________
 
   endpointCompositeImage({
+    MakeUserTemplate: (userTemplateModel) => {mongooseStuff.MakeUserTemplate(userTemplateModel);},
     app:app,
     accessKeyId:AWS_ACCESS_KEY,
     secretAccessKey:AWS_SECRET_KEY,
