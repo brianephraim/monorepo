@@ -179,17 +179,6 @@ const SubscribedTodrApollos = appSubscribeConnect({
   }
 })(AppConnected);
 
-console.log(gql`
-      query user1 {
-        user {
-          email
-          isAdmin
-        }
-      }
-    `)
-
-
-
 const subscriberUserQueryZ = quickSubscriber({
   gql: gql`
     query userQueryY {

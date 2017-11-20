@@ -318,6 +318,22 @@ function HomeLayout(props) {
     props.responsiveStatusesDict.homeResponsive &&
     props.responsiveStatusesDict.homeResponsive.singleCol
   );
+
+  const Extras = (
+    <div>
+      <div style={{position:'fixed',top:0,left:0,background:'#eee',padding:'10px',zIndex:99999}}>
+        <TodaApollo />
+      </div>
+      <div style={{position:'fixed',bottom:0,right:0,background:'#eee',padding:'10px',zIndex:99999}}>
+        <ToduApollo />
+      </div>
+      <div style={{position:'fixed',bottom:0,left:0,background:'#eee',padding:'10px',zIndex:99999}}>
+        <TodrApollo />
+      </div>
+    </div>
+  );
+  const showExtras = false;
+
   return (
     <StyledHomeLayout className="homeLayout">
       {/* The wrapping element below distinguishes the photo-plus-buttonGroupComponents from disclaimer.*/}
@@ -325,15 +341,7 @@ function HomeLayout(props) {
         <ContributeBanner />
         <HomeLayoutHeader />
         <StyledAppBody className="app_body">
-          <div style={{position:'fixed',top:0,left:0,background:'#eee',padding:'10px',zIndex:99999}}>
-            <TodaApollo />
-          </div>
-          <div style={{position:'fixed',bottom:0,right:0,background:'#eee',padding:'10px',zIndex:99999}}>
-            <ToduApollo />
-          </div>
-          <div style={{position:'fixed',bottom:0,left:0,background:'#eee',padding:'10px',zIndex:99999}}>
-            <TodrApollo />
-          </div>
+          {showExtras && Extras}
           <AppHero {...props} />
           <AppBusiness section="design">
             {

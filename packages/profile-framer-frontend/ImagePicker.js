@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import styleConstants from './style-constants';
 import AppReduxLink from './AppReduxLink';
-import isAuthConnect from './isAuthConnect';
+import isAdminConnect from './isAdminConnect';
 
 class RemoveButton extends Component {
   constructor(props){
@@ -159,7 +159,7 @@ class ImagePicker extends Component {
                 {...InnerWrapProps}
                 layoutVariation={this.props.layoutVariation}
               >
-                <RemoveButton removeItem={this.props.removeItem} imgSrcObj={imgSrcObj} />
+                { this.props.isAdmin && <RemoveButton removeItem={this.props.removeItem} imgSrcObj={imgSrcObj} /> }
                 <StyledPhotoImg
                   {...imgProps}
                   layoutVariation={this.props.layoutVariation}
@@ -190,4 +190,4 @@ ImagePicker.defaultProps = {
   removeItem: () => {},
 };
 
-export default isAuthConnect(ImagePicker);
+export default isAdminConnect(ImagePicker);

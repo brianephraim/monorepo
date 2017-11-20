@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 const subs = {};
 
 export default function subscribeConnect(mapDispatchToProps,customConnect,options = {}) {
+
   const {onlyMapDispatchToProps} = options;
   const connectToUse = customConnect || connect;
   
@@ -28,6 +29,7 @@ export default function subscribeConnect(mapDispatchToProps,customConnect,option
   );
 
   return (Comp) => {
+    console.log('subs.length',Object.keys(subs).length);
     class Wrapper extends Component {
       componentWillMount() {
         this.subscriptions = Object.keys(mapDispatchToPropsToUse).reduce((accum,key) => {
