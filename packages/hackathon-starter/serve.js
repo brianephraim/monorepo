@@ -21,6 +21,9 @@ const sass = require('node-sass-middleware');
 const multer = require('multer');
 const fs = require('fs-extra');
 
+import makeUserModel from './models/makeUserModel';
+import makePassportConfig from './config/passport';
+
 const apolloIntegration = require('./apolloIntegration').default;
 
 let pwdTxt;
@@ -53,7 +56,7 @@ module.exports = function (settings){
   const isFreshApp = !settings.app;
   const app = settings.app || express();
 
-
+  const User = makeUserModel();
 
 
   function ns(str) {
@@ -77,16 +80,15 @@ module.exports = function (settings){
    * Controllers (route handlers).
    */
   const homeController = require('./controllers/home')(ns);
-  const userController = require('./controllers/user')(ns);
+  const userController = require('./controllers/user')(ns,User);
   const apiController = require('./controllers/api')(ns);
   const contactController = require('./controllers/contact')(ns);
 
   /**
    * API keys and Passport configuration.
    */
-  const makePassportConfig = require('./config/passport').default;
-  console.log(makePassportConfig);
-  const passportConfig = makePassportConfig(ns);
+  
+  const passportConfig = makePassportConfig(ns,User);
 
   /**
    * Create Express server.
@@ -186,7 +188,7 @@ module.exports = function (settings){
   app.post(ns('/contact'), contactController.postContact);
   app.get(ns('/account'), passportConfig.isAuthenticated, userController.getAccount);
   app.get(ns('/account.json'), passportConfig.isAuthenticated, userController.getAccountJson);
-  apolloIntegration({ app });
+  apolloIntegration({ app,User });
   app.post(ns('/account/profile'), passportConfig.isAuthenticated, userController.postUpdateProfile);
   app.post(ns('/account/password'), passportConfig.isAuthenticated, userController.postUpdatePassword);
   app.post(ns('/account/delete'), passportConfig.isAuthenticated, userController.postDeleteAccount);

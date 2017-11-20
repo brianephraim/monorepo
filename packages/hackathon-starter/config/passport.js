@@ -11,8 +11,7 @@ const OpenIDStrategy = require('passport-openid').Strategy;
 const OAuthStrategy = require('passport-oauth').OAuthStrategy;
 const OAuth2Strategy = require('passport-oauth').OAuth2Strategy;
 
-const User = require('../models/User');
-export default function makePassportConfig(ns) {
+export default function makePassportConfig(ns, User) {
   const toReturn = {};
 
   passport.serializeUser((user, done) => {
