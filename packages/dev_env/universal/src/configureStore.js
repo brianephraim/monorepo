@@ -198,11 +198,12 @@ export default (history, preLoadedState) => {
 
   const laterReducers = {
     ...moreReducers,
-    ...reducers,
+    // ...reducers,
     ...routeData.reducers,
   };
 
   const rootReducer = {
+    ...reducers,
     location: reducer,
     apollo: client.reducer(),
   };
@@ -220,16 +221,19 @@ export default (history, preLoadedState) => {
   );
 
   const enhancers = composeEnhancers(enhancer, middlewares);
-  const {store,injectReducers} = createStoreAndInjector(rootReducer, preLoadedState, enhancers);
+  const {createStore, injectReducers} = createStoreAndInjector({}, preLoadedState, enhancers);
   injectReducers('',{ddd:() => { return 'eeee'; }});
   injectReducers('',laterReducers);
+  injectReducers('',rootReducer);
+
+
+  const store = createStore();
 
   const aThunk = addRoutes(routeData.routesMap); // export new routes from component file
   store.dispatch(aThunk);
   initialDispatch();
-  if (typeof window !== 'undefined') {
-    window.ss = store;
-  }
+
+  
   if (module.hot && process.env.NODE_ENV === 'development') {
     module.hot.accept('./reducers/index', () => {
       const reducers = require('./reducers/index');

@@ -27,7 +27,8 @@ function combineReducersRecurse(reducers) {
 
 
 export default function createStoreAndInjector(initialReducers, ...args) {
-  let store = {};
+  let store;
+  const [preLoadedState, enhancers] = args;
   // If last item is an object, it is overrides.
   if (typeof args[args.length - 1] === 'object') {
     const overrides = args.pop();
@@ -37,12 +38,11 @@ export default function createStoreAndInjector(initialReducers, ...args) {
     }
   }
 
-  store = createStore(
-    combineReducersRecurse(initialReducers),
-    ...args
-  );
+  const injectedReducers = initialReducers;
 
-  store.injectedReducers = initialReducers;
+  
+
+  
 
   // singular
   function injectReducer (key, reducer, force = false) {
@@ -50,10 +50,18 @@ export default function createStoreAndInjector(initialReducers, ...args) {
       
     }
     // If already set, do nothing.
-    if (has(store.injectedReducers, key) || force) return;
+    if (has(injectedReducers, key) || force) return;
 
-    set(store.injectedReducers, key, reducer);
-    store.replaceReducer(combineReducersRecurse(store.injectedReducers));
+    set(injectedReducers, key, reducer);
+    if (store) {
+      const combinedReducer = combineReducersRecurse(store.injectedReducers);
+
+      // This allows state rehydration on lazy loaded reducers
+      // https://medium.com/front-end-hacking/code-splitting-redux-reducers-4073db30c72e
+      store.replaceReducer((...args2) => {
+        return {...preLoadedState, ...combinedReducer(...args2)}
+      });
+    }
     // store.dispatch({type:'NOTHINGNOTHING2'});
   }
 
@@ -69,12 +77,22 @@ export default function createStoreAndInjector(initialReducers, ...args) {
     } else {
       injectReducer(key, reducerOrDict, force);
     }
-    // store.dispatch({type:'NOTHINGNOTHING'});
-    // console.log('0000000',store.injectedReducers.bernie && Object.keys(store.injectedReducers.bernie));
+  }
+
+  function createStoreX() {
+    store = createStore(
+      combineReducersRecurse(injectedReducers),
+      ...args
+    );
+    store.injectedReducers = injectedReducers;
+    if (typeof window !== 'undefined') {
+      window.ss = store;
+    }
+    return store;
   }
 
   return {
-    store,
+    createStore: createStoreX,
     injectReducers,
   };
 }
