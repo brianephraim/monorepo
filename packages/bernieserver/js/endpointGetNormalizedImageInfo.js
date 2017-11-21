@@ -90,7 +90,7 @@ export default ({accessKeyId,secretAccessKey,Bucket,app,userTemplates, urlPatter
           return dfd.promise();
         } else {          
           var uploadToS3Promise = this.then(uploadToS3);
-          console.log('uploadToS3');
+          console.log('uploadToS3',req.query);
           uploadToS3Promise.then(function(){
             if(mustBeSquare){
               var userTemplateModel = {

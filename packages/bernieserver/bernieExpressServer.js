@@ -31,7 +31,7 @@ import ensureLeadingSlash from '@defualt/ensure-leading-slash';
  */
 
 export default function ({app, nameSpace = 'bernieserver'})  {
-  const mongooseStuff = startMongooseStuff();
+  const mongooseStuff = startMongooseStuff({app});
 
   /*
    * Load the S3 information from the environment variables.
@@ -115,6 +115,7 @@ export default function ({app, nameSpace = 'bernieserver'})  {
   //____________________________
 
   endpointCompositeImage({
+    MakeUserTemplate: (userTemplateModel) => {mongooseStuff.MakeUserTemplate(userTemplateModel);},
     app:app,
     accessKeyId:AWS_ACCESS_KEY,
     secretAccessKey:AWS_SECRET_KEY,

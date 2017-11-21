@@ -2,7 +2,7 @@ var jD = require("jquery-deferred");
 var mongoose = require("mongoose");
 var uriUtil = require("mongodb-uri");
 var i = 0;
-var MongooseStuff = function() {
+var MongooseStuff = function({app}) {
   console.log("MONGOOSE!!!!!!");
   var self = this;
   var mongodbUri = process.env.MONGOLAB_URI;
@@ -45,7 +45,6 @@ var MongooseStuff = function() {
       y: Number,
       mode: String,
       customTemplate: String,
-      idX: String,
       customUrl: String,
       pathname: String,
       good: Number
@@ -67,6 +66,66 @@ var MongooseStuff = function() {
       templateWidth: Number
     })
   );
+
+  // =====
+  // =====
+  // =====
+  // =====
+  const resolvers = {
+    Query: {
+      userTemplates(obj, args, context, info) {
+        return self.models.UserTemplate.find()
+      },
+    },
+    Mutation: {
+      removeUserTemplate(root, { customTemplate }) {
+        self.models.UserTemplate.findOneAndRemove({ customTemplate }).exec().then(() => {});
+      },
+      // addToduApollo(root, args) {
+      //   const toduApollo = new ToduApollo(args);
+      //   toduApollo.save();
+      //   return toduApollo;
+      // },
+    },
+  };
+  const typeDefs = [
+    `
+      type UserTemplate {
+        created: Date
+        customTemplate: String
+      }
+    `,
+    `
+      extend type Query {
+        userTemplates: [UserTemplate]
+      }
+    `,
+    `
+      extend type Mutation {
+        removeUserTemplate(customTemplate: String!): UserTemplate
+      }
+    `,
+
+    // `
+    //   extend type Mutation {
+    //     removeToduApollo(id: ID!): UserTemplate
+    //   }
+    // `,
+    // `
+    //   extend type Mutation {
+    //     addToduApollo(text: String!): UserTemplate
+    //   }
+    // `,
+  ];
+  app.apolloAppConfigs = app.apolloAppConfigs || [];
+  app.apolloAppConfigs.push({resolvers, typeDefs});
+  // =====
+  // =====
+  // =====
+  // =====
+
+
+
 };
 MongooseStuff.prototype.connect = function() {
   var self = this;
@@ -187,13 +246,18 @@ MongooseStuff.prototype.GetComplexImageAll = function() {
 };
 
 MongooseStuff.prototype.MakeUserTemplate = function(data) {
+  console.log('MakeUserTemplate!')
   var self = this;
   var dfd = jD.Deferred();
   self.connect().then(function() {
     self.models.UserTemplate.findOneAndUpdate(
       { customTemplate: data.customTemplate },
       data,
-      { upsert: true },
+      {
+        upsert: true,
+        new: true,
+        setDefaultsOnInsert: true
+      },
       function() {
         dfd.resolve.apply(null, arguments);
       }
@@ -276,4 +340,4 @@ MongooseStuff.prototype.nuke = function() {
   });
 };
 
-export default () => { return new MongooseStuff();};
+export default ({app}) => { return new MongooseStuff({app});};

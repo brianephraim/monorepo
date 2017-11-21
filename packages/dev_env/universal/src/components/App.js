@@ -5,7 +5,6 @@ import { connect } from 'react-redux'
 import { TransitionGroup, Transition } from 'transition-group'
 import universal from 'react-universal-component'
 import { addRoutes } from 'redux-first-router'
-import { combineReducers } from 'redux'
 
 import DevTools from './DevTools'
 import Sidebar from './Sidebar'
@@ -18,6 +17,9 @@ import Loading from './Loading'
 import Err from './Error'
 import isLoading from '../selectors/isLoading'
 import switcherStyles from '../css/Switcher'
+import {
+  ApolloProvider,
+} from 'react-apollo';
 // import {routeData} from 'virtual-module-initialAppIntegration';
 
 
@@ -45,7 +47,7 @@ const UniversalComponent = universal(
           context.store.dispatch(aThunk)
         }
         if (module.routeData.reducers) {
-          context.store.replaceReducer(combineReducers(props.addReducers(module.routeData.reducers)))
+          props.injectReducers('',module.routeData.reducers);
         }
       }
 
@@ -90,12 +92,12 @@ DemoWrapper = connect(({ page, direction,location }) => ({
 }))(DemoWrapper)
 
 
-let Switcher = ({ page, isLoading, addReducers }) => {
+let Switcher = ({ page, isLoading, injectReducers }) => {
   const Comp = page.fileKey === 'Migration' ? routeData.routeRootComponent : UniversalComponent;
 
   return (
     <DemoWrapper>
-      <Comp page={page} isLoading={isLoading} addReducers={addReducers} />
+      <Comp page={page} isLoading={isLoading} injectReducers={injectReducers} />
     </DemoWrapper>
   );
 };
@@ -111,13 +113,13 @@ Switcher = connect(({ page, ...state }) => ({
 
 
 
-export default ({store,addReducers}) => {
+export default ({store,injectReducers,client}) => {
   return (
-    <Provider store={store} >
+    <ApolloProvider store={store} client={client} >
       <div>
-        <Switcher addReducers={addReducers} />
+        <Switcher injectReducers={injectReducers} />
       </div>
-    </Provider>
+    </ApolloProvider>
   );
 };
 

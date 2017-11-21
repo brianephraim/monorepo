@@ -26,6 +26,11 @@ import {
 
 import isTouchDevice from './isTouchDevice';
 
+import TodaApollo from 'apollo-simple-starter/client/components/TodaApollo';
+import ToduApollo from './ToduApollo';
+import TodrApollo from './TodrApollo';
+
+
 const StyledHomeLayout = styled.div`position: relative;`;
 
 const StyledTopBanner = ConnectResponsiveStatusesDictHOC(styled.div`
@@ -167,7 +172,7 @@ function AppHero(props) {
         </StyledInstructions>
         <StyledSelfie
           className="app_body_leftPillar_selfieFrame_selfie"
-          src={props.imSrc}
+          src={props.imgSrc}
           alt={props.constants.heroImageAltText}
         />
       </AppMainSelfieFrameResponsive>
@@ -176,14 +181,26 @@ function AppHero(props) {
 };
 
 AppHero.propTypes = {
-  imSrc: PropTypes.string.isRequired,
+  imgSrc: PropTypes.string.isRequired,
   constants: PropTypes.object.isRequired,
 };
 
 AppHero = ancestorConstantsHoc(
   appConnect((appState /* , { params }*/) => {
+    
+    const imgSrc = (
+      appState &&
+
+      // WHEN acriveAppScreen is UPLOAD_TEMPLATE, use mock selfie.
+      // Because UPLOAD_TEMPLATE is weird in that it switches the overlay with the selfie.
+      // And this would trigger endpointCompositeImage, which would create a template for the current selfie.
+      appState.activeAppScreen !== 'UPLOAD_TEMPLATE' &&
+      appState.compositeImageData &&
+      appState.compositeImageData.compositeImageUrl ||
+      '/images/mock-selfie.png'
+    );
     return {
-      imSrc: appState && appState.compositeImageData && appState.compositeImageData.compositeImageUrl || '/images/mock-selfie.png',
+      imgSrc,
           // ? generateCompositeImgSrcUrl(appState.compositeImageData)
           // : '/images/mock-selfie.png',
       // toBeAssigned: getDetailsOfToBeAssigned(state),
@@ -313,6 +330,22 @@ function HomeLayout(props) {
     props.responsiveStatusesDict.homeResponsive &&
     props.responsiveStatusesDict.homeResponsive.singleCol
   );
+
+  const Extras = (
+    <div>
+      <div style={{position:'fixed',top:0,left:0,background:'#eee',padding:'10px',zIndex:99999}}>
+        <TodaApollo />
+      </div>
+      <div style={{position:'fixed',bottom:0,right:0,background:'#eee',padding:'10px',zIndex:99999}}>
+        <ToduApollo />
+      </div>
+      <div style={{position:'fixed',bottom:0,left:0,background:'#eee',padding:'10px',zIndex:99999}}>
+        <TodrApollo />
+      </div>
+    </div>
+  );
+  const showExtras = false;
+
   return (
     <StyledHomeLayout className="homeLayout">
       {/* The wrapping element below distinguishes the photo-plus-buttonGroupComponents from disclaimer.*/}
@@ -320,6 +353,7 @@ function HomeLayout(props) {
         <ContributeBanner />
         <HomeLayoutHeader />
         <StyledAppBody className="app_body">
+          {showExtras && Extras}
           <AppHero {...props} />
           <AppBusiness section="design">
             {

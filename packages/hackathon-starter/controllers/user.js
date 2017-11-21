@@ -2,9 +2,8 @@ const bluebird = require('bluebird');
 const crypto = bluebird.promisifyAll(require('crypto'));
 const nodemailer = require('nodemailer');
 const passport = require('passport');
-const User = require('../models/User');
 const respondWithJson = require('bernieserver/js/respondWithJson');
-module.exports = function (ns) {
+module.exports = function (ns,User) {
   const toReturn = {};
   /**
    * GET /login

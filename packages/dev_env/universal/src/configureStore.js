@@ -1,4 +1,4 @@
-import { createStore, applyMiddleware, compose, combineReducers } from 'redux'
+import { createStore, applyMiddleware, compose, applyAfterware } from 'redux'
 import { composeWithDevTools } from 'redux-devtools-extension/logOnlyInProduction'
 import { connectRoutes,addRoutes } from 'redux-first-router'
 import reduxThunk from 'redux-thunk';
@@ -9,6 +9,13 @@ import * as reducers from './reducers'
 import * as actionCreators from './actions'
 
 import {routeData} from 'virtual-module-initialAppIntegration';
+
+import {
+  ApolloClient,
+  createNetworkInterface
+} from 'react-apollo';
+
+import createStoreAndInjector from 'redux-injector';
 
 
 
@@ -71,6 +78,53 @@ export default (history, preLoadedState) => {
   if(typeof window !== 'undefined' && window.routeDataFromInitialApp) {
     windowRoutesMap = window.routeDataFromInitialApp.routesMap;
   }
+
+  const networkInterface = createNetworkInterface({
+    uri: '/graphql',
+    opts: {
+      credentials: 'same-origin',
+    },
+  });
+  let i = 0;
+  networkInterface.use([{
+    applyMiddleware(req, next) {
+      if (!req.options.headers) {
+        req.options.headers = {};  // Create the header object if needed.
+      }
+      req.options.headers.name = `${req.request.operationName}_${i++}`;
+      if(req.request && req.request.variables && req.request.variables.headers) {
+        Object.assign(req.options.headers,req.request.variables.headers);
+        delete req.request.variables.headers;
+      }
+      if (req.options.headers.name) {
+        store.dispatch({
+          type: 'ADD_CURRENTLY_LOADING',
+          name: req.options.headers.name,
+          appNameSpace: req.options.headers.appNameSpace
+        });
+      }
+      // req.options.headers['authorization'] = localStorage.getItem('token') ? localStorage.getItem('token') : null;
+      next();
+    }
+  }]);
+  networkInterface.useAfter([{
+    applyAfterware(x, next) {
+      if (x.options.headers.name) {
+        store.dispatch({
+          type: 'REMOVE_CURRENTLY_LOADING',
+          name: x.options.headers.name,
+          appNameSpace: x.options.headers.appNameSpace
+        });
+      }
+      next();
+    }
+  }]);
+
+  const client = new ApolloClient({
+    dataIdFromObject: result => result.id || null,
+    networkInterface
+  });
+
   const { reducer, middleware, enhancer, thunk, initialDispatch } = connectRoutes(
     history,
     {
@@ -95,34 +149,98 @@ export default (history, preLoadedState) => {
         return action.origin
       }
       return state;
-    }
+    },
+    currentlyLoading: (state = {all:[]}, action = {}) => {
+      let nameSpacedArray;
+      if (action.appNameSpace) {
+        nameSpacedArray = state[action.appNameSpace] || [];
+        if (action.type === 'REMOVE_CURRENTLY_LOADING') {
+          nameSpacedArray = nameSpacedArray.filter((name) => {
+            if (name === action.name) {
+              return false
+            }
+            return true;
+          })
+        }
+        if (action.type === 'ADD_CURRENTLY_LOADING') {
+          nameSpacedArray = [...nameSpacedArray, action.name];
+        }
+        if (action.type === 'CLEAR_CURRENTLY_LOADING') {
+          nameSpacedArray = [];
+        }
+
+      }
+      let stateAll = state.all || [];
+      if (action.type === 'REMOVE_CURRENTLY_LOADING') {
+        stateAll = stateAll.filter((name) => {
+          if (name === action.name) {
+            return false
+          }
+          return true;
+        })
+      }
+      if (action.type === 'ADD_CURRENTLY_LOADING') {
+        stateAll = [...stateAll, action.name];
+      }
+      if (action.type === 'CLEAR_CURRENTLY_LOADING') {
+        stateAll = [];
+      }
+      
+      return {
+        ...state,
+        all: stateAll,
+        ...(!action.appNameSpace ? {} : {
+          [action.appNameSpace]: nameSpacedArray
+        })
+      };
+    },
   };
 
-  let allReducers = {...moreReducers, ...reducers, ...routeData.reducers, location: reducer };
-  function addReducers(newReducers) {
-    allReducers = {...allReducers, ...newReducers };
-    return allReducers;
-  }
-  const rootReducer = combineReducers(addReducers(reducers))
-  // const middlewares = applyMiddleware(thunk, middleware, redundantAppNameSpaceMiddleware)
-  const middlewares = applyMiddleware(reduxThunk,middleware,redundantAppNameSpaceMiddleware)
+  const laterReducers = {
+    ...moreReducers,
+    // ...reducers,
+    ...routeData.reducers,
+  };
 
-  const enhancers = composeEnhancers(enhancer, middlewares)
-  const store = createStore(rootReducer, preLoadedState, enhancers);
+  const rootReducer = {
+    ...reducers,
+    location: reducer,
+    apollo: client.reducer(),
+  };
+  // const middlewares = applyMiddleware(thunk, middleware, redundantAppNameSpaceMiddleware)
+  const middlewares = applyMiddleware(
+    client.middleware(),
+    reduxThunk.withExtraArgument({
+      client,
+      injectReducers: (...args) => {
+        injectReducers(...args)
+      }
+    }),
+    middleware,
+    redundantAppNameSpaceMiddleware
+  );
+
+  const enhancers = composeEnhancers(enhancer, middlewares);
+  const {createStore, injectReducers} = createStoreAndInjector({}, preLoadedState, enhancers);
+  injectReducers('',{ddd:() => { return 'eeee'; }});
+  injectReducers('',laterReducers);
+  injectReducers('',rootReducer);
+
+
+  const store = createStore();
+
   const aThunk = addRoutes(routeData.routesMap); // export new routes from component file
   store.dispatch(aThunk);
   initialDispatch();
-  if (typeof window !== 'undefined') {
-    window.ss = store;
-  }
+
+  
   if (module.hot && process.env.NODE_ENV === 'development') {
     module.hot.accept('./reducers/index', () => {
       const reducers = require('./reducers/index');
-      const rootReducer = combineReducers(addReducers(reducers));
-      store.replaceReducer(rootReducer);
+      injectReducers('',reducers, true);
     })
   }
 
-  return { store, thunk, addReducers }
+  return { store, thunk, injectReducers, client, }
 }
 

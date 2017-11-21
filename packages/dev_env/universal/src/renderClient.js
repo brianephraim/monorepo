@@ -5,9 +5,10 @@ import configureStore from './configureStore'
 import AppContainer from 'react-hot-loader/lib/AppContainer'
 import App from './components/App'
 
+
 export default function renderClient (App1) {
   const history = createBrowserHistory();
-  const { store, addReducers } = configureStore(history, window.REDUX_STATE);
+  const { store, injectReducers, client } = configureStore(history, window.REDUX_STATE);
 
   function getRootEl() {
     let rootEl = document.getElementById('root');
@@ -19,13 +20,12 @@ export default function renderClient (App1) {
     return rootEl;
   }
 
-
   const render = App3 => {
     const root = getRootEl();
 
     ReactDOM.render(
       <AppContainer>
-        <App3 store={store} addReducers={addReducers} />
+        <App3 store={store} injectReducers={injectReducers} client={client} />
       </AppContainer>,
       root
     )

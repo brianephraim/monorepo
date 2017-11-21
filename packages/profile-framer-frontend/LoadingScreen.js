@@ -56,7 +56,7 @@ const StyledLoadingScreenWrap = styled.div`
 function  LoadingScreen (props) {
   return (
     <StyledLoadingScreenWrap>
-      <StyledText>Loading: {props.loading || 'nothing'}</StyledText>
+      {false && <StyledText>Loading: {props.loading || 'nothing'}</StyledText>}
       <StyledButtonWrap>
         <StyledButton
           className="button mainButton urlUploadizerDone"

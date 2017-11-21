@@ -74,7 +74,7 @@ let CropperWithFgBgCompletion = class extends Component {
   }
   render() {
     return (
-      <ModalScreen hasCloseButton>
+      <ModalScreen hasCloseButton center={false}>
         <CropperScreen
           hideControlsBar={this.props.isMakeSquareTemplateMode}
           hideForeground={this.props.isMakeSquareTemplateMode}

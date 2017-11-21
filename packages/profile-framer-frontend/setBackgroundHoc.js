@@ -41,7 +41,7 @@ function makeSetImageHandler (type) {
             },
           };
           if (type === 'UPLOAD_TEMPLATE') {
-            actionRaw.fgSrcKey = compositeImageData.background.srcKey
+            actionRaw.payload.fgSrcKey = compositeImageData.background.srcKey
           }
           const action = payloadRefineAction(
             actionRaw,

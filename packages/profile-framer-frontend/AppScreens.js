@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { appConnect } from './nameSpacedResponsive';
 import styled from 'styled-components';
+import { connect } from 'react-redux';
 import styleConstants from './style-constants';
 import {
   HomeLayoutWithUploadCallback,
@@ -17,7 +18,7 @@ const StyledAppEverythingWrap = styled.div`
 `;
 
 function AppScreens (props) {
-  const isLoading = !!props.loading.length;
+  const isLoading = !!props.loading.length/* || !!props.currentlyLoading.length*/;
   const hideHome = isLoading || props.activeAppScreen !== 'HOME_PROFILE_FRAMER';
   return (
     <StyledAppEverythingWrap>
@@ -41,11 +42,16 @@ AppScreens.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
-export default appConnect(
+export default connect((state) => {
+  return {
+    currentlyLoading: state.currentlyLoading
+  }
+
+})(appConnect(
   (appState) => {
     return {
       activeAppScreen: appState.activeAppScreen,
       loading: appState.loading,
     };
   },
-)(AppScreens);
+)(AppScreens));
