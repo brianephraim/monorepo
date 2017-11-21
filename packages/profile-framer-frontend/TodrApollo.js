@@ -66,7 +66,6 @@ class TodrApollo extends Component {
     const props = this.props;
     const user = props.userQueryY.user || props.userQueryY;
     const email = user && user.email;
-    console.log('email',email);
 
     // const email ='zzz';
     const userTemplates = props.userTemplatesQuery.userTemplates;

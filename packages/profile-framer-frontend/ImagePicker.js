@@ -123,7 +123,6 @@ class ImagePicker extends Component {
     };
   }
   render() {
-    console.log('-----', this.props);
     // const imgSrc =
     //   'https://scontent.xx.fbcdn.net/v/t1.0-9/14729128_10157953620800725_5026720440547477533_n.jpg?oh=ac158b7c520d1310164aabb3c18fa3ff&amp;oe=59F6F820';
     const images =

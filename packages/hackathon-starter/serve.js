@@ -29,19 +29,18 @@ const apolloIntegration = require('./apolloIntegration').default;
 let pwdTxt;
 if (fs.existsSync('/app/pwd.txt')) {
   pwdTxt = fs.readFileSync('/app/pwd.txt', 'utf8').trim();
-  console.log('pwdTxt',pwdTxt);
 }
 
 
 function getDirname() {
   if (pwdTxt && __dirnameBeforeCompiled) {
     const toReturn = __dirnameBeforeCompiled.replace(pwdTxt, process.cwd());
-    console.log('__dirnameBeforeCompiled', __dirnameBeforeCompiled);
-    console.log('pwdTxt', pwdTxt);
-    console.log('process.cwd', process.cwd())
-    console.log('indexof', __dirnameBeforeCompiled.indexOf(pwdTxt));
-    console.log(__dirnameBeforeCompiled.replace(pwdTxt,'xxxxxxx'))
-    console.log('toReturn',toReturn)
+    // console.log('__dirnameBeforeCompiled', __dirnameBeforeCompiled);
+    // console.log('pwdTxt', pwdTxt);
+    // console.log('process.cwd', process.cwd())
+    // console.log('indexof', __dirnameBeforeCompiled.indexOf(pwdTxt));
+    // console.log(__dirnameBeforeCompiled.replace(pwdTxt,'xxxxxxx'))
+    // console.log('toReturn',toReturn)
     return toReturn;
   }
   return typeof __dirnameBeforeCompiled !== "undefined"

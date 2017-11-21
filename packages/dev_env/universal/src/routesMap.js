@@ -7,6 +7,7 @@ export default {
   LIST: {
     path: '/willard/list/:category',
     thunk: async (dispatch, getState) => {
+      console.log('DDDDDD');
       const {
         jwToken,
         location: { payload: { category } },

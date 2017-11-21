@@ -62,7 +62,6 @@ const gqlActions = {
           }
         },
         update: (store, { data: { removeToduApollo } }) => {
-          console.log('remove')
           // Read the data from our cache for this query
           const data = store.readQuery({ query: gqlActions.toduApolloListQuery.gql });
           // Remove our ToduApollo from the mutation to the end
@@ -95,7 +94,6 @@ const gqlActions = {
           }
         },
         update:  (store, { data: { addToduApollo } }) => {
-          console.log('add')
           // Read the data from our cache for this query
           const data = store.readQuery({ query: gqlActions.toduApolloListQuery.gql });
           // Add our ToduApollo from the mutation to the end
