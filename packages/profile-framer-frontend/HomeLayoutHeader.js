@@ -5,6 +5,7 @@ import styleConstants from './style-constants';
 import { ConnectResponsiveStatusesDictHOC } from './nameSpacedResponsive';
 import ancestorConstantsHoc from './ancestorConstantsHoc';
 import shareUrlHoc from './shareUrlHoc';
+import { appConnect } from './nameSpacedResponsive';
 
 const StyledLeftPillar = ConnectResponsiveStatusesDictHOC(styled.div`
   ${styleConstants.mixins.leftPillar()} ${props => {
@@ -102,7 +103,8 @@ const StyledHeader = ConnectResponsiveStatusesDictHOC(styled.div`
   padding: ${styleConstants.appPad}em;
 `);
 
-class AppHeader extends Component {
+
+class SocialWidgetMounter extends Component {
   componentDidMount(){
     if(typeof window !== 'undefined') {
       // TWITTER
@@ -154,13 +156,20 @@ class AppHeader extends Component {
 
     }
   }
+  render () {
+    return (<span />)
+  }
+}
+
+class AppHeader extends Component {
+  
   render(){
-    console.log(this.props.metaOgUrl);
     const encodedShareUrl = encodeURIComponent(this.props.shareUrl);
     const tweetUrl = `https://twitter.com/intent/tweet?url=${encodedShareUrl}&via=bernieselfie&hashtags=BernieSanders%2Cfeelthebern%2Cbernieselfie&related=BernieSanders`;
     const pinUrl = `//www.pinterest.com/pin/create/button/?url=${encodedShareUrl}&description=${encodeURIComponent('Use BernieSelfie.com support Bernie Sanders to your friends and followers')}`;
     return (
       <StyledHeader className="app_header">
+        {this.props.responsiveInitialized && <SocialWidgetMounter />}
         <StyledLeftPillar className="app_header_leftPillar">
           <StyledBranding className="app_header_leftPillar_branding">
             <StyledBrandingTitle className="app_header_leftPillar_branding_title">
@@ -267,6 +276,11 @@ class AppHeader extends Component {
 AppHeader.propTypes = {
   shareUrl: PropTypes.string.isRequired,
   constants: PropTypes.object.isRequired,
+  responsiveInitialized: PropTypes.bool.isRequired,
 };
 
-export default shareUrlHoc(ancestorConstantsHoc(AppHeader));
+export default appConnect((appState) => {
+  return {
+    responsiveInitialized: !!appState.responsiveStatusesDict.homeResponsive.initialized,
+  };
+})(shareUrlHoc(ancestorConstantsHoc(AppHeader)));
