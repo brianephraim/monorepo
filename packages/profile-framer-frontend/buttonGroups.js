@@ -24,6 +24,12 @@ import './app.scss';
 const StyledSubsection = ConnectResponsiveStatusesDictHOC(styled.div`
   padding-bottom: ${styleConstants.appPad}em;
   ${props => {
+    if(props.responsiveStatusesDict.homeResponsive.isProcessing) {
+      return `visibility: hidden;`;
+    }
+    return '';
+  }}
+  ${props => {
     let toReturn = '';
     // singleColHome
     if (

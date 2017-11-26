@@ -3368,21 +3368,21 @@ var UniversalComponent = (0, _reactUniversalComponent2.default)(function (_ref) 
   }
   if (page.importAvenue === 'temp') {
     var _imported = (0, _universalImport3.default)({
-      id: '/var/folders/t0/dms578js4lg8x73s9jzmvcp40000gn/T/tmp.ymVcnv05/',
+      id: '/var/folders/t0/dms578js4lg8x73s9jzmvcp40000gn/T/tmp.vonQU0YB/',
       file: '/Users/brianephraim/Sites/monorepo/packages/dev_env/universal/src/components/App.js',
       load: function load() {
-        return Promise.all([__webpack_require__(292)("./" + page.fileKey), (0, _importCss3.default)('var/folders/t0/dms578js4lg8x73s9jzmvcp40000gn/T/tmp.ymVcnv05/' + page.fileKey)]).then(function (proms) {
+        return Promise.all([__webpack_require__(292)("./" + page.fileKey), (0, _importCss3.default)('var/folders/t0/dms578js4lg8x73s9jzmvcp40000gn/T/tmp.vonQU0YB/' + page.fileKey)]).then(function (proms) {
           return proms[0];
         });
       },
       path: function path() {
-        return _path3.default.join(__dirname, '/var/folders/t0/dms578js4lg8x73s9jzmvcp40000gn/T/tmp.ymVcnv05/' + page.fileKey);
+        return _path3.default.join(__dirname, '/var/folders/t0/dms578js4lg8x73s9jzmvcp40000gn/T/tmp.vonQU0YB/' + page.fileKey);
       },
       resolve: function resolve() {
         return /*require.resolve*/(__webpack_require__(367).resolve("./" + page.fileKey));
       },
       chunkName: function chunkName() {
-        return 'var/folders/t0/dms578js4lg8x73s9jzmvcp40000gn/T/tmp.ymVcnv05/' + page.fileKey;
+        return 'var/folders/t0/dms578js4lg8x73s9jzmvcp40000gn/T/tmp.vonQU0YB/' + page.fileKey;
       }
     });
     return _imported;
@@ -8348,6 +8348,12 @@ function ResponsiveMasterHOC(Comp, options) {
           },
           nukeActiveStatusRegistryOnMaster: function nukeActiveStatusRegistryOnMaster() {
             _this5.initComponentInternalState(_this5.props);
+          },
+          onStart: function onStart() {
+            _this5.props.onStart();
+          },
+          onEnd: function onEnd() {
+            _this5.props.onEnd();
           }
         });
       }
@@ -8410,11 +8416,15 @@ function ResponsiveMasterHOC(Comp, options) {
 
   ResponsiveMaster.propTypes = {
     children: _propTypes2.default.node,
-    onResponsiveUpdate: _propTypes2.default.func
+    onResponsiveUpdate: _propTypes2.default.func,
+    onStart: _propTypes2.default.func,
+    onEnd: _propTypes2.default.func
   };
   ResponsiveMaster.defaultProps = {
     onResponsiveUpdate: function onResponsiveUpdate() {},
-    children: null
+    children: null,
+    onStart: function onStart() {},
+    onEnd: function onEnd() {}
   };
   return ResponsiveMaster;
   // return ResponsiveMaster;
@@ -8580,7 +8590,12 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var StyledSubsection = (0, _nameSpacedResponsive.ConnectResponsiveStatusesDictHOC)(_styledComponents2.default.div.withConfig({
   displayName: 'buttonGroups__StyledSubsection'
-})(['padding-bottom:', 'em;', ' ', ' ', ';'], _styleConstants2.default.appPad, function (props) {
+})(['padding-bottom:', 'em;', ' ', ' ', ' ', ';'], _styleConstants2.default.appPad, function (props) {
+  if (props.responsiveStatusesDict.homeResponsive.isProcessing) {
+    return 'visibility: hidden;';
+  }
+  return '';
+}, function (props) {
   var toReturn = '';
   // singleColHome
   if (props.isSingleButton) {
@@ -13380,10 +13395,22 @@ function makeNameSpacedResponsiveStatusesDictReducer(appNameSpace) {
 
     appNameSpace = typeof appNameSpace === 'function' ? appNameSpace() : appNameSpace;
     if (action.type === 'UDATE_RESPONSIVE_STATUSES_DICT' && action.name.indexOf('' + appNameSpace + splitter) === 0) {
-      // is within appNameSpace
       var actionNameSplit = action.name.split(splitter);
       var derivedMasterName = actionNameSplit[1];
-      return _extends({}, state, _defineProperty({}, derivedMasterName, action.responsiveStatusesDict));
+      if (action.responsiveStatusesDict) {
+        var existingProcessingState = state[derivedMasterName] && state[derivedMasterName].isProcessing;
+        return _extends({}, state, _defineProperty({}, derivedMasterName, _extends({
+          isProcessing: !!existingProcessingState
+        }, action.responsiveStatusesDict)));
+      }
+      if (action.isStart || action.isEnd) {
+        var existingResponsiveStatusesDict = state[derivedMasterName];
+        var alreadyInitialized = existingResponsiveStatusesDict.initialized;
+        return _extends({}, state, _defineProperty({}, derivedMasterName, _extends({}, existingResponsiveStatusesDict, {
+          isProcessing: !!action.isStart,
+          initialized: alreadyInitialized || action.isEnd
+        })));
+      }
     }
     return state;
   };
@@ -13431,26 +13458,52 @@ function makeNamespacedReduxConnectHocForResponsiveStatusesDict(appNameSpace) {
   });
 }
 // ResponsiveReduxMasterHOC(Comp, `${appNameSpace}${splitter}${masterName}`,appNameSpaceOriginal,splitter,masterName)
+
+function determineActionName(props, options) {
+  var splitter = options.splitter,
+      masterName = options.masterName;
+  var appNameSpace = options.appNameSpace;
+
+  var actionName = typeof appNameSpace === 'function' ? appNameSpace(props) : appNameSpace;
+  actionName = '' + actionName + splitter + masterName;
+  return actionName;
+}
 function ResponsiveReduxMasterHOC(Comp, options) {
   var ResponsiveMaster = (0, _responsive.ResponsiveMasterHOC)(Comp, options);
   ResponsiveMaster = (0, _reactRedux.connect)(function () {
     return {};
   }, {
     onResponsiveUpdate: function onResponsiveUpdate(responsiveStatusesDict, props) {
-      var splitter = options.splitter,
-          masterName = options.masterName;
-      var appNameSpace = options.appNameSpace;
-
-      appNameSpace = typeof appNameSpace === 'function' ? appNameSpace(props) : appNameSpace;
-      appNameSpace = '' + appNameSpace + splitter + masterName;
-      return {
-        name: appNameSpace,
-        responsiveStatusesDict: responsiveStatusesDict,
-        type: 'UDATE_RESPONSIVE_STATUSES_DICT'
+      return function (dispatch, getState) {
+        dispatch({
+          name: determineActionName(props, options),
+          responsiveStatusesDict: responsiveStatusesDict,
+          type: 'UDATE_RESPONSIVE_STATUSES_DICT'
+        });
+      };
+    },
+    onStart: function onStart(props) {
+      return function (dispatch, getState) {
+        dispatch({
+          name: determineActionName(props, options),
+          type: 'UDATE_RESPONSIVE_STATUSES_DICT',
+          isStart: true
+        });
+      };
+    },
+    onEnd: function onEnd(props) {
+      return function (dispatch, getState) {
+        dispatch({
+          name: determineActionName(props, options),
+          type: 'UDATE_RESPONSIVE_STATUSES_DICT',
+          isEnd: true
+        });
       };
     }
   }, function (stateProps, dispatchProps, ownProps) {
     var originalOnResponsiveUpdate = dispatchProps.onResponsiveUpdate;
+    var originalOnStart = dispatchProps.onStart;
+    var originalOnEnd = dispatchProps.onEnd;
     var newDispatchProps = _extends({}, dispatchProps, {
       onResponsiveUpdate: function onResponsiveUpdate() {
         for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
@@ -13458,6 +13511,12 @@ function ResponsiveReduxMasterHOC(Comp, options) {
         }
 
         originalOnResponsiveUpdate.apply(undefined, args.concat([ownProps]));
+      },
+      onStart: function onStart() {
+        originalOnStart(ownProps);
+      },
+      onEnd: function onEnd() {
+        originalOnEnd(ownProps);
       }
     });
     return Object.assign({}, ownProps, stateProps, newDispatchProps);
@@ -31818,18 +31877,21 @@ var ResizeRegistry = function () {
 
       var name = _ref.name,
           nukeActiveStatusRegistryOnMaster = _ref.nukeActiveStatusRegistryOnMaster,
-          _updateMasterClasses = _ref.updateMasterClasses;
+          _updateMasterClasses = _ref.updateMasterClasses,
+          onStart = _ref.onStart,
+          onEnd = _ref.onEnd;
 
       this.cache[name] = {
         assessResponsiveEls: function assessResponsiveEls() {
+          onStart && onStart();
           responsiveElRecords.purge(name);
           var cbResult = nukeActiveStatusRegistryOnMaster();
           if (cbResult && cbResult.then) {
             cbResult.then(function () {
-              _this3.recurseAssessmentFunctions(name);
+              _this3.recurseAssessmentFunctions(name, onEnd);
             });
           } else {
-            _this3.recurseAssessmentFunctions(name);
+            _this3.recurseAssessmentFunctions(name, onEnd);
           }
         },
         updateMasterClasses: function updateMasterClasses() {
@@ -31845,7 +31907,7 @@ var ResizeRegistry = function () {
     }
   }, {
     key: 'recurseAssessmentFunctions',
-    value: function recurseAssessmentFunctions(masterName, cb) {
+    value: function recurseAssessmentFunctions(masterName, onEnd) {
       var _this4 = this;
 
       if (!responsiveElRecords.cache[masterName]) {
@@ -31855,13 +31917,14 @@ var ResizeRegistry = function () {
         var i = 0;
         var l = prioritySorted.length;
         var r = function r() {
+
           _this4.assessAndStyleDeb().then(function () {
             prioritySorted[i].responsibilities.assessmentFunction(function () {
               i++;
               if (i < l) {
                 r();
               } else {
-                cb && cb();
+                onEnd && onEnd();
               }
             });
           });
@@ -38013,16 +38076,16 @@ var StyledHeader = (0, _nameSpacedResponsive.ConnectResponsiveStatusesDictHOC)(_
   displayName: 'HomeLayoutHeader__StyledHeader'
 })(['padding:', 'em;'], _styleConstants2.default.appPad));
 
-var AppHeader = function (_Component) {
-  _inherits(AppHeader, _Component);
+var SocialWidgetMounter = function (_Component) {
+  _inherits(SocialWidgetMounter, _Component);
 
-  function AppHeader() {
-    _classCallCheck(this, AppHeader);
+  function SocialWidgetMounter() {
+    _classCallCheck(this, SocialWidgetMounter);
 
-    return _possibleConstructorReturn(this, (AppHeader.__proto__ || Object.getPrototypeOf(AppHeader)).apply(this, arguments));
+    return _possibleConstructorReturn(this, (SocialWidgetMounter.__proto__ || Object.getPrototypeOf(SocialWidgetMounter)).apply(this, arguments));
   }
 
-  _createClass(AppHeader, [{
+  _createClass(SocialWidgetMounter, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
       if (typeof window !== 'undefined') {
@@ -38080,13 +38143,32 @@ var AppHeader = function (_Component) {
   }, {
     key: 'render',
     value: function render() {
-      console.log(this.props.metaOgUrl);
+      return _react2.default.createElement('span', null);
+    }
+  }]);
+
+  return SocialWidgetMounter;
+}(_react.Component);
+
+var AppHeader = function (_Component2) {
+  _inherits(AppHeader, _Component2);
+
+  function AppHeader() {
+    _classCallCheck(this, AppHeader);
+
+    return _possibleConstructorReturn(this, (AppHeader.__proto__ || Object.getPrototypeOf(AppHeader)).apply(this, arguments));
+  }
+
+  _createClass(AppHeader, [{
+    key: 'render',
+    value: function render() {
       var encodedShareUrl = encodeURIComponent(this.props.shareUrl);
       var tweetUrl = 'https://twitter.com/intent/tweet?url=' + encodedShareUrl + '&via=bernieselfie&hashtags=BernieSanders%2Cfeelthebern%2Cbernieselfie&related=BernieSanders';
       var pinUrl = '//www.pinterest.com/pin/create/button/?url=' + encodedShareUrl + '&description=' + encodeURIComponent('Use BernieSelfie.com support Bernie Sanders to your friends and followers');
       return _react2.default.createElement(
         StyledHeader,
         { className: 'app_header' },
+        this.props.responsiveInitialized && _react2.default.createElement(SocialWidgetMounter, null),
         _react2.default.createElement(
           StyledLeftPillar,
           { className: 'app_header_leftPillar' },
@@ -38217,10 +38299,15 @@ var AppHeader = function (_Component) {
 
 AppHeader.propTypes = {
   shareUrl: _propTypes2.default.string.isRequired,
-  constants: _propTypes2.default.object.isRequired
+  constants: _propTypes2.default.object.isRequired,
+  responsiveInitialized: _propTypes2.default.bool.isRequired
 };
 
-exports.default = (0, _shareUrlHoc2.default)((0, _ancestorConstantsHoc2.default)(AppHeader));
+exports.default = (0, _nameSpacedResponsive.appConnect)(function (appState) {
+  return {
+    responsiveInitialized: !!appState.responsiveStatusesDict.homeResponsive.initialized
+  };
+})((0, _shareUrlHoc2.default)((0, _ancestorConstantsHoc2.default)(AppHeader)));
 
 /***/ }),
 /* 326 */

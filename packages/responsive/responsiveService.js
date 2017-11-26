@@ -171,18 +171,19 @@ class ResizeRegistry {
     });
   }
   registerResponsiveRefresh({
-    name, nukeActiveStatusRegistryOnMaster, updateMasterClasses,
+    name, nukeActiveStatusRegistryOnMaster, updateMasterClasses,onStart,onEnd
   }) {
     this.cache[name] = {
       assessResponsiveEls: () => {
+        onStart && onStart();
         responsiveElRecords.purge(name);
         const cbResult = nukeActiveStatusRegistryOnMaster();
         if (cbResult && cbResult.then) {
           cbResult.then(() => {
-            this.recurseAssessmentFunctions(name);
+            this.recurseAssessmentFunctions(name,onEnd);
           });
         } else {
-          this.recurseAssessmentFunctions(name);
+          this.recurseAssessmentFunctions(name,onEnd);
         }
       },
       updateMasterClasses: (...args) => {
@@ -196,7 +197,7 @@ class ResizeRegistry {
       delete masterClasses[name];
     };
   }
-  recurseAssessmentFunctions(masterName, cb) {
+  recurseAssessmentFunctions(masterName, onEnd) {
     if (!responsiveElRecords.cache[masterName]) {
       console.warn('why am i trying to recurseAssessmentFunctions ', masterName, 'from', responsiveElRecords.cache);
 
@@ -205,13 +206,14 @@ class ResizeRegistry {
       let i = 0;
       const l = prioritySorted.length;
       const r = () => {
+        
         this.assessAndStyleDeb().then(() => {
           prioritySorted[i].responsibilities.assessmentFunction(() => {
             i++;
             if (i < l) {
               r();
             } else {
-              cb && cb();
+              onEnd && onEnd();
             }
           });
         });
