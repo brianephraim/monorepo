@@ -1,5 +1,11 @@
 import mongoose from 'mongoose';
 
+function userIsAdmin(user) {
+  const email = user && user.email;
+  const isAdmin = process.env.ADMIN_EMAIL && process.env.ADMIN_EMAIL === email;
+  return !!isAdmin;
+}
+
 export default function ({app})  {
   /*
 
@@ -33,11 +39,10 @@ export default function ({app})  {
       user(obj, args, context, info) {
         return new Promise((resolve) => {
           setTimeout(() => {
-            const user = context.user && context.user.toObject();
-            const email = user && user.email;
-            const isAdmin = process.env.ADMIN_EMAIL && process.env.ADMIN_EMAIL === email;
+            const user = context.user && context.user.toObject && context.user.toObject();
+            console.log('user',user);
             const toResolve = {
-              isAdmin,
+              isAdmin: userIsAdmin(user),
               ...user,
             };
             // console.log('process.env.ADMIN_EMAIL', process.env.ADMIN_EMAIL, process.env.ADMIN_EMAIL === toResolve.email);
@@ -63,7 +68,7 @@ export default function ({app})  {
     }
   };
   /* scalar types */
-  /*String, Int, Float, Boolean, and ID*/
+  /* String, Int, Float, Boolean, and ID */
   const typeDefs = [
     `
       type User {
@@ -101,12 +106,22 @@ export default function ({app})  {
   ];
 
 
-
   app.apolloAppConfigs = app.apolloAppConfigs || [];
-  app.apolloAppConfigs.push({resolvers, typeDefs});
+  app.apolloAppConfigs.push({ resolvers, typeDefs });
 
   app.apolloContextParsers = app.apolloContextParsers || [];
   app.apolloContextParsers.push((req) => {
-    return { user: req.user }
+    const user = req.user && req.user.toObject && req.user.toObject();
+    return {
+      user: req.user,
+      isAdmin: userIsAdmin(user)
+    }
+
+    // return {
+    //   user: {
+    //     ...user,
+    //     isAdmin: userIsAdmin(user),
+    //   },
+    // };
   });
 }
