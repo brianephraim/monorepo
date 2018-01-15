@@ -85,7 +85,8 @@ export default function makeRender(makeHtmlConstituents = () => { return {}; }) 
     const bodyContent = htmlConstituents.body || `
       <div id="root" class="nonUniversal"></div>
     `;
-
+    const routeDataRoutesMap = (routeData && routeData.routesMap) || {};
+    const routeDataPageMap = (routeData && routeData.pageMap) || {};
     return res.send(
       `<!doctype html>
         <html>
@@ -98,8 +99,8 @@ export default function makeRender(makeHtmlConstituents = () => { return {}; }) 
             <script>
               window.REDUX_STATE = ${stateJson};
               window.routeDataFromInitialApp = ${JSON.stringify({
-                routesMap:routeData.routesMap,
-                pageMap:routeData.pageMap
+                routesMap:routeDataRoutesMap,
+                pageMap:routeDataPageMap
               }, null, 2)};
             </script>
 

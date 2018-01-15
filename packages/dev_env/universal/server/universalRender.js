@@ -11,6 +11,9 @@ import App from '../src/components/App'
 import startExpress from '../../startExpress';
 import webpackConfig from '../../webpackConfig';
 import makeRender from './makeRender';
+import { argv } from "yargs";
+import isWithinMonoRepo from '../../core/isWithinMonoRepo';
+// /Users/brianephraim/Sites/monorepo/packages/dev_env/universal/server/universalRender.js
 
 const render = makeRender(({store,styles,injectReducers,client}) => {
   const sheet = new ServerStyleSheet()
@@ -50,10 +53,18 @@ if (process.env.NODE_ENV === 'production') {
   // `startExpress` includes all the app's endpoints and the localhost port listener.
   startExpress((app) => {
     // And we integrate the the `render` function assigned above with the express add.
-    const clientStats = fs.readJsonSync(path.resolve(process.cwd(),'./packages/dev_env/universal/buildClient/stats.json'));
+    const buildDir = argv.buildDir;
+    const clientStatsPath = (
+      buildDir
+      ?
+      path.resolve(buildDir, './buildClient/stats.json')
+      :
+      path.resolve(process.cwd(),'./packages/dev_env/universal/buildClient/stats.json')
+    );
+    const clientStats = fs.readJsonSync(clientStatsPath);
     const clientProdConfig = webpackConfig({isReact:true,isClient:true,isDev:false,isUniversal:true,'xxx':113});
     const publicPath = clientProdConfig.output.publicPath
-    const outputPath = 'packages/dev_env/universal/buildClient';
+    const outputPath = buildDir ? path.resolve(buildDir, './buildClient') : 'packages/dev_env/universal/buildClient';
     app.use(publicPath, express.static(outputPath))
     app.use(render({
       clientStats,
