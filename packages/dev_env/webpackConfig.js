@@ -13,6 +13,12 @@ import WriteFilePlugin from "write-file-webpack-plugin";
 import VirtualModulesPlugin from 'webpack-virtual-modules';
 import StringReplacePlugin from 'string-replace-webpack-plugin';
 import webpackConfigResolve from "./core/webpack-config-resolve";
+import babelEs2015Modules from 'babel-plugin-transform-es2015-modules-commonjs';
+import babelEs2015Spread from 'babel-plugin-transform-es2015-spread';
+import babelRestSpread from 'babel-plugin-transform-object-rest-spread';
+import bableStyledComponents from 'babel-plugin-styled-components';
+import babelUniversalImport from 'babel-plugin-universal-import';
+import isWithinMonoRepo  from './core/isWithinMonoRepo';
 
 if (argv.isReact && !argv.initialApp) {
   throw new Error('MISSING REQUIRED argv.initialApp');
@@ -183,10 +189,20 @@ function generateConfigJson(options = {}) {
   //      // *** React Client
   //    indicates which configurations the code below controls.
   //    These are seen adjacent to ternaries.
+
+  // buildDir
+  const buildDir = argv.buildDir;
+
   const config = {
-    // watchOptions: {
-    //   ignored: toIgnore,
-    // },
+    watchOptions: {
+      aggregateTimeout: 20000,
+      ignored: [
+        /node-modules/,
+        /private/,
+        '**/*.js',
+        ...(argv.asyncDir ? [`${argv.asyncDir}/**`] : []),
+      ],
+    },
     ...(isReact ? {
         name: isClient ? 'client' : 'server'
     }: {}),
@@ -226,7 +242,13 @@ function generateConfigJson(options = {}) {
             )
           ],
           output: {
-            path: res(isClient ? './universal/buildClient' : './universal/buildServer','outputXX'),
+            path: (
+              buildDir
+              ?
+              path.resolve(buildDir, isClient ? './buildClient' : './buildServer')
+              :
+              (res(isClient ? './universal/buildClient' : './universal/buildServer','outputXX'))
+            ),
             filename: isClient && !isDev ? '[name].[chunkhash].js' : '[name].js',
             publicPath: '/staticx/',
             ...(
@@ -284,8 +306,14 @@ function generateConfigJson(options = {}) {
         // *** All configs
         {
           test: /\.(js)?$/,
-          loader: 'babel-loader',
           exclude: /(node_modules|\.tmp)/,
+          use: {
+            loader: 'babel-loader',
+            options: {
+              presets: ['es2015', 'react', 'stage-2'],
+              plugins: [babelEs2015Modules, babelEs2015Spread, babelRestSpread, bableStyledComponents, babelUniversalImport]
+            }
+          }
         },
         ...(
           !isReact ? [] : (

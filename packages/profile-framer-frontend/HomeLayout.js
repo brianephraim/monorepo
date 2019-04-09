@@ -167,7 +167,7 @@ function AppHero(props) {
       <AppMainSelfieFrameResponsive>
         <StyledInstructions className="app_body_leftPillar_selfieFrame_instructions ">
           <span className="selfieFrame_instructions_text">
-            {isTouchDevice ? 'Press and hold image to save' : 'Right click to save'}
+            {isTouchDevice ? 'Press and hold image to save' : 'Right click to save!'}
           </span>
         </StyledInstructions>
         <StyledSelfie

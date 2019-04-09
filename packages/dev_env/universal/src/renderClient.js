@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import createBrowserHistory from 'history/createBrowserHistory'
 import configureStore from './configureStore'
-import AppContainer from 'react-hot-loader/lib/AppContainer'
+import { AppContainer } from 'react-hot-loader'
 import App from './components/App'
 
 

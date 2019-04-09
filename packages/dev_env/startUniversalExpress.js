@@ -36,6 +36,14 @@ function compileAndServeWebpackDevMiddlewareHMRUniversalExpress(clientDevConfig,
         stats: {
           colors: true,
         },
+        watchOptions: {
+          ignored: [
+            /node-modules/,
+            /private/,
+            '**/*.js',
+            ...(argv.asyncDir ? [`${argv.asyncDir}/**`] : []),
+          ],
+        },
       });
       activeWebpackDevMiddleware.waitUntilValid((stats) => {
         resolve(stats)

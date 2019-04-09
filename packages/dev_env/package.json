@@ -3,9 +3,9 @@
   "version": "0.0.14",
   "scripts": {
     "xyzpostinstall": "./node_modules/.bin/babel ./ --out-dir ./compiled --ignore compiled,node_modules",
-    "prepublish925": "./node_modules/.bin/babel-node ./babel.start.js --env=build --dirroot=$(pwd)",
-    "prepublishXX": "./node_modules/.bin/babel-node ./babel.start.js --env=build --dirroot=$(pwd) --wtf=\"$(echo !!)\"",
-    "prepublishff": "npm_run_item(){ (./node_modules/.bin/babel-node ./babel.start.js --env=build --dirroot=$(pwd) --wtf=\"$@\") };npm_run_item",
+    "prepublish": "./node_modules/.bin/babel-node --trace-warnings ./prepublish",
+    "prepublish2a": "./node_modules/.bin/babel-node --trace-warnings ./core/devEnvCommandLine.js --entry=./dev_env.js --output=/Users/brianephraim/Sites/monorepo/packages/dev_env/dist/dev_env.js  --dirroot=$(pwd) --is-build",
+    "prepublish2x": "/Users/brianephraim/Sites/monorepo/packages/dev_env/node_modules/.bin/babel-node --trace-warnings /Users/brianephraim/Sites/monorepo/packages/dev_env/core/devEnvCommandLine.js --entry=/Users/brianephraim/Sites/monorepo/packages/dev_env/dev_env.js --output=/Users/brianephraim/Sites/monorepo/aaa/asdf.js --dirroot=$(pwd)",
     "publish": "echo 'insert text here' > ./postpublishplz.txt && rm -rf ./dist"
   },
   "bin": {
