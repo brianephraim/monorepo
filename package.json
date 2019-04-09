@@ -79,10 +79,10 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "eslint-config-prettier": "^2.3.0",
-    "prettier": "^1.5.3",
-    "lerna": "^2.2.0",
-    "npm": "^4.6.1"
+    "eslint-config-prettier": "2.3.0",
+    "prettier": "1.5.3",
+    "lerna": "2.2.0",
+    "npm": "4.6.1"
   },
   "dependencies": {}
 }
