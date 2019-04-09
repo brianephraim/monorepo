@@ -194,9 +194,15 @@ function generateConfigJson(options = {}) {
   const buildDir = argv.buildDir;
 
   const config = {
-    // watchOptions: {
-    //   ignored: toIgnore,
-    // },
+    watchOptions: {
+      aggregateTimeout: 20000,
+      ignored: [
+        /node-modules/,
+        /private/,
+        '**/*.js',
+        ...(argv.asyncDir ? [`${argv.asyncDir}/**`] : []),
+      ],
+    },
     ...(isReact ? {
         name: isClient ? 'client' : 'server'
     }: {}),
