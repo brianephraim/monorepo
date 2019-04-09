@@ -552,7 +552,7 @@ const ImportButtonGroup = makeButtonGroupComponent({
       actionType: 'IMPORT_FACEBOOK',
     },
     {
-      text: 'Camera',
+      text: 'Camera!',
       isUploadCompositeImageSetter: true,
     },
     {

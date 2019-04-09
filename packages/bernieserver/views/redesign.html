@@ -1,13 +1,13 @@
 <!doctype html>
 <html class="no-js" lang="">
 <head>
-    <% 
+    <%
         var urlInfo = !!urlInfo ? urlInfo : {};
         var userTemplates = !!userTemplates ? userTemplates : {};
-        
+
 
         var mainImage = urlInfo.customUrl;
-        var mainUrl = "http://www.bernieselfie.com/" 
+        var mainUrl = "http://www.bernieselfie.com/"
 
         if(typeof req !== 'undefined'){
             mainUrl = 'http://www.bernieselfie.com'+req.url;
@@ -18,7 +18,7 @@
         var fb_app_id = 1633460223596071;
 
         var offline = typeof offline !== undefined ? offline : false;
-        
+
 
     %>
 
@@ -56,7 +56,7 @@
     <meta name="twitter:description" content="Use bernieselfie.com to use your selfie to support Bernie Sanders for President.  Save the generated image and share to Facebook, Twitter, and Instagram.">
     <meta name="twitter:image" content="<%= mainImage %>">
 
-    
+
 
 
     <script>
@@ -64,15 +64,15 @@
         ;window.mainUrl = <%- mainUrl ? JSON.stringify(mainUrl, null, '\t') : '' %>;
         ;window.userTemplates = <%- userTemplates ? JSON.stringify(userTemplates, null, '\t') : '' %>;
     </script>
-    
+
     <!-- DEV MODE VS PROD MODE -->
     <% if (typeof req !== 'undefined' && req.subdomains === 'localhost') { %>
         <!-- IN DEV MODE, DISABLE GOOGLE ANALYTICS -->
         <script>window['ga-disable-UA-64815100-1-Y'] = true;</script>
     <% } else { %>
-        
+
     <% } %>
-    
+
 
 
 </head>
@@ -130,7 +130,7 @@
                         </div>
                         <div class="app_header_leftPillar_socialRow socialRow">
                             <% if(!offline){ %>
-                            
+
                                 <div class="app_header_leftPillar_socialRow_socialWidget socialWidget">
                                     <a class="twitter-share-button"
                                       href="https://twitter.com/intent/tweet?url=<%= encodeURIComponent(mainUrl) %>&via=bernieselfie&hashtags=BernieSanders%2Cfeelthebern%2Cbernieselfie&related=BernieSanders"
@@ -141,7 +141,7 @@
                                   class="fb-like app_header_leftPillar_socialRow_socialWidget socialWidget"
                                   data-share="true"
                                   data-width="450"
-                                  data-layout="button_count" 
+                                  data-layout="button_count"
                                   data-show-faces="true">
                                 </div>
 
@@ -149,24 +149,24 @@
                                     <a href="//www.pinterest.com/pin/create/button/?url=<%= urlInfo.customUrlQueryString %>&description=<%= urlInfo.serialize('Use BernieSelfie.com support Bernie Sanders to your friends and followers') %>" data-pin-do="buttonPin" data-pin-config="beside" data-pin-color="red"><img src="//assets.pinterest.com/images/pidgets/pinit_fg_en_rect_red_20.png" /></a>
                                 </div>
                             <% }else{ %>
-                            
+
                                 <img class="app_header_leftPillar_socialRow_socialWidget socialWidget" src="/images/mock-fb-like.png">
                                 <img class="app_header_leftPillar_socialRow_socialWidget socialWidget" src="/images/mock-tweet.png">
                                 <img class="app_header_leftPillar_socialRow_socialWidget socialWidget" src="/images/mock-pintrest.png">
-                            <% } %>               
+                            <% } %>
                         </div>
                     </div>
                     <div class="app_header_rightPillar rightPillar">
-                        
+
                         <div class="app_header_rightPillar_fbLikePageWrap">
-                            <% if(!offline){ %>  
+                            <% if(!offline){ %>
                                 <div class="fb-page" data-href="https://www.facebook.com/pages/BernieSelfiecom/924351914278246" data-width="250" data-small-header="true" data-adapt-container-width="false" data-hide-cover="false" data-show-facepile="false" data-show-posts="false"><div class="fb-xfbml-parse-ignore"><blockquote cite="https://www.facebook.com/pages/BernieSelfiecom/924351914278246"><a href="https://www.facebook.com/pages/BernieSelfiecom/924351914278246">BernieSelfie.com</a></blockquote></div></div>
                             <% }else{ %>
                                 <img class="app_header_rightPillar_fbLikePageWrap_socialWidget socialWidget" src="/images/mock-fb-page.png">
-                            <% } %>   
-                        </div>   
+                            <% } %>
+                        </div>
                         <div class="app_header_rightPillar_socialRow socialRow">
-                            <% if(!offline){ %>                            
+                            <% if(!offline){ %>
                                 <div class="app_header_rightPillar_socialRow_socialWidget socialWidget">
                                     <a style="font-size:9px;" class="twitter-follow-button" href="https://twitter.com/bernieselfie">Follow @bernieselfie</a>
                                 </div>
@@ -177,14 +177,14 @@
                                 <img class="app_header_rightPillar_socialRow_socialWidget socialWidget" src="/images/mock-fb-like.png">
                                 <img class="app_header_rightPillar_socialRow_socialWidget socialWidget" src="/images/mock-tweet.png">
                                 <img class="app_header_rightPillar_socialRow_socialWidget socialWidget" src="/images/mock-pintrest.png">
-                            <% } %>     
+                            <% } %>
                         </div>
                     </div>
                 </div>
                 <div class="app_body">
                     <div class="app_body_leftPillar">
                         <div class="app_body_leftPillar_selfieFrame js_mainSelfieFrame">
-                            <div class="app_body_leftPillar_selfieFrame_instructions "><span class="selfieFrame_instructions_text">Right click to save</span></div>
+                            <div class="app_body_leftPillar_selfieFrame_instructions "><span class="selfieFrame_instructions_text">Right click to save!</span></div>
                             <img class="app_body_leftPillar_selfieFrame_selfie" src="<%= mainImage %>">
                             <!-- <img class="app_body_leftPillar_selfieFrame_selfie" src="/images/mock-selfie.png"> -->
                         </div>
@@ -192,7 +192,7 @@
                     <div class="app_body_rightPillar">
                         <div class="app_body_rightPillar_section section_share">
                             <div class="app_body_rightPillar_section_subsection">
-                                
+
                                 <div class="buttonGroup">
                                     <div class="section_header shareCloneModalButon">
                                         <div class="section_header_microText">
@@ -223,7 +223,7 @@
 
                         <div class="app_body_rightPillar_section section_photo featured">
                             <div class="app_body_rightPillar_section_subsection">
-                                
+
                                 <div class="buttonGroup">
                                     <div class="section_header photoCloneModalButon">
                                         <div class="section_header_microText">
@@ -237,7 +237,7 @@
                                         </div>
                                     </div>
                                     <div class="buttonGroup_buttons">
-                                        
+
                                         <div class="buttonGroup_button button importFbPhotoButton"><span>Facebook</span></div>
                                         <!-- <iframe class="uploadButtonIframe" src="/iframeuploadbutton?buttonText=Camera+iframe" frameborder="0" allowfullscreen></iframe> -->
                                         <div class="buttonGroup_button button cameraUploadizer"><span>Camera</span></div>
@@ -250,7 +250,7 @@
 
                                 </div>
                             </div>
-                            
+
                         </div>
                         <div class="app_body_rightPillar_section section_design">
                             <div class="app_body_rightPillar_section_subsection editMicroSubsection microSubsection">
@@ -301,9 +301,9 @@
                                 </div>
                             </div>
                         </div>
-                        
-                        
-                        
+
+
+
                     </div>
                 </div>
                 <div class="app_footer">
@@ -322,7 +322,7 @@
             <h2>Get your photo from:</h2>
             <div class="buttonGroup">
                 <div class="buttonGroup_buttons">
-                    
+
                     <div class="buttonGroup_button button importFbPhotoButton"><span>Facebook</span></div>
 
                     <div class="buttonGroup_button button cameraUploadizer"><span>Camera</span></div>
@@ -387,12 +387,12 @@
                       js.id = id;
                       js.src = "https://platform.twitter.com/widgets.js";
                       fjs.parentNode.insertBefore(js, fjs);
-                     
+
                       t._e = [];
                       t.ready = function(f) {
                         t._e.push(f);
                       };
-                     
+
                       return t;
                     }(document, "script", "twitter-wjs"));
             })
