@@ -1,33 +1,67 @@
-import { appConnect } from './nameSpacedResponsive';
-import ancestorConstantsHoc from './ancestorConstantsHoc';
+import { appConnect, appSubscribeConnect } from './nameSpacedResponsive';
+import { gql } from 'react-apollo';
+import root from 'window-or-global'
 
-// if already fetching, or fetching already done, be efficient.
-// But accomodate namespace.
-// Different namespaces can have simultaneous fetching,
-// but each namespace on does one fetch.
-const imagesFromFetchPromises = {};
+let attemptId = 0;
 function fetchTemplatesHoc(Comp) {
-  return ancestorConstantsHoc(
-    appConnect(null, {
-      fetchTemplates: ({ constants }) => {
-        const { backendApiPrefix, fgImagePrefix, imageSuffix } = constants;
-        return dispatch => {
-          const imagesFromFetchPromise =
-            imagesFromFetchPromises[constants.appNameSpace] ||
-            fetch(`${backendApiPrefix}/get_template_list`).then(r => {
-              return r.json();
-            });
-          imagesFromFetchPromises[
-            constants.appNameSpace
-          ] = imagesFromFetchPromise;
-          return imagesFromFetchPromise.then(response => {
+  const appConnected = appConnect(
+    null,
+    {
+      removeUserTemplate: (customTemplate) => {
+        return (dispatch, getState, {client}) => {
+          return client.mutate({
+            mutation: gql`
+              mutation removeUserTemplate($customTemplate: String!) {
+                removeUserTemplate(customTemplate: $customTemplate) {
+                  customTemplate
+                }
+              }
+            `,
+            variables: {
+              customTemplate,
+            },
+            refetchQueries:[`userTemplates`]
+          });
+        }
+      },
+    }
+  )(Comp);
+  return appSubscribeConnect({
+    templates: ({ constants, limit }) => {
+      const fetchAttemptId = attemptId++;
+      const { fgImagePrefix, imageSuffix } = constants;
+      return (dispatch, getState, {client}) => {
+        if (typeof limit !== 'undefined' && limit <= 3) {
+          return null;
+        }
+        dispatch({
+          type: 'LOADING',
+          where: `fetchTemplatesHoc_${fetchAttemptId}`,
+        });
+        const observableQuery =client.watchQuery({
+          query: gql`
+            query userTemplates {
+              userTemplates {
+                customTemplate
+                created
+              }
+            }
+          `,
+        });
+        const subscription = observableQuery.subscribe({
+          next: (response) => {
+            dispatch({
+              type: 'STOP_LOADING',
+              where: `fetchTemplatesHoc_${fetchAttemptId}`,
+            });           
             if (
               response &&
-              response.userTemplates &&
-              response.userTemplates.length
+              response.data &&
+              response.data.userTemplates
             ) {
-              const images = response.userTemplates.reduce(
+              const images = response.data.userTemplates.reduce(
                 (accum, imageObj) => {
+
                   if (imageObj && imageObj.customTemplate) {
                     return [
                       ...accum,
@@ -46,10 +80,20 @@ function fetchTemplatesHoc(Comp) {
                 images,
               });
             }
-          });
-        };
-      },
-    })(Comp)
-  );
+          },
+          error: (err) => {
+            const alert = root.alert || console.warn;
+            alert(err);
+            dispatch({
+              type: 'STOP_LOADING',
+              where: `fetchTemplatesHoc_${fetchAttemptId}`,
+            });   
+          }
+        });
+        return subscription;
+      }
+    }
+  })(appConnected);
 }
+
 export default fetchTemplatesHoc;

@@ -1,5 +1,4 @@
 export default (processed) => {
-  console.log(processed.activeWebpackDevMiddleware);
   return new Promise((resolve, reject) => {
     const toUse = processed.activeWebpackDevMiddleware ? processed.activeWebpackDevMiddleware : processed;
     toUse.run((err, stats) => {

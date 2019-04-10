@@ -1,13 +1,7 @@
 import webpack from 'webpack';
 import webpackRunCompiler from './webpackRunCompiler';
-import webpackConfig from './webpackConfigCommandLine';
-
-function webpackMakeCompiler() {
-  const config = webpackConfig();
-  const compiler = webpack(config);
-  return compiler;
-}
+import webpackConfig from '../webpackConfig';
 
 export default () => {
-  webpackRunCompiler(webpackMakeCompiler());
+  webpackRunCompiler(webpack(webpackConfig({isCommandLine: true})));
 };

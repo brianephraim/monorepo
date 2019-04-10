@@ -5,9 +5,6 @@ import packageJson from '../package.json';
 function generatePackageDotJsonContent(settings) {
   const toExtend = settings.toExtend || {};
   const scopedPackageName = '@defualt/dev_env';
-  console.log('packageJson',packageJson);
-  console.log('__dirname',__dirname);
-  // console.log("path.resolve(__dirname, '../package.json')",path.resolve(__dirname, '../package.json'))
   const devEnvVersion = packageJson.dependencies[scopedPackageName];
 
   const devDependencies = {

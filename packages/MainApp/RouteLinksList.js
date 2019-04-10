@@ -1,35 +1,45 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import Link from 'redux-first-router-link'
 
-let LandingScreen = (props) => {
+export default function (){
   return (
     <div>
       <h1>WELCOME</h1>
-      <Link to='/boomer'>
-        boomer
-      </Link>
-      <Link to='/battleship'>
-        battleship
-      </Link>
-      { props.routeInfos.map((details) => {
-        return (
-          <div key={details.path}>
-            <Link to={details.demoPath || details.path}>
-              {details.description}
-            </Link>
-          </div>
-        );
-      }) }
+      <p>
+        <Link to='/willard'>
+          willard
+        </Link>
+      </p>
+      <p>
+        <Link to='/boomer'>
+          boomer
+        </Link>
+      </p>
+      <p>
+        <Link to='/'>
+          bernie
+        </Link>
+      </p>
+      <p>
+        <Link to='/behemoth'>
+          behemoth
+        </Link>
+        </p>
+      <p>
+        <Link to='/battleship'>
+          battleship
+        </Link>
+      </p>
+      <p>
+        <Link to='/todos/all'>
+          todos
+        </Link>
+      </p>
+      <p>
+        <Link to='/apollostarter'>
+          Apollo Starter
+        </Link>
+      </p>
     </div>
   );
-};
-LandingScreen = connect(
-  (state) => {
-    return {
-      routeInfos: state.routeInfos,
-    }
-  }
-)(LandingScreen);
-
-export default LandingScreen;
+}

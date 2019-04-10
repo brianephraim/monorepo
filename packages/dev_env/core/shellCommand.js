@@ -4,7 +4,8 @@ module.exports = (commandToRun, options = { stdio: 'inherit' }, killParentOnExit
   const args = [
     '-c',
     // commandToRun.replace('node $TMPFILE','node --inspect=9223 $TMPFILE'),
-    commandToRun,
+    commandToRun.replace('node $TMPFILE','node --trace-warnings $TMPFILE'),
+    // commandToRun,
   ];
   //
   // kexec doesn't work in windows, so fallback to child_process.spawn

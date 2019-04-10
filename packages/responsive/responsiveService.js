@@ -114,7 +114,7 @@ class ResponsiveElRecords {
   }
 }
 const responsiveElRecords = new ResponsiveElRecords();
-
+const thresh = 80;
 class ResizeRegistry {
   constructor() {
     // this.cache //
@@ -136,27 +136,54 @@ class ResizeRegistry {
     this.assessAndStyleDeb = debounce(0, null, (timeout) => {
       assessAndStyleDebTimeout = timeout;
     });
+    this.initialHeight = windowSizer.dimensions.height;
+    this.initialWidth = windowSizer.dimensions.width;
     windowSizer.addCb(() => {
+
+      // const div = document.getElementById('findme') || document.createElement("div");
+      // div.id = 'findme';
+      // div.style.width = "100px";
+      // div.style.height = "100px";
+      // div.style.background = "red";
+      // div.style.color = "white";
+      // div.style.position = "fixed";
+      // div.style.top = "0";
+      // div.style.zIndex = "9999";
+      // div.innerHTML = `${windowSizer.dimensions.height} FINDME`;
+      // document.body.appendChild(div);
+
       clearTimeout(assessAndStyleDebTimeout);
       Object.keys(this.cache).forEach((name) => {
-        const cb = this.cache[name].assessResponsiveEls;
-        cb();
+        if (typeof this.cache[name].lastHeight === 'undefined') {
+          this.cache[name].lastHeight = this.initialHeight;
+          this.cache[name].lastWidth = this.initialWidth;
+        }
+        if (
+          Math.abs(this.cache[name].lastHeight - windowSizer.dimensions.height) > thresh ||
+          this.cache[name].lastWidth !== windowSizer.dimensions.width
+        ) {
+          this.cache[name].lastHeight = windowSizer.dimensions.height;
+          this.cache[name].lastWidth = windowSizer.dimensions.width;
+          const cb = this.cache[name].assessResponsiveEls;
+          cb();
+        }
       });
     });
   }
   registerResponsiveRefresh({
-    name, nukeActiveStatusRegistryOnMaster, updateMasterClasses,
+    name, nukeActiveStatusRegistryOnMaster, updateMasterClasses,onStart,onEnd
   }) {
     this.cache[name] = {
       assessResponsiveEls: () => {
+        onStart && onStart();
         responsiveElRecords.purge(name);
         const cbResult = nukeActiveStatusRegistryOnMaster();
         if (cbResult && cbResult.then) {
           cbResult.then(() => {
-            this.recurseAssessmentFunctions(name);
+            this.recurseAssessmentFunctions(name,onEnd);
           });
         } else {
-          this.recurseAssessmentFunctions(name);
+          this.recurseAssessmentFunctions(name,onEnd);
         }
       },
       updateMasterClasses: (...args) => {
@@ -170,7 +197,7 @@ class ResizeRegistry {
       delete masterClasses[name];
     };
   }
-  recurseAssessmentFunctions(masterName, cb) {
+  recurseAssessmentFunctions(masterName, onEnd) {
     if (!responsiveElRecords.cache[masterName]) {
       console.warn('why am i trying to recurseAssessmentFunctions ', masterName, 'from', responsiveElRecords.cache);
 
@@ -179,13 +206,14 @@ class ResizeRegistry {
       let i = 0;
       const l = prioritySorted.length;
       const r = () => {
+        
         this.assessAndStyleDeb().then(() => {
           prioritySorted[i].responsibilities.assessmentFunction(() => {
             i++;
             if (i < l) {
               r();
             } else {
-              cb && cb();
+              onEnd && onEnd();
             }
           });
         });

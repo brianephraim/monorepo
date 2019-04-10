@@ -4,7 +4,7 @@ import ejs from 'ejs';
 import path from 'path';
 import url from 'url';
 import fs from 'fs';
-import { x as mongooseStuff } from './js/mongooseStuff';
+import startMongooseStuff from './js/mongooseStuff';
 import endpointCompositeImage from './js/endpointCompositeImage';
 import endpointGetNormalizedImageInfo from './js/endpointGetNormalizedImageInfo';
 import endpointGetS3SignedUploadUrl from './js/endpointGetS3SignedUploadUrl';
@@ -12,13 +12,11 @@ import endpointIframeUpload from './js/endpointIframeUpload';
 import generateUrlRegexNamespace from './js/generateUrlRegexNamespace';
 import respondWithJson from './js/respondWithJson';
 import ensureLeadingSlash from '@defualt/ensure-leading-slash';
-import makeServeChainableExpress from '@defualt/make-serve-chainable-express';
 // var mymodule = require('./public/js/mymodule');
 // var express = require('express');
 // var ejs = require('ejs');
 // var path = require('path');
 // var url = require('url');
-// var mongooseStuff = require('./js/mongooseStuff').x;
 // var endpointCompositeImage = require('./js/endpointCompositeImage');
 
 // var endpointGetNormalizedImageInfo = require('./js/endpointGetNormalizedImageInfo');
@@ -32,11 +30,8 @@ import makeServeChainableExpress from '@defualt/make-serve-chainable-express';
  * Set-up the Express app.
  */
 
-export default makeServeChainableExpress((app, nameSpace) => {
-  app.set('views', __dirname + '/views');
-  app.engine('html', ejs.renderFile);
-
-  app.use(express.static(path.join(__dirname, 'public')));
+export default function ({app, nameSpace = 'bernieserver'})  {
+  const mongooseStuff = startMongooseStuff({app});
 
   /*
    * Load the S3 information from the environment variables.
@@ -120,6 +115,7 @@ export default makeServeChainableExpress((app, nameSpace) => {
   //____________________________
 
   endpointCompositeImage({
+    MakeUserTemplate: (userTemplateModel) => {mongooseStuff.MakeUserTemplate(userTemplateModel);},
     app:app,
     accessKeyId:AWS_ACCESS_KEY,
     secretAccessKey:AWS_SECRET_KEY,
@@ -128,6 +124,7 @@ export default makeServeChainableExpress((app, nameSpace) => {
   });
 
   endpointGetNormalizedImageInfo({
+    MakeUserTemplate: (userTemplateModel) => {mongooseStuff.MakeUserTemplate(userTemplateModel);},
     app:app,
     accessKeyId:AWS_ACCESS_KEY,
     secretAccessKey:AWS_SECRET_KEY,
@@ -235,5 +232,5 @@ export default makeServeChainableExpress((app, nameSpace) => {
   })
 
   return app;
-});
+}
 

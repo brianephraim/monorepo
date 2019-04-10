@@ -1,0 +1,13 @@
+#!/usr/bin/env node
+
+var analyze = require('../analyze');
+var output = require('../output');
+var app = require('commander');
+
+app
+  .version(require('../package.json').version)
+  .option('-s, --silent', 'do not print out warnings')
+  .option('-o, --output [file]', 'output to a file')
+  .parse(process.argv);
+
+analyze({ silent: app.silent }, output(app));

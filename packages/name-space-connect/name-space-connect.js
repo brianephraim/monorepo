@@ -19,14 +19,18 @@ export default function nameSpaceConnect(appNameSpace) {
         if (typeof oldSomeAction === 'function'){
           return (dispatch,getState,...args2) => {
             const newDispatch = (action,...args3) => {
-              appNameSpace = typeof appNameSpace === 'function' ? appNameSpace(ownProps) : appNameSpace;
+              const refinedAppNameSpace = typeof appNameSpace === 'function' ? appNameSpace(ownProps) : appNameSpace;
               const newAction = {
                 ...action,
-                appNameSpace,
+                appNameSpace:refinedAppNameSpace,
               };
               dispatch(newAction,...args3);
             };
-            return oldSomeAction(newDispatch, getState, ...args2)
+            const newGetState = (...args) => {
+              const refinedAppNameSpace = typeof appNameSpace === 'function' ? appNameSpace(ownProps) : appNameSpace;
+              return getState(...args)[refinedAppNameSpace];
+            };
+            return oldSomeAction(newDispatch, newGetState, ...args2)
           };
         }
         return oldSomeAction;
@@ -36,8 +40,8 @@ export default function nameSpaceConnect(appNameSpace) {
     },{});
 
     const mapStateToPropsToPass = !mapStateToProps ? mapStateToProps : (state, props, ...args) => {
-      appNameSpace = typeof appNameSpace === 'function' ? appNameSpace(props) : appNameSpace;
-      return mapStateToProps(state[appNameSpace], ...args);
+      const refinedAppNameSpace = typeof appNameSpace === 'function' ? appNameSpace(props) : appNameSpace;
+      return mapStateToProps(state[refinedAppNameSpace], ...args);
     };
 
     const mergePropsToPass = (stateProps, dispatchProps, ownProps) => {

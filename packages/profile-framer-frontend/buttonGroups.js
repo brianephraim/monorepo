@@ -15,43 +15,30 @@ import ImagePickerTemplate from './ImagePickerTemplate';
 import ModalScreen from './ModalScreen';
 import setBackgroundHoc from './setBackgroundHoc';
 import ancestorConstantsHoc from './ancestorConstantsHoc';
+import { postToWall, exportStuff } from './fb';
+import { formUrl } from './deriveUrlInfo';
+import UploadCompositeImageSetter from './UploadCompositeImageSetter';
+import shareUrlHoc from './shareUrlHoc';
 
 import './app.scss';
-
 const StyledSubsection = ConnectResponsiveStatusesDictHOC(styled.div`
   padding-bottom: ${styleConstants.appPad}em;
+  ${props => {
+    if(props.responsiveStatusesDict.homeResponsive.isProcessing) {
+      return `visibility: hidden;`;
+    }
+    return '';
+  }}
   ${props => {
     let toReturn = '';
     // singleColHome
     if (
-      !props.isModal &&
-      props.responsiveStatusesDict.homeResponsive &&
-      props.responsiveStatusesDict.homeResponsive.singleCol
+      props.isSingleButton
     ) {
       toReturn += `
         float:none;
         margin:0 auto;
       `;
-      if (
-        props.themex === 'editSubsection' ||
-        props.themex === 'designSubsection'
-      ) {
-        toReturn += `display:none;`;
-      }
-    }
-
-    if (props.themex === 'microSubsection') {
-      toReturn += `
-        display:none;
-      `;
-      if (
-        !props.isModal &&
-        props.responsiveStatusesDict.homeResponsive.singleCol
-      ) {
-        toReturn += `
-          display:block;
-        `;
-      }
     }
     return toReturn;
   }} ${props => {
@@ -80,9 +67,7 @@ const StyledIconWrapper = ConnectResponsiveStatusesDictHOC(styled.div`
   ${props => {
     // singleColHome
     if (
-      !props.isModal &&
-      props.responsiveStatusesDict.homeResponsive &&
-      props.responsiveStatusesDict.homeResponsive.singleCol
+      props.isSingleButton
     ) {
       return `
         float:none;
@@ -113,7 +98,17 @@ const StyledHeaderLink = styled(AppReduxLink)`
     return '';
   }}
 `;
-const StyledHeaderDiv = styled.div`${headerStyle};`;
+const StyledHeaderDiv = styled.div`
+  ${headerStyle}
+  ${props => {
+    if (props.layoutVariation === 'header') {
+      return `
+        color: ${styleConstants.colors.red};
+      `;
+    }
+    return '';
+  }}
+`;
 
 const StyledMicroText = ConnectResponsiveStatusesDictHOC(styled.div`
   display: none;
@@ -122,11 +117,8 @@ const StyledMicroText = ConnectResponsiveStatusesDictHOC(styled.div`
   padding-top: ${styleConstants.appPad / 2}em;
   padding-bottom: ${styleConstants.appPad}em;
   ${props => {
-    // singleColHome
     if (
-      !props.isModal &&
-      props.responsiveStatusesDict.homeResponsive &&
-      props.responsiveStatusesDict.homeResponsive.singleCol
+      props.isSingleButton
     ) {
       return `
         display:block;
@@ -140,11 +132,8 @@ const StyledText = ConnectResponsiveStatusesDictHOC(styled.div`
   padding-left: ${styleConstants.appPad / 2}em;
   overflow: hidden;
   ${props => {
-    // singleColHome
     if (
-      !props.isModal &&
-      props.responsiveStatusesDict.homeResponsive &&
-      props.responsiveStatusesDict.homeResponsive.singleCol
+      props.isSingleButton
     ) {
       return `
         width:0;
@@ -155,7 +144,6 @@ const StyledText = ConnectResponsiveStatusesDictHOC(styled.div`
     return '';
   }};
 `);
-
 const StyledButtonGroup = ConnectResponsiveStatusesDictHOC(styled.div`
   overflow:hidden;
   padding: ${styleConstants.appPad /
@@ -163,9 +151,7 @@ const StyledButtonGroup = ConnectResponsiveStatusesDictHOC(styled.div`
   ${props => {
     // singleColHome
     if (
-      !props.isModal &&
-      props.responsiveStatusesDict.homeResponsive &&
-      props.responsiveStatusesDict.homeResponsive.singleCol
+      props.isSingleButton
     ) {
       return `
         padding: ${styleConstants.appPad / 2}em 0 0 0;
@@ -197,14 +183,13 @@ const StyledButtonGroup = ConnectResponsiveStatusesDictHOC(styled.div`
   noLeftPadding
 `);
 
+
 const StyledButtonGroupButtons = ConnectResponsiveStatusesDictHOC(styled.div`
   ${props => {
     // singleColHome
 
     if (
-      !props.isModal &&
-      props.responsiveStatusesDict.homeResponsive &&
-      props.responsiveStatusesDict.homeResponsive.singleCol
+      props.isSingleButton
     ) {
       return `
         display:none;
@@ -259,42 +244,20 @@ const StyledButtonInnerSpan = styled.span`
       .white};
 `;
 
-let UploadBackgroundSetter = props => {
-  const onSuccess = props.isTemplateUploader ? props.setBackgroundTemplateUploader : props.setBackground;
-  return (
-    <Upload
-      onSuccess={onSuccess}
-      backendApiPrefix={props.constants.backendApiPrefix}
-    >
-      {props.children}
-    </Upload>
-  );
-};
-UploadBackgroundSetter.propTypes = {
-  isTemplateUploader: PropTypes.bool,
-  setBackground: PropTypes.func.isRequired,
-  setBackgroundTemplateUploader: PropTypes.func.isRequired,
-  constants: PropTypes.object.isRequired,
-  children: PropTypes.node,
-};
-UploadBackgroundSetter.defaultProps = {
-  isTemplateUploader: false,
-  children: null,
-};
-UploadBackgroundSetter = ancestorConstantsHoc(
-  setBackgroundHoc(UploadBackgroundSetter)
-);
+
+
 
 let AppButtonGroup = class extends Component {
   constructor() {
     super();
     this.state = {};
   }
+
   render() {
     const icon =
       this.props.icon &&
       !this.props.hideExtras &&
-      <StyledIconWrapper isModal={this.props.isModal}>
+      <StyledIconWrapper isModal={this.props.isModal} isSingleButton={this.props.isSingleButton}>
         <StyledIcon className="material-icons" isModal={this.props.isModal}>
           {this.props.icon}
         </StyledIcon>
@@ -302,7 +265,7 @@ let AppButtonGroup = class extends Component {
 
     const shortHeadline =
       this.props.shortHeadline &&
-      <StyledMicroText isModal={this.props.isModal}>
+      <StyledMicroText isModal={this.props.isModal} isSingleButton={this.props.isSingleButton}>
         <span>
           {this.props.shortHeadline}
         </span>
@@ -312,6 +275,7 @@ let AppButtonGroup = class extends Component {
       this.props.headline &&
       !this.props.hideExtras &&
       <StyledText
+        isSingleButton={this.props.isSingleButton}
         isModal={this.props.isModal}
         layoutVariation={this.props.layoutVariation}
       >
@@ -324,17 +288,21 @@ let AppButtonGroup = class extends Component {
     const buttonComponents =
       buttons &&
       <StyledButtonGroupButtons
+        isSingleButton={this.props.isSingleButton}
         isModal={this.props.isModal}
         filter={this.props.filter}
       >
         {!this.props.hideExtras && <ComponentPrepended {...this.props} />}
         {buttons.map(btnDetails => {
+          if (btnDetails.hideWhen && btnDetails.hideWhen(this.props)) {
+            return null
+          }
           let btnInner;
-          if (btnDetails.isUploadBackgroundSetter) {
+          if (btnDetails.isUploadCompositeImageSetter) {
             btnInner = (
-              <UploadBackgroundSetter isTemplateUploader={btnDetails.isTemplateUploader} >
+              <UploadCompositeImageSetter isTemplateUploader={btnDetails.isTemplateUploader} >
                 {btnDetails.text}
-              </UploadBackgroundSetter>
+              </UploadCompositeImageSetter>
             );
           } else if (btnDetails.aHref) {
             btnInner = (
@@ -388,6 +356,7 @@ let AppButtonGroup = class extends Component {
       </StyledButtonGroupButtons>;
     // headerButtonActionType
     const LinkOrDiv =
+      this.props.layoutVariation === 'header' ||
       this.props.compositeImageData.screen === this.props.urlFragment
         ? StyledHeaderDiv
         : StyledHeaderLink;
@@ -404,11 +373,13 @@ let AppButtonGroup = class extends Component {
         };
     return (
       <StyledSubsection
+        isSingleButton={this.props.isSingleButton}
         themex={this.props.themex}
         layoutVariation={this.props.layoutVariation}
         hasLeftBorder={this.props.hasLeftBorder}
       >
         <StyledButtonGroup
+          isSingleButton={this.props.isSingleButton}
           isModal={this.props.isModal}
           layoutVariation={this.props.layoutVariation}
           noLeftPadding={this.props.noLeftPadding}
@@ -465,8 +436,15 @@ AppButtonGroup.defaultProps = {
 AppButtonGroup = appConnect((appState /* , { params }*/) => {
   return {
     compositeImageData: appState.compositeImageData,
+    responsiveStatusesDict:appState.responsiveStatusesDict,
   };
 })(AppButtonGroup);
+
+export default AppButtonGroup;
+
+
+
+
 
 const buttonGroupComponents = {};
 function makeButtonGroupComponent(
@@ -475,8 +453,10 @@ function makeButtonGroupComponent(
 }*/
 ) {
   function ButtonGroup(props) {
+    const imageUrl = `${props.serverClientOrigin}${props.compositeImageUrl}`
+
     options =
-      typeof options === 'function' ? options(props.constants) : options;
+      typeof options === 'function' ? options(props.constants,props.shareUrl, imageUrl, props.postToWall, props.exportStuff) : options;
     const ButtonGroup = <AppButtonGroup {...props} {...options} />;
     if (props.isModal) {
       return (
@@ -495,7 +475,70 @@ function makeButtonGroupComponent(
     isModal: false,
   };
 
-  return ancestorConstantsHoc(ButtonGroup);
+  let attemptId = 0;
+  return shareUrlHoc(connect(
+    (state) => {
+      return {
+        serverClientOrigin: state.serverClientOrigin,
+      };
+    }
+  )(appConnect(
+    (appState) => {
+      return {
+        compositeImageData: appState.compositeImageData,
+        compositeImageUrl: appState.compositeImageData.compositeImageUrl,
+        constants: appState.constants
+      };
+    },
+    {
+      exportStuff: (imageUrl) => {
+        return (dispatch, getState) => {
+          const currentAttamptId = attemptId++;
+          dispatch({
+            type: 'LOADING',
+            where: `exportStuff_${currentAttamptId}`,
+          });
+          exportStuff(imageUrl).then(() => {
+            dispatch({
+              type: 'STOP_LOADING',
+              where: `exportStuff_${currentAttamptId}`,
+            });
+            alert('SUCCESSFULLY POSTED PHOTO TO FACEBOOK');
+            
+          }).catch(() => {
+            dispatch({
+              type: 'STOP_LOADING',
+              where: `exportStuff_${currentAttamptId}`,
+            });
+            alert('ERROR TRYING TO POST PHOT TO FACEBOOK');
+          });
+        };
+      },
+      postToWall: (shareUrl) => {
+        return (dispatch, getState) => {
+          const currentAttamptId = attemptId++;
+          dispatch({
+            type: 'LOADING',
+            where: `postToWall_${currentAttamptId}`,
+          });
+          postToWall(shareUrl).then(() => {
+            dispatch({
+              type: 'STOP_LOADING',
+              where: `postToWall_${currentAttamptId}`,
+            });
+            alert('SUCCESSFULLY POSTED TO FACEBOOK WALL');
+            
+          }).catch(() => {
+            dispatch({
+              type: 'STOP_LOADING',
+              where: `postToWall_${currentAttamptId}`,
+            });
+            alert('ERROR TRYING TO POST TO FACEBOOK WALL');
+          });
+        };
+      },
+    }
+  )(ButtonGroup)));
 }
 
 const ImportButtonGroup = makeButtonGroupComponent({
@@ -509,8 +552,8 @@ const ImportButtonGroup = makeButtonGroupComponent({
       actionType: 'IMPORT_FACEBOOK',
     },
     {
-      text: 'Camera',
-      isUploadBackgroundSetter: true,
+      text: 'Camera!',
+      isUploadCompositeImageSetter: true,
     },
     {
       text: 'URL',
@@ -518,12 +561,13 @@ const ImportButtonGroup = makeButtonGroupComponent({
     },
     {
       text: 'Storage',
+      isUploadCompositeImageSetter: true,
     },
   ],
 });
 buttonGroupComponents.import = ImportButtonGroup;
 
-const ShareButtonGroup = makeButtonGroupComponent(constants => {
+const ShareButtonGroup = makeButtonGroupComponent((constants, shareUrl, imageUrl, postToWall, exportStuff) => {
   return {
     urlFragment: 'share',
     headline: 'Share this via:',
@@ -532,13 +576,19 @@ const ShareButtonGroup = makeButtonGroupComponent(constants => {
     buttons: [
       {
         text: 'Facebook photo',
+        onClick: () => {
+          exportStuff(imageUrl);
+        },
       },
       {
         text: 'Facebook post',
+        onClick: () => {
+          postToWall(shareUrl);
+        },
       },
       {
         text: 'Tweet',
-        aHref: constants.tweetUrl,
+        aHref: `https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&via=bernieselfie&hashtags=BernieSanders%2Cfeelthebern%2Cbernieselfie&related=BernieSanders`,
       },
     ],
   };
@@ -546,6 +596,7 @@ const ShareButtonGroup = makeButtonGroupComponent(constants => {
 buttonGroupComponents.share = ShareButtonGroup;
 
 const EditBrushButtonGroup = makeButtonGroupComponent({
+  isSingleButton: true,
   headerButtonActionType: 'CROP',
   themex: 'microSubsection',
   shortHeadline: 'edit',
@@ -582,7 +633,7 @@ ImagePickerTemplateConfigured.defaultProps = {
 
 console.log('need to modify design when full screen mode');
 const EditDesignButtonGroup = makeButtonGroupComponent({
-  urlFragment: 'editDesign',
+  headerButtonActionType: 'SELECT_TEMPLATE',
   themex: 'designSubsection',
   shortHeadline: 'edit',
   headline: 'Change design:',
@@ -599,8 +650,11 @@ const EditDesignButtonGroup = makeButtonGroupComponent({
     // },
     {
       text: 'upload a template',
-      isUploadBackgroundSetter: true,
+      isUploadCompositeImageSetter: true,
       isTemplateUploader: true,
+      hideWhen: ({layoutVariation}) => {
+        return layoutVariation === 'header';
+      }
     },
   ],
 });
@@ -614,7 +668,6 @@ const ImageNeighborCompensator = styled.div`
 
 const GetPhotoMinimalButtonGroup = makeButtonGroupComponent({
   urlFragment: 'editDesign',
-  themex: 'designSubsection',
   // shortHeadline: 'edit',
   headline: '\u00A0',
   // icon: 'brush',
@@ -654,7 +707,7 @@ ButtonGroupFeaturedRouteScreen.propTypes = {
 ButtonGroupFeaturedRouteScreen.defaultProps = {
   dynamicScreen: '',
 };
-ButtonGroupFeaturedRouteScreen = connect((state /* , { params }*/) => {
+ButtonGroupFeaturedRouteScreen = connect((state) => {
   return {
     dynamicScreen: state.location.payload.dynamicScreen,
   };

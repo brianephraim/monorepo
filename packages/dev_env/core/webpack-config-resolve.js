@@ -49,7 +49,7 @@ function DirectoryDefaultFilePlugin() {
             }
             // console.log(req)
             // done();
-            console.log('new request',resolver.join(directory, basename(directory)));
+            // console.log('new request',resolver.join(directory, basename(directory)));
             const obj = Object.assign({}, req, {
               request: resolver.join(directory, basename(directory)),
             });
@@ -95,8 +95,6 @@ module.exports = {
           const split = requestStr.split('/');
           split.shift();
           split.join('/');
-          // console.log('Afindme',split.join('/'),requestStr.split('/')[1]);
-          // console.log('Bfindme',requestStr.split('/')[1]);
           return split.join('/');
           return requestStr.split('/')[1];
         }

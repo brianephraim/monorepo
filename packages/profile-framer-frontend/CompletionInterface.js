@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import styleConstants from './style-constants';
+import isTouchDevice from './isTouchDevice';
 
 const StyledButtonWrap = styled.div`
   padding-left: ${styleConstants.appPad}em;
@@ -38,7 +39,7 @@ class CompletionInterface extends Component {
     }
     return (
       <div>
-        <StyledH2>Drag and resize the box to crop</StyledH2>
+        <StyledH2>{isTouchDevice ? 'Crop inside the box.  Pinch and drag.' : 'Drag and resize the box to crop'}</StyledH2>
         <StyledButtonWrap className="modal_buttonGroup">
           <ButtonComp {...buttonProps} className="button mainButton cropDoneButton">
             <StyledButtonInnerSpan>Done</StyledButtonInnerSpan>
@@ -61,6 +62,7 @@ export default CompletionInterface;
 
 const completionInterfaceHeights = {
   normal: 128,
+  shortVertical: 88,
   shrink: 88,
   compact: 88,
 };

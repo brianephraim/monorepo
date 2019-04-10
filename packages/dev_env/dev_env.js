@@ -1,42 +1,15 @@
 /* eslint-disable no-console */
+import webpack from 'webpack';
 import { argv } from 'yargs';
 import shellCommand from './core/shellCommand';
 import jestSpawnProcess from './jest/jestSpawnProcess';
-import webpackMakeCompiler from './webpackMakeCompiler';
 import webpackRunCompiler from './core/webpackRunCompiler';
 import webpackBuildCommandLine from './core/webpackBuildCommandLine';
-import serveWebpack from './webpackExpressServer.js';
+import startUniversalExpress from './startUniversalExpress';
+import webpackConfig from './webpackConfig'; 
 // import isWithinMonoRepo from './core/isWithinMonoRepo');
- 
 const env = argv.env;
 const item = argv.item;
-
-function asyncRecurseStartApps(serverNamespaces) {
-  let lastBackendApp = null;
-  let i = 0;
-  function recurse(backendAppNamespace) {
-    System.import(`../../packages/${backendAppNamespace}/${backendAppNamespace}.express`).then((someBackendApp) => {
-      const serveBackendApp = someBackendApp.default;
-      const backendAppSettings = {
-        nameSpace: backendAppNamespace,
-      };
-      if (lastBackendApp) {
-        backendAppSettings.app = lastBackendApp;
-      }
-      const backendAppServed = serveBackendApp(backendAppSettings);
-      lastBackendApp = backendAppServed;
-      const nextNamespace = serverNamespaces[++i];
-      if (nextNamespace) {
-        recurse(nextNamespace);
-      } else {
-        serveWebpack({
-          app: backendAppServed,
-        });
-      }
-    });
-  }
-  recurse(serverNamespaces[i]);
-}
 
 if (item) {
   shellCommand(`(cd ./packages/${item} && npm run start)`);
@@ -45,14 +18,7 @@ if (item) {
 } else if (argv.entry) {
   webpackBuildCommandLine();
 } else if (env === 'build') {
-  webpackRunCompiler(webpackMakeCompiler());
-} else if (argv.servers) {
-  const serverNamespaces = argv.servers.split(',');
-  asyncRecurseStartApps(serverNamespaces);
+  webpackRunCompiler(webpack(webpackConfig()));  
 } else {
-  serveWebpack({});
+  startUniversalExpress();
 }
-const serve = function ()   {
-  serveWebpack.apply(this,arguments);
-}
-export { serve };

@@ -5,9 +5,9 @@ export function makeNamespacedReduxConnectHocForResponsiveStatusesDict(appNameSp
   return connect(
     (state, props /* , { params }*/) => {
       
-      appNameSpace = typeof appNameSpace === 'function' ? appNameSpace(props) : appNameSpace;
+      const refinedAppNameSpace = typeof appNameSpace === 'function' ? appNameSpace(props) : appNameSpace;
       return {
-        responsiveStatusesDict: state[appNameSpace].responsiveStatusesDict,
+        responsiveStatusesDict: state[refinedAppNameSpace].responsiveStatusesDict,
       };
     },
     null,
@@ -27,6 +27,14 @@ export function makeNamespacedReduxConnectHocForResponsiveStatusesDict(appNameSp
   );
 }
 // ResponsiveReduxMasterHOC(Comp, `${appNameSpace}${splitter}${masterName}`,appNameSpaceOriginal,splitter,masterName)
+
+function determineActionName(props,options) {
+  const {splitter,masterName} = options;
+  const {appNameSpace} = options;
+  let actionName = typeof appNameSpace === 'function' ? appNameSpace(props) : appNameSpace;
+  actionName = `${actionName}${splitter}${masterName}`;
+  return actionName;
+}
 export function ResponsiveReduxMasterHOC(Comp, options) {
   let ResponsiveMaster = ResponsiveMasterHOC(Comp, options);
   ResponsiveMaster = connect(
@@ -35,23 +43,47 @@ export function ResponsiveReduxMasterHOC(Comp, options) {
     },
     {
       onResponsiveUpdate: (responsiveStatusesDict, props) => {
-        const {splitter,masterName} = options;
-        let {appNameSpace} = options;
-        appNameSpace = typeof appNameSpace === 'function' ? appNameSpace(props) : appNameSpace;
-        appNameSpace = `${appNameSpace}${splitter}${masterName}`;
-        return {
-          name: appNameSpace,
-          responsiveStatusesDict,
-          type: 'UDATE_RESPONSIVE_STATUSES_DICT',
+        return (dispatch,getState) => {
+          dispatch({
+            name: determineActionName(props,options),
+            responsiveStatusesDict,
+            type: 'UDATE_RESPONSIVE_STATUSES_DICT',
+          });
+        };
+      },
+      onStart: (props) => {
+        return (dispatch,getState) => {
+          dispatch({
+            name: determineActionName(props,options),
+            type: 'UDATE_RESPONSIVE_STATUSES_DICT',
+            isStart: true
+          });
+        };
+      },
+      onEnd: (props) => {
+        return (dispatch,getState) => {
+          dispatch({
+            name: determineActionName(props,options),
+            type: 'UDATE_RESPONSIVE_STATUSES_DICT',
+            isEnd: true
+          });
         };
       },
     },
     (stateProps, dispatchProps, ownProps) => {
       const originalOnResponsiveUpdate = dispatchProps.onResponsiveUpdate;
+      const originalOnStart = dispatchProps.onStart;
+      const originalOnEnd = dispatchProps.onEnd;
       const newDispatchProps = {
         ...dispatchProps,
         onResponsiveUpdate: (...args) => {
           originalOnResponsiveUpdate(...args, ownProps);
+        },
+        onStart: (...args) => {
+          originalOnStart(ownProps);
+        },
+        onEnd: (...args) => {
+          originalOnEnd(ownProps);
         },
       }
       return Object.assign({}, ownProps, stateProps, newDispatchProps);

@@ -17,24 +17,21 @@
 import vanilla from '@defualt/vanilla';
 import windowSizer, { heightTweak } from '@defualt/window-sizer';
 
-const { docEl, docBody, getWinWidth, getWinHeight, getDocumentHeight, getOffset, domEfficiencyCache } = vanilla;
+const { getOffset } = vanilla;
 
-const generateGiantSquareDetails = function($el,bottomGap = 0){
-  
-  const getDims = function($el){
-    return{
-      windowHeight: windowSizer.dimensions.height - heightTweak,
-      documentHeight: getDocumentHeight(),
-      top: getOffset($el).top
-    }
-  };
+function getDims($el){
+  return{
+    windowHeight: windowSizer.dimensions.height - heightTweak,
+    top: getOffset($el).top
+  }
+};
+function generateGiantSquareDetails($el,bottomGap = 0) {
   const dims = getDims($el);
 
   const heightVal = (dims.windowHeight - dims.top);
   
-  const windowWidth = getWinWidth();
+  const windowWidth = windowSizer.dimensions.width;
   let measurement = windowWidth < heightVal ? windowWidth : heightVal;
-
   if(measurement <= windowWidth){
     const gap = dims.windowHeight - (dims.top + measurement);
     if(gap < bottomGap){

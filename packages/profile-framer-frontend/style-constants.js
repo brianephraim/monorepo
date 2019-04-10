@@ -15,6 +15,7 @@ const styleConstants = {
   font2: "'Cantarell', sans-serif",
   appPad: 1,
   breakpoints: {
+    shortVertical: 500,
     shrink: 530,
     compact: 375,
   },
@@ -137,7 +138,7 @@ const styleConstants = {
     },
     shrinkFontBreakpointStyles() {
       return `
-        @media (max-height: 500px){
+        @media (max-height: ${styleConstants.breakpoints.shortVertical}px){
           font-size:${styleConstants.appPad * 0.75}em;
         }
         @media (max-width: ${styleConstants.breakpoints.shrink}px){

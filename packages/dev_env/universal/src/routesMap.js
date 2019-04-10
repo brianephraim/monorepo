@@ -1,15 +1,13 @@
 import { redirect, NOT_FOUND } from 'redux-first-router'
 import { fetchData } from './utils'
-import {routeData} from 'MainApp';
-
-console.log('routeData', routeData.routesMap);
 
 export default {
-  ...routeData.routesMap,
-  HOME_UNIVERSAL_DEMO: '/',
+  // ROOT:'/',
+  HOME_UNIVERSAL_DEMO: '/willard',
   LIST: {
-    path: '/list/:category',
+    path: '/willard/list/:category',
     thunk: async (dispatch, getState) => {
+      console.log('DDDDDD');
       const {
         jwToken,
         location: { payload: { category } },
@@ -27,7 +25,7 @@ export default {
     }
   },
   VIDEO: {
-    path: '/video/:slug',
+    path: '/willard/video/:slug',
     thunk: async (dispatch, getState) => {
       // TASK FOR YOU. YES, YOU!
       //
@@ -39,7 +37,7 @@ export default {
     }
   },
   PLAY: {
-    path: '/video/:slug/play',
+    path: '/willard/video/:slug/play',
     thunk: (dispatch, getState) => {
       if (typeof window === 'undefined') {
         const { slug } = getState().location.payload
@@ -49,10 +47,9 @@ export default {
       }
     }
   },
-  LOGIN: '/login',
-  MIGRATION: '/migration',
+  LOGIN: '/willard/login',
   ADMIN: {
-    path: '/admin', // TRY: visit this path or dispatch ADMIN
+    path: '/willard/admin', // TRY: visit this path or dispatch ADMIN
     role: 'admin' // + change jwToken to 'real' in server/index.js
   }
 }

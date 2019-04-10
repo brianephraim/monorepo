@@ -10,7 +10,7 @@ const Player = ({ playing, youtubeId, slug, color }) =>
       className={styles.heroContainer}
       style={{ backgroundImage: youtubeBackground(youtubeId) }}
     >
-      <Link to={`/video/${slug}/play`}>
+      <Link to={`/willard/video/${slug}/play`}>
         <span className='ion-play' style={{ backgroundColor: color }} />
       </Link>
     </div>

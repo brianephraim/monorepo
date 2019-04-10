@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { generateGiantSquareDetails } from '@defualt/responsive';
 import { generateCompositeImgSrcUrl } from './compositeImage';
-import {
+import ButtonGroup, {
   EditDesignButtonGroup,
   EditSizeButtonGroup,
   EditBrushButtonGroup,
@@ -23,6 +23,13 @@ import {
   ConnectResponsiveStatusesDictHOC,
   appConnect,
 } from './nameSpacedResponsive';
+
+import isTouchDevice from './isTouchDevice';
+
+import TodaApollo from 'apollo-simple-starter/client/components/TodaApollo';
+import ToduApollo from './ToduApollo';
+import TodrApollo from './TodrApollo';
+
 
 const StyledHomeLayout = styled.div`position: relative;`;
 
@@ -86,9 +93,14 @@ const StyledSelfieFrame = ConnectResponsiveStatusesDictHOC(styled.div`
   }} box-sizing:border-box;
 `);
 function AppMainSelfieFrame(props) {
+  const style = props.style ? props.style : {
+    width:'300px',
+    height:'300px',
+
+  };
   return (
     <StyledSelfieFrame
-      style={props.style}
+      style={style}
       className="app_body_leftPillar_selfieFrame js_mainSelfieFrame"
       // WTF is innerRef https://github.com/styled-components/styled-components/issues/102
       // use instead of ref when adding ref to component affected by styled-components
@@ -149,45 +161,46 @@ const StyledLeftPillar = ConnectResponsiveStatusesDictHOC(styled.div`
     return '';
   }};
 `);
-let AppHero = class extends Component {
-  constructor() {
-    super();
-    this.state = {};
-    this.onChange = (a, b, c) => {
-      this.setState({
-        measurement: c.measurement,
-      });
-    };
-  }
-  render() {
-    return (
-      <StyledLeftPillar className="app_body_leftPillar">
-        <AppMainSelfieFrameResponsive>
-          <StyledInstructions className="app_body_leftPillar_selfieFrame_instructions ">
-            <span className="selfieFrame_instructions_text">
-              Right click to save{this.state.measurement}
-            </span>
-          </StyledInstructions>
-          <StyledSelfie
-            className="app_body_leftPillar_selfieFrame_selfie"
-            src={this.props.imSrc}
-            alt={this.props.constants.heroImageAltText}
-          />
-        </AppMainSelfieFrameResponsive>
-      </StyledLeftPillar>
-    );
-  }
+function AppHero(props) {
+  return (
+    <StyledLeftPillar className="app_body_leftPillar">
+      <AppMainSelfieFrameResponsive>
+        <StyledInstructions className="app_body_leftPillar_selfieFrame_instructions ">
+          <span className="selfieFrame_instructions_text">
+            {isTouchDevice ? 'Press and hold image to save' : 'Right click to save!'}
+          </span>
+        </StyledInstructions>
+        <StyledSelfie
+          className="app_body_leftPillar_selfieFrame_selfie"
+          src={props.imgSrc}
+          alt={props.constants.heroImageAltText}
+        />
+      </AppMainSelfieFrameResponsive>
+    </StyledLeftPillar>
+  );
 };
 
 AppHero.propTypes = {
-  imSrc: PropTypes.string.isRequired,
+  imgSrc: PropTypes.string.isRequired,
   constants: PropTypes.object.isRequired,
 };
 
 AppHero = ancestorConstantsHoc(
   appConnect((appState /* , { params }*/) => {
+    
+    const imgSrc = (
+      appState &&
+
+      // WHEN acriveAppScreen is UPLOAD_TEMPLATE, use mock selfie.
+      // Because UPLOAD_TEMPLATE is weird in that it switches the overlay with the selfie.
+      // And this would trigger endpointCompositeImage, which would create a template for the current selfie.
+      appState.activeAppScreen !== 'UPLOAD_TEMPLATE' &&
+      appState.compositeImageData &&
+      appState.compositeImageData.compositeImageUrl ||
+      '/images/mock-selfie.png'
+    );
     return {
-      imSrc: appState && appState.compositeImageData && appState.compositeImageData.compositeImageUrl || '/images/mock-selfie.png',
+      imgSrc,
           // ? generateCompositeImgSrcUrl(appState.compositeImageData)
           // : '/images/mock-selfie.png',
       // toBeAssigned: getDetailsOfToBeAssigned(state),
@@ -312,6 +325,27 @@ const StyledAppBody = styled.div`
 // (modal was outside .homeLayout)
 // It was also used to display:none the home screen when modal appears.
 function HomeLayout(props) {
+  const singleCol = (
+    props.responsiveStatusesDict.homeResponsive &&
+    props.responsiveStatusesDict.homeResponsive &&
+    props.responsiveStatusesDict.homeResponsive.singleCol
+  );
+
+  const Extras = (
+    <div>
+      <div style={{position:'fixed',top:0,left:0,background:'#eee',padding:'10px',zIndex:99999}}>
+        <TodaApollo />
+      </div>
+      <div style={{position:'fixed',bottom:0,right:0,background:'#eee',padding:'10px',zIndex:99999}}>
+        <ToduApollo />
+      </div>
+      <div style={{position:'fixed',bottom:0,left:0,background:'#eee',padding:'10px',zIndex:99999}}>
+        <TodrApollo />
+      </div>
+    </div>
+  );
+  const showExtras = false;
+
   return (
     <StyledHomeLayout className="homeLayout">
       {/* The wrapping element below distinguishes the photo-plus-buttonGroupComponents from disclaimer.*/}
@@ -319,23 +353,64 @@ function HomeLayout(props) {
         <ContributeBanner />
         <HomeLayoutHeader />
         <StyledAppBody className="app_body">
+          {showExtras && Extras}
           <AppHero {...props} />
-          <AppBusiness>
-            <StyledSection section="share">
-              <ShareButtonGroup section="share" {...props} />
-            </StyledSection>
-            <StyledSection section="photo" featured>
-              <ImportButtonGroup section="photo" {...props} />
-            </StyledSection>
-            <StyledSection section="design">
-              <EditBrushButtonGroup section="design" {...props} />
-              <EditSizeButtonGroup section="design" {...props} />
-              <EditDesignButtonGroup
-                section="design"
-                layoutVariation="vertical"
-                {...props}
-              />
-            </StyledSection>
+          <AppBusiness section="design">
+            {
+              singleCol && (
+                <div>
+                  <StyledSection section="share">
+                    <ButtonGroup
+                      isSingleButton
+                      urlFragment='share'
+                      themex='microSubsection'
+                      shortHeadline='share'
+                      icon='share'
+                    />
+                  </StyledSection>
+                  <StyledSection section="photo" featured>
+
+                    <ButtonGroup
+                      isSingleButton
+                      urlFragment='import'
+                      themex='microSubsection'
+                      shortHeadline='import'
+                      icon='photo_camera'
+                    />
+                    
+                  </StyledSection>
+                  <StyledSection section="design">
+                    <ButtonGroup
+                      isSingleButton
+                      headerButtonActionType='CROP'
+                      themex='microSubsection'
+                      shortHeadline='edit'
+                      icon='brush'
+                    />
+                  </StyledSection>
+                </div>
+              )
+            }
+            {
+              !singleCol && (
+                <div>
+                  <StyledSection section="share">
+                    <ShareButtonGroup section="share" {...props} />
+                  </StyledSection>
+                  <StyledSection section="photo" featured>
+                    <ImportButtonGroup section="photo" {...props} />
+                  </StyledSection>
+                  <StyledSection section="design">
+                    <EditSizeButtonGroup section="design" {...props} />
+                    <EditDesignButtonGroup
+                      section="design"
+                      layoutVariation="vertical"
+                      {...props}
+                    />
+                  </StyledSection>
+                </div>
+              )
+            }
           </AppBusiness>
         </StyledAppBody>
       </StyledApp>
@@ -344,5 +419,10 @@ function HomeLayout(props) {
   );
 }
 
-export default ResponsiveReduxMasterHOC(HomeLayout, 'homeResponsive');
+
+export default ResponsiveReduxMasterHOC(appConnect((appState) => {
+  return {
+    responsiveStatusesDict: appState.responsiveStatusesDict
+  };
+})(HomeLayout), 'homeResponsive');
 // export default HomeLayout;
