@@ -1,11 +1,9 @@
 /* eslint-disable import/no-mutable-exports */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import styleConstants from './style-constants';
 import { appConnect } from './nameSpacedResponsive';
 import CropperScreen from './CropperScreen';
-import ImagePickerFacebook from './ImagePickerFacebook';
+// import ImagePickerFacebook from './ImagePickerFacebook';
 import ImagePickerTemplate from './ImagePickerTemplate';
 import HomeLayout from './HomeLayout';
 import UrlImportScreen from './UrlImportScreen';
@@ -15,7 +13,7 @@ import './app.scss';
 import setBackgroundHoc from './setBackgroundHoc';
 import publishTemplateCropHoc from './publishTemplateCropHoc';
 import ancestorConstantsHoc from './ancestorConstantsHoc';
-import UploadCompositeImageSetter from './UploadCompositeImageSetter';
+
 
 import { formUrl } from './deriveUrlInfo';
 
@@ -36,27 +34,16 @@ export { HomeLayoutWithUploadCallback };
 export function ImagePickerFacebookWithOnClick() {
   return (
     <ModalScreen hasCloseButton headerText="Pick a photo">
-      <ImagePickerFacebook />
+      {/*<ImagePickerFacebook />*/}
     </ModalScreen>
   );
 }
 
 // ===
-const StyledHeaderContentWrapper = styled.div`
-  color: ${styleConstants.colors.red};
-  padding: 0 ${styleConstants.appPad}em;
-  display: inline-block;
-`;
+
 export function ImagePickerTemplateWithOnClick() {
-  const headerContent = (
-    <StyledHeaderContentWrapper>
-      <UploadCompositeImageSetter isTemplateUploader>
-        upload a template
-      </UploadCompositeImageSetter>
-    </StyledHeaderContentWrapper>
-  );
   return (
-    <ModalScreen hasCloseButton headerText="Pick a design" headerContent={headerContent}>
+    <ModalScreen hasCloseButton headerText="Pick a design">
       <ImagePickerTemplate />
     </ModalScreen>
   );
@@ -74,9 +61,8 @@ let CropperWithFgBgCompletion = class extends Component {
   }
   render() {
     return (
-      <ModalScreen hasCloseButton center={false}>
+      <ModalScreen hasCloseButton>
         <CropperScreen
-          hideControlsBar={this.props.isMakeSquareTemplateMode}
           hideForeground={this.props.isMakeSquareTemplateMode}
           defaultGeo={this.props.isMakeSquareTemplateMode}
           useClickHandledButton={this.props.isMakeSquareTemplateMode}

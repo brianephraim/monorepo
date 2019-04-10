@@ -63,7 +63,6 @@ export default ControlsBar;
 
 const controlsBarHeights = {
   normal: 128,
-  shortVertical: 96,
   shrink: 96,
   compact: 50,
 };

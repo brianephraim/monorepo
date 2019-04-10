@@ -4,12 +4,12 @@
 
 const path = require('path');
 const makeUuid = require('node-uuid').v4;
-const argv = require('yargs').argv;
 const shellCommand = require('./shellCommand');
 const isWithinMonoRepo = require('./isWithinMonoRepo');
 const getDevEnvRoot = require('./getDevEnvRoot');
 const getNodePathShVar = require('./getNodePathShVar');
-const getDoubleDashArgumentsPassthrough = require('./getDoubleDashArgumentsPassthrough');
+
+console.log('xxxxxx', getNodePathShVar({}));
 
 const os = require('os');
 
@@ -18,6 +18,7 @@ const toCompileSplit = toCompile.split('/');
 const fileName = toCompileSplit.pop();
 const tempFileName = fileName.replace('.js', '.temp.js');
 const toCompileFolder = toCompileSplit.join('/');
+
 if (isWithinMonoRepo(__dirname)) {
   // Determine some paths, with logic that is resilient to
   // unlikely situation of nested /dev_env/ instances is __dirname
@@ -30,17 +31,15 @@ if (isWithinMonoRepo(__dirname)) {
   const cmd = [
     // Make a temp file
     `TMPFILE=\`mktemp -u ${tempFilePath} \` &&`,
-    `TMPASYNCDIR=\`mktemp -d \` &&`,
     // Use parens so parent shell doesn't change directories.
-    // '(',
+    '(',
     // Cd to the directory of the file we are compiling.
-    // `cd ${toCompileFolder}`,
-    // ' && ',
+    `cd ${toCompileFolder}`,
+    ' && ',
     // Compile the file as the temp file we created.
     // `${babelNodePath} --inspect=9225 ${devEnvCommandLinePath} --entry=${toCompile} --output=$TMPFILE`,
-    // `${babelNodePath} ${devEnvCommandLinePath} --entry=${toCompile} --output=$TMPFILE`,
-    `${babelNodePath} --trace-warnings ${devEnvCommandLinePath} --entry=${toCompile} --output=$TMPFILE --asyncDir=$TMPASYNCDIR${getDoubleDashArgumentsPassthrough()}`,
-    // ')',
+    `${babelNodePath} ${devEnvCommandLinePath} --entry=${toCompile} --output=$TMPFILE`,
+    ')',
     ' && ',
     // We are manually setting the node path because
     // we are running the file we just compiled with node from the temp directory,
@@ -49,14 +48,15 @@ if (isWithinMonoRepo(__dirname)) {
     `${getNodePathShVar({})} `,
     // Ok, now run the compiled script with node.
     // Passthrough arguments from the parent process.
-    `node $TMPFILE ${process.argv.slice(3).join(' ')} --asyncDir=$TMPASYNCDIR`,
+    `node $TMPFILE ${process.argv.slice(3).join(' ')}`,
+    ' && ',
+    // When the compiled scripts process ends, remove the compiled script.
+    'rm $TMPFILE',
+    // ' && echo "$NODE_PATH"',
     '\n',
   ].join('');
 
-  /* eslint-disable no-console */
-  console.log('devenv-node.js shell command using');
-  console.log(cmd);
-  /* eslint-enable no-console */
+  console.log('cmd', cmd);
 
   // VARIATION WITHOUT SYSTEM TEMP FILE
   // const cmd = [
@@ -74,10 +74,7 @@ if (isWithinMonoRepo(__dirname)) {
   shellCommand(cmd);
 } else {
   const tempFilePath = `${toCompileFolder}/${tempFileName}`;
-   /* eslint-disable no-console */
-  console.log('IF THERE IS A PROBLEM, IT COULD BE DUE TO __DIRNAME AND COMPILATION ISSUES - devenv-node.js');
-  /* eslint-enable no-console */
   const devEnvDistPath = path.resolve(__dirname, '../dist/dev_env.js');
-  const cmd = `(cd ${toCompileFolder} && node ${devEnvDistPath} --entry=${toCompile} --output=${tempFilePath}${getDoubleDashArgumentsPassthrough()}) && node ${tempFilePath} ${process.argv.slice(3).join(' ')} && rm ${tempFilePath}`;
+  const cmd = `(cd ${toCompileFolder} && node ${devEnvDistPath} --entry=${toCompile} --output=${tempFilePath}) && node ${tempFilePath} ${process.argv.slice(3).join(' ')} && rm ${tempFilePath}`;
   shellCommand(cmd);
 }

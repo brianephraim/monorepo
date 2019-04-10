@@ -7,7 +7,6 @@ import getAllS3Objects from './getAllS3Objects';
 import getS3ObjectData from './getS3ObjectData';
 import meldAndCropImages from './meldAndCropImages';
 import respondWithJson from './respondWithJson';
-import mongooseStuff from './mongooseStuff';
 
 var parseClientCompositeImageUrl = function(url){
   var pathnameSplit = parseUrl(url).pathname.split('/').splice(2,2);
@@ -39,7 +38,7 @@ var parseClientCompositeImageUrl = function(url){
 // Requests are either .png, .jpg, or .json.
 // If .json, the composite image is generated, uploaded to S3,
 // and the S3 item key is sent to the client in json.
-export default ({app,accessKeyId,secretAccessKey,Bucket,urlPattern,MakeUserTemplate}) => {
+export default ({app,accessKeyId,secretAccessKey,Bucket,urlPattern}) => {
   app.get(urlPattern, function(req, res) {
     console.log('EXTNSSION', )
     var extension = path.extname(req.url);
@@ -79,18 +78,6 @@ export default ({app,accessKeyId,secretAccessKey,Bucket,urlPattern,MakeUserTempl
           getAllS3ObjectsSettingsDict.template = {
             Key:'decorations/' + s.templateFilename + '.png'
           };
-
-
-          var userTemplateModel = {
-            created: new Date(),
-            customTemplate: s.templateFilename,
-            templateHeight: 1200,
-            templateWidth: 1200
-          };
-          console.log('userTemplateModel',userTemplateModel)
-          console.log('s',s);
-          // userTemplates.push(userTemplateModel);
-          MakeUserTemplate(userTemplateModel);
         }
         
         getAllS3Objects({

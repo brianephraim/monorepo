@@ -12,12 +12,12 @@ const Home = () =>
     <span style={{ color: 'rgb(200,200,200)', marginTop: 20 }}>
       HREF STRING:
     </span>
-    <span>{"<Link to='/willard/list/db-graphql'>DB & GRAPHQL</Link>"}</span>
+    <span>{"<Link to='/list/db-graphql'>DB & GRAPHQL</Link>"}</span>
 
     <span style={{ color: 'rgb(200,200,200)', marginTop: 20 }}>
       PATH SEGMENTS:
     </span>
-    <span>{"<Link to={['willard/list', 'react-redux']}>REACT & REDUX</Link>"}</span>
+    <span>{"<Link to={['list', 'react-redux']}>REACT & REDUX</Link>"}</span>
 
     <span style={{ color: 'rgb(200,200,200)', marginTop: 20 }}>ACTION:</span>
     <span>

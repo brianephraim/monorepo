@@ -95,12 +95,6 @@ function ResponsiveMasterHOC(Comp, options) {
         nukeActiveStatusRegistryOnMaster: () => {
           this.initComponentInternalState(this.props);
         },
-        onStart: () => {
-          this.props.onStart();
-        },
-        onEnd: () => {
-          this.props.onEnd();
-        },
       });
     }
     componentWillUnmount() {
@@ -150,14 +144,10 @@ function ResponsiveMasterHOC(Comp, options) {
   ResponsiveMaster.propTypes = {
     children: PropTypes.node,
     onResponsiveUpdate: PropTypes.func,
-    onStart: PropTypes.func,
-    onEnd: PropTypes.func,
   };
   ResponsiveMaster.defaultProps = {
     onResponsiveUpdate: () => {},
     children: null,
-    onStart: () => { },
-    onEnd: () => { },
   };
   return ResponsiveMaster
   // return ResponsiveMaster;

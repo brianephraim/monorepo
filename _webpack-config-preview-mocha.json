@@ -1,0 +1,55 @@
+{
+  "module": {
+    "rules": [
+      {
+        "test": {},
+        "use": "imports-loader?define=>false"
+      },
+      {
+        "test": {},
+        "use": "imports-loader?define=>false"
+      },
+      {
+        "test": {},
+        "loader": "babel-loader",
+        "exclude": {}
+      }
+    ]
+  },
+  "resolve": {
+    "modules": [
+      "/Users/brianephraim/Sites/monorepo/src/library",
+      "/Users/brianephraim/Sites/monorepo/packages",
+      "/Users/brianephraim/packages",
+      "node_modules"
+    ],
+    "extensions": [
+      ".js",
+      ".json"
+    ],
+    "plugins": [
+      {},
+      {}
+    ]
+  },
+  "devtool": "inline-source-map",
+  "target": "node",
+  "node": {
+    "__dirname": false,
+    "__filename": false
+  },
+  "externals": [
+    null
+  ],
+  "plugins": [
+    {
+      "options": {
+        "banner": "require(\"source-map-support\").install();",
+        "raw": true,
+        "entryOnly": false
+      },
+      "banner": "require(\"source-map-support\").install();"
+    },
+    {}
+  ]
+}

@@ -27,7 +27,7 @@ function publishTemplateCropHoc(Comp) {
             strippedKey = strippedKey.split('.png');
             strippedKey.pop();
             strippedKey = strippedKey.join('.png');
-            const compositeImageData = getState().compositeImageData;
+            const compositeImageData = getState()[constants.appNameSpace].compositeImageData;
 
             // Remeber, the old background was cached in the fgSrcKey
             const urlStuff = formUrl({

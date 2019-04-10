@@ -29,3 +29,6 @@ export const visitVideo = slug => ({
   payload: { slug }
 })
 
+export const visitMigration = () => ({
+  type: 'MIGRATION',
+})

@@ -6,6 +6,8 @@ export default (state = 'RFR Demo', action = {}) => {
       return `RFR: ${capitalize(action.payload.category)}`
     case 'VIDEO':
       return `RFR: ${capitalize(action.payload.slug)}`
+    case 'MIGRATION':
+      return 'Migration screen'
     case 'LOGIN':
       return 'RFR Login'
     case 'ADMIN':

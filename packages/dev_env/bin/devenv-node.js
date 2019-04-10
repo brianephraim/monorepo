@@ -1,2 +1,2 @@
-#!/usr/bin/env node --trace-warnings
+#!/usr/bin/env node
 require('../core/devenv-node.js');

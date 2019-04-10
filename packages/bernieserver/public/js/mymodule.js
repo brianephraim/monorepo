@@ -64,6 +64,7 @@ var isNode= (function(){
 		for(var i =0,l=exports.standardModes.length;i<l;i++){
 			var mode = exports.standardModes[i].mode;
 			mode = nameSpace ? (nameSpace + '\/' + mode) : mode;
+			console.log('mode',mode);
 			pipedString += i > 0 ? ('|' + mode) : mode;
 
 		}

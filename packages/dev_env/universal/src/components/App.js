@@ -1,139 +1,93 @@
 import React from 'react'
 import { Provider } from 'react-redux'
 
-import { connect } from 'react-redux'
-import { TransitionGroup, Transition } from 'transition-group'
-import universal from 'react-universal-component'
-import { addRoutes } from 'redux-first-router'
+import {Helmet} from "react-helmet";
 
 import DevTools from './DevTools'
 import Sidebar from './Sidebar'
 
 import styles from '../css/App'
 
-
+import { connect } from 'react-redux'
+import { TransitionGroup, Transition } from 'transition-group'
+import universal from 'react-universal-component'
+import { addRoutes } from 'redux-first-router'
 
 import Loading from './Loading'
 import Err from './Error'
 import isLoading from '../selectors/isLoading'
 import switcherStyles from '../css/Switcher'
-import {
-  ApolloProvider,
-} from 'react-apollo';
-// import {routeData} from 'virtual-module-initialAppIntegration';
 
+import test2 from '../../test2';
 
+console.log('TEST2????',test2);
 
 const UniversalComponent = universal(
   ({ page }) => {
-    // debugger;
-    if (page.importAvenue === 'demo') {
-      const imported = import(`./${page.fileKey}`);
-      return imported;
+    console.log('page',page);
+    if (page === 'BATTLESHIP') {
+      page = 'Migration';
     }
-    if (page.importAvenue === 'temp') {
-      const imported = import(`asyncDir_REPLACE_ME${page.fileKey}`)
-      return imported;
-    }
+    return import(`./${page}`)
   },
   {
     minDelay: 500,
     loading: Loading,
     error: Err,
     onLoad: (module, info, props, context) => {
-      if(module && module.routeData){
-        if (module.routeData.routesMap) {
-          const aThunk = addRoutes(module.routeData.routesMap) // export new routes from component file
-          context.store.dispatch(aThunk)
-        }
-        if (module.routeData.reducers) {
-          props.injectReducers('',module.routeData.reducers);
-        }
-      }
+      console.log('module',module)
+      console.log('info',info)
+      console.log('props',props)
+      console.log('context',context)
+  /*
+       const aThunk = addRoutes(module.newRoutes) // export new routes from component file
+       context.store.dispatch(aThunk)
 
-      // // if a route triggered component change, new reducers needs to reflect it
-      const state = context.store.getState();
-      context.store.dispatch({ type: state.location.type, payload: state.location.payload })
+       context.store.replaceReducer({ ...otherReducers, foo: module.fooReducer })
 
-      // context.store.dispatch({ type: 'INIT_ACTION_FOR_ROUTE', payload: { param: props.param } })
-       
+       // if a route triggered component change, new reducers needs to reflect it
+       context.store.dispatch({ type: 'INIT_ACTION_FOR_ROUTE', payload: { param: props.param } })
+       */
     }
   }
 )
 
+let Switcher = ({ page, direction, isLoading }) =>
+  <div className={styles.app}>
+    <Sidebar />
+    <TransitionGroup
+      className={`${switcherStyles.switcher} ${direction}`}
+      duration={500}
+      prefix='fade'
+    >
+      <Transition key={page}>
+        <UniversalComponent page={page} isLoading={isLoading} />
+      </Transition>
+    </TransitionGroup>
+  </div>
 
-let DemoWrapper = ({ page, direction, location, children }) => {
-  if (location.pathname.indexOf('/willard') !== 0) {
-    return children;
-  }
-  return (
-    <div className={styles.app}>
-      <Sidebar />
-      <TransitionGroup
-        className={`${switcherStyles.switcher} ${direction}`}
-        duration={500}
-        prefix='fade'
-      >
-        <Transition key={page}>
-          <div>
-            {children}
-            <DevTools />
-          </div>
-        </Transition>
-      </TransitionGroup>
-    </div>
-  );
-};
-
-DemoWrapper = connect(({ page, direction,location }) => ({
+const mapState = ({ page, direction, ...state }) => ({
   page,
   direction,
-  location,
-}))(DemoWrapper)
-
-
-let Switcher = ({ page, isLoading, injectReducers }) => {
-  const Comp = page.fileKey === 'Migration' ? routeData.routeRootComponent : UniversalComponent;
-
-  return (
-    <DemoWrapper>
-      <Comp page={page} isLoading={isLoading} injectReducers={injectReducers} />
-    </DemoWrapper>
-  );
-};
-
-Switcher = connect(({ page, ...state }) => ({
-  page,
   isLoading: isLoading(state)
-}))(Switcher)
+})
+
+Switcher = connect(mapState)(Switcher)
 
 
-
-
-
-
-
-export default ({store,injectReducers,client}) => {
-  return (
-    <ApolloProvider store={store} client={client} >
-      <div>
-        <Switcher injectReducers={injectReducers} />
-      </div>
-    </ApolloProvider>
-  );
+let HeadStuff = () => {
+  return (<Helmet>
+      <meta charSet="utf-8" />
+      <title>My Title</title>
+      <link rel="canonical" href="http://mysite.com/example" />
+  </Helmet>)
 };
 
-/*
-import 'babel-polyfill';
-import React from 'react';
-import { Provider } from 'react-redux';
-export default function App (props) {
-  return (
-    <Provider store={props.store}>
-      <p>H!</p>
-    </Provider>
-    
-  );
-}
-
-*/
+export default (props) =>
+  <Provider store={props.store}>
+    <div>
+      <HeadStuff />
+      <Switcher />
+      <DevTools />
+    </div>
+  </Provider>

@@ -32,6 +32,7 @@ export const usersReducers = combineReducers({
   toBeAssigned: (state = null, action) => {
     switch (action.type) {
       case 'PREPARE_EXTERNAL_ASSIGNMENT':
+        console.log('users',action);
         return action.userId;
       default:
         return state;
@@ -74,6 +75,7 @@ const getTodosIdDict = (state, props) =>
 const getToDoAssignments = createCachedSelector(
   [ getUserId, getTodosIdDict ],
   (userId, toDosIdDict) => {
+    console.log('selector processing', userId);
     return Object.keys(toDosIdDict).reduce((accum, toDoId) => {
 
       if (toDosIdDict[toDoId].assignedUserId === userId) {

@@ -1,28 +1,53 @@
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import {Helmet} from "react-helmet";
+import { combineReducers } from 'redux';
+import { addRoutesToApp } from '@defualt/redux-routing-app-root-component';
 import { makeNameSpacedResponsiveStatusesDictReducer } from '@defualt/responsive/nameSpaceResponsive';
 
-import { generateCompositeImgSrcUrl,getDefaultCompositeImageData, paramsIntoCompositeImage } from './compositeImage';
+import { generateCompositeImgSrcUrl } from './compositeImage';
 import { standardModesRegexArrayString } from './deriveUrlInfo';
 import {
   buttonGroupComponentsRegexArrayString,
   ButtonGroupFeaturedRouteScreen,
 } from './buttonGroups';
 import {
-  ImagePickerFacebookWithOnClick,
+  HomeLayoutWithUploadCallback,
+//   ImagePickerFacebookWithOnClick,
   ImagePickerTemplateWithOnClick,
-  CropperWithFgBgCompletion,
-  UrlImportScreenWithWithUploadCallback,
+//   CropperWithFgBgCompletion,
+//   UrlImportScreenWithWithUploadCallback,
 //   // TemplateUploadScreenWithUploadCallback,
 } from './routingComponents';
 
+import { paramsIntoCompositeImage } from './compositeImage';
 
 import { setAncestorConstantsHoc } from './ancestorConstantsHoc';
 
-import Privacy from './Privacy';
-import Terms from './Terms';
-import AppScreens from './AppScreens';
+import { appConnect } from './nameSpacedResponsive';
+
+import { formUrl } from './deriveUrlInfo';
+
+console.log('MORE UNCOMMENTING TO DO HERE');
+// function ButtonGroupFeaturedRouteScreen(){
+//   return <div />;
+// }
+// function HomeLayoutWithUploadCallback(){
+//   return <div>adfasdfa</div>;
+// }
+function ImagePickerFacebookWithOnClick(){
+  return <div />;
+}
+// function ImagePickerTemplateWithOnClick(){
+//   return <div />;
+// }
+function CropperWithFgBgCompletion(){
+  return <div />;
+}
+function UrlImportScreenWithWithUploadCallback(){
+  return <div />;
+}
 
 
 const geoPathFrag =
@@ -31,8 +56,8 @@ const geoPathFrag =
 const routeModes = [
   {
     key: 'H3LIKE',
-    getUrlStart: (prepend) => {
-      return `${prepend}/:fgSrcKey(${standardModesRegexArrayString})/:bgSrcKey/${geoPathFrag}`;
+    getUrlStart: appNameSpace => {
+      return `/:appNameSpace(${appNameSpace})/:fgSrcKey(${standardModesRegexArrayString})/:bgSrcKey/${geoPathFrag}`;
     },
     match: payload => {
       return (
@@ -45,21 +70,11 @@ const routeModes = [
   },
   {
     key: 'UT',
-    getUrlStart: (prepend) => {
-      return `${prepend}/ut/:bgSrcKey/${geoPathFrag}/:fgSrcKey`;
+    getUrlStart: appNameSpace => {
+      return `/:appNameSpace(${appNameSpace})/ut/:bgSrcKey/${geoPathFrag}/:fgSrcKey`;
     },
     match: payload => {
       return payload.fgSrcKey;
-    },
-  },
-  {
-    key: 'BLANK',
-    getUrlStart: (prepend) => {
-      return `${prepend}`;
-    },
-
-    match: () => {
-      return true;
     },
   },
 ];
@@ -87,17 +102,12 @@ export function payloadRefineAction({ type, payload }, appNameSpace) {
   };
 }
 
-function Div(){
-  return <div />
-}
-
 const routes = [
   {
     action: 'HOME_PROFILE_FRAMER',
     urlEnd: '',
-    component: Div,
+    component: HomeLayoutWithUploadCallback,
   },
-  
   {
     action: 'IMPORT_FACEBOOK',
     urlEnd: 'import-photo-from-facebook',
@@ -132,25 +142,16 @@ const routes = [
     urlEnd: `:dynamicScreen(${buttonGroupComponentsRegexArrayString})`,
     component: ButtonGroupFeaturedRouteScreen,
   },
-  {
-    action: 'PRIVACY',
-    urlEnd: 'privacy',
-    component: Privacy,
-  },
-  {
-    action: 'TERMS',
-    urlEnd: 'terms',
-    component: Terms,
-  },
 ];
+
 export default function(constants) {
   const routesMap = {};
   const screenNameMap = {};
   const screenComponentMap = {};
-  routeModes.forEach(routeMode => {
-    const key = routeMode.key;
-    const urlPrepend = constants.isUrlRoot ? '' : `/:appNameSpace(${constants.appNameSpace})`;
-    const urlStart = routeMode.getUrlStart(urlPrepend);
+  routeModes.forEach(homeLayoutPath => {
+    const key = homeLayoutPath.key;
+    const urlStart = homeLayoutPath.getUrlStart(constants.appNameSpace);
+    // const urlStart = routeModes[key];
     routes.forEach(route => {
       let urlEnd = route.urlEnd;
       urlEnd = urlEnd ? `/${urlEnd}` : '';
@@ -161,8 +162,8 @@ export default function(constants) {
       screenComponentMap[route.action] = route.component;
     });
   });
-  const appRootActionType = `APP_ROOT_${constants.appNameSpace}`;
-  routesMap[appRootActionType] = constants.isUrlRoot ? '/' : constants.urlAppNameSpace;
+  const appRootActionType = `APP_ROOT_${constants.urlAppNameSpace.toUpperCase()}`;
+  routesMap[appRootActionType] = constants.urlAppNameSpace;
   screenNameMap[appRootActionType] = 'HOME_PROFILE_FRAMER';
 
   function filterReducers(reducers, check) {
@@ -186,9 +187,6 @@ export default function(constants) {
 
   const reducersToFocus = {
     compositeImageData: (state = {}, action) => {
-      // if(action.type.indexOf('PRIVACY') !== -1) {
-      //   return state;
-      // }
       if (routesMap[action.type] || action.type === appRootActionType) {
         const compositeImageData = paramsIntoCompositeImage(
           action.payload,
@@ -197,12 +195,15 @@ export default function(constants) {
         compositeImageData.compositeImageUrl = generateCompositeImgSrcUrl(compositeImageData);
         return compositeImageData;
       }
-      if (!state.compositeImageUrl) {
-        const compositeImageData = getDefaultCompositeImageData(constants);
-        compositeImageData.compositeImageUrl = generateCompositeImgSrcUrl(compositeImageData);
-        return compositeImageData;
+      switch (action.type) {
+        case 'SET_COMPOSITE_IMAGE_DATA':
+          return {
+            ...action.compositeImageData,
+            compositeImageUrl: generateCompositeImgSrcUrl(action.compositeImageData)
+          };
+        default:
+          return state;
       }
-      return state;
     },
     // generateCompositeImgSrcUrl
     /*
@@ -228,28 +229,13 @@ export default function(constants) {
     //   }
     // },
     activeAppScreen: (state = 'HOME_PROFILE_FRAMER', action) => {
-      /* beautify ignore:start */
       if (
-        // in case profile-framer is root url
-        (
-          routesMap[action.type] &&
-          !action.payload.appNameSpace && constants.isUrlRoot
-        )
-        ||
-        // normal case
-        (
-          routesMap[action.type] &&
-          action.payload.appNameSpace === constants.appNameSpace
-        )
-        ||
-        // in this case, there is no payload... like when the url is just /bernie
-        (
-          action.type === appRootActionType
-        ) 
+        (routesMap[action.type] &&
+          action.payload.appNameSpace === constants.appNameSpace) ||
+        action.type === appRootActionType // in this case, there is no payload... like when the url is just /bernie
       ) {
         return screenNameMap[action.type];
       }
-      /* beautify ignore:end */
       return state;
     },
     facebookPhotos: (state = [], action) => {
@@ -268,42 +254,24 @@ export default function(constants) {
       if (action.type === 'FETCH_TEMPLATES') {
         return [...featured, ...action.images];
       }
-      return state || featured;
+      return featured;
     },
-    loading: (state = '', action) => {
-      if (action.type === 'LOADING') {
-        return action.where;
-      }
-      if (action.type === 'STOP_LOADING') {
-        return '';
-      }
-      return state;
-    },
-    todrApollos: (state = [], action) => {
-      if (action.type === 'FETCH_TODR') {
-        return [...action.response.data.toduApollos];
-      }
-      return state;
-    },
-    
-    // canceledLoads:
   };
 
   const nameSpacedResponsiveStatusesDictReducer = makeNameSpacedResponsiveStatusesDictReducer(
     () => {
       return constants.appNameSpace;
-    }
+    },
+    'homeResponsive'
   );
-  const filteredReducers = filterReducers(reducersToFocus, (state, action) => {
+
+  const reducers = combineReducers({
+    ...filterReducers(reducersToFocus, (state, action) => {
       return (
-        action.type.indexOf(`_BLANK_${constants.appNameSpace.toUpperCase()}`) !== -1 ||
-        (action.appNameSpace === 'rootProfileFramer' && constants.isUrlRoot) ||
         action.appNameSpace === constants.appNameSpace ||
         action.type === appRootActionType
       );
-  })
-  const reducers = {
-    ...filteredReducers,
+    }),
     responsiveStatusesDict: nameSpacedResponsiveStatusesDictReducer,
     constants: (state = {}, action) => {
       if (action.type === 'SET_CONSTANTS') {
@@ -311,9 +279,76 @@ export default function(constants) {
       }
       return state;
     },
-  };
+  });
 
- 
+  
+  let HeaderStuff = (props) => {
+    const constants = props.constants;
+    const compositeImageUrl = props.compositeImageUrl;
+    let metaOgUrl = `${props.serverClientOrigin}${props.constants.urlAppNameSpace}/${formUrl(props.compositeImageData)}`;
+    if (`${props.serverClientOrigin}${props.constants.urlAppNameSpace}` === `${props.serverClientUrl}`) {
+      metaOgUrl = props.serverClientUrl;
+    }
+
+    return (
+      <Helmet>
+        <meta charSet="utf-8" />
+        <meta httpEquiv="x-ua-compatible" content="ie=edge" />
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1" />
+        <title>{constants.headTitle}</title>
+        <meta name="description" content={constants.headDescription} />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        
+        <link href={`https://fonts.googleapis.com/css?family=${constants.googleFonts}`} rel='stylesheet' type='text/css' />
+
+        <meta property="og:title" content={constants.headMetaOgTitle} />
+        <meta property="og:site_name" content={constants.headMetaOgSiteName} />
+        <meta property="og:url" content={metaOgUrl} />
+        <meta property="og:description" content={constants.headMetaOgDescription} />
+        <meta property="fb:app_id" content={constants.headMetaFbAppId} />
+        <meta property="og:type" content={constants.headMetaOgType} />
+        <meta property="og:locale" content={constants.headMetaOgLocale} />
+        <meta property="og:image" content={compositeImageUrl} />
+        <meta property="og:image:width" content={constants.headMetaOgImageWidth} />
+        <meta property="og:image:height" content={constants.headMetaOgImageHeight} />
+
+        <meta name="twitter:card" content={constants.headMetaTwitterCard} />
+        <meta name="twitter:site" content={constants.headMetaTwitterSite} />
+        <meta name="twitter:creator" content={constants.headMetaTwitterCreator} />
+        <meta name="twitter:title" content={constants.headMetaTwitterTitle} />
+        <meta name="twitter:description" content={constants.headMetaTwitterDescription} />
+        <meta name="twitter:image" content={props.compositeImageUrl} />
+      </Helmet>
+    );
+  };
+  HeaderStuff.propTypes = {
+    constants: PropTypes.object.isRequired,
+    compositeImageData: PropTypes.object.isRequired,
+    compositeImageUrl: PropTypes.string.isRequired,
+    serverClientOrigin: PropTypes.string.isRequired,
+    serverClientUrl: PropTypes.string.isRequired,
+  };
+  HeaderStuff.defaultProps = {
+    serverClientOrigin: '',
+    serverClientUrl: '',
+  };
+  HeaderStuff = 
+  connect(
+    (state) => {
+      return {
+        serverClientUrl: state.serverClientUrl,
+        serverClientOrigin: state.serverClientOrigin,
+      };
+    }
+  )(appConnect(
+    (appState) => {
+      return {
+        compositeImageData: appState.compositeImageData,
+        compositeImageUrl: appState.compositeImageData.compositeImageUrl,
+        constants: appState.constants
+      };
+    }
+  )(HeaderStuff));
 
 
   let Routing = class extends Component {
@@ -323,9 +358,10 @@ export default function(constants) {
     render() {
       const Comp = screenComponentMap[this.props.activeAppScreen];
       return (
-        <AppScreens>
+        <div>
+          <HeaderStuff />
           <Comp />
-        </AppScreens>
+        </div>
       );
     }
   };
@@ -334,7 +370,7 @@ export default function(constants) {
     setConstants: PropTypes.func.isRequired,
   };
   Routing = connect(
-    (state) => {
+    (state /* , { params }*/) => {
       return {
         activeAppScreen: state[constants.appNameSpace].activeAppScreen,
       };
@@ -350,9 +386,13 @@ export default function(constants) {
   )(Routing);
   Routing = setAncestorConstantsHoc(Routing, constants);
 
-  return {
+  addRoutesToApp({
     routesMap,
     routeRootComponent: Routing,
     reducers: { [constants.appNameSpace]: reducers },
-  };
+    routeInfo: {
+      description: constants.appNameSpace,
+      path: `/${constants.appNameSpace}`,
+    },
+  });
 }

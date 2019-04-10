@@ -42,6 +42,14 @@ function findDependenciesProblems(dependencies, packageDotJsonContent) {
   dependencies.forEach((dep) => {
     if (dep.module) {
       const rawRequest = dep.module.rawRequest;
+      // if (rawRequest.indexOf('/Users/brianephraim/Sites/monorepo/packages') === 0) {
+      //   console.info('\x1b[33m', 'depWTF', rawRequest, '\x1b[0m');
+      //   console.log('depWTF', dep);
+      // } else {
+      //   console.info('\x1b[33m', 'depGGG', rawRequest, '\x1b[0m');
+      //   console.log('depGGG', dep);
+      // }
+
       // not a relative dependency
       // not an absolut dependency
       // we are only concerned with depenencies referenced like
@@ -76,6 +84,7 @@ function findDependenciesProblems(dependencies, packageDotJsonContent) {
           ].filter((msg) => {
             return msg !== 'name can only contain URL-friendly characters';
           });
+          // console.log(validationResult);
           if (info.length) {
             problems[rawRequest] = {
               msg: 'BAD FORMATTING',
@@ -95,8 +104,8 @@ function webpackParseStatsForDepProblems(stats, shouldShowProblemsInConsole = tr
 
   const packageDotJsonCache = {};
   const problems = {};
-  const compilation = stats.compilation ? stats.compilation : stats.stats[0].compilation
-  compilation.modules.forEach((module) => {
+  console.log('GGGGGG');
+  stats.compilation.modules.forEach((module) => {
     // only concerned with module entries from /packages/ folder (not node_modules)
     if (
       module.resource &&
@@ -107,12 +116,7 @@ function webpackParseStatsForDepProblems(stats, shouldShowProblemsInConsole = tr
         let packagesDir = `${process.cwd()}/packages`;
         packagesDir = ensureTrailingSlash(packagesDir);
         // get substring from first trailing slash after whatever packagesDir is
-        // console.log('Object.keys(module)');
-        // console.log(Object.keys(module));
-        // console.log(module.resource);
-        if (module.resource.indexOf(packagesDir) === -1) {
-          return
-        }
+        console.log(module.resource);
         const packageFolderName = module.resource.split(packagesDir)[1].split('/')[0];
         packageDotJsonPath = `${packagesDir}${packageFolderName}/package.json`;
       } else {

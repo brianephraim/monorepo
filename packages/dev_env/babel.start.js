@@ -14,14 +14,17 @@
 const path = require('path');
 const shellCommand = require('./core/shellCommand');
 const fs = require('fs-extra');
-const getDoubleDashArgumentsPassthrough = require('./core/getDoubleDashArgumentsPassthrough');
 
 const argumentsPassThrough = process.argv.reduce((accum, argString) => {
   const toAppend = argString.indexOf('--') === 0 ? ` ${argString}` : '';
   return `${accum}${toAppend}`;
 }, '');
 
+// console.log('------', );
 const pathToCheckFile = path.resolve('../../', '.lernahoist-running');
 if (!fs.existsSync(pathToCheckFile)) {
-  shellCommand(`${path.resolve(__dirname, './bin/devenv-node.js')} ${path.resolve(__dirname, './dev_env.js')}${getDoubleDashArgumentsPassthrough()}`);
+  // const devEnv = argv.entry ? './devEnvCommandLine.js' : './dev_env.js';
+  const devEnv = './dev_env.js';
+  // shellCommand(`${path.resolve(__dirname, './node_modules/.bin/babel-node')} ${path.resolve(__dirname, devEnv)}${argumentsPassThrough}`);
+  shellCommand(`${path.resolve(__dirname, './bin/devenv-node.js')} ${path.resolve(__dirname, devEnv)}${argumentsPassThrough}`);
 }

@@ -4,6 +4,7 @@ import ReactCropper from 'react-cropper';
 import windowSizer from '@defualt/window-sizer';
 import vanilla from '@defualt/vanilla';
 import bindHere from '@defualt/bind_here';
+import 'cropperjs/dist/cropper.css';
 import './cropperLibMonkeyPatch';
 
 // React-Cropper is a react wrapper around cropperjs.
@@ -134,7 +135,6 @@ class ReactCropperEnhanced extends Component {
           crop={this.crop}
           cropmove={this.cropmove}
           cropend={this.cropend}
-          {...this.props.otherReactCropperOptions}
         />
       );
     }
@@ -148,7 +148,6 @@ ReactCropperEnhanced.propTypes = {
   ready: PropTypes.func,
   data: PropTypes.object,
   cropSrc: PropTypes.string,
-  otherReactCropperOptions: PropTypes.object,
 };
 ReactCropperEnhanced.defaultProps = {
   cropend: () => {},
@@ -157,7 +156,6 @@ ReactCropperEnhanced.defaultProps = {
   ready: () => {},
   data: null,
   cropSrc: '',
-  otherReactCropperOptions: {}
 };
 
 export default ReactCropperEnhanced;
