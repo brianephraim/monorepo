@@ -129,7 +129,7 @@ function login() {
           }
         },
         {
-          scope: 'public_profile,email,user_photos,publish_actions',
+          scope: 'public_profile,email,user_photos',
         }
       );
     } else {
@@ -157,7 +157,7 @@ function statusChangeCallback(response) {
           }
         },
         {
-          scope: 'public_profile,email,user_photos,publish_actions',
+          scope: 'public_profile,email,user_photos',
         }
       );
     } else {
@@ -225,7 +225,7 @@ class FbManager {
                 resolve();
               } else {
                 reject();
-              }              
+              }
             }
           );
         });
