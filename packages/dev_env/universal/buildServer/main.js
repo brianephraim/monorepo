@@ -3341,21 +3341,21 @@ var UniversalComponent = (0, _reactUniversalComponent2.default)(function (_ref) 
   }
   if (page.importAvenue === 'temp') {
     var _imported = (0, _universalImport3.default)({
-      id: '/var/folders/tp/t9pn5y1s77z5r6yr9nvt_9q00000gn/T/tmp.Alu6xjJj/',
+      id: '/var/folders/tp/t9pn5y1s77z5r6yr9nvt_9q00000gn/T/tmp.HtFYBeuS/',
       file: '/Users/brianephraim/Sites/monorepo/packages/dev_env/universal/src/components/App.js',
       load: function load() {
-        return Promise.all([__webpack_require__(291)("./" + page.fileKey), (0, _importCss3.default)('var/folders/tp/t9pn5y1s77z5r6yr9nvt_9q00000gn/T/tmp.Alu6xjJj/' + page.fileKey, {})]).then(function (proms) {
+        return Promise.all([__webpack_require__(291)("./" + page.fileKey), (0, _importCss3.default)('var/folders/tp/t9pn5y1s77z5r6yr9nvt_9q00000gn/T/tmp.HtFYBeuS/' + page.fileKey, {})]).then(function (proms) {
           return proms[0];
         });
       },
       path: function path() {
-        return _path3.default.join(__dirname, '/var/folders/tp/t9pn5y1s77z5r6yr9nvt_9q00000gn/T/tmp.Alu6xjJj/' + page.fileKey);
+        return _path3.default.join(__dirname, '/var/folders/tp/t9pn5y1s77z5r6yr9nvt_9q00000gn/T/tmp.HtFYBeuS/' + page.fileKey);
       },
       resolve: function resolve() {
         return /*require.resolve*/(__webpack_require__(369).resolve("./" + page.fileKey));
       },
       chunkName: function chunkName() {
-        return 'var/folders/tp/t9pn5y1s77z5r6yr9nvt_9q00000gn/T/tmp.Alu6xjJj/' + page.fileKey;
+        return 'var/folders/tp/t9pn5y1s77z5r6yr9nvt_9q00000gn/T/tmp.HtFYBeuS/' + page.fileKey;
       }
     });
     return _imported;
@@ -8991,7 +8991,7 @@ var ImportButtonGroup = makeButtonGroupComponent({
   //   actionType: 'IMPORT_FACEBOOK',
   // },
   {
-    text: 'Camera!',
+    text: 'Camera',
     isUploadCompositeImageSetter: true
   }, {
     text: 'URL',
@@ -9009,17 +9009,20 @@ var ShareButtonGroup = makeButtonGroupComponent(function (constants, shareUrl, i
     headline: 'Share this via:',
     shortHeadline: 'share',
     icon: 'share',
-    buttons: [{
-      text: 'Facebook photo',
-      onClick: function onClick() {
-        exportStuff(imageUrl);
-      }
-    }, {
-      text: 'Facebook post',
-      onClick: function onClick() {
-        postToWall(shareUrl);
-      }
-    }, {
+    buttons: [
+    // {
+    //   text: 'Facebook photo',
+    //   onClick: () => {
+    //     exportStuff(imageUrl);
+    //   },
+    // },
+    // {
+    //   text: 'Facebook post',
+    //   onClick: () => {
+    //     postToWall(shareUrl);
+    //   },
+    // },
+    {
       text: 'Tweet',
       aHref: 'https://twitter.com/intent/tweet?url=' + encodeURIComponent(shareUrl) + '&via=bernieselfie&hashtags=BernieSanders%2Cfeelthebern%2Cbernieselfie&related=BernieSanders'
     }]
@@ -37727,7 +37730,7 @@ function AppHero(props) {
         _react2.default.createElement(
           'span',
           { className: 'selfieFrame_instructions_text' },
-          _isTouchDevice2.default ? 'Press and hold image to save' : 'Right click to save!!!'
+          _isTouchDevice2.default ? 'Press and hold image to save' : 'Right click to save'
         )
       ),
       _react2.default.createElement(StyledSelfie, {
