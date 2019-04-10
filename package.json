@@ -89,5 +89,10 @@
     "lerna": "2.2.0",
     "npm": "4.6.1"
   },
-  "dependencies": {}
+  "dependencies": {
+    "i": "^0.3.6",
+    "npm": "^4.6.1",
+    "uninstall": "0.0.0",
+    "webpack-node-externals": "^1.5.4"
+  }
 }
