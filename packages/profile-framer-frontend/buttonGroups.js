@@ -360,7 +360,7 @@ let AppButtonGroup = class extends Component {
       this.props.compositeImageData.screen === this.props.urlFragment
         ? StyledHeaderDiv
         : StyledHeaderLink;
-    const to = 
+    const to =
       this.props.headerButtonActionType
       ? {
           type: this.props.headerButtonActionType,
@@ -504,7 +504,7 @@ function makeButtonGroupComponent(
               where: `exportStuff_${currentAttamptId}`,
             });
             alert('SUCCESSFULLY POSTED PHOTO TO FACEBOOK');
-            
+
           }).catch(() => {
             dispatch({
               type: 'STOP_LOADING',
@@ -527,7 +527,7 @@ function makeButtonGroupComponent(
               where: `postToWall_${currentAttamptId}`,
             });
             alert('SUCCESSFULLY POSTED TO FACEBOOK WALL');
-            
+
           }).catch(() => {
             dispatch({
               type: 'STOP_LOADING',
@@ -547,10 +547,10 @@ const ImportButtonGroup = makeButtonGroupComponent({
   shortHeadline: 'import',
   icon: 'photo_camera',
   buttons: [
-    {
-      text: 'Facebook',
-      actionType: 'IMPORT_FACEBOOK',
-    },
+    // {
+    //   text: 'Facebook',
+    //   actionType: 'IMPORT_FACEBOOK',
+    // },
     {
       text: 'Camera!',
       isUploadCompositeImageSetter: true,

@@ -52,7 +52,7 @@ function ensureAuthenticated(req, res, next) {
     function(accessToken, refreshToken, profile, done) {
       // asynchronous verification, for effect...
       process.nextTick(function () {
-        
+
         // To keep the example simple, the user's Facebook profile is returned to
         // represent the logged-in user.  In a typical application, you would want
         // to associate the Facebook account with a user record in your database,
@@ -95,7 +95,7 @@ function ensureAuthenticated(req, res, next) {
   //   redirecting the user to facebook.com.  After authorization, Facebook will
   //   redirect the user back to this application at /auth/facebook/callback
   c.app.get('/auth/facebook',
-    passport.authenticate('facebook',{ scope: ['user_photos','publish_actions','email'] }),
+    passport.authenticate('facebook',{ scope: ['user_photos','email'] }),
     function(req, res){
       // The request will be redirected to Facebook for authentication, so this
       // function will not be called.
@@ -106,7 +106,7 @@ function ensureAuthenticated(req, res, next) {
   //   request.  If authentication fails, the user will be redirected back to the
   //   login page.  Otherwise, the primary route function function will be called,
   //   which, in this example, will redirect the user to the home page.
-  c.app.get('/auth/facebook/callback', 
+  c.app.get('/auth/facebook/callback',
     passport.authenticate('facebook', { failureRedirect: '/login' }),
     function(req, res) {
       res.redirect('/');

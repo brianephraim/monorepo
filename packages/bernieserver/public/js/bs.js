@@ -77,7 +77,7 @@ window.bs.util = (function(){
         });
         if($img[0].complete){
             $img.load();
-        } 
+        }
         return dfd.promise();
     };
     return new BsUtil();
@@ -136,7 +136,7 @@ window.bs.fbManager = (function(){
             window.fbAsyncInit = function() {
                 FB.init({
                     appId: '1633460223596071',
-                    cookie: true, // enable cookies to allow the server to access 
+                    cookie: true, // enable cookies to allow the server to access
                     // the session
                     xfbml: true, // parse social plugins on this page
                     version: 'v2.2' // use version 2.2
@@ -238,16 +238,16 @@ window.bs.fbManager = (function(){
                     dfd.resolve.apply(null,arguments);
                 } else {
                     dfd.reject.apply(null,arguments);
-                }                    
+                }
             }, {
-                scope: 'public_profile,email,user_photos,publish_actions'
+                scope: 'public_profile,email,user_photos'
             });
         } else {
             dfd.resolve();
         }
         return dfd.promise();
     };
-    
+
 
     FbManager.prototype.statusChangeCallback = function(response) {
         var dfd = jQuery.Deferred();
@@ -264,9 +264,9 @@ window.bs.fbManager = (function(){
                 } else {
                     console.log('fb not connected')
                     dfd.reject.apply(null,arguments);
-                }                    
+                }
             }, {
-                scope: 'public_profile,email,user_photos,publish_actions'
+                scope: 'public_profile,email,user_photos'
             });
         } else {
             dfd.reject.apply(null,arguments);
@@ -301,7 +301,7 @@ window.bs.fbManager = (function(){
                     dfd.reject.apply(null,arguments);
 
                 }
-            })            
+            })
         });
         return dfd.promise();
     };
@@ -479,7 +479,7 @@ window.bs.setupNewModalManager = function($parentToInject){
         $modal.append(options.clone);
 
         var $closeButton = $modal.find('.closeButton');
-        
+
         $closeButton.on('click',function(){
             $modal.remove();
             if(!!settings.options && !!settings.options.closeGoesToCropModal){
@@ -487,7 +487,7 @@ window.bs.setupNewModalManager = function($parentToInject){
             }else{
                 settings.close();
             }
-            
+
         });
         !!settings.options && !!settings.options.almostInjectedCb ? settings.options.almostInjectedCb($modal) : null;
         self.$parentToInject.append($modal);
@@ -526,7 +526,7 @@ window.bs.setupNewModalManager = function($parentToInject){
 
 
 
-        
+
 
         bs.uploadizer($modal.find('.templateUploadizer'),{
             success:function(response){
@@ -552,13 +552,13 @@ window.bs.setupNewModalManager = function($parentToInject){
                 } else {
                     alert('not square');
                 }
-                
+
                 // var formattedResponse = modalManager.formatUrlAndResponseForCropModal(response);
             }
         },'decorations',true);
 
 
-        
+
 
         var $closeButton = $modal.find('.closeButton');
         $closeButton.on('click',function(){
@@ -611,8 +611,8 @@ window.bs.setupNewModalManager = function($parentToInject){
                 alert('Error  That URL might be bad or maybe you have a connection issue.')
                 bs.loader.unload()
             });
-            
-            
+
+
         });
         $closeButton.on('click',function(){
             settings.close();
@@ -633,7 +633,7 @@ window.bs.setupNewModalManager = function($parentToInject){
         this.modalOpenCb();
         var fbImportResponse = s.fbImportResponse;
 
-        
+
         var dfd = jQuery.Deferred();
         var self = this;
         var $closeButton = $('<div class="closeButton button"><span>X</span></div>');
@@ -642,7 +642,7 @@ window.bs.setupNewModalManager = function($parentToInject){
         $modal.append('<h2>Pick a photo</h2>');
         var $imageOptions = $('<div class="imageOptions"></div>');
 
-        var imgsHtml = ''; 
+        var imgsHtml = '';
 
         var archive = fbImportResponse.data;
         console.log(archive);
@@ -707,8 +707,8 @@ window.bs.setupNewModalManager = function($parentToInject){
         Webcam.on('error',function(){
              console.log('ERROR');
              dfd.reject.apply(null,arguments);
-            
-            
+
+
         });
         $modal.on('destroyed',function(){
             Webcam.off('live')
@@ -727,7 +727,7 @@ window.bs.setupNewModalManager = function($parentToInject){
             $modal.remove();
         });
 
-        
+
 
         return {
             promise:dfd.promise(),
@@ -737,7 +737,7 @@ window.bs.setupNewModalManager = function($parentToInject){
         }
     };
 
-    
+
 
     ModalManager.prototype.formatUrlAndResponseForCropModal = function(response,url){
         response = !!response ? response : {
@@ -757,7 +757,7 @@ window.bs.setupNewModalManager = function($parentToInject){
             width:width,
             height:height,
             idX:idX,
-            raw:response  
+            raw:response
         };
     };
 
@@ -780,7 +780,7 @@ window.bs.setupNewModalManager = function($parentToInject){
                 bs.loader.unload();
                 dfd.resolve(formattedResponse);
             },1000);
-            
+
         }
 
         return dfd.promise();
@@ -824,10 +824,10 @@ window.bs.setupNewModalManager = function($parentToInject){
             settings.forceMode = 'ut';
             settings.customTemplate = customTemplate;
 
-        }  
+        }
         return settings;
     };
-    
+
     ModalManager.prototype.designModal = function(options){
         this.modalOpenCb();
         var dfd = jQuery.Deferred();
@@ -848,19 +848,19 @@ window.bs.setupNewModalManager = function($parentToInject){
         $modal.append($uploadStuff);
         $modal.append('<h2>Pick a design</h2>');
         var $imageOptions = $('<div class="imageOptions"></div>');
-        var imgsHtml = ''; 
+        var imgsHtml = '';
         imgsHtml = mymodule.generateTemplateImgListHtml(userTemplates,offline);
         $imageOptions.append(imgsHtml);
         //
 
         $imageOptions.find('img').on('click',function(){
             var $this = $(this);
-            
+
             self.customizeCropModalSettingsForTemplateSelection($this,options);
-             
+
             $modal.remove();
             self.generateCropModal.call(self,options);
-            
+
         })
 
         $closeButton.on('click',function(){
@@ -870,7 +870,7 @@ window.bs.setupNewModalManager = function($parentToInject){
             }else{
                 options.close();
             }
-            
+
         });
 
         $uploadTemplateButton.on('click',function(){
@@ -892,7 +892,7 @@ window.bs.setupNewModalManager = function($parentToInject){
 
 
     //initiateCropModal is clean.  can be added to bs or whatever
-    
+
     ModalManager.prototype.initiateCropModal = function(s){//(rawImage,forceMode,customTemplate,dfd,settings)
         this.modalOpenCb();
         var rawImage = s.rawImage;
@@ -948,14 +948,14 @@ window.bs.setupNewModalManager = function($parentToInject){
                 })();
             $modalFooter.append($imageOptions);
             $modalFooter.append('<div class="footer_section"><h3>&nbsp;</h3><div class="designFrame designFrame-empty"></div><div class="getPhotoButton button"><span>get photo</span></div></div>')
-        $cropOuterContainer.append($cropContainer);        
-        
+        $cropOuterContainer.append($cropContainer);
+
         $modal.append($modalFooter);
         $modal.append($cropOuterContainer);
         $modal.append($modalHeader);
 
         var $getPhotoButton = $modal.find('.getPhotoButton')
-        
+
         //----------
 
 
@@ -964,7 +964,7 @@ window.bs.setupNewModalManager = function($parentToInject){
         var displayId = mode;
         mode = !customTemplate ? mode : 'ut';
         displayId = mode !== 'ut' ? displayId : customTemplate;
-        
+
         var $window = $(window);
         var windowHeight = null;
         var containerHeight = null;
@@ -986,7 +986,7 @@ window.bs.setupNewModalManager = function($parentToInject){
                 windowHeight = $window.height() - window.bs.heightTweak;
                 var headerHeight = $modalHeader.outerHeight();
                 var footerHeight = $modalFooter.outerHeight();
-                
+
                 containerHeight = (windowHeight - headerHeight) - footerHeight;
                 // containerHeight -= 20;
 
@@ -999,10 +999,10 @@ window.bs.setupNewModalManager = function($parentToInject){
 
                 var doCssOnSample;
                 var $cropperViewBox = $();
-                
+
                 if(isTemplateMode){
                     !!$sample ? $sample.remove() : null;
-                    $sample = $('<img style="width:100px;height:100px;position:absolute;top:0;left:0;z-index:4" src="' + templateBaseUrl +displayId+'.png">');                
+                    $sample = $('<img style="width:100px;height:100px;position:absolute;top:0;left:0;z-index:4" src="' + templateBaseUrl +displayId+'.png">');
                     doCssOnSample = function(){
                         var boxGeo = $img.cropper('getCropBoxData');
                         $sample.css({
@@ -1034,14 +1034,14 @@ window.bs.setupNewModalManager = function($parentToInject){
                                 cropHeight:data.height
                             };
                             cropSettingToUse = result;
-                            
+
                             if(isTemplateMode){
                                 doCssOnSample();
                             }
                         }
                     };
                     options.strict = false;
-                    
+
 
                     if(bs.featureDetection.is_touch_device){
                         $.extend(options,{
@@ -1111,7 +1111,7 @@ window.bs.setupNewModalManager = function($parentToInject){
                 delete customTemplate;
                 displayId = newMode;
             }
-            
+
             mode = newMode;
             resetCropper();
         })
@@ -1181,7 +1181,7 @@ window.bs.uploadizer = (function(){
         this.$el.html('');
         this.$form = $('<form></form>')
         this.$input = $('<input id="'+this.id+'" class="fileInput" type="file" name="someInputUploadName"/>');
-        this.$label = $('<label for="'+this.id+'">'+this.text+'</label>');        
+        this.$label = $('<label for="'+this.id+'">'+this.text+'</label>');
         this.$el.append(this.$form);
         this.$form.append(this.$input);
         this.$form.append(this.$label);
@@ -1227,7 +1227,7 @@ window.bs.uploadizer = (function(){
             myAjax.error(function(){
                 bs.loader.unload();
             });
-            
+
         });
     };
 
@@ -1265,7 +1265,7 @@ window.bs.uploadizer = (function(){
 
 
 
-   
+
 
 })();
 //=============
@@ -1289,7 +1289,7 @@ window.bs.s3Stuff = (function(){
         };
         xhr.onerror = function() {
              dfd.reject("upload_file failed - error");
-            // alert("Could not upload file."); 
+            // alert("Could not upload file.");
         };
         xhr.send(file);
         return dfd.promise();
@@ -1354,7 +1354,7 @@ window.bs.s3Stuff = (function(){
                                 failingSquare:response.failingSquare
                             });
                         }
-                        
+
                     } else{
                         var response = JSON.parse(xhr.responseText);
                         var message = "There was a problem.  Try again.";
@@ -1380,7 +1380,7 @@ window.bs.s3Stuff = (function(){
         if($el && $el[0] && $el[0].files && $el[0].files[0]){
             file = $el[0].files[0];
         }
-        
+
         if(file === null){
             alert("No file selected.");
             return;
@@ -1398,5 +1398,3 @@ window.bs.s3Stuff = (function(){
         getNormalizedImageInfo:getNormalizedImageInfo(false)
     }
 })();
-
-    
