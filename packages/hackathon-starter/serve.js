@@ -127,17 +127,12 @@ module.exports = function (settings){
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(expressValidator());
-
-  let mongodbUri = process.env.MONGODB_URI || process.env.MONGOLAB_URI;
-  if (process.env.ENVNAME === "foremanLocal") {
-    mongodbUri = "mongodb://localhost:27017/" + process.env.DATABASE_NAME;
-  }
   app.use(session({
     resave: true,
     saveUninitialized: true,
     secret: process.env.SESSION_SECRET,
     store: new MongoStore({
-      url: mongodbUri,
+      url: process.env.MONGODB_URI || process.env.MONGOLAB_URI,
       autoReconnect: true,
       clear_interval: 3600
     })

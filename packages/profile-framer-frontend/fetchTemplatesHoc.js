@@ -57,7 +57,8 @@ function fetchTemplatesHoc(Comp) {
             if (
               response &&
               response.data &&
-              response.data.userTemplates
+              response.data.userTemplates &&
+              response.data.userTemplates.length
             ) {
               const images = response.data.userTemplates.reduce(
                 (accum, imageObj) => {

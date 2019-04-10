@@ -1,9 +1,10 @@
 // devenv-node
-// Like babel-node, but instead of just babel-ifying, it webpack-ifies.
+// Like babel-node, but instead of just babel-ifying, if webpack-ifies.
 // So webpack-ify some file, then run it with node.
 
 const path = require('path');
 const makeUuid = require('node-uuid').v4;
+const argv = require('yargs').argv;
 const shellCommand = require('./shellCommand');
 const isWithinMonoRepo = require('./isWithinMonoRepo');
 const getDevEnvRoot = require('./getDevEnvRoot');
@@ -30,8 +31,15 @@ if (isWithinMonoRepo(__dirname)) {
     // Make a temp file
     `TMPFILE=\`mktemp -u ${tempFilePath} \` &&`,
     `TMPASYNCDIR=\`mktemp -d \` &&`,
-    // use babel-node, not vanilla node, to compile webpack bundle that is used in command line
-    `${babelNodePath} --trace-warnings ${devEnvCommandLinePath} --entry=${toCompile} --output=$TMPFILE ${getDoubleDashArgumentsPassthrough()}`,
+    // Use parens so parent shell doesn't change directories.
+    // '(',
+    // Cd to the directory of the file we are compiling.
+    // `cd ${toCompileFolder}`,
+    // ' && ',
+    // Compile the file as the temp file we created.
+    // `${babelNodePath} --inspect=9225 ${devEnvCommandLinePath} --entry=${toCompile} --output=$TMPFILE`,
+    // `${babelNodePath} ${devEnvCommandLinePath} --entry=${toCompile} --output=$TMPFILE`,
+    `${babelNodePath} --trace-warnings ${devEnvCommandLinePath} --entry=${toCompile} --output=$TMPFILE --asyncDir=$TMPASYNCDIR${getDoubleDashArgumentsPassthrough()}`,
     // ')',
     ' && ',
     // We are manually setting the node path because
@@ -39,7 +47,7 @@ if (isWithinMonoRepo(__dirname)) {
     // and that directory is outside this project's directroy,
     // so it doesn't know where to file node_modules
     `${getNodePathShVar({})} `,
-    // Ok, now run the compiled bundle with node.
+    // Ok, now run the compiled script with node.
     // Passthrough arguments from the parent process.
     `node $TMPFILE ${process.argv.slice(3).join(' ')} --asyncDir=$TMPASYNCDIR`,
     '\n',

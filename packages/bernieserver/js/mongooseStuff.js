@@ -74,16 +74,12 @@ var MongooseStuff = function({app}) {
   const resolvers = {
     Query: {
       userTemplates(obj, args, context, info) {
-        console.log('graphql context',context);
         return self.models.UserTemplate.find()
       },
     },
     Mutation: {
-      removeUserTemplate(root, { customTemplate }, context) {
-        console.log('graphql context remove',context);
-        if (context.isAdmin) {
-          return self.models.UserTemplate.findOneAndRemove({ customTemplate }).exec().then(() => {});
-        }
+      removeUserTemplate(root, { customTemplate }) {
+        self.models.UserTemplate.findOneAndRemove({ customTemplate }).exec().then(() => {});
       },
       // addToduApollo(root, args) {
       //   const toduApollo = new ToduApollo(args);

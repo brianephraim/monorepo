@@ -2,7 +2,6 @@ import express from 'express';
 import favicon from 'serve-favicon';
 import path from 'path';
 import fs from 'fs-extra';
-import { argv } from 'yargs';
 /* eslint-disable import/no-extraneous-dependencies */
 import serverCollection from 'virtual-module-server-collection';
 /* eslint-enable import/no-extraneous-dependencies */
@@ -30,9 +29,9 @@ export default function startServer(renderAndUse) {
     serverScript({ app });
   });
   apolloIntegration({app})
-  const faviconsDir = argv.faviconsDir || 'packages/favicon';
-  app.use('/favicon', express.static(faviconsDir));
-  app.use(favicon(path.resolve(faviconsDir, './favicon.ico')));
+
+  app.use('/favicon', express.static('packages/favicon'));
+  app.use(favicon('packages/favicon/favicon.ico'));
   app.use('/images', express.static('packages/images'));
   app.use('/fonts', express.static('packages/fonts'));
   demoEndpoints({app}) 

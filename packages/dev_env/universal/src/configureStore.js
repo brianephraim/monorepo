@@ -15,7 +15,7 @@ import {
   createNetworkInterface
 } from 'react-apollo';
 
-import createStoreAndInjector from './redux-injector';
+import createStoreAndInjector from 'redux-injector';
 
 
 
@@ -195,11 +195,11 @@ export default (history, preLoadedState) => {
       };
     },
   };
-  const routeDataReducers = (routeData && routeData.reducers) || {};
+
   const laterReducers = {
     ...moreReducers,
     // ...reducers,
-    ...routeDataReducers,
+    ...routeData.reducers,
   };
 
   const rootReducer = {
@@ -228,8 +228,8 @@ export default (history, preLoadedState) => {
 
 
   const store = createStore();
-  const routeDataRoutesmap = (routeData && routeData.routesMap) || {}
-  const aThunk = addRoutes(routeDataRoutesmap); // export new routes from component file
+
+  const aThunk = addRoutes(routeData.routesMap); // export new routes from component file
   store.dispatch(aThunk);
   initialDispatch();
 
