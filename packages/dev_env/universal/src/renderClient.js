@@ -2,7 +2,6 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import createBrowserHistory from 'history/createBrowserHistory'
 import configureStore from './configureStore'
-import AppContainer from 'react-hot-loader/lib/AppContainer'
 import App from './components/App'
 
 
@@ -24,9 +23,7 @@ export default function renderClient (App1) {
     const root = getRootEl();
 
     ReactDOM.render(
-      <AppContainer>
-        <App3 store={store} injectReducers={injectReducers} client={client} />
-      </AppContainer>,
+      <App3 store={store} injectReducers={injectReducers} client={client} />,
       root
     )
   }
@@ -40,120 +37,3 @@ export default function renderClient (App1) {
   }
 }
 renderClient(App)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
