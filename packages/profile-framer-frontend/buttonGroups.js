@@ -552,7 +552,7 @@ const ImportButtonGroup = makeButtonGroupComponent({
     //   actionType: 'IMPORT_FACEBOOK',
     // },
     {
-      text: 'Camera!',
+      text: 'Camera',
       isUploadCompositeImageSetter: true,
     },
     {
@@ -574,18 +574,18 @@ const ShareButtonGroup = makeButtonGroupComponent((constants, shareUrl, imageUrl
     shortHeadline: 'share',
     icon: 'share',
     buttons: [
-      {
-        text: 'Facebook photo',
-        onClick: () => {
-          exportStuff(imageUrl);
-        },
-      },
-      {
-        text: 'Facebook post',
-        onClick: () => {
-          postToWall(shareUrl);
-        },
-      },
+      // {
+      //   text: 'Facebook photo',
+      //   onClick: () => {
+      //     exportStuff(imageUrl);
+      //   },
+      // },
+      // {
+      //   text: 'Facebook post',
+      //   onClick: () => {
+      //     postToWall(shareUrl);
+      //   },
+      // },
       {
         text: 'Tweet',
         aHref: `https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&via=bernieselfie&hashtags=BernieSanders%2Cfeelthebern%2Cbernieselfie&related=BernieSanders`,
