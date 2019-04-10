@@ -167,7 +167,7 @@ function AppHero(props) {
       <AppMainSelfieFrameResponsive>
         <StyledInstructions className="app_body_leftPillar_selfieFrame_instructions ">
           <span className="selfieFrame_instructions_text">
-            {isTouchDevice ? 'Press and hold image to save' : 'Right click to save!'}
+            {isTouchDevice ? 'Press and hold image to save' : 'Right click to save!!!'}
           </span>
         </StyledInstructions>
         <StyledSelfie
@@ -187,7 +187,7 @@ AppHero.propTypes = {
 
 AppHero = ancestorConstantsHoc(
   appConnect((appState /* , { params }*/) => {
-    
+
     const imgSrc = (
       appState &&
 
@@ -377,7 +377,7 @@ function HomeLayout(props) {
                       shortHeadline='import'
                       icon='photo_camera'
                     />
-                    
+
                   </StyledSection>
                   <StyledSection section="design">
                     <ButtonGroup
