@@ -96,6 +96,7 @@
     "webpack-flush-chunks": "^1.1.23",
     "webpack-hot-middleware": "^2.19.1",
     "webpack-hot-server-middleware": "^0.1.0",
+    "webpack-node-externals": "^1.5.4",
     "webpack-node-utils": "^2.1.0",
     "webpack-virtual-modules": "^0.1.8",
     "website-scraper": "^3.1.0",
